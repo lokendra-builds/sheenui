@@ -1,0 +1,115 @@
+/* The Stories page: each card is the lit stage of a component page, smaller, with no Replay button. */
+.stories-card .stories-stage {
+  flex: 1 1 auto;
+  padding: 1rem 0.75rem;
+  border-radius: var(--radius-sheen-lg, 1.25rem);
+}
+.stories-card .stories-stage .sheen-showcase-plate {
+  width: min(100%, 22rem);
+  padding: 1.25rem 1rem;
+}
+/* Blocks bring their own surface: drawn at a fixed natural width and scaled to the card, anchored at the top. */
+.stories-fit {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+.stories-fit > div {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 0;
+  translate: -50% 0;
+  transform-origin: top center;
+}
+/* The plate of every card takes the flat frost (the glass budget is 8 blurred surfaces in view); cards that rest take it
+   everywhere (the docs-flat class), and the cards that move keep the real glass of the component they show. */
+.stories-card .sheen-showcase-plate {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Off-screen tiles cost nothing: no style, layout or paint until they near the viewport. The padding and matching negative
+   margin keep the stage's rim glow and the focus ring from being clipped by the containment. */
+.stories-tile {
+  content-visibility: auto;
+  /* The placeholder until the card has rendered once (`auto` then remembers its real height). Measured: a rendered tile is
+     the stage (its min-height, never under 20.5rem, see below) + 0.75rem gap + the 9.25rem text + the tile's own 1.5rem of
+     padding, i.e. 11.5rem on top of the stage. contain-intrinsic-size sizes the content box, so the padding is left out here.
+     The same numbers as a min-height keep a tile from ever collapsing to height 0 in any state (placeholder, loading,
+     playing, paused), whatever size the browser has remembered for it. */
+  --tile-stage: max(var(--tile-h, 20.5rem), 20.5rem);
+  contain-intrinsic-size: auto calc(var(--tile-stage) + 10rem);
+  min-height: calc(var(--tile-stage) + 11.5rem);
+  padding: 0.75rem;
+  margin: -0.75rem;
+}
+/* Even tiles: the stage fills the card, so a row of cards has one height and the text starts on one line. */
+/* Bigger plates on the tiles: the component is readable at tile size. */
+html:root .stories-card .stories-stage .sheen-showcase-plate {
+  width: min(100%, 26rem);
+  padding: 1.5rem 1rem;
+}
+html:root .stories-card .stories-stage.sheen-showcase {
+  min-height: max(var(--stage-min, 17rem), 20.5rem);
+}
+/* Even tiles: the text under a stage always has room for the longest wrap of a blurb (five lines in the narrowest card, measured
+   from 320 px to 1920 px), so every card has the same height at every width, a row shares one stage height and the captions
+   start on one line. The tile's reserved height above counts on this number. */
+.stories-card > div:last-child {
+  min-height: 9.25rem;
+}
+/* The toast tile: the plate hugs the top of the stage, so the toast stack that rises from the bottom never covers its rows. */
+html:root .stories-card .stories-stage.sheen-showcase:has([aria-label="Pipeline"]) {
+  align-content: start;
+}
+html:root
+  .stories-card
+  .stories-stage.sheen-showcase.sheen-showcase:has([aria-label="Pipeline"])
+  .sheen-showcase-plate {
+  align-self: start;
+  min-height: 0;
+}
+/* Typed text in the lamp tile (the password dots) sits on a deep field, not on the glass over the amber cone: the field stays above
+   4.5:1 in every look while the story types into it. Only the field box is painted (never the whole input, which would put the
+   label on the dark fill: the payment tile's labels measured 1.0:1 that way in the light looks). */
+html:root [data-card="lamp-login"] [data-slot="input"] > .glass-1 {
+  background-color: oklch(0.11 0.03 285 / 0.92);
+}
+/* The Tabs tile: the track is the plate's width and the active tab carries a count badge, so in the wider Aurora type the last label
+   ("Billing") was clipped. The tabs share the track equally and take less padding and tracking here, so every label fits from
+   320px to 1920px. */
+html:root [data-card="tabs"] [data-slot="tabs-track"],
+html:root [data-card="tabs"] [data-slot="tabs-list"] {
+  width: 100%;
+}
+html:root [data-card="tabs"] [data-slot="tabs-tab"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-inline: 0.5rem;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+/* The colour picker is 288px wide and 400px tall at its natural size, and its preview chip wraps under it in a tile, which made
+   the stage about 650-730px tall against the 24rem reserved for it. Drawn at 60% the picker and its chip sit on one row and
+   the scene fits the stage it reserves (checked from 320px to 1920px wide). The story only changes the colour, so nothing
+   in it reads a pointer position that zoom would skew. */
+.stories-tile[data-card="color-picker"] .sheen-stage-col {
+  zoom: 0.6;
+}
+/* The stage the colour picker needs: 366px at tile width on a tablet or desktop, 405px below 640px and 489px at 320px (measured on
+   the built page, with the zoom above). The card's minHeight is this variable, so the placeholder, the stage and the tile
+   reserve the same height at every width. */
+.stories-tile[data-card="color-picker"] {
+  --story-picker-h: 24rem;
+}
+@media (max-width: 39.99rem) {
+  .stories-tile[data-card="color-picker"] {
+    --story-picker-h: 25.5rem;
+  }
+}
+@media (max-width: 22.49rem) {
+  .stories-tile[data-card="color-picker"] {
+    --story-picker-h: 30.75rem;
+  }
+}

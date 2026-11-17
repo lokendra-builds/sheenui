@@ -1,0 +1,4 @@
+/* The same stylesheet a consumer app has: Tailwind, then SheenUI, with the theme's source scanned. */
+@import "tailwindcss";
+@import "../src/styles/index.css";
+@source "../src";

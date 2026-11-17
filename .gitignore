@@ -1,0 +1,168 @@
+# --- Secrets: never commit ---
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.pem
+*.key
+
+# --- SQLite / local databases: never commit ---
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+db.sqlite3
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+.python-version
+
+# --- Python build & cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+dist-ssr/
+wheels/
+pip-wheel-metadata/
+*.egg
+
+# --- Tests, coverage & linters ---
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Logs & temp files ---
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# --- Node / React ---
+node_modules/
+.pnpm-store/
+.next/
+.turbo/
+.vite/
+.parcel-cache/
+storybook-static/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# --- Test, coverage & CI output (generated) ---
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.lighthouseci/
+# Visual-regression baselines: per OS and engine, ~1.7 MB each (60 of them = ~100 MB), so they are
+# generated locally / kept in the Actions cache rather than committed. Remove this line (or move
+# them to Git LFS) if you want them in the repo.
+demo/e2e/visual.spec.ts-snapshots/
+
+# --- Added by repo-hygiene audit (keys/certs, DB journals, local-only files) ---
+# --- More secret formats ---
+*.p12
+*.pfx
+*.p8
+*.ppk
+*.jks
+*.keystore
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+credentials.json
+service-account*.json
+secrets.toml
+.netrc
+# --- More database files ---
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+# --- More generated output and caches ---
+dist-*/
+.eslintcache
+.cache/
+playwright/.cache/
+.nyc_output/
+*.tgz
+.vercel/
+.netlify/
+.wrangler/
+# --- Local-only tooling ---
+.claude/settings.local.json
+# --- Internal hand-off notes (absolute local paths, agent workflow) ---
+HANDOFF.md
+
+# --- Markdown: only what the public repo and the site need (owner's rule, 11 Nov 2026) ---
+# Internal planning/spec notes (plans, scorecards, notices, governance) stay local.
+*.md
+!README.md
+!theme/README.md
+# Site content: docs/guides/*.md are rendered into /guides/<slug> pages at build time.
+!docs/guides/
+!docs/guides/*.md
+# The negation above re-includes macOS AppleDouble copies (._name.md): exclude them again.
+docs/guides/._*
+# GitHub-only templates (shown in the PR form, not in the repo browsing experience).
+!.github/pull_request_template.md
+# Public project docs (owner, 16 Nov 2026): GitHub community standards and license notices.
+# Changelog, contributing and quality notes stay local (owner, 16 Nov 2026).
+!SECURITY.md
+!CODE_OF_CONDUCT.md
+!THIRD_PARTY_NOTICES.md
+# Test fixtures of the guide code check: `pnpm scripts:test` needs them in a fresh clone.
+!scripts/test/fixtures/**/*.md
+scripts/test/fixtures/**/._*
+
+# --- Never pushed (owner, 16 Nov 2026) ---
+# Editor settings and the GitHub folder (CI and Pages workflows, issue/PR templates, Dependabot, CODEOWNERS).
+.editorconfig
+.github/
+# Design lab prototypes (hero options, stage and OTP concepts): kept locally as a reference, dev server only.
+demo/dist-lab/
+# A macOS "XSym" symlink stub copied from a Mac: it holds a local machine path.
+demo/playwright-core
+# Demo videos and screen recordings: shared via releases or social posts, not the repo.
+*.webm
+*.mp4
+*.mov
+
+# Hand-off bundle between machines (agent reports, briefs, design references): local only.
+.handoff/
+*.tmp.mjs
+.w9*-verify.mjs
+.scan-tmp.mjs

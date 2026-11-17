@@ -1,0 +1,623 @@
+import type { PageContent } from "../page-content";
+
+export const content: Record<string, PageContent> = {
+  "/charts/percent-stacked-bar-chart": {
+    when: [
+      "Use it as a percentage bar chart for a plan mix by region, where Free, Pro and Team customers are counted in very different volumes and you care about each region's proportions rather than its size.",
+      "It suits time-spent breakdowns by team, such as building, meetings and support, where every row must be read as a share of 100% and long team names truncate inside a horizontal layout.",
+      "Choose layout vertical for a quarterly device mix, where columns line up like a time series and the arrow keys climb each stack, with showValues printing a share only where a segment has room.",
+      "Skip it when the absolute totals matter as much as the split; a regular BarChart keeps the size of each category visible, and Marimekko chart shows both width and share together.",
+      "Pair it with ChartCard for the title, legend and Chart / Table tabs, seriesLegend for the swatches, and PercentBarTable so every share can be read as text without relying on color.",
+    ],
+    faq: [
+      {
+        q: "How do I build a 100% stacked bar chart in React with SheenUI?",
+        a: "Pass data rows, an index key such as region, and a series array with key, label and a fixed color slot from 1 to 8 to PercentBarChart, plus a required aria-label. Every row is scaled to 100%, and negative values count as 0.",
+      },
+      {
+        q: "What happens to a category whose values are all zero?",
+        a: "It gets an empty track instead of a misleading bar, so a new team with no data yet does not look like a full or broken bar. The page demo shows a row named New team with every value at 0, drawn as an empty track.",
+      },
+      {
+        q: "Which keys move between segments with the keyboard?",
+        a: "The chart is one tab stop. In the horizontal layout, Up and Down move between bars and Left and Right between segments; in the vertical layout the pairs swap. Home and End jump to the first or last bar, and Escape clears the readout.",
+      },
+      {
+        q: "Can I show the percentage inside each segment?",
+        a: "Set showValues. A share is printed only when it fits with room to spare, on a surface chip that keeps contrast on any segment color. Use formatPercent to change the format, and the tooltip still gives the raw value and the share.",
+      },
+    ],
+  },
+
+  "/charts/marimekko": {
+    when: [
+      "Use it as a mosaic (mekko) chart for market maps, where each column is a customer segment sized by its revenue and the stacked cells show which product lines or competitors hold that segment.",
+      "It works for a revenue-by-region and product breakdown in a board deck, because column width carries the region's size while cell height carries the product's share inside it.",
+      "Try cellText value when readers want the numbers rather than percentages, for example fiscal revenue per product line printed inside each cell wherever it fits.",
+      "Skip it when you have more than a handful of columns or need exact comparisons across categories; PercentBarChart or a plain BarChart reads more cleanly than narrow columns with clipped text.",
+      "Pair it with ChartCard and its Chart / Table tabs, MarimekkoTable for a text version with totals and shares, and seriesLegend so each stacked part is named once, outside the cells.",
+    ],
+    faq: [
+      {
+        q: "What does a Marimekko chart show that a stacked bar does not?",
+        a: "Column width is proportional to each column's total, so you see segment size and composition in one picture. A 100% stacked bar gives every category the same width, which hides how large each segment actually is.",
+      },
+      {
+        q: "How do I make the cells print values instead of shares?",
+        a: "Set cellText to value; the default is share, and none turns labels off. Text appears only where it fits, column names and shares under the plot also print only where they fit, and every value stays available in the tooltip and the table.",
+      },
+      {
+        q: "Can cells be clickable for drill-down?",
+        a: "Yes, pass onCellClick. It fires on click, Enter or Space, and on touch devices on the second tap, with column, series, seriesLabel and value. The arrow keys move between cells and Home and End reach the bottom or top part of a column.",
+      },
+      {
+        q: "How many series can I stack in a column?",
+        a: "Up to eight, since colors come from fixed palette slots and negative values count as 0. Use the series array with key, label and optional color for each part, and the index prop to name the column key in every data row.",
+      },
+    ],
+  },
+
+  "/charts/network-graph": {
+    when: [
+      "Use it as a node graph to map service dependencies, where each node is a microservice sized by traffic and a link shows that two services are connected (links are undirected), so you can see which service everything depends on.",
+      "It fits a collaboration or org network, such as forty people in five teams, with link value as how often two people worked together and group colors showing the team.",
+      "It also works for a site's internal link structure or a social graph, where clusters and bridge nodes matter more than precise numbers, and where a user can click a node to open details.",
+      "Skip it when the connections have direction and quantity that must be compared; a Sankey diagram handles weighted flows, and ChordDiagram suits a dense matrix of relationships between a few groups.",
+      "Pair it with ChartCard for the legend and Chart / Table tabs, NetworkTable as the text twin listing each node's connections, and onNodeClick to open a detail Drawer.",
+    ],
+    faq: [
+      {
+        q: "Do I need d3-force for a network graph in React?",
+        a: "No. The force layout (link springs, charge, gravity and collision) is written inside the component and computed in small chunks between frames. It gives the same layout on every load. You can tune it through the forces prop.",
+      },
+      {
+        q: "How are node sizes and link weights set?",
+        a: "A node's value sets its area, and a link's value sets its line weight. Repeated source and target pairs add up, links to unknown ids are left out, and nodes can carry a group that maps to a named palette slot through groups.",
+      },
+      {
+        q: "How do I navigate the graph with a keyboard?",
+        a: "Arrow keys move to the nearest node in that direction, Page Down and Page Up step through every node in order, and Home and End go to the first or last node. Plus and minus zoom, 0 fits the whole graph, Escape clears the reading, and Enter or Space calls onNodeClick.",
+      },
+      {
+        q: "Why are some node names missing?",
+        a: "With showLabels set to auto, the default, names print only where they fit without colliding, and more appear as you zoom in. Use all to print every name or none to hide them; the tooltip and NetworkTable still carry the full names.",
+      },
+    ],
+  },
+
+  "/charts/pie-chart": {
+    when: [
+      "Use it as a pie chart with labels for a browser or device share on an analytics dashboard, where there are a handful of parts and the point is that one of them is clearly the biggest.",
+      "It suits a storage or budget breakdown in a settings page, where five or six categories add up to a whole and the legend lists each share under the pie.",
+      "It works in a narrow card too: labels step aside for the legend, and the tooltip docks above the pie so a finger never covers the reading.",
+      "Skip it when slices are close in size, there are many categories, or the data changes over time; BarChart compares values better, and DonutChart gives you a center slot for a total.",
+      "Pair it with ChartCard for the title and Chart / Table tabs, PieTable so folded slices stay readable, and foldSlices when you need the exact grouping the chart draws; the legend under the pie is built in.",
+    ],
+    faq: [
+      {
+        q: "What happens when my React pie chart has too many slices?",
+        a: "maxSlices defaults to 6 and accepts 2 to 6. Beyond that, the smallest slices fold into a neutral Other whose tooltip lists what is inside. PieTable keeps every original row and marks the ones drawn inside Other.",
+      },
+      {
+        q: "How do I set slice colors?",
+        a: "Each item can carry color, a fixed palette slot from 1 to 8; by default the slot follows position, never rank. No two drawn slices ever share a color, so a slice keeps its hue when the data reorders.",
+      },
+      {
+        q: "Is the pie chart accessible without a mouse?",
+        a: "It is a focusable figure named by its title, described by the keyboard hint, and one tab stop. Right or Down moves to the next slice, Left or Up to the previous one, Home and End jump to the ends, and Escape clears the reading. Each move announces slice, value and share.",
+      },
+      {
+        q: "Can I localize the labels and number formats?",
+        a: "Yes. format and formatPercent control values and shares, and labels overrides strings such as other, inOther, noData and the keyboard instructions. emptyState replaces the No data message shown when every value is 0.",
+      },
+    ],
+  },
+
+  "/charts/polar-area": {
+    when: [
+      "Use it as a Nightingale rose (coxcomb) chart for cyclical categories such as months, hours of the day or compass points, where wedge position carries meaning and a circle makes the cycle obvious.",
+      "It recreates Nightingale's rose: several series, such as causes of mortality per month, stack outward while each wedge's area stays proportional to its value.",
+      "It suits a 24-hour traffic profile with one series and one hue, where wedge position and name identify the hour and labels thin out on narrow screens.",
+      "Skip it when readers need to compare exact values across categories; a BarChart is easier to read, and RadarChart fits comparing profiles across several unrelated measures.",
+      "Pair it with ChartCard for the title and Chart / Table tabs, PolarAreaTable for exact numbers, and polarAreaLegend when several series stack outward in the same wedge.",
+    ],
+    faq: [
+      {
+        q: "What is the difference between area and radius scaling?",
+        a: "The scale prop defaults to area, where the radius grows with the square root so wedge area stays true to the value. Choose radius when your data is a familiar 0 to 100 score; it makes large values look bigger than they are.",
+      },
+      {
+        q: "How many series can a polar area chart stack?",
+        a: "One or more; several stack outwards, each with a fixed color slot. Past eight, the first seven keep their slots and the rest fold into Other. Data rows are listed clockwise from 12 o'clock, with the index key naming each wedge such as the month.",
+      },
+      {
+        q: "How do I read wedges with the keyboard?",
+        a: "Focus the chart, then Right or Down moves to the next wedge clockwise, Left or Up to the previous one, and Home and End go to the first or last wedge. Escape stops reading. Hover and tap read a wedge too.",
+      },
+      {
+        q: "Why do some wedge names disappear on a phone?",
+        a: "Names never collide: with many wedges, like 24 hours, labels thin out on narrow screens instead of overlapping. Every wedge still has a tooltip and appears in PolarAreaTable, and reduced motion draws marks at final values.",
+      },
+    ],
+  },
+
+  "/charts/radar-chart": {
+    when: [
+      "Use it as a spider chart for a release scorecard that compares two quarters across the same quality measures, such as reliability, performance and docs, on one 0 to 100 scale.",
+      "It suits comparing candidate or product profiles across 3 to 10 attributes, like a flavor profile with cupping scores out of 10 for three coffees.",
+      "It works in a half-width card with long axis names, because names are measured in the chart's font and wrap onto two lines before being shortened.",
+      "Skip it when you have more than four series or axes on different scales; a grouped BarChart or a Heatmap compares many items more reliably.",
+      "Pair it with ChartCard and its table prop, a RadarTable for the text view, and seriesLegend so each shape has a named color.",
+    ],
+    faq: [
+      {
+        q: "How many axes and series work well in a radar chart?",
+        a: "Three to ten axes read best, and one or two axes draw dots. Compare one to four series, each with a palette slot from 1 to 8. Rows go clockwise from the top, with the index prop naming each axis.",
+      },
+      {
+        q: "How do I fix the scale at 100?",
+        a: "Pass max, the value at the outer ring. Without it, the scale tops out at a round number at or above the largest value. Negative values sit at the center. Use grid circle for round rings instead of the default polygon rings.",
+      },
+      {
+        q: "Does SheenUI ship a RadarTable for screen readers?",
+        a: "No. Pass a ChartTable as ChartCard's table prop; the Chart / Table tabs then put every value in text. The chart itself is one tab stop, and the arrow keys move between axes, announcing each series' value.",
+      },
+      {
+        q: "How does it handle a phone screen?",
+        a: "The readout sits in its own band above the shape so a tap never hides data. The chart shrinks to what its rings and labels need, and on small screens some axis names step back and reappear while their axis is active.",
+      },
+    ],
+  },
+
+  "/charts/radial-bar-chart": {
+    when: [
+      "Use it as progress rings for quarterly goals, where two to five measures each show progress against a target as concentric rings with the share printed right where each ring starts.",
+      "It fits an activity-ring style summary, such as move, exercise and stand today versus yesterday, with variant ring closing the rings and a legend beside them.",
+      "It works when items have different targets, since each datum can bring its own max and values past it still fill the ring and print in full.",
+      "Skip it when there is only one measure or you need a single value on a dial; use GaugeChart or RadialProgress, and use BarChart for more than five items or exact comparison.",
+      "Pair it with ChartCard for the title, RadialBarTable for the Chart / Table tabs, and centerValue and centerLabel to show an overall figure while no ring is active.",
+    ],
+    faq: [
+      {
+        q: "How many rings can a radial bar chart have?",
+        a: "Two to five measures, outermost ring first. Each datum is label, value, an optional max and optional color. Items without their own max use the chart-level max, which defaults to 100, so a ring represents progress toward a goal.",
+      },
+      {
+        q: "What is the difference between arc and ring variants?",
+        a: "The default arc draws three-quarter arcs and prints each name and value in the open quarter. Variant ring closes the rings, marks the seam with a 2px gap and lists the measures beside them, so you do not need a separate legend.",
+      },
+      {
+        q: "Can the labels show values instead of percentages?",
+        a: "Yes. display defaults to percent, the share of the goal, and value prints the number. Use format and formatPercent to change either one. The labels prop overrides strings including the table headers.",
+      },
+      {
+        q: "How is it navigated with the keyboard?",
+        a: "The chart is one tab stop. Arrow keys move between measures, Home and End jump to the first or last one, and Escape clears the reading. Each move announces the measure, its value and its share, and hover reads a ring in the center.",
+      },
+    ],
+  },
+
+  "/charts/range-area-chart": {
+    when: [
+      "Use it as a confidence interval chart for a revenue forecast, where forecastFrom marks the month actuals end and a dashed line and tinted region take over from the last actual value.",
+      "It suits daily temperature or price ranges, where each point has a low and a high and the line in the middle shows the typical value.",
+      "It also handles up to three lines with bands, such as two cities across the same two weeks, with overlapping bands kept lighter so both stay readable.",
+      "Skip it when you only have a single value per point, where LineChart is simpler, or when you need stacked parts of a total, where StackedAreaChart is the right shape.",
+      "Pair it with ChartCard and rangeAreaLegend so the legend names both the line and its band, and RangeAreaTable to show each value with its low to high range as text.",
+    ],
+    faq: [
+      {
+        q: "How do I define the band around the line?",
+        a: "Each series object takes key, lower and upper, the data keys of its band's bounds, plus an optional bandLabel and color. The series prop is meant for one to three lines. The band uses the line's own hue at low opacity.",
+      },
+      {
+        q: "How do I mark where the forecast starts?",
+        a: "Pass forecastFrom with the x value where actuals end. From the last actual the line turns dashed and the region is tinted and tagged with a Forecast label. Strings such as that tag can be overridden through labels.",
+      },
+      {
+        q: "What happens when some data points are missing?",
+        a: "Leave the value out of the row. Gaps in the data stay gaps, so the line and band break there instead of dipping to zero. RangeAreaTable prints a dash for a missing value so the gap is also visible in text.",
+      },
+      {
+        q: "Should the y-axis start at zero?",
+        a: "By default no: zero is false because a band reads best when the axis hugs the data. Set zero to keep it on the axis. curve defaults to monotone, smooth lines that never overshoot a value, or linear for straight segments.",
+      },
+    ],
+  },
+
+  "/charts/ridgeline": {
+    when: [
+      "Use it as a joy plot to compare how a measure is distributed across groups, such as monthly delivery times where you want to see both the typical time and how much spread there is.",
+      "It suits showing change in spread over time, for example orders getting faster and more predictable month by month apart from a December rush.",
+      "Try fill sequential for salary bands by role, where a light to dark ramp along the value axis means position and color say the same thing.",
+      "Skip it when you have only a few observations per group or need exact quartiles; BoxPlot states them directly, and Histogram shows one distribution in detail with real bin counts.",
+      "Pair it with ChartCard and its Chart / Table tabs, RidgelineTable for the count, median, mean and range as text, and a segmented control to switch between shared and each scale.",
+    ],
+    faq: [
+      {
+        q: "What data does a ridgeline chart expect?",
+        a: "An array of groups, each with a label and raw values, top to bottom. The chart computes densities itself using a Gaussian kernel with Silverman's bandwidth per group, so you pass observations, not pre-binned counts.",
+      },
+      {
+        q: "How do I make ridges spikier or smoother?",
+        a: "Use bandwidth, in value units; smaller is spikier. By default each group gets Silverman's bandwidth. overlap controls how many rows a ridge rises into, default 2, and rowHeight sets row height in px, default 34.",
+      },
+      {
+        q: "What does the scale prop do?",
+        a: "With the default shared, one density scale is used so a tight group stands taller. Set each to give every ridge the same peak height, which helps compare shapes. showMedian draws a dashed tick at each median by default.",
+      },
+      {
+        q: "What can a reader get from each ridge?",
+        a: "Hovering, tapping or arrowing reads a ridge's median, mean, middle 50%, range and count. Down or Right moves to the next ridge, Up or Left to the previous, Home and End to the first and last, and Escape stops reading.",
+      },
+    ],
+  },
+
+  "/charts/sankey-diagram": {
+    when: [
+      "Use it as a Sankey chart for an income statement, tracing revenue streams through costs to profit, with ribbon thickness showing how much of each stream ends up where.",
+      "It fits a hiring pipeline or a signup funnel with drop-offs, where align left makes candidates who leave early stop early and linkColor source colors each ribbon by its source stage.",
+      "It also works as a user flow chart for traffic, showing where visitors come from and which pages they go to, with hover tracing every path through a node.",
+      "Skip it when flows are bidirectional or form cycles, since links that would close a cycle are left out; a ChordDiagram or NetworkGraph represents those, and FunnelChart suits a single linear sequence.",
+      "Pair it with ChartCard for the title and Chart / Table tabs, SankeyTable as the text version, and onNodeClick or onLinkClick to filter a DataTable beside it.",
+    ],
+    faq: [
+      {
+        q: "What data shape does a Sankey diagram need?",
+        a: "A links array of source, target and value, plus an optional nodes array giving each node an id, a label and a color slot from 1 to 8. A node named only in a link takes its id as its label. Repeated pairs are summed, and zero, negative or self links are dropped.",
+      },
+      {
+        q: "Can I control how nodes line up in columns?",
+        a: "Yes, align takes justify, left, right or center. The default justify puts sinks in the last column. Left places nodes by distance from a source, right by distance to a sink. nodeWidth, nodePadding and linkColor refine the look.",
+      },
+      {
+        q: "How does a Sankey diagram behave on a phone?",
+        a: "minColumnWidth sets the narrowest gap between columns, default 96px. A narrower card scrolls the diagram sideways inside its own container instead of squeezing ribbons. Labels move inside the diagram on narrow cards and print only where they fit.",
+      },
+      {
+        q: "How do I explore a Sankey with the keyboard?",
+        a: "Up and Down move between nodes in a column, Right follows the first outgoing flow and Left the first incoming one. Home jumps to the first node and End to the last node of the final column. Enter or Space calls onNodeClick or onLinkClick for the active item.",
+      },
+    ],
+  },
+
+  "/charts/scatter-plot": {
+    when: [
+      "Use it as a scatter chart with a trend line for ad spend against revenue per week, where you want to see whether two measures move together and quantify the relationship with a fitted line.",
+      "It suits a bubble chart of cities, plotting rent against salary with bubble area showing population so a small number of large points stays visible.",
+      "It works for comparing up to three groups, such as two campaigns, each with its own series color and its own trend line with slope and R squared.",
+      "Skip it when one axis is categorical or time, where LineChart or BarChart fit better; for thousands of points of one variable, Beeswarm or Histogram shows the distribution more clearly.",
+      "Pair it with ChartCard for the title, legend and Chart / Table tabs, ScatterTable for the text twin, and scatterLegend so a folded Other series is labeled the same way.",
+    ],
+    faq: [
+      {
+        q: "How do I add a trend line to a scatter plot in React?",
+        a: "Set trendline on ScatterChart. It fits a least-squares line per series, drawn dotted and clipped to the plot so it never reads as data. The slope and R squared are part of the chart's accessible name. linearRegression is exported too.",
+      },
+      {
+        q: "How do I turn it into a bubble chart?",
+        a: "Set bubble and give each point a size. Bubbles are sized by area, so four times the population is four times the ink, with a minimum of 8px across. Big bubbles sit behind small ones, each with a surface ring.",
+      },
+      {
+        q: "How many series can I plot?",
+        a: "Up to three; series past the third fold into one neutral Other series, because in a scatter every color sits beside every other. Each series is a label, optional color and a data array of x, y, optional size, label and id.",
+      },
+      {
+        q: "How do the keyboard and pointer find points?",
+        a: "The pointer only has to be near a point, since hit testing finds the nearest one. With the keyboard, Left and Right move through points in x order, Up and Down in y order, Home and End to the first and last in x order, and Escape clears the reading.",
+      },
+    ],
+  },
+
+  "/charts/sparkbar": {
+    when: [
+      "Use it as a sparkline bar chart inside a stat tile to show the last twelve periods of a metric beside the current number, with the latest bar at full strength and history in a lighter tint.",
+      "It fits a table cell showing a team's recent record, using variant winloss so only the sign of each result is drawn: up for a win, down for a loss, a short dash for a draw.",
+      "It works for tiny trend hints in a list of accounts or projects, where hundreds of rows need a glanceable shape and not a full chart with axes.",
+      "Skip it when readers need to hover for values or compare axes, since a sparkbar is not interactive; use BarChart for that, or Sparkline when the series is a continuous line rather than discrete periods.",
+      "Pair it with Sparkline for continuous trends, Badge or a plain number for the headline value next to it, and DataTable to place a sparkbar in a column.",
+    ],
+    faq: [
+      {
+        q: "How is a mini bar chart in React different from a sparkline?",
+        a: "Sparkbar is the bar twin of Sparkline: each value is a discrete period drawn as its own bar, sized by value, with negative values hanging from a zero line. Use it for counts per day, week or month.",
+      },
+      {
+        q: "How do I highlight a specific bar?",
+        a: "highlight defaults to last in bar mode and none in win/loss mode. Pass a number to index values, with negatives counting from the end, or none when no period is special. The other bars step back to a lighter tint of the same hue.",
+      },
+      {
+        q: "What does a screen reader hear?",
+        a: "With an aria-label, the sparkbar is an image named by that label plus a summary: low, high and latest, or the win/loss record, or No data. Without a label it is decorative, so put the number it summarizes beside it as text.",
+      },
+      {
+        q: "How are missing values handled?",
+        a: "values accepts numbers, null or undefined, oldest first. A missing entry leaves its slot empty, so there is a gap and never a zero. Bars never grow wider than 12px, height defaults to 32, and the width follows the container.",
+      },
+    ],
+  },
+
+  "/charts/stacked-area-chart": {
+    when: [
+      "Use it as a stacked area graph for sessions by channel over a year, where the total and the contribution of organic, paid and referral traffic matter as the totals build up.",
+      "It suits a 100% stacked area chart with mode percent, such as quarterly sessions by device, to show when mobile overtook desktop without the total distorting the view.",
+      "It also handles gaps honestly: in percent mode, a month with no signups breaks the chart around a dashed no data column instead of dipping to 0%.",
+      "Skip it when the series should be compared against each other, since stacked bands share baselines; LineChart or a grouped BarChart makes that easier, and Streamgraph suits a flowing, symmetric view.",
+      "Pair it with ChartCard for a legend where Enter or Space on a key hides a series, StackedAreaTable for exact values, and a segmented control to switch stacked and percent modes.",
+    ],
+    faq: [
+      {
+        q: "How do I build a stacked area chart in React with SheenUI?",
+        a: "Pass data rows, the index key for x, and series listed from the bottom band up, each with key, label and an optional color slot from 1 to 8. A required aria-label names the chart. Height defaults to 260 and the width follows the container.",
+      },
+      {
+        q: "How do I switch to a 100% stacked area chart?",
+        a: "Set mode to percent. Every x is scaled to 100% so bands show shares, the tooltip leads with the share and keeps the raw value beside it, and an x whose values add up to 0 is drawn as a gap. formatPercent changes the format.",
+      },
+      {
+        q: "Which curve types are available?",
+        a: "curve defaults to linear for straight segments, or monotone for smooth curves that never overshoot a data point. Bands are separated by a real 2px gap, draw in on first view and tween when data changes.",
+      },
+      {
+        q: "How do I read it with a keyboard or toggle series?",
+        a: "Focus the chart, then Left and Right move between points, Home and End jump to the ends, and Escape clears the reading. Inside a ChartCard, Enter or Space on a legend key hides or shows that series. Reduced motion makes the animations instant.",
+      },
+    ],
+  },
+
+  "/charts/step-line-chart": {
+    when: [
+      "Use it as a step chart for plan pricing over time, where a price holds flat until the next change, and the hover band marks the step each price holds for.",
+      "It fits licensed seats at the end of each month or headcount, where values hold between events and a smooth line would invent in-between numbers.",
+      "It also suits interest rates, quota limits or feature thresholds, with area adding a soft wash under a single series that keeps zero on the axis.",
+      "Skip it when the value changes continuously, such as temperature or traffic; LineChart is the honest shape, and RangeAreaChart fits when each point has a low and a high.",
+      "Pair it with ChartCard for the title and legend, a StepLineTable as the Chart / Table tab, and a segmented control to switch plans or ranges.",
+    ],
+    faq: [
+      {
+        q: "What does the curve prop change on a step line chart?",
+        a: "It sets where each value's label, crosshair and dot sit on its step: step-after (the default, value starts at its label), step (mid-step) or step-before (value is reached at its label). The line itself is the same, only the anchors move.",
+      },
+      {
+        q: "Why does my step chart look squashed against the top?",
+        a: "Zero is kept on the value axis by default. For levels far from zero, such as prices, set zero to false so the axis hugs the data. With area on, zero stays on the axis so the wash fills to a real baseline.",
+      },
+      {
+        q: "Can I plot several series?",
+        a: "Yes. With two to four series on a wide chart, endLabels (on by default) names each line at its end when labels do not collide. With one series, no legend is needed and the card title names it.",
+      },
+      {
+        q: "How do I read it without a mouse?",
+        a: "Focus the chart, then Left and Right (or Up and Down) move to the previous or next point, and Home and End jump to the ends. The hover band and crosshair snap to the step under the pointer, and the tooltip lists each series' value there.",
+      },
+    ],
+  },
+
+  "/charts/streamgraph": {
+    when: [
+      "Use it as a stream chart for a year of listening hours by genre, where the shape of each layer shows how a mix swells and fades across 52 weeks.",
+      "It suits traffic sources around a launch, with thirty days of visits by source and a spike in week three, where the stream's thickness is always the total.",
+      "It works for any many-category time series where totals matter less than the rhythm of change, with layer names printed inside their thickest stretch when they fit.",
+      "Skip it when readers must read exact values or compare layers against a common baseline; StackedAreaChart keeps a flat bottom, and LineChart compares individual series better.",
+      "Pair it with ChartCard and its legend, StreamgraphTable for exact values as text, and a SegmentedControl to switch offset between wiggle and silhouette.",
+    ],
+    faq: [
+      {
+        q: "What is the difference between wiggle and silhouette?",
+        a: "offset defaults to wiggle, Byron and Wattenberg's minimal-wiggle baseline, which keeps layers as flat as they can be. Silhouette mirrors the stream around a center line. In both, the total is the stream's thickness.",
+      },
+      {
+        q: "How are layers ordered?",
+        a: "order defaults to insideOut, which puts layers that peak mid-way in the middle. Set none to keep your series order from bottom up. Each series has a fixed color slot, and series past eight fold into Other.",
+      },
+      {
+        q: "How do I read a layer with the keyboard?",
+        a: "Left and Right move through time, Up and Down pick a layer top to bottom as stacked on screen, Home and End jump to the first or last point, and Escape clears the layer. Hovering a layer lights it and dims the rest, and the crosshair reads every layer with its share.",
+      },
+      {
+        q: "Can I hide the inline layer names?",
+        a: "Set inlineLabels to false. By default each layer is named inside its thickest stretch, only when the name fits. The legend, tooltip and StreamgraphTable always carry every name, and height defaults to 300px.",
+      },
+    ],
+  },
+
+  "/charts/realtime-chart": {
+    when: [
+      "Use it as a live chart in React for an ops wall or a status page, such as requests per second and error rate over the last minute, where samples keep arriving and the line should glide along instead of redrawing.",
+      "It fits a monitoring panel fed by a WebSocket, because you can append your own rows to data and the chart animates them the same way as generated ones.",
+      "It also works as a fast feed with the axis anchored at zero, such as two samples a second with 40 seconds in view.",
+      "Skip it when data arrives rarely or the history is the point; LineChart handles a static range better, and Tracker fits status-by-day history.",
+      "Pair it with ChartCard for the title, useStreamingData to generate and buffer samples, and StreamingTable for the latest rows as text; the chart brings its own Live status and Pause button.",
+    ],
+    faq: [
+      {
+        q: "How do I build a real time chart in React with SheenUI?",
+        a: "Call useStreamingData(source, options) in the small component that renders the card; it calls source every rate ms, 1000 by default, and keeps a rolling buffer. Pass the rows and series to StreamingChart. Each sample then re-renders only that card.",
+      },
+      {
+        q: "Can users pause the chart to read a value?",
+        a: "Yes. Hovering, tapping or arrowing holds the view still, and there is a built-in Pause button; Space or K toggles it from the chart. Data keeps arriving while paused, and Resume glides to the present. Use paused or defaultPaused to control it.",
+      },
+      {
+        q: "What does it do on prerendered pages?",
+        a: "Timestamps depend on the clock and the viewer's time zone, so pass timeZone and locale, and a fixed options.startAt, so server and browser histories match. Right after mount the history is rebuilt to end now.",
+      },
+      {
+        q: "How does it save work in the background?",
+        a: "With pauseWhenHidden on by default, no timer runs while the tab is hidden, and the missed samples are filled in when you return so the line stays continuous. Under reduced motion the chart redraws in place, with no sliding.",
+      },
+    ],
+  },
+
+  "/charts/sunburst": {
+    when: [
+      "Use it as a hierarchical pie chart for a bundle size breakdown, where packages sit in rings by folder and you need to see which branch of the hierarchy owns the weight.",
+      "It fits cloud spend by team and service, or disk usage by folder, where clicking a group zooms into it with an animated sweep.",
+      "It works for flat data too: without children it becomes a single ring like a donut, with every arc taking its own slot and tiny values still getting a hairline arc.",
+      "Skip it when the hierarchy has many tiny leaves or readers must compare sizes precisely; Treemap uses area more efficiently, and a BarChart is better for exact comparison.",
+      "Pair it with ChartCard for the title, SunburstTable for the nested text view with percent of parent and total, and onNodeClick to open details for a leaf.",
+    ],
+    faq: [
+      {
+        q: "How do I make a sunburst chart in React?",
+        a: "Pass nested data: leaves carry a value, groups carry children to any depth and add them up. Each node has a label and an optional color. Height defaults to 360 and the chart is a circle fitting the smaller of width and height.",
+      },
+      {
+        q: "How many rings are shown, and how do I zoom?",
+        a: "rings defaults to 3 levels at a time; deeper ones appear as you zoom. Click or press Enter on a group to zoom into it; the breadcrumb, the center, or Escape zoom back out. Use path, defaultPath and onPathChange to control the zoom.",
+      },
+      {
+        q: "How do I move around with the keyboard?",
+        a: "Left and Right move around the ring and wrap, Down goes out to the first child, Up back to the parent, and Home and End reach the first or last arc of the ring. Enter or Space zooms in, and Escape or Backspace zooms out one level.",
+      },
+      {
+        q: "Why are some arcs unlabeled?",
+        a: "Arcs too thin to hold a name stay unlabeled. Hover one to read it in the center, where the number rolls to its value, or find it in the tooltip and the SunburstTable. Reduced motion skips the sweep and the number roll.",
+      },
+    ],
+  },
+
+  "/charts/uptime-tracker": {
+    when: [
+      "Use it as a status page uptime bar for the last 90 days, where each block is a day with its own tooltip and the legend counts each status.",
+      "It fits a compact status page with one strip per service in a single glass card, without legends, so a dozen services fit in one view.",
+      "It works for CI history, such as the last 48 builds on main, using custom statuses with their own palette slot or tone, an icon and optional stripes or a caret.",
+      "Skip it when you need the magnitude of a value over time; use LineChart or Sparkbar, and use CalendarHeatmap for a year of daily intensity in a week by weekday grid.",
+      "Pair it with ChartCard for the title and legend, Badge to show the current status, and TrackerTable to give screen reader users every period as a table row.",
+    ],
+    faq: [
+      {
+        q: "How do I build an uptime tracker in React with SheenUI?",
+        a: "Pass data as blocks, oldest first, each with label, status and optional detail. The default statuses are ok, degraded, down and none. startLabel and endLabel add text under the two ends, such as 90 days ago and Today.",
+      },
+      {
+        q: "Is color the only way to tell statuses apart?",
+        a: "No. Every status has an icon and a name, degraded days are striped, and outages carry a caret. You can define your own statuses with a label, tone, icon, striped and flag, so a second cue exists beyond color.",
+      },
+      {
+        q: "What happens with a long strip on a narrow screen?",
+        a: "Blocks never get thinner than 3px: a longer strip scrolls inside the card, opened at its latest end, and the keyboard focus follows the active block. Block height defaults to 32px, and Date labels are formatted with formatLabel or locale.",
+      },
+      {
+        q: "How do I use it with a keyboard?",
+        a: "The tracker is one tab stop. Right or Down moves to the next block (in right-to-left layouts Left takes Right's place), Left or Up to the previous, Home to the oldest and End to the newest, and Escape stops reading. Touch can tap and drag.",
+      },
+    ],
+  },
+
+  "/charts/treemap": {
+    when: [
+      "Use it as a treemap chart in React for cloud spend by team and service, where each team keeps one hue, services share it, and tile area shows where the money goes.",
+      "It fits a portfolio or inventory with a natural hierarchy, such as product categories and SKUs, where clicking a group zooms in and the breadcrumb or Escape zooms back.",
+      "Flat data also works: without groups every tile uses one hue and needs no legend, so size alone carries the value.",
+      "Skip it when exact comparison or time trends matter, since area is hard to judge; use BarChart for comparisons, and SunburstChart when the path through the hierarchy matters more than area.",
+      "Pair it with ChartCard for the title, treemapLegend for the top-level group legend, and TreemapTable for every node as text with percent of group and total.",
+    ],
+    faq: [
+      {
+        q: "Do I need a library for a treemap in React?",
+        a: "No. The squarified layout is implemented in the file with no dependency, so tiles stay close to square. The layout is also exported as squarify(values, rect) if you want rectangles for your own rendering.",
+      },
+      {
+        q: "How do I enable drill-down?",
+        a: "With groups, drillDown is on by default: click a team, or focus the chart, move with arrow keys and press Enter. The breadcrumb, Escape or Backspace zooms out. Control the zoom with path, defaultPath and onPathChange.",
+      },
+      {
+        q: "Why are small tiles unlabeled?",
+        a: "Labels appear only where they fit, in black or white by contrast. Tiny tiles stay unlabeled rather than overflow, while the tooltip and TreemapTable still read them. Use onNodeClick for tiles with nothing to zoom into.",
+      },
+      {
+        q: "How are colors assigned?",
+        a: "In a hierarchy, each top-level group takes its own palette slot from node.color or position, and its children share the hue. For flat data, the color prop picks one slot from 1 to 8, default 1.",
+      },
+    ],
+  },
+
+  "/charts/waffle": {
+    when: [
+      "Use it as a percentage grid chart to make a share land fast, such as sessions by device on a 10 by 10 grid where every cell is exactly one percent.",
+      "It fits storage or quota displays on a part of a larger whole, such as 81.6 GB of 128 GB used, with total above the sum leaving the rest of the cells empty.",
+      "The pictogram variant suits human-scale statistics, such as how 100 employees get to work, drawing any currentColor icon in each cell.",
+      "Skip it when precision matters or there are more than a handful of parts; BarChart is more accurate, and Meter or Progress fits a single completion value.",
+      "Pair it with ChartCard for the title and Chart / Table tabs, WaffleTable for the text twin, and NumberTicker to show the headline figure beside the grid.",
+    ],
+    faq: [
+      {
+        q: "How are cells assigned so they always add up?",
+        a: "Cells are split by largest remainder, so the counts always sum to the grid size even when percentages round awkwardly, and any part with a value keeps at least one cell. Negative values count as 0, and with more than eight parts the seven largest stay and the rest fold into Other.",
+      },
+      {
+        q: "Can I use a grid that is not 10 by 10?",
+        a: "Yes. rows and columns both default to 10, and any size works, such as 20 columns by 5 rows for a storage bar. fill chooses rows or columns order, and maxCell caps the cell size in px.",
+      },
+      {
+        q: "How do I make a pictogram waffle chart?",
+        a: "Set variant to pictogram and pass an icon, any ReactNode that draws with currentColor; the default is a person. Each cell shows the icon in its part's color, and hovering a cell or legend row lights up the whole part.",
+      },
+      {
+        q: "How do I navigate it without a mouse?",
+        a: "Focus the grid, then Right or Down moves to the next part (in right-to-left layouts Left takes Right's place), Left or Up to the previous, Home and End to the first or last part, and Escape stops reading. Changed data pops only the cells that change.",
+      },
+    ],
+  },
+
+  "/charts/waterfall-chart": {
+    when: [
+      "Use it as a profit and loss chart, from revenue through costs to net income, with increases and decreases floating from the previous level and a total drawn from zero.",
+      "It fits a monthly cash flow with long step names, set to horizontal layout, where the running total dips below its start mid-month and the zero line firms up.",
+      "It works for explaining a variance between two periods, such as budget to actual, with subtotals marking checkpoints along the way.",
+      "Skip it when steps are not additive or have no meaningful order; use BarChart for plain comparison, and FunnelChart when each stage is a subset of the one before.",
+      "Pair it with ChartCard, waterfallLegend for increase, decrease and total keys, and WaterfallTable to list each step's change and running total as text.",
+    ],
+    faq: [
+      {
+        q: "How do I define steps in a waterfall chart?",
+        a: "Pass data as steps with label, value and kind. The kind start sets the opening total, delta (the default) adds its value, and subtotal or total draw the running total from zero. Steps go in order.",
+      },
+      {
+        q: "Is it readable without color?",
+        a: "Yes. Increases and decreases use the diverging pair, by default colors 7 and 8, and totals are neutral gray, but every step also carries a signed label such as +1.2K or -400 and bars grow in their own direction.",
+      },
+      {
+        q: "When does it switch to horizontal bars?",
+        a: "layout defaults to auto: below 480px, when the chart is crowded, or when a step name would not fit whole under its column, it turns into horizontal bars. Set vertical or horizontal to force one layout.",
+      },
+      {
+        q: "Can I hide the connectors or value labels?",
+        a: "Yes. showValues and showConnectors both default to true; set either to false. Arrow keys move between steps, Home and End jump to the ends, and each step reads its change and running total.",
+      },
+    ],
+  },
+
+  "/charts/world-map": {
+    when: [
+      "Use it as a world map chart for a choropleth of year-over-year user growth by country, where equal changes get equally strong colors and the area of every country stays true to scale.",
+      "It fits a bubble map of active users by city, placing bubbles at longitude and latitude, with area following the value and a size key under the map. It is a React map without a map library: the bundled outlines are drawn by the chart itself, so Leaflet or Mapbox are not needed.",
+      "It also suits localized dashboards: pass locale, such as de-DE, and it formats the numbers and names every country with Intl.DisplayNames in that language.",
+      "Skip it when you need sub-country detail such as states, streets or routes; the bundled outlines are countries only, so reach for a dedicated mapping tool.",
+      "Pair it with ChartCard for the legend and Chart / Table tabs, WorldMapTable for a text table, and onSelect to show a country's detail in a Drawer or Popover.",
+    ],
+    faq: [
+      {
+        q: "How do I make a choropleth map in React with SheenUI?",
+        a: "Pass data as id and value pairs, where id is any ISO 3166-1 code (alpha-2, alpha-3 or numeric). Use scale sequential, or diverging with a midpoint. A country with no value reads No data, hatched, never 0.",
+      },
+      {
+        q: "Is there a separate ChoroplethMap component?",
+        a: "No: WorldMap is the choropleth. Its default mode, choropleth, colors each country by its value, and mode bubble switches to sized circles. It covers a choropleth map for React with a legend, a hatched No data state, a table view and keyboard reading.",
+      },
+      {
+        q: "Does the map add a lot to my bundle?",
+        a: "The outlines come from Natural Earth, public domain, and load on demand in their own chunk of about 19 KB gzipped. Pass your own shapes to skip loading the bundled world. The projection is Equal Earth, which keeps country areas true to scale.",
+      },
+      {
+        q: "How do I handle skewed data?",
+        a: "scaleType takes linear, log or quantile for sequential scales: log when one market dwarfs the rest, quantile for equal-count classes. steps snaps colors to a number of classes, and domain sets the range yourself.",
+      },
+      {
+        q: "How do I zoom and navigate by keyboard?",
+        a: "zoomable is on by default, with buttons, Ctrl or Cmd plus scroll, pinch, double-click and plus or minus. Arrows move to the neighboring place, Page Down and Up step by rank, Home and End jump to highest or lowest value, typing a name jumps to it, and 0 resets.",
+      },
+    ],
+  },
+};

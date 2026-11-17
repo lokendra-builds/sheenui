@@ -1,0 +1,656 @@
+/*
+ * SheenUI glass engine.
+ *
+ * Levels:  .glass-1  chips, inputs        (tint + rim, no blur of its own: see the glass budget)
+ *          .glass-2  cards, popovers      (medium blur)
+ *          .glass-3  dialogs, nav bars    (strong blur, most opaque, deepest shadow)
+ *
+ * What makes it read as glass (not a translucent grey box):
+ *   - backdrop blur + saturation (+ a brightness tweak per style preset)
+ *   - a lit rim that CATCHES LIGHT: every glass surface owns an ::after rim layer that the
+ *     pointer light lights up (see motion/pointer-light.ts and the style presets)
+ *   - a soft inner glow and a specular gradient from the top-left, plus fine noise
+ *   - an elevation shadow that grows with the level
+ *
+ * The values here are the CONTRACT defaults. Each style preset (styles/presets/*.css) re-points
+ * them; components only ever read these names.
+ *
+ * Every level degrades gracefully:
+ *   - no backdrop-filter support        → solid surface
+ *   - reduced transparency (OS or [data-transparency="reduced"]) → solid surface, no rim light
+ *   - prefers-contrast: more            → solid surface, solid border
+ *   - forced-colors (Windows HC)        → system colors, no blur, no rim
+ *   - [data-glass="lite"]               → cheaper blur for slow devices
+ *
+ * Glass budget (at most 8 blurred surfaces in view): glass nested inside glass
+ * has NO backdrop-filter of its own. The outer surface is already a backdrop root, so a nested
+ * blur could only ever blur the outer surface's own tint: same look, one render pass less per
+ * frame. For the same reason glass-1 never blurs: it is the level of checkboxes, switches,
+ * avatars, chips and inputs, a dozen of which sit in one view (a docs stage measured 11-17
+ * blurred surfaces), and each one costs a full offscreen pass for a frost nobody can see on a
+ * 20 px square. Its denser tint, specular, noise and lit rim still read as glass.
+ *
+ * Rule of thumb: never fade or filter a WRAPPER of a glass element.
+ * An ancestor with opacity < 1, filter, mask, clip-path or mix-blend-mode becomes a
+ * "backdrop root" and the blur stops seeing the page behind it. Animate the glass element itself.
+ * Glass surfaces own their ::after (the rim). Use ::before (e.g. .glass-sheen) for anything else.
+ */
+
+/* Pointer light (written inline by motion/pointer-light.ts). Not inherited: a write restyles the
+   surface and its rim layer only, never the surface's subtree. The rim layer inherits them
+   explicitly. Rest values = ambient light from the top-left. */
+@property --sheen-mx {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 18%;
+}
+
+@property --sheen-my {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: -8%;
+}
+
+@property --sheen-ra {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -40deg;
+}
+
+@property --sheen-lit {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.42;
+}
+
+@property --sheen-flare {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+/* The card sheen (GlassCard, HoverCard: written inline on every pointer move over the card). Registered and
+   not inherited for the same reason as the pointer light: an unregistered custom property is inherited, so
+   each write restyled the card's WHOLE subtree (50-150 elements per move on a dashboard panel). The sheen
+   layer (.glass-sheen::before) inherits the two values explicitly. */
+@property --sheen-x {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+
+@property --sheen-y {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: -20%;
+}
+@layer sheen {
+  :root,
+  [data-theme] {
+    /* Dark glass is a smoked tint, not a white frost: over the bright violet blob peak a white
+     frost lifted the backdrop so far that status, accent and caption text on glass-1 fell to
+     ~3.3:1. The tint darkens bright spots and still lifts the flat near-black page a little. */
+    --sheen-glass-1-bg: light-dark(oklch(100% 0 0 / 0.5), oklch(22% 0.02 275 / 0.42));
+    --sheen-glass-2-bg: light-dark(oklch(100% 0 0 / 0.55), oklch(24% 0.02 275 / 0.5));
+    --sheen-glass-3-bg: light-dark(oklch(100% 0 0 / 0.72), oklch(20% 0.02 275 / 0.7));
+
+    /* Blur radius per level (lengths). Saturation and brightness are per theme / style.
+     glass-1-blur is kept for surfaces that opt into their own frost (LiquidGlass "clear"). */
+    --sheen-glass-1-blur: 12px;
+    --sheen-glass-2-blur: 20px;
+    --sheen-glass-3-blur: 32px;
+    --sheen-glass-saturate: 180%;
+    --sheen-glass-brightness: 1;
+    /* Fine noise on the glass (a bitmap tile set at runtime by <SheenBackdrop>; none until then). */
+    --sheen-glass-noise: none;
+    --sheen-glass-noise-size: 140px;
+
+    /* Rim lighting: light falls from the top-left. */
+    --sheen-glass-border: light-dark(oklch(100% 0 0 / 0.6), oklch(100% 0 0 / 0.1));
+    --sheen-glass-highlight: light-dark(oklch(100% 0 0 / 0.95), oklch(100% 0 0 / 0.16));
+    --sheen-glass-highlight-side: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.07));
+    --sheen-glass-lowlight: light-dark(oklch(100% 0 0 / 0.3), oklch(100% 0 0 / 0.03));
+    /* Hairline just outside the border, so light glass has an edge on a light page. */
+    --sheen-glass-edge: light-dark(oklch(35% 0.05 280 / 0.1), oklch(0% 0 0 / 0.35));
+    --sheen-glass-glow: light-dark(oklch(100% 0 0 / 0.45), oklch(100% 0 0 / 0.035));
+    --sheen-glass-specular: linear-gradient(
+      160deg,
+      light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.06)),
+      transparent 46%
+    );
+    /* Pointer-following sheen (.glass-sheen). */
+    --sheen-glass-sheen: light-dark(oklch(100% 0 0 / 0.75), oklch(100% 0 0 / 0.09));
+
+    /* light-dark() only accepts colours, so shadows are built from colour tokens. */
+    --sheen-shadow-near: light-dark(oklch(20% 0.03 275 / 0.07), oklch(0% 0 0 / 0.3));
+    --sheen-shadow-far: light-dark(oklch(25% 0.06 280 / 0.2), oklch(0% 0 0 / 0.55));
+    /* Coloured cast: light through tinted glass (presets give it the style's hue). */
+    --sheen-shadow-cast: transparent;
+    --sheen-glass-1-shadow: 0 1px 2px var(--sheen-shadow-near), 0 6px 16px -8px var(--sheen-shadow-far);
+    --sheen-glass-2-shadow: 0 1px 2px var(--sheen-shadow-near), 0 14px 38px -12px var(--sheen-shadow-far);
+    --sheen-glass-3-shadow: 0 2px 6px var(--sheen-shadow-near), 0 28px 64px -18px var(--sheen-shadow-far);
+    /* Kept for components that compose their own shadow. */
+    --sheen-glass-shadow: var(--sheen-glass-2-shadow);
+    --sheen-glass-rim:
+      inset 0 1px 0 0 var(--sheen-glass-highlight), inset 1px 0 0 0 var(--sheen-glass-highlight-side),
+      inset -1px -1px 0 0 var(--sheen-glass-lowlight), 0 0 0 1px var(--sheen-glass-edge);
+    /* The full box-shadow of each level (presets swap in their own stack). */
+    --sheen-glass-1-box: var(--sheen-glass-rim), inset 0 0 8px 0 var(--sheen-glass-glow), var(--sheen-glass-1-shadow);
+    --sheen-glass-2-box: var(--sheen-glass-rim), inset 0 0 16px 0 var(--sheen-glass-glow), var(--sheen-glass-2-shadow);
+    --sheen-glass-3-box: var(--sheen-glass-rim), inset 0 0 24px 0 var(--sheen-glass-glow), var(--sheen-glass-3-shadow);
+
+    /* ---- Rim light ("glass catches light"): drawn by each preset in .glass-*::after ---- */
+    --sheen-rim-width: 1.5px;
+    /* The hot spot nearest the light, the bright side, the base ring, the far (counter) side. */
+    --sheen-rim-core: oklch(100% 0 0);
+    --sheen-rim-hot: light-dark(oklch(100% 0 0 / 0.9), oklch(100% 0 0 / 0.6));
+    --sheen-rim-fall: light-dark(oklch(100% 0 0 / 0.6), oklch(100% 0 0 / 0.3));
+    --sheen-rim-base: light-dark(oklch(100% 0 0 / 0.3), oklch(100% 0 0 / 0.08));
+    --sheen-rim-counter: light-dark(oklch(25% 0.05 290 / 0.18), oklch(100% 0 0 / 0.05));
+    /* Prism tints either side of the bright arc. */
+    --sheen-rim-iri-a: light-dark(oklch(84% 0.12 215), oklch(84% 0.12 212 / 0.8));
+    --sheen-rim-iri-b: light-dark(oklch(80% 0.15 345), oklch(78% 0.17 348 / 0.8));
+    /* A soft light inside the glass under the pointer (behind the text). */
+    --sheen-glass-spot: light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.1));
+
+    --sheen-surface-solid: light-dark(var(--sheen-ink-0), var(--sheen-ink-800));
+  }
+
+  /* Dark glass saturates less: the dark blobs are already deep, and over-saturating them
+   pulls text contrast down. Set per theme (not light-dark) because it is not a colour. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sheen-glass-saturate: 140%;
+    }
+  }
+
+  [data-theme="light"] {
+    --sheen-glass-saturate: 180%;
+  }
+
+  [data-theme="dark"] {
+    --sheen-glass-saturate: 140%;
+  }
+}
+
+@layer components {
+  .glass-1,
+  .glass-2,
+  .glass-3 {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid var(--sheen-glass-border);
+    background-image: var(--sheen-glass-specular), var(--sheen-glass-noise);
+    background-size:
+      100% 100%,
+      var(--sheen-glass-noise-size);
+    color: var(--sheen-fg);
+  }
+
+  /* No backdrop-filter (glass budget, see the header): the tint carries the frost. */
+  .glass-1 {
+    background-color: var(--sheen-glass-1-bg);
+    box-shadow: var(--sheen-glass-1-box);
+  }
+
+  /* The -webkit- lines use literal values: older Safari ignores var() inside the prefixed property. */
+  .glass-2 {
+    background-color: var(--sheen-glass-2-bg);
+    box-shadow: var(--sheen-glass-2-box);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    backdrop-filter: blur(var(--sheen-glass-2-blur)) saturate(var(--sheen-glass-saturate))
+      brightness(var(--sheen-glass-brightness));
+  }
+
+  .glass-3 {
+    background-color: var(--sheen-glass-3-bg);
+    box-shadow: var(--sheen-glass-3-box);
+    -webkit-backdrop-filter: blur(32px) saturate(170%);
+    backdrop-filter: blur(var(--sheen-glass-3-blur)) saturate(var(--sheen-glass-saturate))
+      brightness(var(--sheen-glass-brightness));
+  }
+
+  /*
+   * The rim layer: a ring inside the surface's edge, painted ONLY in its own border stroke
+   * (background-clip: border-area, no mask, so no offscreen pass), plus a soft inner light
+   * (padding-box) behind the content. Each style preset paints it (presets/*.css), reading the
+   * pointer light: --sheen-mx / --sheen-my / --sheen-ra / --sheen-lit / --sheen-flare.
+   * inset: 0 (the padding box) so overflow: hidden surfaces keep their rim.
+   */
+  .glass-1::after,
+  .glass-2::after,
+  .glass-3::after {
+    --sheen-mx: inherit;
+    --sheen-my: inherit;
+    --sheen-ra: inherit;
+    --sheen-lit: inherit;
+    --sheen-flare: inherit;
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: var(--sheen-rim-width) solid transparent;
+    border-radius: inherit;
+    pointer-events: none;
+    background-origin: border-box;
+  }
+
+  /* Specular sheen that follows the pointer (set --sheen-x / --sheen-y from JS). */
+  .glass-sheen::before {
+    --sheen-x: inherit;
+    --sheen-y: inherit;
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      420px circle at var(--sheen-x, 50%) var(--sheen-y, -20%),
+      var(--sheen-glass-sheen),
+      transparent 60%
+    );
+    opacity: var(--sheen-glow, 0.7);
+    transition: opacity var(--sheen-duration-base) var(--sheen-ease-out);
+  }
+
+  /* A card that carries its own moving light layer (GlassCard) doesn't paint the pointer-written gradient. */
+  .glass-sheen:has(> [data-slot="glass-card-sheen"])::before {
+    content: none;
+  }
+
+  /* Accent-tinted variant for primary surfaces. */
+  .glass-tint {
+    background-image:
+      var(--sheen-glass-specular),
+      linear-gradient(
+        135deg,
+        color-mix(in oklab, var(--sheen-spectrum-1, var(--sheen-violet-500)) 18%, transparent),
+        color-mix(in oklab, var(--sheen-spectrum-5, var(--sheen-teal-500)) 12%, transparent)
+      );
+    background-size: 100% 100%;
+  }
+}
+@layer sheen {
+  /* A surface the pointer is lighting: its rim layer gets its own compositor layer, so moving the
+   light repaints only the rim, never the surface's text, noise and shadows. */
+  [data-sheen-lit]::after {
+    will-change: transform;
+  }
+
+  /* Browsers without background-clip: border-area (Firefox) cannot paint the moving rim. They get a static one instead:
+   a hairline of the lit top and left edges and a faint lowlight, from the same tokens (no pointer light, no animation).
+   The presets paint the rim unlayered, so this repeats :root to out-rank them without !important. */
+  @supports not (background-clip: border-area) {
+    :root:root:root:root :is(.glass-1, .glass-2, .glass-3)::after {
+      background: none;
+      opacity: 1;
+      box-shadow:
+        inset 0 1px 0 var(--sheen-glass-highlight),
+        inset 1px 0 0 var(--sheen-glass-highlight-side),
+        inset 0 -1px 0 var(--sheen-glass-lowlight);
+    }
+  }
+
+  /* ---------- Lite mode: cheaper blur for low-end devices ---------- */
+  [data-glass="lite"] .glass-2,
+  [data-glass="lite"] .glass-3 {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px) saturate(var(--sheen-glass-saturate));
+  }
+
+  /* ---------- Glass budget: nested glass draws no blur of its own (see the header) ---------- */
+  :is(.glass-1, .glass-2, .glass-3) :is(.glass-1, .glass-2, .glass-3) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* Glass budget with a modal open: a dialog (the command palette included) sits over a dimmed page, so the page's
+   own surfaces stop blurring while it is open (the dialog is the one new blur). Blurring them again behind the
+   scrim took /blocks/pricing to 10 surfaces with the search open.
+   `data-modal-open` is set on <html> by DialogContent for as long as its popup is in the DOM (lib/modal-flag.ts).
+   Written as `:root:has([data-slot="dialog-content"])` this rule made the browser re-check the whole document on
+   every insertion while a dialog opened or closed (six to nine times per open at 4x CPU). */
+  :root[data-modal-open]
+    :is(.glass-2, .glass-3):not(
+      [data-slot="dialog-content"],
+      [data-slot="dialog-content"] *,
+      [data-slot="command-palette"],
+      [data-slot="command-palette"] *
+    ) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* Visually hidden glass (a skip link before it is focused) has nothing to blur. */
+  :is(.glass-1, .glass-2, .glass-3).sr-only {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* ---------- No backdrop-filter support at all ---------- */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-1,
+    .glass-2,
+    .glass-3 {
+      background-color: var(--sheen-surface-solid);
+    }
+  }
+
+  /* ---------- Reduced transparency: OS setting (Chromium) or in-app toggle (all browsers) ---------- */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-1,
+    .glass-2,
+    .glass-3 {
+      background-color: var(--sheen-surface-solid);
+      background-image: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    .glass-1::after,
+    .glass-2::after,
+    .glass-3::after {
+      display: none;
+    }
+  }
+
+  [data-transparency="reduced"] .glass-1,
+  [data-transparency="reduced"] .glass-2,
+  [data-transparency="reduced"] .glass-3 {
+    background-color: var(--sheen-surface-solid);
+    background-image: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  [data-transparency="reduced"] :is(.glass-1, .glass-2, .glass-3)::after {
+    display: none;
+  }
+
+  /* ---------- More contrast ---------- */
+  @media (prefers-contrast: more) {
+    .glass-1,
+    .glass-2,
+    .glass-3 {
+      background-color: var(--sheen-surface-solid);
+      background-image: none;
+      border-color: var(--sheen-fg);
+    }
+
+    .glass-1::after,
+    .glass-2::after,
+    .glass-3::after {
+      display: none;
+    }
+  }
+}
+
+/*
+ * ---------- Windows high contrast / forced colors ----------
+ * The browser drops box-shadows and gradient backgrounds here, so anything that relied
+ * on them needs a system-colour equivalent:
+ *   - glass       → Canvas surface with a CanvasText border
+ *   - focus rings → a real 2px Highlight outline (box-shadow rings vanish)
+ *   - filled controls (accent-fill gradient) → Highlight / HighlightText.
+ *     Opt in with the .sheen-fill class on any element whose fill is always on
+ *     (solid button, solid badge, slider range, progress bar, active indicator).
+ *     An unconditional `[background-image:var(--sheen-accent-fill)]` utility class or an
+ *     inline style that mentions sheen-accent-fill is picked up automatically.
+ *     For fills that depend on state (checked switch, checked checkbox), use Tailwind's
+ *     forced-colors: variant on that state instead.
+ */
+@media (forced-colors: active) {
+  .glass-1,
+  .glass-2,
+  .glass-3 {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass-1::after,
+  .glass-2::after,
+  .glass-3::after,
+  .glass-sheen::before {
+    display: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
+  }
+
+  .sheen-fill,
+  [class~="[background-image:var(--sheen-accent-fill)]"],
+  [class~="bg-(image:--sheen-accent-fill)"],
+  [style*="sheen-accent-fill"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+    /* forced-color-adjust: none would otherwise keep the decorative glow. */
+    box-shadow: none;
+    text-shadow: none;
+  }
+
+  /* Children follow the fill's system colours (icons use currentColor; decorative shine goes). */
+  .sheen-fill :where(*),
+  [class~="[background-image:var(--sheen-accent-fill)]"] :where(*),
+  [class~="bg-(image:--sheen-accent-fill)"] :where(*),
+  [style*="sheen-accent-fill"] :where(*) {
+    color: inherit;
+    background: none;
+  }
+
+  .sheen-fill:is(:disabled, [aria-disabled="true"], [data-disabled]),
+  [class~="[background-image:var(--sheen-accent-fill)]"]:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    background: Canvas;
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
+
+@layer sheen {
+  /* =====================================================================
+ * Micro-interaction layer: the sweep layer's structure (behaviour and keyframes: motion.css).
+ * One child span inside a glass surface (GlassCard, DialogContent): a clipped box with a band of
+ * light in it. No backdrop-filter, so it adds no glass surface to the budget. It sits at z -10,
+ * like the card's pointer light: over the glass fill, under the content.
+ * ===================================================================== */
+  .sheen-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    overflow: clip;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .sheen-sweep > i {
+    position: absolute;
+    inset-block: -10%;
+    left: 0;
+    width: 42%;
+    opacity: 0;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      color-mix(in oklab, var(--sheen-glass-sheen) 100%, transparent) 50%,
+      transparent
+    );
+  }
+  /* Right-to-left: the band travels from the inline start. */
+  .sheen-sweep:dir(rtl) {
+    scale: -1 1;
+  }
+  @media (forced-colors: active) {
+    .sheen-sweep {
+      display: none;
+    }
+  }
+}
+
+/* =====================================================================
+ * State light: light is a material tied to state.
+ * A glass surface (or a control) that carries data-state="idle|working|success|warning|error" holds ONE child layer,
+ * <span data-slot="state-light" aria-hidden /> (see lib/state-light.tsx), that draws three lights from the glow tokens:
+ *   - an aura: a soft glow just outside the edge (outer box-shadow),
+ *   - a light pool: a wash rising from the bottom of the surface (radial gradient),
+ *   - a lit edge: an inner rim tint plus a faint inner glow (inset box-shadow).
+ * The layer is a child, never a wrapper around glass, and it has no backdrop-filter and no animated blur: the shadows are
+ * painted once and only opacity changes (transform/opacity gate). Colours: --sheen-accent-glow (working),
+ * --sheen-success-glow, --sheen-warning-glow, --sheen-danger-glow (error). Tune per surface with
+ * --sl-aura / --sl-pool / --sl-edge (0 to 1, each light's weight) and --sl-strength (0 to 1, the whole layer).
+ * The host needs a stacking context (`isolate`, or any glass class) so the layer sits above its fill and below its content.
+ * ===================================================================== */
+@layer components {
+  [data-slot="state-light"] {
+    --sl-c: transparent;
+    /* The outer light, a little quieter than the rim so a caption written beside the surface keeps 4.5:1 (more so on light). */
+    --sl-ac: light-dark(
+      color-mix(in oklab, var(--sl-c) 24%, transparent),
+      color-mix(in oklab, var(--sl-c) 72%, transparent)
+    );
+    position: absolute;
+    inset: 0;
+    z-index: -20;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    /* The light pool floods up from the bottom (strong low, thinning towards the top) over a faint all-over wash. */
+    background-image:
+      radial-gradient(
+        130% 100% at 50% 118%,
+        color-mix(in oklab, var(--sl-c) calc(var(--sl-pool, 1) * 100%), transparent),
+        color-mix(in oklab, var(--sl-c) calc(var(--sl-pool, 1) * 45%), transparent) 45%,
+        transparent 82%
+      ),
+      radial-gradient(
+        90% 70% at 50% 100%,
+        color-mix(in oklab, var(--sl-c) calc(var(--sl-pool, 1) * 70%), transparent),
+        transparent
+      ),
+      linear-gradient(color-mix(in oklab, var(--sl-c) calc(var(--sl-pool, 1) * 28%), transparent), transparent);
+    box-shadow:
+      inset 0 0 0 1.5px color-mix(in oklab, var(--sl-c) calc(var(--sl-edge, 1) * 100%), transparent),
+      inset 0 0 0 1px color-mix(in oklab, white calc(var(--sl-edge, 1) * 18%), transparent),
+      inset 0 0 30px -4px color-mix(in oklab, var(--sl-c) calc(var(--sl-edge, 1) * 100%), transparent),
+      inset 0 0 12px -2px color-mix(in oklab, var(--sl-c) calc(var(--sl-edge, 1) * 100%), transparent),
+      inset 0 -14px 24px -12px color-mix(in oklab, var(--sl-c) calc(var(--sl-edge, 1) * 100%), transparent),
+      0 0 12px 1px color-mix(in oklab, var(--sl-ac) calc(var(--sl-aura, 1) * 100%), transparent),
+      0 0 22px 2px color-mix(in oklab, var(--sl-ac) calc(var(--sl-aura, 1) * 100%), transparent),
+      0 0 38px 2px color-mix(in oklab, var(--sl-ac) calc(var(--sl-aura, 1) * 55%), transparent),
+      0 14px 30px -10px color-mix(in oklab, var(--sl-ac) calc(var(--sl-aura, 1) * 70%), transparent);
+    transition: opacity var(--sheen-duration-slow) var(--sheen-ease-out);
+  }
+  [data-state="working"] > [data-slot="state-light"] {
+    --sl-c: var(--sheen-accent-glow);
+    opacity: var(--sl-strength, 1);
+  }
+  [data-state="success"] > [data-slot="state-light"] {
+    --sl-c: var(--sheen-success-glow);
+    opacity: var(--sl-strength, 1);
+  }
+  [data-state="warning"] > [data-slot="state-light"] {
+    --sl-c: var(--sheen-warning-glow);
+    opacity: var(--sl-strength, 1);
+  }
+  [data-state="error"] > [data-slot="state-light"] {
+    --sl-c: var(--sheen-danger-glow);
+    opacity: var(--sl-strength, 1);
+  }
+  /* A calm accent light that is not a status (a checked switch, an open dialog): data-state="on". */
+  [data-state="on"] > [data-slot="state-light"] {
+    --sl-c: var(--sheen-accent-glow);
+    opacity: var(--sl-strength, 1);
+  }
+  @keyframes sheen-state-breathe {
+    from {
+      opacity: calc(var(--sl-strength, 1) * 0.55);
+    }
+    to {
+      opacity: var(--sl-strength, 1);
+    }
+  }
+  @keyframes sheen-state-flash {
+    from {
+      opacity: 0;
+    }
+    35% {
+      opacity: 1;
+    }
+    to {
+      opacity: var(--sl-strength, 1);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) [data-state="working"] > [data-slot="state-light"] {
+      animation: sheen-state-breathe calc(var(--sheen-duration-slower) * 2) var(--sheen-ease-out) infinite alternate;
+    }
+    :root:not([data-motion="reduced"]) :is([data-state="success"], [data-state="error"]) > [data-slot="state-light"] {
+      animation: sheen-state-flash var(--sheen-duration-slower) var(--sheen-ease-out) 1;
+    }
+  }
+  /* Reduced motion: the light changes at once, nothing breathes or flashes. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="state-light"] {
+      transition: none;
+      animation: none !important;
+    }
+  }
+  [data-motion="reduced"] [data-slot="state-light"] {
+    transition: none;
+    animation: none !important;
+  }
+  /* Reduced transparency and forced colours: the light is off (the state is always written as text or an icon too). */
+  @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+    [data-slot="state-light"] {
+      display: none;
+    }
+  }
+  [data-transparency="reduced"] [data-slot="state-light"] {
+    display: none;
+  }
+}
+
+/*
+ * .sheen-hit: an invisible hit area of at least 44 x 44 px on touch screens (WCAG 2.5.5 / 2.5.8).
+ * The element keeps its look; an absolutely centred pseudo-element grows only the area that takes taps.
+ * Use `.sheen-hit` (::after) by default, `.sheen-hit-before` where ::after is taken (glass rims), and a real
+ * `<span aria-hidden class="sheen-hit-area">` child where both pseudo-elements are taken. Fine pointers: no effect.
+ * Size comes from --sheen-hit-size (set on coarse pointers in tokens.css); override it per element if needed.
+ */
+@layer components {
+  .sheen-hit,
+  .sheen-hit-before {
+    position: relative;
+  }
+  .sheen-hit-area {
+    display: none;
+  }
+}
+
+@media (any-pointer: coarse) {
+  @layer components {
+    .sheen-hit::after,
+    .sheen-hit-before::before,
+    .sheen-hit-area {
+      content: "";
+      position: absolute;
+      /*
+       * Centre by hand, logical sides, RTL included. `inset: 0; margin: auto` does not centre a box wider than its host in
+       * the inline axis (negative free space makes the start margin 0, so a 44 px area sat 24 px off a 20 px control).
+       */
+      inset-inline-start: calc(50% - max(100%, var(--sheen-hit-size, 2.75rem)) / 2);
+      inset-block-start: calc(50% - max(100%, var(--sheen-hit-size, 2.75rem)) / 2);
+      inline-size: max(100%, var(--sheen-hit-size, 2.75rem));
+      block-size: max(100%, var(--sheen-hit-size, 2.75rem));
+    }
+    .sheen-hit-area {
+      display: block;
+    }
+  }
+}

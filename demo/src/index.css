@@ -1,0 +1,5132 @@
+/* Cascade layers, lowest to highest. Tailwind's four come first (theme tokens, preflight, component defaults, utilities);
+   then the library's hand-written rules (`sheen`, theme/src/styles) and this file's (`pages`), which beat the utilities as the
+   unlayered rules always did but now lose to nothing by specificity: a page rule overrides a library rule because its
+   layer is later, not because it repeats a class. `stage` (the showcase stage's own sheets) comes last: it was always meant
+   to out-rank the page rules, which `html:root .x.x` selectors in those files faked and its layer now guarantees. `reduced-motion` holds only !important declarations: for those an
+   EARLIER layer wins, so it sits before `sheen` and outranks the library's global reduced-motion rule. */
+@layer theme, base, components, reduced-motion, utilities, sheen, pages, stage;
+@import "tailwindcss" source(none);
+@import "@sheenui/theme/styles.css";
+/* The showcase stage's and the stories' own styles. They are imported HERE, not from their components: the build has one
+   stylesheet (scripts/prerender.mjs splits it per route class by what each route can use), and a stylesheet imported from a
+   lazy component is never linked into a page (the build now fails on one: see "stylesheet imported by a chunk" in
+   scripts/prerender.mjs). */
+@import "./layout/ShowcaseStage.css" layer(stage);
+@import "./layout/ShowcaseStage.chart.css" layer(stage);
+@import "./layout/ChartStage.legend.css" layer(stage);
+@import "./layout/ShowcaseStage.blocks.css" layer(stage);
+@import "./layout/ShowcaseStage.polish.css" layer(stage);
+@import "./layout/ShowcaseStage.glass.css" layer(stage);
+@import "./layout/ShowcaseStage.light.css" layer(stage);
+@import "./layout/ShowcaseStage.look.css" layer(stage);
+@import "./pages/Home.light.css" layer(stage);
+@import "./layout/HubPreview.center.css" layer(stage);
+@import "./pages/StoriesPage/stories.css" layer(pages);
+@import "./pages/Foundations.board.css" layer(pages);
+@import "./pages/ChartsPage/gallery.css" layer(pages);
+
+/* Tailwind must scan the theme's source for class names. */
+@source "../../theme/src";
+/* Only the app's own sources are scanned (source(none) above): by default Tailwind reads every non-ignored file under
+   demo/, which pulled stray words from the e2e specs, scripts and Markdown into the one stylesheet every route loads. */
+@source "./";
+@source "../index.html";
+
+/* Liquid's fonts (Inter, Inter Tight) and the code font, self-hosted: Latin and Latin Extended only (the docs are English; other
+   scripts fall back to the system font). `font-display: swap` so a first visit always shows the brand fonts; the swap moves
+   nothing because the metric-matched "Inter Fallback" / "Inter Tight Fallback" faces (theme presets/liquid.css, size-adjust +
+   ascent/descent overrides) take the same space until the file arrives. The prerender preloads the two Latin faces. */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Tight Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter Tight Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url("../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url("../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Aurora's fonts (Geist, Geist Mono, Instrument Serif), self-hosted: Latin and Latin Extended woff2 only (no legacy .woff, no Cyrillic/Vietnamese;
+   the docs are English). A face is only downloaded once text uses its range. */
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Geist Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-ext-400-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@layer pages {
+  /* =====================================================================
+ * Home hero (pages/HomePage.tsx): the WOW composition of the active style preset.
+ *
+ * Glass rule: nothing here fades, filters, masks or clips a WRAPPER of a glass piece. Entrance
+ * opacity is each glass element's own; parallax and the scroll hand-off are transforms on
+ * wrappers; every light is a sibling UNDER the glass. Everything is built from theme tokens, so
+ * the style preset (html[data-sheen-style]) recolours it; a few rules branch on [data-style].
+ *
+ * Loops (the waveform, the beam) run only when motion is welcome and pause while the hero is
+ * off-screen ([data-offscreen], set by an IntersectionObserver).
+ * ===================================================================== */
+
+  .home-hero {
+    position: relative;
+    isolation: isolate;
+    /* The light layers (rays, glow) fade out softly on their own (masks), so the clip box sits far
+     outside them: it only stops stray overflow and never leaves a straight seam. */
+    overflow: clip;
+    overflow-clip-margin: 20rem;
+  }
+  /* A non-zero clip margin still counts as scrollable overflow in Chromium: on phones it widens the layout
+   viewport (innerWidth 423 at a 390 screen) so the page pans sideways. Below the desktop breakpoint, and on
+   touch screens, the clip box is the hero's own box. */
+  @media (max-width: 64rem), (pointer: coarse) {
+    .home-hero {
+      overflow-clip-margin: 0px;
+    }
+  }
+
+  /* The decoration (glass pieces, glows, rays, floor) holds its first frame until Motion's timeline
+   starts. The text is NOT held: it is visible in the prerendered HTML and enters
+   with the CSS animations below, which start at first paint (an LCP element at
+   opacity 0 until JavaScript runs cost 5.5 s on a phone). */
+  /* (only with JavaScript: without it nothing would ever release the hold) */
+  :root[data-js]
+    .home-hero[data-intro-state="pending"]
+    :is([data-intro="card"], [data-intro="glow"], [data-intro="rays"], [data-intro="floor"]) {
+    opacity: 0;
+  }
+  :root[data-js] .home-hero[data-intro-state="pending"] [data-intro-rise] {
+    transform: translateY(10px);
+  }
+
+  /* ---------- Text entrance: CSS, from first paint, no script involved ----------
+   The same choreography the Motion timeline used to run (badge, headline words condensing out
+   of an 8px blur 45 ms apart, the accent wiped in, lede, CTAs, proof, the built-with row), now
+   on animations that the browser starts with the first frame. Nothing here is a wrapper of
+   glass. `backwards` holds each part on its first frame during its delay; afterwards the
+   element simply has its normal style, so nothing is left behind.
+   --home-t scales time: a same-session replay (data-replay, set by HomePage) runs 1.8x faster
+   and without the blur. */
+  .home-hero {
+    --home-t: 1;
+    --home-ease: var(--sheen-ease-out);
+  }
+  .home-hero[data-replay] {
+    --home-t: 0.5556;
+  }
+
+  /* Every intro animation below needs data-js on <html> (set by the first script in index.html, before first
+   paint). Without JavaScript the static HTML shows the whole hero at once: no part starts at opacity 0. */
+  @media (prefers-reduced-motion: no-preference) {
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro="badge"] {
+      animation: home-in-down calc(var(--sheen-duration-slower) * var(--home-t)) var(--home-ease) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-split="word"] {
+      animation: home-in-word calc((var(--sheen-duration-slower) + var(--sheen-duration-base)) * var(--home-t))
+        var(--home-ease) calc((0.04s + var(--i, 0) * 0.06s) * var(--home-t)) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero[data-replay] [data-split="word"] {
+      animation-name: home-in-word-calm;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro-wipe] {
+      animation: home-in-wipe calc(var(--sheen-duration-slower) * var(--home-t)) var(--home-ease)
+        calc(0.34s * var(--home-t)) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro="lead"] {
+      /* Follows the headline words (the headline leads, the lede follows) by TRANSFORM timing only: it is
+       painted at full opacity from the first frame, because it is the page's LCP element (an opacity 0 start,
+       or a delay on an opacity animation, moved LCP from 1.2 s to 5.6 s under load). */
+      animation: home-in-rise calc(var(--sheen-duration-slower) * var(--home-t)) var(--home-ease)
+        calc(0.44s * var(--home-t)) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro="cta"] {
+      animation: home-in-pop calc(var(--sheen-duration-slower) * var(--home-t)) var(--home-ease)
+        calc((0.56s + var(--i, 0) * 0.06s) * var(--home-t)) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro="stats"] {
+      animation: home-in-up calc(var(--sheen-duration-slower) * var(--home-t)) var(--home-ease)
+        calc(0.7s * var(--home-t)) backwards;
+    }
+    :root[data-js]:not([data-motion="reduced"]) .home-hero [data-intro="row"] {
+      animation: home-in-fade calc(var(--sheen-duration-slower) * var(--home-t)) var(--sheen-ease-out)
+        calc(0.92s * var(--home-t)) backwards;
+    }
+  }
+
+  /* Reduced motion (OS or the in-app toggle): one 220 ms fade, no movement, blur or wipe. The
+   global reduced-motion rule shortens every animation to 1 ms with !important, so the fade
+   restates its duration and delay the same way; the animation name needs no !important (the global rule never sets it). */
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-js]
+      .home-hero
+      :is(
+        [data-intro="badge"],
+        [data-split="word"],
+        [data-intro-wipe],
+        [data-intro="cta"],
+        [data-intro="stats"],
+        [data-intro="row"]
+      ) {
+      animation: home-in-fade var(--sheen-duration-fast) var(--sheen-ease-out) backwards;
+    }
+    /* The lede (the LCP element) is never faded in: it is simply there. */
+    :root[data-js] .home-hero [data-intro="lead"] {
+      animation: none;
+    }
+  }
+  :root[data-js][data-motion="reduced"]
+    .home-hero
+    :is(
+      [data-intro="badge"],
+      [data-split="word"],
+      [data-intro-wipe],
+      [data-intro="cta"],
+      [data-intro="stats"],
+      [data-intro="row"]
+    ) {
+    animation: home-in-fade var(--sheen-duration-fast) var(--sheen-ease-out) backwards;
+  }
+  :root[data-js][data-motion="reduced"] .home-hero [data-intro="lead"] {
+    animation: none;
+  }
+}
+
+/* The two timing declarations of the reduced-motion fade above. The library's global reduced-motion rule (layer `sheen`,
+   theme motion.css) sets `animation-duration: 1ms !important`; for !important declarations an EARLIER layer wins, so the
+   fade's restatement lives in a layer ordered before `sheen` (see the layer statement at the top) and needs no
+   specificity trick to win. */
+@layer reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-js]
+      .home-hero
+      :is(
+        [data-intro="badge"],
+        [data-split="word"],
+        [data-intro-wipe],
+        [data-intro="cta"],
+        [data-intro="stats"],
+        [data-intro="row"]
+      ) {
+      animation-duration: var(--sheen-duration-fast) !important;
+      animation-delay: 0s !important;
+    }
+  }
+  :root[data-js][data-motion="reduced"]
+    .home-hero
+    :is(
+      [data-intro="badge"],
+      [data-split="word"],
+      [data-intro-wipe],
+      [data-intro="cta"],
+      [data-intro="stats"],
+      [data-intro="row"]
+    ) {
+    animation-duration: var(--sheen-duration-fast) !important;
+    animation-delay: 0s !important;
+  }
+}
+
+@keyframes home-in-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes home-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+/* The lede is the largest text above the fold, so it is the page's LCP: it rises but never fades,
+   so it counts as painted from the very first frame. */
+@keyframes home-in-rise {
+  from {
+    transform: translateY(8px);
+  }
+}
+@keyframes home-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes home-in-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.94);
+  }
+}
+/* A masked rise: the word climbs out from under its own line (.home-mask clips it). Transform only. */
+@keyframes home-in-word {
+  from {
+    transform: translateY(115%);
+  }
+}
+@keyframes home-in-word-calm {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+}
+@keyframes home-in-wipe {
+  from {
+    clip-path: inset(-25% 100% -25% -12%);
+  }
+  to {
+    clip-path: inset(-25% -12% -25% -12%);
+  }
+}
+
+@layer pages {
+  .home-hero__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 80rem) {
+    .home-hero__grid {
+      /* The copy column is a touch wider so the accent phrase holds one line. */
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+      gap: clamp(1.5rem, 4vw, 4rem);
+      min-height: calc(100dvh - 12rem);
+    }
+  }
+
+  /* ---------- Copy ---------- */
+  .home-copy {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Touch: the pill itself is 44px tall (an invisible hit area was clipped above the pill in WebKit / Aurora). */
+  @media (any-pointer: coarse) {
+    .home-eyebrow {
+      min-height: 2.75rem;
+    }
+  }
+  .home-eyebrow {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+    padding-block: 0.3125rem;
+    padding-inline: 0.3125rem 0.875rem;
+    border: 1px solid var(--sheen-accent-border);
+    border-radius: 999px;
+    background-color: var(--sheen-accent-soft);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--sheen-fg);
+    text-decoration: none;
+  }
+  .home-eyebrow__tag {
+    flex-shrink: 0;
+    padding: 0.1875rem 0.5625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--sheen-accent-fg);
+    background-image: var(--sheen-accent-fill);
+    box-shadow:
+      inset 0 1px 0 oklch(100% 0 0 / 0.35),
+      0 0 16px -2px var(--sheen-accent-glow);
+  }
+
+  .home-h1 {
+    /* The H1 carries the keyword ("Glassmorphism React components that catch light."): smaller than the old
+     three-word line, and the lines may wrap inside the column. */
+    font-size: clamp(2.25rem, 1.5rem + 2.9vw, 3.75rem);
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+  .home-line {
+    display: inline;
+  }
+  /* The narrowest phones: a line may break rather than overflow the column. */
+  @media (max-width: 23.9rem) {
+    .home-line {
+      white-space: normal;
+    }
+    .home-h1 {
+      font-size: 2.5rem;
+    }
+  }
+  .home-mask {
+    display: inline-block;
+    max-width: 100%;
+    overflow: clip;
+    padding-block: 0.12em;
+    margin-block: -0.12em;
+    vertical-align: bottom;
+  }
+  .home-word {
+    display: inline-block;
+    max-width: 100%;
+    /* WCAG 1.4.12 / 1.4.10: with user text-spacing a long word breaks instead of being clipped or widening the page. */
+    overflow-wrap: anywhere;
+  }
+  /* The accent word is wiped in as one box (clip-path), so its gradient stays continuous. */
+  .home-h1 .sheen-accent-text {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+
+  .home-copy::before {
+    /* A soft page-coloured pool behind the copy (no blur): a bright ribbon passing behind the paragraph never takes it below AA. */
+    content: "";
+    position: absolute;
+    inset: -2rem -3rem -1rem -3rem;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 72% 64% at 42% 50%,
+      color-mix(in oklab, var(--sheen-bg) 90%, transparent) 55%,
+      transparent 100%
+    );
+  }
+  .home-lede {
+    max-width: 36rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--sheen-fg-muted);
+    text-wrap: pretty;
+  }
+
+  .home-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  /* Magnetic CTAs: a transform-only wrapper around each hero button. Rendered
+   only with a fine pointer and motion on (useMotionGate), so touch and reduced motion get the
+   plain buttons. */
+  .home-magnet {
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  .home-proof {
+    /* Two balanced rows of two (never a lone pill on a second row), aligned in columns. */
+    display: grid;
+    /* minmax(0, max-content): a column may shrink below its text (WCAG 1.4.12 spacing at 320px) and the pill then wraps. */
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    justify-content: start;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--sheen-fg-muted);
+  }
+  .home-proof li {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    gap: 0.5rem;
+    /* A soft page-coloured scrim (no blur) so a ribbon passing behind never drops the text under AA. */
+    padding: 0.125rem 0.625rem 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-bg) 92%, transparent);
+  }
+  .home-proof li::before {
+    content: "";
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background-image: var(--sheen-accent-fill);
+    box-shadow: 0 0 8px var(--sheen-accent-glow);
+  }
+
+  /* ---------- Hand-off on the first scroll ----------
+   As the hero leaves through the top of the viewport the copy drifts up 64px and the composition
+   sinks back 56px. A view timeline on the hero (exit range: hero top at the viewport top -> hero
+   bottom at the viewport top) drives both on the compositor: no scroll listener, no per-frame
+   style writes. Translate only: a scroll-linked scale re-rasterises the glass cards every
+   frame. Browsers without scroll-driven animations simply get no hand-off; reduced motion none. */
+  .home-hero {
+    view-timeline: --sheen-hero block;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      :root:not([data-motion="reduced"]) .home-copy {
+        animation: home-copy-up linear both;
+        animation-timeline: --sheen-hero;
+        animation-range: exit 0% exit 100%;
+      }
+    }
+  }
+}
+
+@keyframes home-copy-up {
+  to {
+    transform: translateY(-64px);
+  }
+}
+
+@layer pages {
+  /* ---------- The constellation ---------- */
+  .home-comp-track {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 40rem;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  @media (min-width: 80rem) {
+    .home-comp-track {
+      justify-self: end;
+    }
+  }
+
+  /* The login stage mounts a moment after the first paint: this placeholder holds its box (the Lamp / Simple row plus the
+   stage, measured on the dev server: see the heights below), so nothing shifts. It already looks like the dark stage. */
+  .home-comp-ph {
+    min-height: 46.875rem; /* 44 px bar + 12 px gap + the 694 px lamp stage (710 px from 48rem: the lamp text wraps less) */
+    border-radius: var(--sheen-radius-xl, 1.5rem);
+    /* The same soft dark pool the lamp stage sits in (no hard box), so the swap to the real stage moves no edge. */
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--sheen-ink-950) 90%, transparent) 76%,
+      transparent 100%
+    );
+  }
+  /* The stage bar: the Lamp / Simple switch and Replay. */
+  .home-stage-bar {
+    display: flex;
+    min-height: 2.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .home-stage {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 43.375rem; /* the lamp story's height: Simple (shorter) centres in the same box, so the switch moves nothing */
+    align-items: center;
+    justify-content: center;
+  }
+  @media (min-width: 48rem) {
+    .home-comp-ph {
+      min-height: 47.875rem;
+    }
+    .home-stage {
+      min-height: 44.375rem;
+    }
+  }
+  .home-stage > [data-slot="lamp-login"] {
+    align-self: stretch;
+    /* No black box: the block's own page colour and clip are dropped, and a soft dark pool (feathered on every side)
+     stands behind the lamp and the card, so the cone has something dark to light in every theme and the stage
+     melts into the sky instead of sitting on it. */
+    background: transparent;
+    /* Visible up and down (the pool feathers below the box), clipped sideways like the block's own clip was: the
+     beam and the pool reaching past the page gutter widen the scrollable area at 1440 px. */
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+  .home-stage > [data-slot="lamp-login"]::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 -3rem;
+    z-index: -20;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--sheen-ink-950) 92%, transparent) 76%,
+      transparent 100%
+    );
+  }
+  /* Lit: the caption would sit on the cone, so it leaves the picture (it stays for screen readers: it describes the cord). */
+  .home-stage > [data-slot="lamp-login"][data-lit="on"] > p {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* "Pause motion" holds the lamp's own animations too. */
+  [data-paused] .home-stage * {
+    animation-play-state: paused !important;
+  }
+  /* The heading block swaps its words when the story signs in: a full-width box keeps its edges (centred text), so the swap moves nothing. */
+  .home-stage [data-slot="lamp-login"] div:has(> p.text-sheen-fg-muted) {
+    align-self: stretch;
+  }
+  /* Simple: the plain glass card on the page backdrop, in the same spot. */
+  .home-stage[data-mode="simple"] {
+    padding-block: 1rem;
+  }
+  /* The story's lights: a green halo around the stage when the sign-in is done (opacity only, behind the stage). */
+  .home-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: var(--sheen-radius-xl, 1.5rem);
+    box-shadow: 0 0 4rem 0.25rem var(--sheen-success-glow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .home-stage[data-phase="done"]::before {
+    opacity: 1;
+  }
+  /* A sibling overlay (never the glass itself) draws the green rim of the finished card. */
+  .home-stage[data-mode="lamp"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sheen-radius-xl, 1.5rem);
+    box-shadow: inset 0 -4rem 5rem -3rem var(--sheen-success-glow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .home-stage[data-phase="done"]::after {
+    opacity: 0.8;
+  }
+  /* The field the story is typing into shows the focus ring, without taking focus. */
+  .home-stage[data-typing="email"] [data-slot="input"]:has(input[name="email"]) > div,
+  .home-stage[data-typing="password"] [data-slot="input"]:has(input[name="password"]) > div {
+    border-color: var(--sheen-accent);
+    box-shadow: 0 0 0 4px var(--sheen-ring);
+  }
+  .home-comp-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+  .home-stage-links {
+    font-size: 0.875rem;
+    color: var(--sheen-fg-muted);
+  }
+  .home-stage-links a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    font-weight: 500;
+    color: var(--sheen-fg);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .home-stage-links a:hover {
+    color: var(--sheen-accent-text, var(--sheen-accent));
+  }
+  :root[data-transparency="reduced"] .home-stage::before,
+  :root[data-transparency="reduced"] .home-stage::after {
+    display: none;
+  }
+  /* Phones and tablets: the six pieces sit in a two-column grid under the copy. From 80rem they float on an
+   absolute field in three depth layers. Each layer is a plain transform wrapper (scroll parallax, CSS
+   view-timeline) holding pieces whose own transform is the pointer parallax (written on the beat). */
+  .home-comp {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    perspective: 1500px;
+  }
+  .home-layer {
+    display: contents;
+  }
+  .home-piece {
+    position: relative;
+    min-width: 0;
+  }
+  .home-piece--line {
+    grid-column: 1 / -1;
+  }
+  .home-piece--chat {
+    grid-column: 1 / -1;
+  }
+  .home-piece--toast {
+    grid-column: 1 / -1;
+    /* The toast slides in from beyond this box: clip it here so it never widens the page (RTL included). Padding keeps its shadow. */
+    overflow: clip;
+    padding: 0.75rem;
+    margin: -0.75rem;
+  }
+  .home-piece--fan {
+    grid-column: 1;
+  }
+  .home-piece--toggle {
+    grid-column: 2;
+  }
+  @media (min-width: 80rem) {
+    .home-piece--toast {
+      padding: 1.25rem;
+    }
+    .home-comp {
+      display: block;
+      aspect-ratio: 1 / 1.04;
+    }
+    .home-layer {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+    .home-piece {
+      position: absolute;
+      will-change: transform;
+    }
+    .home-piece--line {
+      inset-inline-start: 0;
+      top: 4%;
+      width: 55%;
+    }
+    .home-piece--toggle {
+      inset-inline-end: 3%;
+      top: 49%;
+      width: auto;
+    }
+    .home-piece--ticker {
+      inset-inline-end: 0;
+      top: 17%;
+      width: 46%;
+    }
+    .home-piece--chat {
+      inset-inline-start: 4%;
+      top: 40%;
+      width: 66%;
+    }
+    .home-piece--toast {
+      inset-inline-end: -1.25rem;
+      bottom: calc(21% - 1.25rem);
+      width: calc(60% + 2.5rem);
+      margin: 0;
+    }
+    .home-piece--fan {
+      inset-inline-start: 2%;
+      bottom: 4%;
+      width: auto;
+    }
+  }
+
+  /* Scroll parallax: each layer sinks at its own speed while the hero leaves (compositor view-timeline). */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 80rem) and (prefers-reduced-motion: no-preference) {
+      :root:not([data-motion="reduced"]) .home-layer {
+        animation: home-layer-sink linear both;
+        animation-timeline: --sheen-hero;
+        animation-range: exit 0% exit 100%;
+      }
+      :root:not([data-motion="reduced"]) .home-layer--far {
+        --sink: 18px;
+      }
+      :root:not([data-motion="reduced"]) .home-layer--mid {
+        --sink: 52px;
+      }
+      :root:not([data-motion="reduced"]) .home-layer--near {
+        --sink: 104px;
+      }
+    }
+  }
+}
+@keyframes home-layer-sink {
+  to {
+    transform: translateY(var(--sink, 0px));
+  }
+}
+
+@layer pages {
+  .home-mini {
+    display: block;
+  }
+  .home-mini__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sheen-fg-muted);
+  }
+  .home-line-card,
+  .home-ticker-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 0.75rem 0.875rem 0.625rem;
+  }
+  /* The glass takes the style's accent, so a warm ribbon behind it never muddies the tint to brown: a violet wash under the content. */
+  .home-ticker-card::before,
+  .home-line-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      150deg,
+      light-dark(oklch(88% 0.09 300 / 0.8), oklch(30% 0.17 292 / 0.82)),
+      light-dark(oklch(90% 0.07 330 / 0.7), oklch(26% 0.14 320 / 0.78))
+    );
+  }
+  .home-ticker-card,
+  .home-line-card {
+    position: relative;
+    isolation: isolate;
+  }
+  .home-flat-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 0.875rem;
+    border-radius: 999px;
+    border: 1px solid var(--sheen-glass-border, var(--sheen-border));
+    background: color-mix(in oklab, var(--sheen-surface-solid) 62%, transparent);
+    box-shadow: 0 10px 28px -14px var(--sheen-accent-glow);
+  }
+  .home-spark__reveal {
+    transform-box: view-box;
+    transform-origin: 0 0;
+  }
+  .home-chat {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.75rem;
+    border-radius: var(--sheen-radius-lg);
+  }
+  .home-chat__bubble {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    font-size: 0.875rem;
+    line-height: 1.35;
+    padding-block-start: 0.2rem;
+  }
+  .home-chat__ghost,
+  .home-chat__typed {
+    grid-area: 1 / 1;
+  }
+  .home-chat__ghost {
+    visibility: hidden;
+  }
+  .home-chat__dots {
+    grid-area: 1 / 1;
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    background: inherit;
+  }
+  .home-chat__dots[data-on] {
+    display: inline-flex;
+  }
+  .home-chat__dots i {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--sheen-fg-muted);
+  }
+  .home-chat__dots[data-on] ~ .home-chat__typed,
+  .home-chat__bubble:has(.home-chat__dots[data-on]) .home-chat__typed {
+    visibility: hidden;
+  }
+
+  .home-live-toast {
+    display: block;
+  }
+  .home-fan {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.625rem 0.375rem 0.375rem;
+    border-radius: 999px;
+    border: 1px solid var(--sheen-glass-border, var(--sheen-border));
+    background: color-mix(in oklab, var(--sheen-surface-solid) 62%, transparent);
+    box-shadow: 0 10px 28px -14px var(--sheen-accent-glow);
+  }
+  .home-fan__item {
+    display: block;
+    margin-inline-end: 0.25rem;
+    border-radius: 50%;
+    transform: translateX(calc(var(--n) * -0.9rem * var(--dir, 1)));
+  }
+  .home-fan__item:dir(rtl) {
+    --dir: -1;
+  }
+  .home-fan__count {
+    margin-inline-start: 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--sheen-fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The hero's player: pauses every loop in the hero. 44 px tall (also a touch target), never covered. */
+  .home-pause {
+    position: relative;
+    z-index: 5;
+    align-self: flex-end;
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-inline: 1rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--sheen-fg);
+    border: 1px solid var(--sheen-glass-border, var(--sheen-border));
+    background: color-mix(in oklab, var(--sheen-surface-solid) 70%, transparent);
+    cursor: pointer;
+    transition: background-color var(--sheen-duration-fast) var(--sheen-ease-out);
+  }
+  .home-pause:hover {
+    background-color: var(--sheen-accent-soft);
+  }
+
+  /* Liquid: a soft halo of accent light under the composition (the glass cards tint with it). */
+  .home-comp-halo {
+    position: absolute;
+    z-index: 0;
+    inset-inline-start: 8%;
+    top: 6%;
+    width: 84%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(closest-side, var(--sheen-accent-glow), transparent 72%);
+    opacity: 0.55;
+  }
+
+  /* Clips the pointer light to the hero's box, so it never adds scrollable overflow (it sits at physical left, which RTL would otherwise scroll to). */
+  .home-glowclip {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: clip;
+    pointer-events: none;
+  }
+
+  /* The pointer glow rests at the hero's top-left corner, where the clip box would cut its disc along a straight line: the
+   clip itself fades out over its last 6rem on every side, so the light dissolves instead of ending on an edge. */
+  .home-glowclip:not(.home-glowclip--tall) {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, #000 6rem, #000 calc(100% - 6rem), transparent),
+      linear-gradient(to bottom, transparent, #000 6rem, #000 calc(100% - 6rem), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, #000 6rem, #000 calc(100% - 6rem), transparent),
+      linear-gradient(to bottom, transparent, #000 6rem, #000 calc(100% - 6rem), transparent);
+    mask-composite: intersect;
+  }
+
+  /* The rays hang from above the hero's top edge: the clip box reaches up so the rays never meet a straight seam. */
+  .home-glowclip--tall {
+    inset-block-start: -12rem;
+  }
+
+  /* Aurora: the light that follows the pointer behind the glass (moved with transform on the beat). */
+  .home-hero-glow {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 560px;
+    height: 560px;
+    margin: -280px 0 0 -280px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      light-dark(oklch(84% 0.12 330 / 0.5), oklch(64% 0.26 305 / 0.42)),
+      light-dark(oklch(88% 0.09 215 / 0.32), oklch(58% 0.2 240 / 0.16)) 48%,
+      transparent 74%
+    );
+  }
+
+  /* Aurora: light rays falling from the top-right, behind the composition. Soft by construction
+   (wide ramps), so no blur filter: the layer sways on the sky clock. */
+  .home-rays {
+    position: absolute;
+    z-index: 0;
+    top: -8rem;
+    inset-inline-end: 0;
+    width: 72%;
+    height: 60rem;
+    pointer-events: none;
+    --ray: light-dark(oklch(100% 0 0 / 0.75), oklch(92% 0.06 250 / 0.13));
+    --ray-soft: light-dark(oklch(100% 0 0 / 0.4), oklch(92% 0.06 250 / 0.07));
+    --ray-2: light-dark(oklch(100% 0 0 / 0.5), oklch(85% 0.12 300 / 0.09));
+    background: conic-gradient(
+      from 168deg at 70% 0%,
+      transparent 0deg,
+      var(--ray-soft) 1.6deg,
+      var(--ray) 3deg,
+      var(--ray-soft) 4.4deg,
+      transparent 6.4deg,
+      transparent 10deg,
+      var(--ray-2) 13deg,
+      transparent 18deg,
+      transparent 20.6deg,
+      var(--ray) 22.5deg,
+      transparent 24.6deg,
+      transparent 29deg,
+      var(--ray-2) 33deg,
+      transparent 39deg,
+      transparent 43.4deg,
+      var(--ray-soft) 44.8deg,
+      var(--ray) 46deg,
+      var(--ray-soft) 47.4deg,
+      transparent 49.6deg,
+      transparent 360deg
+    );
+    /* Fades on all four sides so the light never ends on a straight edge. */
+    -webkit-mask:
+      radial-gradient(70% 75% at 70% 0%, #000 20%, transparent 78%),
+      linear-gradient(to bottom, transparent 0, #000 9rem),
+      linear-gradient(to right, transparent 0, #000 12%, #000 80%, transparent 100%);
+    -webkit-mask-composite: source-in, source-in;
+    mask:
+      radial-gradient(70% 75% at 70% 0%, #000 20%, transparent 78%),
+      linear-gradient(to bottom, transparent 0, #000 9rem),
+      linear-gradient(to right, transparent 0, #000 12%, #000 80%, transparent 100%);
+    mask-composite: intersect, intersect;
+    transform-origin: 70% 0%;
+    transform: rotate(0.5deg);
+  }
+
+  /* The headline's last word ("light." / "within."): a classic serif italic a size up, the style's spectrum drifting slowly
+   through it and a soft glow of the accent around it. Nothing covers the word. The colours are the contrast-checked
+   gradients further down (light and dark themes); the serif has a metric-matched fallback face, so its late load moves
+   nothing. */
+  .home-lightword {
+    position: relative;
+    display: inline-block;
+  }
+  .home-lightword .sheen-accent-text {
+    display: inline-block;
+    padding-inline-end: 0.1em;
+    font-family: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2em;
+    line-height: 0.85;
+    letter-spacing: -0.005em;
+    filter: drop-shadow(0 0.12em 0.4em color-mix(in oklab, var(--sheen-accent) 38%, transparent));
+  }
+  @media (forced-colors: active) {
+    .home-lightword .sheen-accent-text {
+      filter: none;
+    }
+  }
+
+  /* The toast and the stat card */
+  .home-toast {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+    padding-block: 0.625rem;
+    padding-inline: 0.625rem 0.875rem;
+    border-radius: 999px;
+  }
+  .home-toast__icon {
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: oklch(100% 0 0);
+    background: var(--sheen-success);
+    box-shadow: 0 0 14px -2px var(--sheen-success);
+  }
+  .home-stat__value {
+    font-family: var(--sheen-font-display);
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .home-stat__delta {
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--sheen-success-text);
+    background-color: var(--sheen-success-soft);
+  }
+  .home-spark {
+    width: 100%;
+    height: 2.75rem;
+  }
+
+  /* Aurora's glossy floor under the composition. Its reflection is painted by the sky
+   (registerAuroraFloor): a low-res canvas, its fade baked in (no CSS mask on a live layer). */
+  .home-floor {
+    --home-floor-h: 9rem;
+    position: relative;
+    z-index: 0;
+    height: var(--home-floor-h);
+    margin-top: clamp(1.75rem, 4.5vh, 3.25rem);
+    pointer-events: none;
+    /* The reflection dissolves into the page on every side (nothing glass lives inside it). */
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+      linear-gradient(to bottom, #000 40%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+      linear-gradient(to bottom, #000 40%, transparent);
+    mask-composite: intersect;
+  }
+  .home-floor > * {
+    position: absolute;
+    inset-inline: 0;
+  }
+  .home-floor__water {
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      light-dark(oklch(97% 0.012 300 / 0.45), oklch(9% 0.03 282 / 0.42)),
+      light-dark(oklch(98% 0.01 300 / 0.2), oklch(11% 0.03 282 / 0.2)) 70%,
+      transparent
+    );
+  }
+  .home-floor__canvas {
+    top: 1px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.85;
+  }
+  .home-floor__pool {
+    top: 0;
+    height: 70%;
+    background:
+      radial-gradient(
+        28% 70% at 72% 0%,
+        light-dark(oklch(74% 0.18 300 / 0.35), oklch(58% 0.25 300 / 0.3)),
+        transparent
+      ),
+      radial-gradient(
+        20% 50% at 84% 0%,
+        light-dark(oklch(84% 0.12 210 / 0.35), oklch(72% 0.15 205 / 0.22)),
+        transparent
+      );
+  }
+  .home-floor__seam {
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg in oklch,
+      transparent,
+      light-dark(oklch(60% 0.14 215 / 0.7), oklch(86% 0.14 200 / 0.8)) 18%,
+      light-dark(oklch(55% 0.24 295 / 0.8), oklch(97% 0.04 200)) 50%,
+      light-dark(oklch(60% 0.24 345 / 0.7), oklch(78% 0.2 345 / 0.8)) 82%,
+      transparent
+    );
+    box-shadow:
+      0 0 10px 0 light-dark(oklch(70% 0.16 220 / 0.45), oklch(86% 0.14 200 / 0.55)),
+      0 0 36px 2px light-dark(oklch(70% 0.2 300 / 0.25), oklch(62% 0.25 295 / 0.35));
+  }
+
+  /* "Built with": on the floor in Aurora, under the grid in Liquid. */
+  .home-built {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem 2rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--sheen-font-mono);
+    font-size: 0.8125rem;
+    color: var(--sheen-fg-muted);
+  }
+  .home-hero[data-style="aurora"] .home-built {
+    margin-top: calc(3.25rem - var(--home-floor-h, 9rem));
+  }
+  /* Each item on a backplate of page colour, so the mono text keeps AA over the light below. */
+  .home-built li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background-color: color-mix(in oklab, var(--sheen-bg) 82%, transparent);
+  }
+  .home-built i {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: var(--sheen-spectrum-5);
+    box-shadow: 0 0 10px var(--sheen-spectrum-1);
+  }
+
+  /* ---------- Home glass budget (at most 8 backdrop-filter surfaces in view) ----------
+   The home page showed 11 blurred surfaces at 1440 (sidebar, sticky header, 4 "Why SheenUI" cards, the OTP card,
+   4 stat cards). The four "Why SheenUI" cards are decorative and nothing scrolls behind them, so they take the
+   flat frost: the glass level's own tint, specular, rim and shadow, without the backdrop-filter (measured: no
+   difference in Aurora, a few grey levels in the card interiors in Liquid). The sidebar, the sticky header, the
+   hero player and the OTP and stat cards stay real glass. Same selector weight as the Lite rule, later in the
+   cascade. */
+  /* `docs-flat`: the same flat frost for docs pages that would show more than 8 blurred surfaces: the guides hub (12 cards),
+   the feature grid on /effects/spotlight-card (6 cards) and the second stats example on /blocks/dashboard-stats. */
+  .home-flat:is(.glass-2, .glass-3),
+  .home-flat :is(.glass-2, .glass-3),
+  .docs-flat:is(.glass-2, .glass-3),
+  .docs-flat :is(.glass-2, .glass-3) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* ---------- Key features ----------
+   One glass panel (a single backdrop-filter surface: the glass budget is 8 in view) right after
+   the hero, nine rows in 1 / 2 / 3 columns. The rows reveal with a Motion stagger (HomePage.tsx);
+   reduced motion renders them static. */
+  .home-features {
+    /* Close under the hero: the page's section gap is for the sections further down. */
+    margin-top: -1.5rem;
+  }
+  @media (min-width: 64rem) {
+    .home-features {
+      margin-top: -2.75rem;
+    }
+  }
+  .home-features__card {
+    padding: 0.875rem 1rem 0.875rem;
+  }
+  @media (min-width: 40rem) {
+    .home-features__card {
+      padding: 1rem 1.25rem 1rem;
+    }
+  }
+  .home-features__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0 0.25rem 0.625rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--sheen-fg) 10%, transparent);
+  }
+  /* Full ink, not muted: the muted label measured 4.06:1 on the Aurora phone glass (dark); size and
+   tracking carry the "label" look. */
+  .home-features__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sheen-fg);
+  }
+  .home-features__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: var(--sheen-radius-sm, 0.5rem);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--sheen-fg);
+    text-decoration: none;
+    text-underline-offset: 4px;
+  }
+  .home-features__link:hover {
+    text-decoration: underline;
+  }
+  @media (any-pointer: coarse) {
+    .home-features__link {
+      min-height: 2.75rem;
+    }
+  }
+  .home-features__list {
+    display: grid;
+    margin: 0.375rem 0 0;
+    padding: 0;
+    list-style: none;
+    gap: 0 1rem;
+  }
+  @media (min-width: 40rem) {
+    .home-features__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .home-features__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .home-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.4375rem 0.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--sheen-fg-muted);
+    text-wrap: pretty;
+  }
+  .home-feature strong {
+    font-weight: 600;
+    color: var(--sheen-fg);
+  }
+  .home-feature code {
+    padding: 0.05em 0.35em;
+    border-radius: 0.3em;
+    font-family: var(--sheen-font-mono);
+    font-size: 0.85em;
+    background-color: color-mix(in oklab, var(--sheen-fg) 8%, transparent);
+  }
+  .home-feature__icon {
+    display: inline-flex;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.0625rem;
+    border: 1px solid var(--sheen-accent-border);
+    border-radius: 0.5625rem;
+    background-color: var(--sheen-accent-soft);
+    color: var(--sheen-fg);
+  }
+  .home-feature__icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* ---------- Motion: only when welcome, only on screen ---------- */
+@keyframes home-draw {
+  0% {
+    transform: scaleX(0);
+  }
+  22%,
+  88% {
+    transform: scaleX(1);
+  }
+  96%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes home-fan {
+  0%,
+  12% {
+    transform: translateX(calc(var(--n) * -0.9rem * var(--dir, 1)));
+  }
+  34%,
+  74% {
+    transform: translateX(calc(var(--n) * 0.3rem * var(--dir, 1)));
+  }
+  96%,
+  100% {
+    transform: translateX(calc(var(--n) * -0.9rem * var(--dir, 1)));
+  }
+}
+@keyframes home-toast-cycle {
+  0%,
+  12% {
+    transform: translateX(calc(130% * var(--dir, 1)));
+  }
+  20%,
+  70% {
+    transform: translateX(0);
+  }
+  80%,
+  100% {
+    transform: translateX(calc(130% * var(--dir, 1)));
+  }
+}
+@keyframes home-dot {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateY(-0.25rem);
+    opacity: 1;
+  }
+}
+@layer pages {
+  .home-live-toast:dir(rtl) {
+    --dir: -1;
+  }
+  /* Reduced motion: the finished composition, static: the avatars rest fanned out. */
+  :root[data-motion="reduced"] .home-fan__item {
+    transform: translateX(calc(var(--n) * 0.3rem * var(--dir, 1)));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-fan__item {
+      transform: translateX(calc(var(--n) * 0.3rem * var(--dir, 1)));
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) .home-spark__reveal {
+      animation: home-draw 9s var(--sheen-ease-out) 1.5s infinite backwards;
+    }
+    :root:not([data-motion="reduced"]) .home-fan__item {
+      animation: home-fan 8s var(--sheen-ease-bouncy) calc(2.2s + var(--n) * 0.07s) infinite;
+    }
+    :root:not([data-motion="reduced"]) .home-live-toast {
+      animation: home-toast-cycle 10s var(--sheen-ease-out) 2.4s infinite backwards;
+    }
+    :root:not([data-motion="reduced"]) .home-chat__dots[data-on] i {
+      animation: home-dot 0.9s var(--sheen-ease-in-out) infinite;
+    }
+    :root:not([data-motion="reduced"]) .home-chat__dots[data-on] i:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+    :root:not([data-motion="reduced"]) .home-chat__dots[data-on] i:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+  }
+
+  [data-offscreen] :is(.home-spark__reveal, .home-fan__item, .home-live-toast, .home-chat__dots i),
+  [data-paused] :is(.home-spark__reveal, .home-fan__item, .home-live-toast, .home-chat__dots i) {
+    animation-play-state: paused !important;
+  }
+
+  /* Reduced transparency: no glow layers under the glass, and no droplet (a clear lens with
+   nothing to bend is just a blank disc). */
+  :root[data-transparency="reduced"] :is(.home-comp-halo, .home-hero-glow, .home-rays) {
+    display: none;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    :is(.home-comp-halo, .home-hero-glow, .home-rays) {
+      display: none;
+    }
+  }
+
+  /* Phones: the lamp is the first thing under the headline's buttons, so the first view shows it lit. The Lamp / Simple
+   switch moves under the card, the copy tightens, and the at-a-glance pills (they repeat the footer) wait below the fold. */
+  @media (max-width: 47.99rem) {
+    .home-hero__grid {
+      gap: 1.5rem;
+    }
+    .home-copy {
+      gap: 1rem;
+    }
+    .home-lede {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .home-comp-track .home-stage-bar {
+      order: 1;
+    }
+    .home-comp-track .home-comp-foot {
+      order: 2;
+    }
+  }
+
+  /* More contrast: the hero's light show steps back and the copy sits on a firmer plate. */
+  @media (prefers-contrast: more) {
+    .home-hero-glow,
+    .home-rays,
+    .home-floor,
+    .home-comp-halo {
+      display: none;
+    }
+    .home-copy::before {
+      background: radial-gradient(ellipse 80% 70% at 42% 50%, var(--sheen-bg) 60%, transparent 100%);
+    }
+    .home-stage > [data-slot="lamp-login"]::before {
+      background: radial-gradient(closest-side, var(--sheen-ink-950) 84%, transparent 100%);
+    }
+  }
+
+  /* Windows high contrast: decoration goes, the words get system colours. */
+  @media (forced-colors: active) {
+    /* The cone stays as a plain system-colour shape (its gradient and glow are not drawn in forced colours). */
+    .home-stage [data-slot="lamp-login"][data-lit="on"] [class*="polygon(43%"] {
+      forced-color-adjust: none;
+      background-image: linear-gradient(to bottom, Highlight, transparent 85%);
+    }
+    .home-stage > [data-slot="lamp-login"]::before {
+      display: none;
+    }
+    /* The masked line boxes clip the headline's descenders ("components") once system fonts take over. */
+    .home-mask {
+      padding-block: 0.25em;
+      margin-block: -0.25em;
+    }
+    .home-comp-halo,
+    .home-hero-glow,
+    .home-rays,
+    .home-floor {
+      display: none;
+    }
+    .home-eyebrow__tag,
+    .home-toast__icon {
+      forced-color-adjust: none;
+      color: ButtonText;
+      background: ButtonFace;
+      border: 1px solid ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  /* Decorative layers (sky orbs, hero glow) may reach past a very narrow screen (280 px): clip them, never scroll the page.
+   `clip` makes no scroll container, so the sticky header and position: sticky rails keep working. */
+  body {
+    overflow-x: clip;
+  }
+
+  /* Headings never end on a widow ("sign-" / "in"). */
+  article :is(h2, h3) {
+    text-wrap: balance;
+  }
+
+  /* A focused field scrolls clear of the sticky header (Shell keeps this equal to its bottom edge, inline on <html>; 5rem until it has measured). */
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  /* Props tables: a sideways-scrolling region fades the edge that still hides content, and below 40rem each row becomes a card. */
+  .scroll-fade[data-fade="end"] {
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+  .scroll-fade[data-fade="start"] {
+    mask-image: linear-gradient(to right, transparent, #000 2.5rem);
+  }
+  .scroll-fade[data-fade="both"] {
+    mask-image: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  }
+  .scroll-fade[data-fade="start"]:dir(rtl) {
+    mask-image: linear-gradient(to left, transparent, #000 2.5rem);
+  }
+  .scroll-fade[data-fade="end"]:dir(rtl) {
+    mask-image: linear-gradient(to left, #000 calc(100% - 2.5rem), transparent);
+  }
+  @media (max-width: 40rem) {
+    .prop-cell[data-label]::before {
+      content: attr(data-label) ": ";
+      font-family: var(--font-sans, inherit);
+      color: var(--sheen-fg-muted);
+      opacity: 0.8;
+    }
+  }
+
+  /* Guide hero shots: a light and a dark scene; the dark theme (explicit, or "system" resolving to dark) shows the dark one. */
+  .guide-hero--dark {
+    display: none;
+  }
+  :root[data-theme="dark"] .guide-hero--light {
+    display: none;
+  }
+  :root[data-theme="dark"] .guide-hero--dark {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .guide-hero--light {
+      display: none;
+    }
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .guide-hero--dark {
+      display: block;
+    }
+  }
+
+  /* The login and dashboard shots have a Liquid light picture and an Aurora dark counterpart only: in Liquid dark the page keeps
+   the Liquid picture (dimmed, so a near-white shot does not glare) instead of showing the Aurora one under the Liquid look. */
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .guide-hero--dark {
+    display: none;
+  }
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .guide-hero--light {
+    display: block;
+    filter: brightness(0.82) saturate(1.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .guide-hero--dark {
+      display: none;
+    }
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .guide-hero--light {
+      display: block;
+      filter: brightness(0.82) saturate(1.05);
+    }
+  }
+
+  /* A guide whose hero shot is one of the four hero pictures: all four looks are in the page, only the one for the site's
+   style and theme is shown (Liquid light by default; display: none images are never fetched when lazy). */
+  .guide-hero-s {
+    display: none;
+  }
+  .guide-hero-s--liquid-light {
+    display: block;
+  }
+  :root[data-sheen-style="aurora"] .guide-hero-s--liquid-light,
+  :root[data-theme="dark"] .guide-hero-s--liquid-light {
+    display: none;
+  }
+  :root[data-sheen-style="aurora"]:not([data-theme="dark"]) .guide-hero-s--aurora-light,
+  :root[data-sheen-style="aurora"][data-theme="dark"] .guide-hero-s--aurora-dark,
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .guide-hero-s--liquid-dark {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .guide-hero-s--liquid-light,
+    :root[data-sheen-style="aurora"]:not([data-theme]) .guide-hero-s--aurora-light {
+      display: none;
+    }
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .guide-hero-s--liquid-dark,
+    :root[data-sheen-style="aurora"]:not([data-theme]) .guide-hero-s--aurora-dark {
+      display: block;
+    }
+  }
+
+  /* =====================================================================
+ * Home scenes under the hero (pages/HomeWow.tsx): the component wall, the style morph, the depth stack.
+ * Everything animated is transform or opacity. Loops are CSS animations that start paused and run only
+ * while the wall carries [data-live] (on screen); html[data-page-hidden] pauses them in a hidden tab;
+ * reduced motion (OS or in-app) removes them and leaves each tile in its finished state.
+ * ===================================================================== */
+  .home-scene-title {
+    font-family: var(--sheen-font-display);
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  .home-scene-lede {
+    max-width: 34rem;
+    margin-top: 0.75rem;
+    color: var(--sheen-fg-muted);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  /* ---------- 1. The wall ---------- */
+  .home-wall,
+  .home-morph,
+  .home-depth {
+    /* The tilted wall, the 3D window and the separating cards reach past their boxes: clip them so the page never scrolls sideways (RTL included). */
+    overflow-x: clip;
+  }
+  .home-wall {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-block: 1rem;
+  }
+  .home-wall__stage {
+    perspective: 1500px;
+    perspective-origin: 50% 0%;
+    padding-block: 1rem 2rem;
+    /* The tilted plane fades out at its sides instead of ending on a hard cut (tiles carry no backdrop blur, so a mask is safe here). */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  }
+  .home-wall__plane {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    transform-origin: 50% 0%;
+    transform: rotateX(16deg) rotateZ(-2deg) scale(0.86);
+    transform-style: preserve-3d;
+  }
+  @media (min-width: 48rem) {
+    .home-wall__plane {
+      transform: rotateX(22deg) rotateZ(-3deg) scale(0.9);
+    }
+  }
+  .wall-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem;
+  }
+  @media (min-width: 48rem) {
+    .wall-row {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .wall-tile {
+    display: flex;
+    min-height: 8.25rem;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--sheen-radius-lg);
+    border: 1px solid var(--sheen-glass-border, var(--sheen-border));
+    /* Lit from the top edge: a soft sheen over the tint lifts the tile off a dark wall (a few percent of white, so muted labels keep 4.5:1). */
+    background:
+      radial-gradient(120% 90% at 18% 0%, light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.1)), transparent 62%),
+      linear-gradient(
+        160deg,
+        color-mix(in oklab, var(--sheen-surface-solid) 94%, transparent),
+        color-mix(in oklab, var(--sheen-surface-solid) 86%, transparent)
+      );
+    box-shadow:
+      0 18px 40px -22px var(--sheen-accent-glow),
+      inset 0 1px 0 oklch(100% 0 0 / 0.32);
+    overflow: clip;
+  }
+  .wall-tile__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sheen-fg-muted);
+  }
+  .wall-tile__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .wall-line {
+    width: 100%;
+    height: 3.5rem;
+  }
+  .wall-draw {
+    transform-box: view-box;
+    transform-origin: 0 0;
+  }
+  .wall-bars {
+    display: flex;
+    height: 3.5rem;
+    align-items: flex-end;
+    gap: 0.3rem;
+  }
+  .wall-bars i {
+    flex: 1;
+    height: 100%;
+    border-radius: 3px;
+    background-image: var(--sheen-accent-fill);
+    transform: scaleY(var(--h));
+    transform-origin: bottom;
+  }
+  .wall-number {
+    font-family: var(--sheen-font-display);
+    font-size: 1.75rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    /* A fixed line box: the ticker's rolling glyph column must never change the tile's height (CLS 0). */
+    height: 2.25rem;
+    line-height: 2.25rem;
+  }
+  .wall-tile__body > .home-stat__delta {
+    align-self: flex-start;
+  }
+  .wall-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+  }
+  .wall-chat__me,
+  .wall-chat__them {
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.875rem;
+    max-width: 92%;
+  }
+  .wall-chat__me {
+    align-self: flex-end;
+    background: var(--sheen-accent-soft);
+  }
+  .wall-chat__them {
+    position: relative;
+    align-self: flex-start;
+    background: var(--sheen-hover);
+    min-height: 2.1rem;
+  }
+  /* The typed reply wraps to two lines on the 2-column wall: hold that height from the first character (CLS 0). */
+  @media (max-width: 47.999rem) {
+    .wall-chat__them {
+      min-height: 2.9rem;
+    }
+  }
+  .wall-chat__dots {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    gap: 0.25rem;
+    padding-inline: 0.625rem;
+    border-radius: inherit;
+    background: color-mix(in oklab, var(--sheen-surface-solid) 90%, transparent);
+  }
+  .wall-chat__dots[data-on] {
+    display: flex;
+  }
+  .wall-chat__dots i {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--sheen-fg-muted);
+  }
+  .wall-toasts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .wall-toast {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--sheen-hover);
+  }
+  .wall-toast b {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--sheen-success);
+  }
+  .wall-switches {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .wall-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .wall-switch i {
+    position: relative;
+    width: 1.75rem;
+    height: 1rem;
+    border-radius: 999px;
+    background-image: var(--sheen-accent-fill);
+  }
+  .wall-switch i::after {
+    content: "";
+    position: absolute;
+    top: 0.125rem;
+    inset-inline-start: 0.125rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: oklch(100% 0 0);
+    transform: translateX(0.75rem);
+  }
+  .wall-switch i:dir(rtl)::after {
+    transform: translateX(-0.75rem);
+  }
+  .wall-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  .wall-progress__bar {
+    display: block;
+    height: 0.5rem;
+    overflow: clip;
+    border-radius: 999px;
+    background: var(--sheen-hover);
+  }
+  .wall-progress__bar i {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    background-image: var(--sheen-accent-fill);
+    transform-origin: left;
+  }
+  .wall-progress__bar i:dir(rtl) {
+    transform-origin: right;
+  }
+  .wall-progress__bar--b i {
+    transform: scaleX(0.62);
+  }
+  .wall-gauge {
+    position: relative;
+    width: 6rem;
+    height: 3.25rem;
+    margin-inline: auto;
+    overflow: clip;
+  }
+  .wall-gauge__arc {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6rem;
+    border-radius: 50%;
+    border: 0.5rem solid var(--sheen-hover);
+    border-block-end-color: transparent;
+    background: none;
+  }
+  .wall-gauge__arc::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    border-radius: 50%;
+    border: 0.5rem solid transparent;
+    border-top-color: var(--sheen-accent);
+    border-inline-end-color: var(--sheen-accent);
+    transform: rotate(-12deg);
+  }
+  .wall-gauge__needle {
+    position: absolute;
+    bottom: 0;
+    inset-inline-start: calc(50% - 0.1rem);
+    width: 0.2rem;
+    height: 2.6rem;
+    border-radius: 2px;
+    background: var(--sheen-fg);
+    transform-origin: 50% 100%;
+    transform: rotate(38deg);
+  }
+  .wall-fan {
+    display: flex;
+    align-items: center;
+    padding-inline-start: 0.25rem;
+  }
+  .wall-fan > span {
+    display: block;
+    margin-inline-end: 0.25rem;
+    border-radius: 50%;
+    transform: translateX(calc(var(--n) * 0.3rem));
+  }
+  .wall-slider {
+    position: relative;
+    height: 0.5rem;
+    margin-block: 1rem;
+    border-radius: 999px;
+    background: var(--sheen-hover);
+  }
+  .wall-slider__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: var(--sheen-accent-fill);
+    transform-origin: left;
+    transform: scaleX(0.7);
+  }
+  .wall-slider__thumb {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: calc(70% - 0.625rem);
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: -0.625rem;
+    border-radius: 50%;
+    background: oklch(100% 0 0);
+    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.35);
+  }
+  .wall-stars {
+    display: flex;
+    gap: 0.25rem;
+    color: var(--sheen-warning, oklch(80% 0.17 80));
+  }
+  .wall-stars svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .wall-stars svg:nth-child(n + 5) {
+    color: var(--sheen-hover);
+  }
+  .wall-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .wall-skeleton i {
+    position: relative;
+    display: block;
+    height: 0.6rem;
+    overflow: clip;
+    border-radius: 999px;
+    background: var(--sheen-hover);
+  }
+  .wall-skeleton i:nth-child(2) {
+    width: 80%;
+  }
+  .wall-skeleton i:nth-child(3) {
+    width: 55%;
+  }
+  .wall-skeleton i::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent, oklch(100% 0 0 / 0.5), transparent);
+    transform: translateX(-100%);
+  }
+  .home-wall__link {
+    align-self: center;
+    font-weight: 600;
+    color: var(--sheen-accent);
+  }
+  @media (any-pointer: coarse) {
+    .home-wall__link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+    }
+  }
+  .home-wall__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Scroll: the rows drift sideways at different speeds while the wall crosses the viewport (compositor). */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+      :root:not([data-motion="reduced"]) .wall-row {
+        animation: wall-drift linear both;
+        animation-timeline: view();
+        animation-range: entry 0% exit 100%;
+      }
+      :root:not([data-motion="reduced"]) .wall-row--a {
+        --drift: 36px;
+      }
+      :root:not([data-motion="reduced"]) .wall-row--b {
+        --drift: -28px;
+      }
+      :root:not([data-motion="reduced"]) .wall-row--c {
+        --drift: 44px;
+      }
+    }
+  }
+}
+@keyframes wall-drift {
+  from {
+    transform: translateX(calc(var(--drift) * -1));
+  }
+  to {
+    transform: translateX(var(--drift));
+  }
+}
+
+/* The motions: each runs only while the wall is live. */
+@keyframes wall-draw {
+  0% {
+    transform: scaleX(0);
+  }
+  24%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes wall-bar {
+  0% {
+    transform: scaleY(0.08);
+  }
+  22%,
+  80% {
+    transform: scaleY(var(--h));
+  }
+  100% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes wall-toast {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  20%,
+  78% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+@keyframes wall-switch {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+  30%,
+  70% {
+    transform: translateX(0.75rem);
+  }
+  85%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes wall-switch-rtl {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+  30%,
+  70% {
+    transform: translateX(-0.75rem);
+  }
+  85%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes wall-fill {
+  0% {
+    transform: scaleX(0.04);
+  }
+  55%,
+  85% {
+    transform: scaleX(0.92);
+  }
+  100% {
+    transform: scaleX(0.04);
+  }
+}
+@keyframes wall-needle {
+  0%,
+  100% {
+    transform: rotate(-62deg);
+  }
+  45%,
+  60% {
+    transform: rotate(52deg);
+  }
+}
+@keyframes wall-fan {
+  0%,
+  10% {
+    transform: translateX(calc(var(--n) * -1.05rem));
+  }
+  30%,
+  72% {
+    transform: translateX(calc(var(--n) * 0.3rem));
+  }
+  95%,
+  100% {
+    transform: translateX(calc(var(--n) * -1.05rem));
+  }
+}
+@keyframes wall-slide {
+  0%,
+  8% {
+    transform: translateX(-62%);
+  }
+  40%,
+  70% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-62%);
+  }
+}
+@keyframes wall-slide-fill {
+  0%,
+  8% {
+    transform: scaleX(0.08);
+  }
+  40%,
+  70% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(0.08);
+  }
+}
+@keyframes wall-star {
+  0%,
+  4% {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+  14%,
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  96%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+}
+@keyframes wall-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes wall-dot {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateY(-0.25rem);
+    opacity: 1;
+  }
+}
+
+@layer pages {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"])
+      .home-wall
+      :is(
+        .wall-draw,
+        .wall-bars i,
+        .wall-toast,
+        .wall-progress__bar:not(.wall-progress__bar--b) i,
+        .wall-gauge__needle,
+        .wall-fan > span,
+        .wall-slider__thumb,
+        .wall-slider__fill,
+        .wall-stars svg,
+        .wall-chat__dots i
+      ) {
+      animation-play-state: paused;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .home-wall .wall-switch i::after,
+    :root:not([data-motion="reduced"]) .home-wall .wall-skeleton i::after {
+      animation-play-state: paused;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .home-wall[data-live] .wall-switch i::after,
+    :root:not([data-motion="reduced"]) .home-wall[data-live] .wall-skeleton i::after {
+      animation-play-state: running;
+    }
+    :root:not([data-motion="reduced"]) .wall-draw {
+      animation-name: wall-draw;
+      animation-duration: 6s;
+    }
+    :root:not([data-motion="reduced"]) .wall-bars i {
+      animation-name: wall-bar;
+      animation-duration: 5s;
+      animation-delay: calc(var(--i) * 70ms);
+    }
+    :root:not([data-motion="reduced"]) .wall-toast {
+      animation-name: wall-toast;
+      animation-duration: 6s;
+      animation-delay: calc(var(--i) * 450ms);
+    }
+    :root:not([data-motion="reduced"]) .wall-switch i::after {
+      animation-name: wall-switch;
+      animation-duration: 5s;
+      animation-delay: calc(var(--i) * 600ms);
+    }
+    :root:not([data-motion="reduced"]) .wall-switch i:dir(rtl)::after {
+      animation-name: wall-switch-rtl;
+    }
+    :root:not([data-motion="reduced"]) .wall-progress__bar:not(.wall-progress__bar--b) i {
+      animation-name: wall-fill;
+      animation-duration: 5s;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .wall-gauge__needle {
+      animation-name: wall-needle;
+      animation-duration: 5s;
+      animation-timing-function: var(--sheen-ease-bouncy);
+    }
+    :root:not([data-motion="reduced"]) .wall-fan > span {
+      animation-name: wall-fan;
+      animation-duration: 6s;
+      animation-delay: calc(var(--n) * 70ms);
+      animation-timing-function: var(--sheen-ease-bouncy);
+    }
+    :root:not([data-motion="reduced"]) .wall-slider__thumb {
+      animation-name: wall-slide;
+      animation-duration: 5s;
+    }
+    :root:not([data-motion="reduced"]) .wall-slider__fill {
+      animation-name: wall-slide-fill;
+      animation-duration: 5s;
+    }
+    :root:not([data-motion="reduced"]) .wall-stars svg:nth-child(-n + 4) {
+      animation-name: wall-star;
+      animation-duration: 5s;
+      animation-delay: calc(var(--i) * 160ms);
+    }
+    :root:not([data-motion="reduced"]) .wall-skeleton i::after {
+      animation-name: wall-shimmer;
+      animation-duration: 1.6s;
+      animation-timing-function: linear;
+    }
+    :root:not([data-motion="reduced"]) .wall-chat__dots[data-on] i {
+      animation-name: wall-dot;
+      animation-duration: 0.9s;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .wall-chat__dots i:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+    :root:not([data-motion="reduced"]) .wall-chat__dots i:nth-child(3) {
+      animation-delay: 0.24s;
+    }
+    :root:not([data-motion="reduced"])
+      .home-wall[data-live]
+      :is(
+        .wall-draw,
+        .wall-bars i,
+        .wall-toast,
+        .wall-progress__bar:not(.wall-progress__bar--b) i,
+        .wall-gauge__needle,
+        .wall-fan > span,
+        .wall-slider__thumb,
+        .wall-slider__fill,
+        .wall-stars svg,
+        .wall-chat__dots i
+      ) {
+      animation-play-state: running;
+    }
+  }
+
+  /* ---------- 2. The style morph ---------- */
+  .home-morph {
+    display: grid;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 2rem;
+  }
+  @media (min-width: 64rem) {
+    .home-morph {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 3rem;
+    }
+  }
+  .home-morph__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .home-morph__labels {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  .home-morph__labels i {
+    width: 2.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background-image: var(--sheen-accent-fill);
+  }
+  .home-morph__stage {
+    position: relative;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .home-morph__over {
+    position: absolute;
+    inset: 0;
+  }
+  .home-morph__pair {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 40rem) {
+    .home-morph__pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Two hand-built looks (flat, no blur: they cross-fade on opacity) drawn with each style's own colours. */
+  .morph-window {
+    overflow: clip;
+    border: 1px solid var(--m-border);
+    background: var(--m-bg);
+    color: var(--m-fg);
+    box-shadow: var(--m-shadow);
+    border-radius: var(--m-radius);
+  }
+  .morph-window[data-look="liquid"] {
+    --m-bg: linear-gradient(135deg, oklch(30% 0.16 285), oklch(24% 0.2 330) 55%, oklch(32% 0.17 40));
+    --m-fg: oklch(97% 0.01 290);
+    --m-muted: oklch(90% 0.03 290);
+    --m-border: oklch(100% 0 0 / 0.28);
+    --m-radius: 1.75rem;
+    --m-card: oklch(100% 0 0 / 0.12);
+    --m-accent: oklch(72% 0.22 320);
+    --m-accent2: oklch(78% 0.17 60);
+    --m-shadow: 0 30px 80px -30px oklch(55% 0.25 320 / 0.6);
+  }
+  .morph-window[data-look="aurora"] {
+    --m-bg: linear-gradient(160deg, oklch(20% 0.1 285), oklch(26% 0.14 262) 45%, oklch(34% 0.13 200));
+    --m-fg: oklch(97% 0.01 250);
+    --m-muted: oklch(91% 0.03 250);
+    --m-border: oklch(80% 0.14 200 / 0.45);
+    --m-radius: 0.875rem;
+    --m-card: oklch(100% 0 0 / 0.08);
+    --m-accent: oklch(78% 0.15 200);
+    --m-accent2: oklch(70% 0.24 330);
+    --m-shadow: 0 30px 80px -30px oklch(65% 0.2 210 / 0.55);
+  }
+  .morph-window__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--m-muted);
+    border-block-end: 1px solid var(--m-border);
+  }
+  .morph-window__bar i {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--m-muted);
+    opacity: 0.6;
+  }
+  .morph-window__bar span {
+    margin-inline-start: auto;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .morph-window__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+    min-height: 15rem;
+  }
+  .morph-window__card {
+    padding: 1rem 1.125rem;
+    border-radius: calc(var(--m-radius) * 0.7);
+    background: var(--m-card);
+    border: 1px solid var(--m-border);
+    color: var(--m-accent);
+  }
+  .morph-window__kicker {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--m-muted);
+  }
+  .morph-window__value {
+    font-size: 2rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--m-fg);
+  }
+  .morph-window__spark {
+    width: 100%;
+    height: 2.5rem;
+    margin-top: 0.5rem;
+  }
+  .morph-window__row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .morph-window__btn {
+    padding: 0.625rem 1.125rem;
+    border-radius: calc(var(--m-radius) * 0.6);
+    font-weight: 600;
+    color: oklch(10% 0.02 280);
+    background: linear-gradient(120deg, var(--m-accent), var(--m-accent2));
+  }
+  .morph-window__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    background: var(--m-card);
+    border: 1px solid var(--m-border);
+  }
+  .morph-window__chip i {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--m-accent);
+  }
+
+  /* ---------- 3. Depth ---------- */
+  .home-depth {
+    display: grid;
+    gap: 2rem;
+    padding-block: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .home-depth {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+  .home-depth__stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 36rem;
+  }
+  .depth-card {
+    grid-area: 1 / 1;
+    width: min(100%, 19rem);
+    will-change: transform;
+  }
+  .depth-card__glass {
+    padding: 1.25rem;
+  }
+  .depth-card__title {
+    margin-top: 0.25rem;
+    font-size: 1.25rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .depth-card__body {
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--sheen-fg-muted);
+  }
+  .home-depth__static > li {
+    display: flex;
+  }
+  .home-depth__static {
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 40rem) {
+    .home-depth__static {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Reduced transparency / forced colours: the wall's tiles are already flat; nothing else to remove. */
+
+  /* Light themes: the accent word sits on a bright sky, so its gradient is deepened (large text needs 3:1 at the worst pixel).
+   The dark themes keep the style's own gradient. */
+  :root[data-theme="light"] .home-lightword .sheen-accent-text {
+    background-image: linear-gradient(100deg, oklch(27% 0.22 285), oklch(31% 0.24 325));
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .home-lightword .sheen-accent-text {
+      background-image: linear-gradient(100deg, oklch(27% 0.22 285), oklch(31% 0.24 325));
+    }
+  }
+
+  /* Aurora: a soft scrim of the page tint behind the lede (a gradient that fades to nothing, never a hard box), so the
+   paragraph keeps 4.5:1 where a bright curtain passes behind it. Not a text-shadow: it is a real background. */
+  /* Aurora, night: the sky's ribbons end near the middle of the first screen, which left a flat navy lower third. A low,
+   static second glow (teal to violet, a gradient only: no filter, no animation) sits under the foot of the hero, and the
+   hero is a little shorter so the next section's light line comes up into view. Decoration, behind the copy (z-index 0). */
+  :root[data-theme="dark"] .home-hero[data-style="aurora"]::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset-inline: 0;
+    bottom: 0;
+    height: 60%;
+    pointer-events: none;
+    background:
+      radial-gradient(55% 70% at 28% 100%, oklch(36% 0.13 205 / 0.55), transparent 72%),
+      radial-gradient(60% 75% at 72% 108%, oklch(38% 0.2 305 / 0.6), transparent 72%);
+    -webkit-mask-image: linear-gradient(to top, #000 35%, transparent);
+    mask-image: linear-gradient(to top, #000 35%, transparent);
+  }
+  @media (min-width: 80rem) {
+    :root[data-theme="dark"] .home-hero[data-style="aurora"] .home-hero__grid {
+      min-height: calc(100dvh - 15rem);
+    }
+  }
+  .home-hero[data-style="aurora"] .home-lede {
+    position: relative;
+    isolation: isolate;
+    color: var(--sheen-fg);
+  }
+  .home-hero[data-style="aurora"] .home-lede::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -1.5rem -1rem;
+    border-radius: 2rem;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--sheen-bg) 94%, transparent) 78%,
+      transparent 100%
+    );
+  }
+
+  /* Dark looks: the same soft scrim behind the headline, so the pale words keep 4.5:1 where a light sweep, a ribbon or
+   the constellation passes behind them. A real background that fades to nothing (no hard box). */
+  :root[data-theme="dark"] .home-h1 {
+    position: relative;
+    isolation: isolate;
+  }
+  :root[data-theme="dark"] .home-h1::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    /* Inline reach capped at the page gutter (1rem), so the scrim can never widen a phone's page. */
+    inset: -0.35em max(-0.5em, -1rem);
+    border-radius: 1.5em;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--sheen-bg) 80%, transparent) 60%,
+      transparent 100%
+    );
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .home-h1 {
+      position: relative;
+      isolation: isolate;
+    }
+    :root:not([data-theme="light"]) .home-h1::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -0.35em max(-0.5em, -1rem);
+      border-radius: 1.5em;
+      pointer-events: none;
+      background: radial-gradient(
+        closest-side,
+        color-mix(in oklab, var(--sheen-bg) 80%, transparent) 60%,
+        transparent 100%
+      );
+    }
+  }
+
+  /* ---------- Hub card previews (layout/HubPreview.tsx) ----------
+   A live miniature at the top of each hub card. Finished frame by default (reduced motion, off-screen, no JS); the loop
+   runs only while the card carries [data-live] and motion is welcome. Transform and opacity only. */
+  .hubp {
+    position: relative;
+    display: flex;
+    height: 8.75rem;
+    align-items: center;
+    margin-bottom: 0.25rem;
+    padding: 0.9rem 1.1rem;
+    overflow: clip;
+    border-radius: var(--sheen-radius-md);
+    background: linear-gradient(
+      150deg,
+      color-mix(in oklab, var(--sheen-accent) 14%, transparent),
+      color-mix(in oklab, var(--sheen-accent) 4%, transparent)
+    );
+    border: 1px solid color-mix(in oklab, var(--sheen-accent) 18%, transparent);
+  }
+  /* The miniature is 140 px tall: the drawn kinds fill it, the small ones (a switch, a badge, a tab bar) are scaled up (--z). */
+  .hubp {
+    --z: 1;
+  }
+  .hubp:is(
+    [data-kind="toggle"],
+    [data-kind="toast"],
+    [data-kind="tabs"],
+    [data-kind="rows"],
+    [data-kind="chat"],
+    [data-kind="text"],
+    [data-kind="badge"],
+    [data-kind="avatar"],
+    [data-kind="button"],
+    [data-kind="btn-group"],
+    [data-kind="beam"],
+    [data-kind="lens"],
+    [data-kind="card"],
+    [data-kind="code"],
+    [data-kind="count"],
+    [data-kind="type"]
+  ) {
+    --z: 1.75;
+  }
+  .hubp[data-kind="ring"] {
+    --z: 1.5;
+  }
+  .hubp > * {
+    zoom: var(--z);
+    width: calc(100% / var(--z));
+  }
+  .hubp[data-kind="ring"] > * {
+    margin-inline: auto;
+  }
+  /* Aurora: a tile's mini stage carries the same lit lobes as the Aurora preview stages (cyan, violet, rose, inside the
+   luminance band: light L >= 85 %, dark L <= 47 %), so the look does not fade to charcoal on a hub. The lobe order
+   rotates per tile, so a row of tiles is never three copies of one picture. */
+  :root[data-sheen-style="aurora"] .hubp {
+    --hp-a: light-dark(oklch(87% 0.1 205 / 0.95), oklch(46% 0.15 205 / 0.9));
+    --hp-b: light-dark(oklch(86% 0.11 300 / 0.95), oklch(46% 0.23 295 / 0.92));
+    --hp-c: light-dark(oklch(86% 0.11 345 / 0.9), oklch(45% 0.22 340 / 0.88));
+    background:
+      radial-gradient(70% 95% at 6% 4%, var(--hp-a), transparent 72%),
+      radial-gradient(65% 90% at 96% 14%, var(--hp-b), transparent 72%),
+      radial-gradient(80% 70% at 56% 124%, var(--hp-c), transparent 70%),
+      light-dark(oklch(90% 0.05 295), oklch(25% 0.06 290));
+    border-color: light-dark(oklch(66% 0.12 300 / 0.45), oklch(72% 0.13 300 / 0.38));
+    box-shadow:
+      inset 0 1px 0 light-dark(oklch(100% 0 0 / 0.6), oklch(100% 0 0 / 0.16)),
+      0 0 0 1px light-dark(transparent, oklch(60% 0.15 300 / 0.1));
+  }
+  :root[data-sheen-style="aurora"] li:nth-child(3n + 2) .hubp {
+    --hp-a: light-dark(oklch(86% 0.11 345 / 0.9), oklch(45% 0.22 340 / 0.88));
+    --hp-b: light-dark(oklch(87% 0.1 205 / 0.95), oklch(46% 0.15 205 / 0.9));
+    --hp-c: light-dark(oklch(86% 0.11 300 / 0.95), oklch(46% 0.23 295 / 0.92));
+  }
+  :root[data-sheen-style="aurora"] li:nth-child(3n) .hubp {
+    --hp-a: light-dark(oklch(86% 0.11 300 / 0.95), oklch(46% 0.23 295 / 0.92));
+    --hp-b: light-dark(oklch(86% 0.11 345 / 0.9), oklch(45% 0.22 340 / 0.88));
+    --hp-c: light-dark(oklch(87% 0.1 205 / 0.95), oklch(46% 0.15 205 / 0.9));
+  }
+  /* Liquid, night: the tile's mini stage carries the Liquid palette (violet, blue, teal glow, a brighter rim) instead of
+   the accent wash alone, which read as grey lavender. Lobes stay at L <= 46 %, so the drawn minis keep their contrast;
+   the order rotates per tile like Aurora's. */
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .hubp:not(.hubp--cover) {
+    --hp-a: oklch(44% 0.2 285 / 0.92);
+    --hp-b: oklch(43% 0.16 250 / 0.9);
+    --hp-c: oklch(42% 0.12 195 / 0.85);
+    background:
+      radial-gradient(70% 95% at 6% 4%, var(--hp-a), transparent 72%),
+      radial-gradient(65% 90% at 96% 14%, var(--hp-b), transparent 72%),
+      radial-gradient(80% 70% at 56% 124%, var(--hp-c), transparent 70%), oklch(23% 0.05 275);
+    border-color: oklch(76% 0.12 275 / 0.42);
+    box-shadow:
+      inset 0 1px 0 oklch(100% 0 0 / 0.2),
+      0 0 0 1px oklch(62% 0.16 280 / 0.14),
+      0 10px 28px -14px oklch(55% 0.2 280 / 0.5);
+  }
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] li:nth-child(3n + 2) .hubp:not(.hubp--cover) {
+    --hp-a: oklch(42% 0.12 195 / 0.85);
+    --hp-b: oklch(44% 0.2 285 / 0.92);
+    --hp-c: oklch(43% 0.16 250 / 0.9);
+  }
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] li:nth-child(3n) .hubp:not(.hubp--cover) {
+    --hp-a: oklch(43% 0.16 250 / 0.9);
+    --hp-b: oklch(42% 0.12 195 / 0.85);
+    --hp-c: oklch(44% 0.2 285 / 0.92);
+  }
+  .hubp-dm {
+    height: 100%;
+    width: 100%;
+  }
+  .hubp:is([data-kind^="dash-"], [data-kind^="blk-"]) {
+    padding: 0.6rem 0.75rem;
+  }
+  .hubp-line {
+    height: 100%;
+  }
+  .hubp-draw {
+    transform-box: view-box;
+    transform-origin: 0 0;
+  }
+  .hubp-bars {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+    gap: 0.3rem;
+  }
+  .hubp-bars i {
+    flex: 1;
+    height: 100%;
+    border-radius: 3px;
+    background-image: var(--sheen-accent-fill);
+    transform: scaleY(var(--h));
+    transform-origin: bottom;
+  }
+  .hubp .hubp-ring {
+    position: relative;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-inline: auto;
+  }
+  .hubp-ring i {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 0.3rem solid color-mix(in oklab, var(--sheen-fg) 14%, transparent);
+  }
+  .hubp-ring b {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 0.3rem solid transparent;
+    border-top-color: var(--sheen-accent);
+    border-inline-end-color: var(--sheen-accent);
+    transform: rotate(40deg);
+  }
+  .hubp-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .hubp-toggle i {
+    position: relative;
+    width: 2.25rem;
+    height: 1.15rem;
+    border-radius: 999px;
+    background-image: var(--sheen-accent-fill);
+  }
+  .hubp-toggle i::after {
+    content: "";
+    position: absolute;
+    top: 0.15rem;
+    inset-inline-start: 0.15rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    background: oklch(100% 0 0);
+    transform: translateX(1.1rem);
+  }
+  .hubp-toggle i:dir(rtl)::after {
+    transform: translateX(-1.1rem);
+  }
+  .hubp .hubp-toast {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 70%;
+    margin-inline-start: auto;
+    padding: 0.4rem 0.6rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-surface-solid) 80%, transparent);
+    box-shadow: 0 8px 20px -12px var(--sheen-accent-glow);
+  }
+  .hubp-toast b {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: var(--sheen-success);
+  }
+  .hubp-toast span {
+    height: 0.45rem;
+    flex: 1;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 22%, transparent);
+  }
+  .hubp-tabs {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 8%, transparent);
+  }
+  .hubp-tabs span {
+    position: relative;
+    flex: 1;
+    height: 1.1rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 20%, transparent);
+  }
+  .hubp-tabs__pill {
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    inset-inline-start: 0.25rem;
+    width: calc((100% - 1.5rem) / 3);
+    border-radius: 999px;
+    background-image: var(--sheen-accent-fill);
+  }
+  .hubp-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .hubp-rows i {
+    position: relative;
+    height: 0.6rem;
+    overflow: clip;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 14%, transparent);
+  }
+  .hubp-rows i:nth-child(2) {
+    width: 82%;
+  }
+  .hubp-rows i:nth-child(3) {
+    width: 58%;
+  }
+  .hubp-rows i::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent, oklch(100% 0 0 / 0.5), transparent);
+    transform: translateX(-100%);
+  }
+  .hubp-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .hubp-chat i {
+    height: 0.8rem;
+    border-radius: 0.6rem;
+    background: color-mix(in oklab, var(--sheen-fg) 18%, transparent);
+    width: 60%;
+  }
+  .hubp-chat i:first-child {
+    align-self: flex-end;
+    width: 45%;
+    background: var(--sheen-accent-soft);
+  }
+  .hubp-chat b {
+    display: flex;
+    gap: 0.2rem;
+    width: 2.2rem;
+    padding: 0.3rem 0.45rem;
+    border-radius: 0.6rem;
+    background: color-mix(in oklab, var(--sheen-fg) 18%, transparent);
+  }
+  .hubp-chat u {
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--sheen-fg-muted);
+  }
+  .hubp-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.35rem;
+    height: 100%;
+  }
+  .hubp-layout i {
+    border-radius: 0.4rem;
+    background: color-mix(in oklab, var(--sheen-accent) 30%, transparent);
+    transform-origin: left center;
+  }
+  .hubp-layout i:first-child {
+    grid-row: 1 / 3;
+  }
+  .hubp-dash {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.35rem;
+    height: 100%;
+  }
+  .hubp-dash i {
+    height: 1rem;
+    border-radius: 0.35rem;
+    background: color-mix(in oklab, var(--sheen-accent) 30%, transparent);
+  }
+  .hubp-dash svg {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 100%;
+  }
+  .hubp-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .hubp-text i {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 22%, transparent);
+    transform-origin: left center;
+  }
+  .hubp-text i:nth-child(2) {
+    width: 88%;
+  }
+  .hubp-text i:nth-child(3) {
+    width: 94%;
+  }
+  .hubp-text i:nth-child(4) {
+    width: 52%;
+  }
+  .hubp-text i:dir(rtl),
+  .hubp-layout i:dir(rtl) {
+    transform-origin: right center;
+  }
+  .hubp-glass {
+    position: relative;
+    height: 100%;
+  }
+  .hubp-glass i {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .hubp-glass i:first-child {
+    inset-block: 0;
+    inset-inline-start: 22%;
+    width: 3rem;
+    background: radial-gradient(
+      circle at 34% 28%,
+      oklch(100% 0 0 / 0.9),
+      var(--sheen-accent) 45%,
+      color-mix(in oklab, var(--sheen-accent) 40%, black)
+    );
+  }
+  .hubp-glass i:last-child {
+    inset-block: 20% 0;
+    inset-inline-end: 18%;
+    width: 1.9rem;
+    height: 1.9rem;
+    background: color-mix(in oklab, var(--sheen-accent) 35%, transparent);
+  }
+}
+
+@keyframes hubp-draw {
+  0% {
+    transform: scaleX(0);
+  }
+  30%,
+  90% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+@keyframes hubp-bar {
+  0% {
+    transform: scaleY(0.08);
+  }
+  28%,
+  82% {
+    transform: scaleY(var(--h));
+  }
+  100% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes hubp-spin {
+  0%,
+  100% {
+    transform: rotate(-120deg);
+  }
+  50% {
+    transform: rotate(120deg);
+  }
+}
+@keyframes hubp-flip {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  35%,
+  75% {
+    transform: translateX(1.1rem);
+  }
+  90%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes hubp-flip-rtl {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+  35%,
+  75% {
+    transform: translateX(-1.1rem);
+  }
+  90%,
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes hubp-toast {
+  0%,
+  8% {
+    transform: translateX(120%);
+  }
+  22%,
+  72% {
+    transform: translateX(0);
+  }
+  88%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+@keyframes hubp-toast-rtl {
+  0%,
+  8% {
+    transform: translateX(-120%);
+  }
+  22%,
+  72% {
+    transform: translateX(0);
+  }
+  88%,
+  100% {
+    transform: translateX(-120%);
+  }
+}
+@keyframes hubp-pill {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  30%,
+  45% {
+    transform: translateX(calc(100% + 0.5rem));
+  }
+  62%,
+  78% {
+    transform: translateX(calc(200% + 1rem));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes hubp-pill-rtl {
+  0%,
+  12% {
+    transform: translateX(0);
+  }
+  30%,
+  45% {
+    transform: translateX(calc(-100% - 0.5rem));
+  }
+  62%,
+  78% {
+    transform: translateX(calc(-200% - 1rem));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes hubp-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes hubp-dot {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  35% {
+    transform: translateY(-0.2rem);
+    opacity: 1;
+  }
+}
+@keyframes hubp-fill {
+  0%,
+  5% {
+    transform: scaleX(0.05);
+  }
+  28%,
+  85% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0.05);
+  }
+}
+@keyframes hubp-float {
+  50% {
+    transform: translateY(-0.35rem);
+  }
+}
+
+@layer pages {
+  /* Hub minis: a joined button group, a bar with a travelling rim, a refraction sphere over text, scrolling pills. */
+  .hubp-bgroup {
+    display: flex;
+    width: 100%;
+    max-width: 9rem;
+    margin-inline: auto;
+    overflow: clip;
+    border-radius: var(--sheen-radius-sm, 0.5rem);
+    border: 1px solid color-mix(in oklab, var(--sheen-accent) 45%, transparent);
+  }
+  .hubp-bgroup i {
+    flex: 1;
+    height: 1.5rem;
+    background: color-mix(in oklab, var(--sheen-fg) 10%, transparent);
+  }
+  .hubp-bgroup i + i {
+    border-inline-start: 1px solid color-mix(in oklab, var(--sheen-accent) 45%, transparent);
+  }
+  .hubp-bgroup i:nth-child(2) {
+    background: linear-gradient(135deg, var(--sheen-accent), var(--sheen-accent-2, var(--sheen-accent)));
+  }
+  .hubp-beam {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 9rem;
+    margin-inline: auto;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.7rem 0.75rem;
+    overflow: clip;
+    isolation: isolate;
+    border-radius: var(--sheen-radius-md);
+    background: color-mix(in oklab, var(--sheen-bg) 55%, transparent);
+  }
+  .hubp-beam::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: -100%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0 62%,
+      var(--sheen-accent-2, var(--sheen-accent)) 80%,
+      var(--sheen-accent) 92%,
+      transparent
+    );
+  }
+  .hubp-beam::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 2px;
+    border-radius: calc(var(--sheen-radius-md) - 2px);
+    background: color-mix(in oklab, var(--sheen-bg) 88%, var(--sheen-accent) 6%);
+  }
+  .hubp-beam b {
+    width: 38%;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--sheen-accent);
+  }
+  .hubp-beam span {
+    height: 0.35rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 16%, transparent);
+  }
+  .hubp-beam span:last-child {
+    width: 65%;
+  }
+  .hubp-lens {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 9rem;
+    margin-inline: auto;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .hubp-lens span {
+    height: 0.4rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 22%, transparent);
+  }
+  .hubp-lens span:nth-child(2) {
+    width: 78%;
+  }
+  .hubp-lens span:nth-child(3) {
+    width: 55%;
+  }
+  .hubp-lens b {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 30%;
+    width: 2.6rem;
+    aspect-ratio: 1;
+    margin-block-start: -1.3rem;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 26%, oklch(100% 0 0 / 0.85), transparent 30%),
+      radial-gradient(
+        circle at 50% 50%,
+        transparent 52%,
+        color-mix(in oklab, var(--sheen-accent) 55%, transparent) 78%,
+        oklch(100% 0 0 / 0.55) 100%
+      ),
+      color-mix(in oklab, var(--sheen-accent-2, var(--sheen-accent)) 18%, transparent);
+    box-shadow:
+      inset 0 -6px 10px color-mix(in oklab, var(--sheen-accent) 40%, transparent),
+      0 8px 18px -6px var(--sheen-accent-glow);
+    transform: scale(1.04);
+  }
+  .hubp-marq {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.6rem;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  }
+  .hubp-marq__row {
+    display: flex;
+    width: max-content;
+    gap: 0.4rem;
+    margin-inline-start: calc(var(--r) * -1.6rem);
+  }
+  .hubp-marq__row i {
+    flex: none;
+    width: calc(var(--w) * 1rem);
+    height: 0.9rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--sheen-accent) 35%, transparent);
+    background: color-mix(in oklab, var(--sheen-accent) 18%, transparent);
+  }
+  .hubp-marq__row:nth-child(2) i:nth-child(odd) {
+    background: color-mix(in oklab, var(--sheen-fg) 14%, transparent);
+    border-color: transparent;
+  }
+}
+@keyframes hubp-beam-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes hubp-marq {
+  to {
+    transform: translateX(-9.5rem);
+  }
+}
+@layer pages {
+  /* WCAG 2.2.2: a mini that has looped for 5 s (useHubLive sets data-settled) freezes; hover or focus plays it again. */
+  .hubp-card[data-settled]:not(:hover, :focus-within) *,
+  .hubp-card[data-settled]:not(:hover, :focus-within) *::before,
+  .hubp-card[data-settled]:not(:hover, :focus-within) *::after {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-beam::before {
+      animation: hubp-beam-spin 3.2s linear infinite;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-marq__row {
+      animation: hubp-marq 4s linear infinite;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-marq__row:nth-child(2) {
+      animation-direction: reverse;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-lens b {
+      animation: hubp-float 4s ease-in-out infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"])
+      .hubp-card[data-live]
+      .hubp
+      :is(
+        .hubp-draw,
+        .hubp-bars i,
+        .hubp-ring b,
+        .hubp-toast,
+        .hubp-tabs__pill,
+        .hubp-chat u,
+        .hubp-layout i,
+        .hubp-text i,
+        .hubp-glass i
+      ) {
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toggle i::after,
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-rows i::after {
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp .hubp-draw {
+      animation-name: hubp-draw;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-bars i {
+      animation-name: hubp-bar;
+      animation-delay: calc(var(--i) * 70ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-ring b {
+      animation-name: hubp-spin;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toggle i::after {
+      animation-name: hubp-flip;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toggle i:dir(rtl)::after {
+      animation-name: hubp-flip-rtl;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toggle i:nth-child(2)::after {
+      animation-delay: 0.4s;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toast {
+      animation-name: hubp-toast;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-toast:dir(rtl) {
+      animation-name: hubp-toast-rtl;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-tabs__pill {
+      animation-name: hubp-pill;
+      animation-timing-function: var(--sheen-ease-snappy);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-tabs__pill:dir(rtl) {
+      animation-name: hubp-pill-rtl;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-rows i::after {
+      animation-name: hubp-shimmer;
+      animation-duration: 1.6s;
+      animation-timing-function: linear;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-chat u {
+      animation-name: hubp-dot;
+      animation-duration: 1.2s;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-chat u:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-chat u:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-layout i,
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-text i {
+      animation-name: hubp-fill;
+      animation-delay: calc(var(--i) * 120ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-glass i {
+      animation-name: hubp-float;
+      animation-duration: 3.4s;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-glass i:last-child {
+      animation-delay: 0.6s;
+    }
+  }
+  /* More kinds: avatars fan, badges pop, a button lifts and catches light, a card tilts under a spotlight, code
+   types, digits roll, a word types itself. Finished frames at rest; the same 5 s loop while the card is live. */
+  .hubp-avatars {
+    display: flex;
+    align-items: center;
+    padding-inline-start: 0.5rem;
+  }
+  .hubp-avatars i {
+    width: 1.9rem;
+    height: 1.9rem;
+    margin-inline-start: -0.55rem;
+    border-radius: 50%;
+    border: 2px solid var(--sheen-surface-solid);
+    background: radial-gradient(
+      circle at 35% 30%,
+      oklch(100% 0 0 / 0.85),
+      var(--sheen-accent) 45%,
+      color-mix(in oklab, var(--sheen-accent) 55%, black)
+    );
+    transform: translateX(calc(var(--i) * 0.45rem));
+  }
+  .hubp-avatars i:nth-child(2) {
+    background: radial-gradient(
+      circle at 35% 30%,
+      oklch(100% 0 0 / 0.85),
+      oklch(72% 0.14 212) 45%,
+      oklch(42% 0.14 230)
+    );
+  }
+  .hubp-avatars i:nth-child(3) {
+    background: radial-gradient(
+      circle at 35% 30%,
+      oklch(100% 0 0 / 0.85),
+      oklch(74% 0.16 352) 45%,
+      oklch(44% 0.16 350)
+    );
+  }
+  .hubp-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+  }
+  .hubp-badges i {
+    height: 1.15rem;
+    border-radius: 999px;
+    background-image: var(--sheen-accent-fill);
+    width: 2.6rem;
+  }
+  .hubp-badges i:nth-child(2) {
+    width: 3.4rem;
+    background-image: none;
+    background-color: var(--sheen-success);
+  }
+  .hubp-badges i:nth-child(3) {
+    width: 2rem;
+    background-image: none;
+    background-color: color-mix(in oklab, var(--sheen-fg) 22%, transparent);
+  }
+  .hubp-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hubp-button b {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: 5.5rem;
+    height: 2rem;
+    padding-inline: 0.7rem;
+    overflow: clip;
+    border-radius: var(--sheen-radius-md);
+    background-image: var(--sheen-accent-fill);
+    box-shadow: 0 8px 18px -10px var(--sheen-accent-glow);
+  }
+  .hubp-button b span {
+    flex: 1;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: oklch(100% 0 0 / 0.85);
+  }
+  .hubp-button b i {
+    position: absolute;
+    inset-block: -20%;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(100deg, transparent, oklch(100% 0 0 / 0.5), transparent);
+    transform: translateX(260%) skewX(-18deg);
+  }
+  .hubp-button u {
+    position: absolute;
+    inset-inline: 30%;
+    bottom: 0.35rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--sheen-accent-glow);
+    filter: blur(4px);
+    opacity: 0.6;
+  }
+  .hubp-cardx {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 240px;
+  }
+  .hubp-cardx b {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 7rem;
+    padding: 0.6rem 0.7rem;
+    overflow: clip;
+    border-radius: var(--sheen-radius-md);
+    background: color-mix(in oklab, var(--sheen-surface-solid) 72%, transparent);
+    border: 1px solid color-mix(in oklab, var(--sheen-fg) 18%, transparent);
+    box-shadow: 0 10px 24px -14px var(--sheen-accent-glow);
+    transform: rotateX(6deg) rotateY(-8deg);
+  }
+  .hubp-cardx b span {
+    height: 0.45rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--sheen-fg) 24%, transparent);
+  }
+  .hubp-cardx b span:last-child {
+    width: 60%;
+  }
+  .hubp-cardx b i {
+    position: absolute;
+    top: -40%;
+    left: -20%;
+    width: 90%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      light-dark(color-mix(in oklab, var(--sheen-accent) 30%, transparent), oklch(100% 0 0 / 0.22)),
+      transparent
+    );
+    transform: translate(40%, 20%);
+  }
+  .hubp-code {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-inline-start: 0.25rem;
+  }
+  .hubp-code i {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--sheen-accent) 0 30%,
+      color-mix(in oklab, var(--sheen-fg) 26%, transparent) 30% 62%,
+      oklch(72% 0.14 212) 62%
+    );
+    transform-origin: left center;
+    width: 78%;
+  }
+  .hubp-code i:nth-child(2) {
+    width: 92%;
+    margin-inline-start: 1rem;
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--sheen-fg) 26%, transparent) 0 40%,
+      oklch(74% 0.16 352) 40% 70%,
+      color-mix(in oklab, var(--sheen-fg) 26%, transparent) 70%
+    );
+  }
+  .hubp-code i:nth-child(3) {
+    width: 50%;
+    margin-inline-start: 1rem;
+  }
+  .hubp-code i:dir(rtl) {
+    transform-origin: right center;
+  }
+  .hubp-code u {
+    position: absolute;
+    inset-block: 0.1rem;
+    inset-inline-end: 0.5rem;
+    width: 2px;
+    background: var(--sheen-accent);
+    opacity: 1;
+  }
+  .hubp-count {
+    display: flex;
+    justify-content: center;
+    gap: 0.1rem;
+    font-family: var(--sheen-font-mono, ui-monospace, monospace);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--sheen-fg);
+    font-variant-numeric: tabular-nums;
+  }
+  .hubp-count span {
+    display: block;
+    width: auto;
+    height: 1em;
+    overflow: clip;
+  }
+  .hubp-count span i {
+    display: block;
+    font-style: normal;
+    transform: translateY(calc(var(--n) * -1em));
+  }
+  .hubp-count span b {
+    display: block;
+    height: 1em;
+    text-align: center;
+  }
+  /* The digit is drawn by CSS (data-d), so the reel adds no text to the page for crawlers. */
+  .hubp-count span b::before {
+    content: attr(data-d);
+  }
+  .hubp-type {
+    display: flex;
+    align-items: center;
+    font-family: var(--sheen-font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--sheen-fg);
+  }
+  .hubp-type b {
+    font-weight: inherit;
+  }
+  .hubp-type b::before {
+    content: attr(data-d);
+  }
+  .hubp-type i {
+    width: 2px;
+    height: 1.1em;
+    margin-inline-start: 0.1em;
+    background: var(--sheen-accent);
+  }
+  /* A guide cover: the card's own picture (lazy, the 480 / 768 px files), slow drift while the card is live. The box has the
+     picture's own ratio (1200x630), so the whole composition shows at every width: a 16:9 box cropped the first letter of the
+     baked-in title. */
+  .hubp--cover {
+    height: auto;
+    aspect-ratio: 1200 / 630;
+    padding: 0;
+    align-items: stretch;
+    --z: 1;
+  }
+  .hubp-cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transform-origin: 50% 40%;
+  }
+  .hubp-cover--dark {
+    display: none;
+  }
+  :root[data-theme="dark"] .hubp--cover[data-dual] .hubp-cover--light {
+    display: none;
+  }
+  :root[data-theme="dark"] .hubp--cover[data-dual] .hubp-cover--dark {
+    display: block;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .hubp--cover[data-dual] .hubp-cover--light {
+      display: none;
+    }
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .hubp--cover[data-dual] .hubp-cover--dark {
+      display: block;
+    }
+  }
+
+  /* A light-only cover on a dark page is dimmed, so a near-white shot does not glare out of the card. */
+  :root[data-theme="dark"] .hubp--cover:not([data-dual]) .hubp-cover--light {
+    filter: brightness(0.7) saturate(1.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) .hubp--cover:not([data-dual]) .hubp-cover--light {
+      filter: brightness(0.7) saturate(1.05);
+    }
+  }
+
+  /* A style-aware cover: four pictures, only the one for the site's style and theme is shown (Liquid light by default). */
+  .hubp--cover[data-styled] .hubp-cover {
+    display: none;
+  }
+  .hubp--cover[data-styled] .hubp-cover--liquid-light {
+    display: block;
+  }
+  :root[data-sheen-style="aurora"] .hubp--cover[data-styled] .hubp-cover--liquid-light,
+  :root[data-theme="dark"] .hubp--cover[data-styled] .hubp-cover--liquid-light {
+    display: none;
+  }
+  :root[data-sheen-style="aurora"]:not([data-theme="dark"]) .hubp--cover[data-styled] .hubp-cover--aurora-light,
+  :root[data-sheen-style="aurora"][data-theme="dark"] .hubp--cover[data-styled] .hubp-cover--aurora-dark,
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .hubp--cover[data-styled] .hubp-cover--liquid-dark {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .hubp--cover[data-styled] .hubp-cover--liquid-light,
+    :root[data-sheen-style="aurora"]:not([data-theme]) .hubp--cover[data-styled] .hubp-cover--aurora-light {
+      display: none;
+    }
+    :root:not([data-theme]):not([data-sheen-style="aurora"]) .hubp--cover[data-styled] .hubp-cover--liquid-dark,
+    :root[data-sheen-style="aurora"]:not([data-theme]) .hubp--cover[data-styled] .hubp-cover--aurora-dark {
+      display: block;
+    }
+  }
+}
+
+@keyframes hubp-fan {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  30%,
+  80% {
+    transform: translateX(calc(var(--i) * 0.45rem));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes hubp-pop {
+  0%,
+  4% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  22%,
+  86% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+@keyframes hubp-lift {
+  0%,
+  18% {
+    transform: translateY(0) scale(1);
+  }
+  36%,
+  68% {
+    transform: translateY(-3px) scale(1.03);
+  }
+  86%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes hubp-shine {
+  0%,
+  24% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  60%,
+  100% {
+    transform: translateX(260%) skewX(-18deg);
+  }
+}
+@keyframes hubp-tilt {
+  0%,
+  100% {
+    transform: rotateX(-5deg) rotateY(8deg);
+  }
+  50% {
+    transform: rotateX(6deg) rotateY(-8deg);
+  }
+}
+@keyframes hubp-spot {
+  0%,
+  100% {
+    transform: translate(-25%, -20%);
+  }
+  50% {
+    transform: translate(60%, 40%);
+  }
+}
+@keyframes hubp-caret {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  52%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes hubp-roll {
+  0%,
+  10% {
+    transform: translateY(0);
+  }
+  34%,
+  82% {
+    transform: translateY(calc(var(--n) * -1em));
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes hubp-letter {
+  0%,
+  2% {
+    opacity: 0;
+    transform: translateY(0.25em);
+  }
+  10%,
+  84% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+@keyframes hubp-drift {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.025) translate(-0.5%, -0.5%);
+  }
+}
+
+@layer pages {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"])
+      .hubp-card[data-live]
+      .hubp
+      :is(
+        .hubp-avatars i,
+        .hubp-badges i,
+        .hubp-button b,
+        .hubp-button b i,
+        .hubp-cardx b,
+        .hubp-cardx b i,
+        .hubp-code i,
+        .hubp-code u,
+        .hubp-count span i,
+        .hubp-type b,
+        .hubp-type i,
+        .hubp-cover
+      ) {
+      animation-duration: 5s;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-avatars i {
+      animation-name: hubp-fan;
+      animation-delay: calc(var(--i) * 60ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-badges i {
+      animation-name: hubp-pop;
+      animation-delay: calc(var(--i) * 140ms);
+      animation-timing-function: var(--sheen-ease-bouncy);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-button b {
+      animation-name: hubp-lift;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-button b i {
+      animation-name: hubp-shine;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-cardx b {
+      animation-name: hubp-tilt;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-cardx b i {
+      animation-name: hubp-spot;
+      animation-timing-function: ease-in-out;
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-code i {
+      animation-name: hubp-fill;
+      animation-delay: calc(var(--i) * 260ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-code u {
+      animation-name: hubp-caret;
+      animation-duration: 1s;
+      animation-timing-function: steps(1);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-count span i {
+      animation-name: hubp-roll;
+      animation-delay: calc(var(--i) * 90ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-type b {
+      animation-name: hubp-letter;
+      animation-delay: calc(var(--i) * 55ms);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-type i {
+      animation-name: hubp-caret;
+      animation-duration: 0.9s;
+      animation-timing-function: steps(1);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card[data-live] .hubp-cover {
+      animation-name: hubp-drift;
+      animation-duration: 9s;
+      animation-direction: alternate;
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+  /* Hub cards lift a little under the pointer (translate only; the spotlight and the preview do the rest). */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) .hubp-card {
+      transition-property: color, background-color, border-color, translate;
+      transition-duration: var(--sheen-duration-base);
+      transition-timing-function: var(--sheen-ease-out);
+    }
+    :root:not([data-motion="reduced"]) .hubp-card:hover {
+      translate: 0 -3px;
+    }
+  }
+
+  /* Dark themes: the accent word is a pale spectrum (large text needs 3:1 over the ribbons). */
+  :root[data-theme="dark"] .home-lightword .sheen-accent-text {
+    background-image: linear-gradient(100deg, oklch(93% 0.08 310), oklch(91% 0.1 220));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .home-lightword .sheen-accent-text {
+      background-image: linear-gradient(100deg, oklch(93% 0.08 310), oklch(91% 0.1 220));
+    }
+  }
+
+  /* ---------- 404 (seo/NotFoundContent.tsx): a lit glass slab with a large 404, a search field and a floating card ---------- */
+  .nf {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: 1.25rem;
+    padding-block: 1rem 2.5rem;
+  }
+  .nf-glow {
+    position: absolute;
+    z-index: -1;
+    inset: -2rem -1rem;
+    pointer-events: none;
+    /* Light behind the slab so the glass has colour to bend; it fades to nothing on every side. */
+    background:
+      radial-gradient(
+        40% 55% at 22% 40%,
+        light-dark(oklch(84% 0.12 320 / 0.7), oklch(48% 0.22 310 / 0.6)),
+        transparent 72%
+      ),
+      radial-gradient(
+        38% 50% at 78% 62%,
+        light-dark(oklch(86% 0.1 215 / 0.7), oklch(50% 0.15 225 / 0.5)),
+        transparent 72%
+      );
+  }
+  .nf-slab {
+    display: grid;
+    gap: 1.25rem 2.5rem;
+    align-items: center;
+    padding: clamp(1.5rem, 1rem + 2.4vw, 3rem);
+    border-radius: var(--sheen-radius-xl);
+  }
+  .nf-code {
+    --nf-a: light-dark(oklch(27% 0.22 285), oklch(93% 0.08 310));
+    --nf-b: light-dark(oklch(31% 0.24 325), oklch(91% 0.1 220));
+    margin: 0;
+    font-size: clamp(5.5rem, 4rem + 11vw, 11rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+    color: var(--nf-a);
+    background-image: linear-gradient(100deg, var(--nf-a), var(--nf-b));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nf-body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .nf-search {
+    display: flex;
+    min-height: 2.75rem;
+    width: 100%;
+    max-width: 28rem;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.625rem;
+    padding-inline: 1rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    color: var(--sheen-fg-muted);
+    transition: color var(--sheen-duration-fast) ease;
+  }
+  .nf-search:hover {
+    color: var(--sheen-fg);
+  }
+  .nf-kbd {
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-family: var(--sheen-font-mono);
+    font-size: 0.6875rem;
+    color: var(--sheen-fg-muted);
+    background: var(--sheen-hover);
+  }
+  .nf-chip {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    padding: 0.25rem 0.875rem;
+    border: 1px solid var(--sheen-border);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: var(--sheen-hover);
+    transition: color var(--sheen-duration-fast) ease;
+  }
+  .nf-chip:hover {
+    color: var(--sheen-accent);
+  }
+  @media (any-pointer: coarse) {
+    .nf-chip {
+      min-height: 2.75rem;
+    }
+  }
+  .nf-float {
+    display: flex;
+    max-width: 17rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--sheen-radius-lg);
+  }
+  .nf-float__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-image: var(--sheen-accent-fill);
+    box-shadow: 0 0 10px var(--sheen-accent-glow);
+  }
+  @media (min-width: 48rem) {
+    .nf-slab {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+  }
+  /* Wide: the card floats beside the slab (a column of its own, so it never covers a control). */
+  @media (min-width: 64rem) {
+    .nf {
+      grid-template-columns: minmax(0, 1fr) 17rem;
+      align-items: center;
+      gap: 1.75rem;
+    }
+    .nf-float {
+      margin-block-start: 3rem;
+    }
+  }
+}
+@keyframes nf-float {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -0.5rem;
+  }
+}
+@layer pages {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) .nf-float {
+      animation: nf-float 5s var(--sheen-ease-in-out, ease-in-out) infinite alternate;
+    }
+  }
+  @media (forced-colors: active) {
+    .nf-glow {
+      display: none;
+    }
+    .nf-code {
+      -webkit-text-fill-color: CanvasText;
+      background: none;
+    }
+  }
+
+  /* ---------- About SheenUI accordion and the closing CTA band (layout/AboutAccordion.tsx, pages/HomeSeoSections.tsx) ---------- */
+  .about-acc {
+    position: relative;
+    padding: 0.5rem;
+  }
+  .about-acc [data-slot="accordion-trigger"] {
+    padding-block: 1.05rem;
+    font-family: var(--sheen-font-display);
+    letter-spacing: -0.01em;
+  }
+  .about-acc [data-slot="accordion-icon"] {
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--sheen-accent);
+  }
+  .about-acc [data-slot="accordion-content"] {
+    padding-block-end: 1.25rem;
+  }
+  .about-acc [data-slot="accordion-content"] > :is(div, p) > * + *,
+  .about-acc [data-slot="accordion-content"] > div + * {
+    margin-top: 0.75rem;
+  }
+  .about-acc [data-slot="accordion-content"] .grid {
+    margin-top: 1rem;
+  }
+  .about-section > div:first-child h2 {
+    font-family: var(--sheen-font-display);
+    letter-spacing: -0.02em;
+  }
+
+  .home-cta {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: 1.5rem 2.5rem;
+    align-items: center;
+    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+    overflow: clip;
+    border-radius: var(--sheen-radius-xl, 1.5rem);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+      0 30px 80px -40px var(--sheen-accent-glow);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 64rem) {
+    .home-cta {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .home-cta__copy {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .home-cta__actions {
+      grid-column: 2;
+      grid-row: 1;
+      justify-content: flex-end;
+    }
+    .home-cta__term {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+  /* A lit band: the accent wash behind the glass, a soft beam from the top edge and a rim that fades from light to nothing. */
+  .home-cta {
+    background:
+      radial-gradient(60% 120% at 12% 0%, color-mix(in oklab, var(--sheen-accent) 26%, transparent), transparent 70%),
+      radial-gradient(
+        45% 90% at 100% 100%,
+        color-mix(in oklab, var(--sheen-accent-2, var(--sheen-accent)) 22%, transparent),
+        transparent 70%
+      ),
+      color-mix(in oklab, var(--sheen-bg) 38%, transparent);
+  }
+  .home-cta::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      155deg,
+      color-mix(in oklab, white 70%, transparent),
+      color-mix(in oklab, var(--sheen-accent) 55%, transparent) 30%,
+      transparent 62%,
+      color-mix(in oklab, var(--sheen-accent) 35%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+  .home-cta::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-block-start: 0;
+    inset-inline: 18% 18%;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, white 85%, transparent), transparent);
+    box-shadow: 0 0 40px 6px color-mix(in oklab, var(--sheen-accent) 55%, transparent);
+  }
+  .home-cta__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .home-cta__title {
+    font-family: var(--sheen-font-display);
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .home-cta__term {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    border-radius: var(--sheen-radius-lg);
+    border: 1px solid var(--sheen-border);
+    background: color-mix(in oklab, var(--sheen-bg) 78%, transparent);
+    font-family: var(--sheen-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+  }
+  .home-cta__prompt {
+    color: var(--sheen-accent);
+    font-weight: 700;
+  }
+  .home-cta__cmd {
+    min-width: 0;
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    padding-block: 0.4rem;
+  }
+  /* The fade shows only on the edge that still hides command text (useScrollFade sets data-fade); the prerendered HTML fades the end. */
+  .home-cta__cmd:not([data-fade]),
+  .home-cta__cmd[data-fade="end"] {
+    mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+  }
+  .home-cta__cmd[data-fade="start"] {
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem);
+  }
+  .home-cta__cmd[data-fade="both"] {
+    mask-image: linear-gradient(to right, transparent, #000 1.5rem, #000 calc(100% - 1.5rem), transparent);
+  }
+  .home-cta__cmd:focus-visible {
+    outline: none;
+  }
+  /* The ring goes on the whole terminal row: the field's own outline would be clipped by its edge mask. */
+  .home-cta__term:has(.home-cta__cmd:focus-visible) {
+    outline: 2px solid var(--sheen-focus);
+    outline-offset: 2px;
+  }
+  .home-cta__cmd:dir(rtl) {
+    direction: ltr;
+    text-align: left;
+  }
+  .home-cta__copy-btn {
+    flex: none;
+    min-height: 2.25rem;
+    padding-inline: 0.9rem;
+    border-radius: var(--sheen-radius-md);
+    border: 1px solid var(--sheen-accent-border);
+    background: var(--sheen-accent-soft);
+    color: var(--sheen-accent);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  @media (any-pointer: coarse) {
+    .home-cta__copy-btn {
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+    }
+  }
+  .home-cta__copy-btn:focus-visible {
+    outline: 2px solid var(--sheen-focus);
+    outline-offset: 2px;
+  }
+  .home-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* Installation: the four setup steps are numbered glass-edged cards (flat frost, no extra backdrop surface). */
+  .install-step:not(.install-step ~ .install-step) {
+    counter-reset: install-step;
+  }
+  .install-step {
+    position: relative;
+    counter-increment: install-step;
+    max-width: 48rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    padding-inline-start: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    border-radius: var(--sheen-radius-xl, 1.5rem);
+    border: 1px solid var(--sheen-glass-border, var(--sheen-border));
+    background:
+      radial-gradient(60% 90% at 0% 0%, color-mix(in oklab, var(--sheen-accent) 14%, transparent), transparent 70%),
+      color-mix(in oklab, var(--sheen-surface-solid) 62%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 35%, transparent),
+      0 18px 40px -28px var(--sheen-accent-glow);
+  }
+  .install-step > h2::before {
+    content: counter(install-step);
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-inline-end: 0.65rem;
+    vertical-align: 0.15em;
+    border-radius: 999px;
+    font-family: var(--sheen-font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: light-dark(#fff, oklch(18% 0.04 285));
+    background: linear-gradient(135deg, var(--sheen-accent), var(--sheen-accent-2, var(--sheen-accent)));
+  }
+
+  /* Charts gallery: the sankey thumbnail is decorative but its labels are still visible, so keep them at
+   4.5:1. Labels take the chart ink (black on light, white on dark) and the ribbons behind them are
+   thinned so the glass, not a mid-tone ribbon, sits under the text. */
+  .gallery-tile svg path[data-stroke] {
+    opacity: 0.4 !important;
+  }
+  .gallery-tile svg text tspan {
+    fill: light-dark(var(--sheen-ink-on-light), var(--sheen-ink-on-dark));
+  }
+
+  /* The charts hub's API reference: one closed disclosure instead of sixteen thousand pixels of tables. */
+  .charts-api-details__summary {
+    display: flex;
+    min-height: 3rem;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--sheen-radius-lg);
+    font-weight: 600;
+    list-style: none;
+  }
+  .charts-api-details__summary::-webkit-details-marker {
+    display: none;
+  }
+  .charts-api-details__summary::after {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-inline-start: auto;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    rotate: 45deg;
+    transition: rotate var(--sheen-duration-fast, 0.15s);
+  }
+  .charts-api-details[open] > .charts-api-details__summary::after {
+    rotate: -135deg;
+  }
+  .charts-api-details__summary:focus-visible {
+    outline: 2px solid var(--sheen-focus);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .charts-api-details__summary::after {
+      transition: none;
+    }
+  }
+}
+
+/* =====================================================================
+   Showcase stage (src/layout/ShowcaseStage.tsx): a soft aura behind one live component whose colour follows the
+   story's state, a pool of light under it, and a glass plate with a lit edge and a light sweep on success.
+   Height is reserved so the prerendered idle frame never shifts.
+   ===================================================================== */
+@property --stage-aura {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@layer pages {
+  .sheen-showcase {
+    --stage-aura: var(--sheen-accent-glow);
+    --stage-strength: 46%;
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    place-items: center;
+    /* Portalled helpers (a Toaster viewport) add an empty row: keep the plate centred instead of sharing the spare height. */
+    align-content: center;
+    min-height: var(--stage-min, 17rem);
+    padding: 2.5rem 1rem 3rem;
+    border-radius: var(--radius-sheen-xl, 1.5rem);
+    transition: --stage-aura var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  :root[data-theme="dark"] .sheen-showcase {
+    --stage-strength: 58%;
+  }
+  .sheen-showcase[data-state="success"] {
+    --stage-aura: var(--sheen-success-glow, color-mix(in oklab, var(--sheen-success) 75%, transparent));
+  }
+  .sheen-showcase[data-state="error"] {
+    --stage-aura: var(--sheen-danger-glow);
+  }
+  .sheen-showcase[data-state="warning"] {
+    --stage-aura: var(--sheen-warning-glow, color-mix(in oklab, var(--sheen-warning) 75%, transparent));
+  }
+  .sheen-showcase-aura,
+  .sheen-showcase-floor {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--stage-aura) var(--stage-strength), transparent),
+      transparent
+    );
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .sheen-showcase-aura {
+    left: 50%;
+    top: 46%;
+    width: min(34rem, 112%);
+    aspect-ratio: 1.25;
+    translate: -50% -50%;
+    border-radius: 50%;
+    filter: blur(2.75rem);
+    opacity: 0.55;
+  }
+  .sheen-showcase-floor {
+    left: 50%;
+    bottom: 0.75rem;
+    width: min(22rem, 80%);
+    height: 2.75rem;
+    translate: -50% 0;
+    border-radius: 50%;
+    filter: blur(0.875rem);
+    opacity: 1;
+  }
+  .sheen-showcase[data-state="working"] .sheen-showcase-aura {
+    animation: sheen-showcase-breathe calc(var(--sheen-duration-slower) * 1.5) var(--sheen-ease-in-out) infinite
+      alternate;
+  }
+  .sheen-showcase[data-state="success"] .sheen-showcase-aura,
+  .sheen-showcase[data-state="error"] .sheen-showcase-aura,
+  .sheen-showcase[data-state="warning"] .sheen-showcase-aura {
+    opacity: 0.9;
+  }
+}
+@keyframes sheen-showcase-breathe {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+@layer pages {
+  .sheen-showcase-plate {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    width: min(100%, 22rem);
+    min-width: 0;
+    min-height: 9rem;
+    padding: 2rem 1.5rem;
+    border-radius: 1.75rem;
+    box-shadow: 0 2.5rem 5rem -2.25rem color-mix(in oklab, var(--stage-aura) 55%, transparent);
+    transition: box-shadow var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  /* Edge and sweep sit in their own clipped layer, so the plate itself clips nothing (focus rings and glows stay whole). */
+  .sheen-showcase-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .sheen-showcase-edge {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      165deg,
+      color-mix(in oklab, white 70%, transparent),
+      transparent 30%,
+      transparent 62%,
+      color-mix(in oklab, var(--stage-aura) 85%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+  .sheen-showcase-sweep {
+    position: absolute;
+    inset: -40% -60%;
+    opacity: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      color-mix(in oklab, var(--stage-aura) 30%, transparent) 48%,
+      color-mix(in oklab, white 40%, transparent) 50%,
+      color-mix(in oklab, var(--stage-aura) 30%, transparent) 52%,
+      transparent 58%
+    );
+  }
+  .sheen-showcase[data-state="success"] .sheen-showcase-sweep {
+    animation: sheen-showcase-sweep var(--sheen-duration-gentle) var(--sheen-ease-out) both;
+  }
+}
+@keyframes sheen-showcase-sweep {
+  from {
+    opacity: 1;
+    transform: translateX(-60%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(60%);
+  }
+}
+@layer pages {
+  .sheen-showcase-replay {
+    position: absolute;
+    inset-block-end: 0.75rem;
+    inset-inline-end: 0.75rem;
+    z-index: 4;
+  }
+  .sheen-showcase[data-replay="top"] .sheen-showcase-replay {
+    inset-block-end: auto;
+    inset-block-start: 0.75rem;
+  }
+  /* A story's simulated press (the real :active look). */
+  .sheen-showcase [data-stage-pressed] {
+    filter: brightness(0.86);
+    transform: scale(0.97);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-showcase,
+    .sheen-showcase-aura,
+    .sheen-showcase-floor,
+    .sheen-showcase-plate {
+      transition: none;
+    }
+    .sheen-showcase .sheen-showcase-aura,
+    .sheen-showcase .sheen-showcase-sweep {
+      animation: none;
+    }
+  }
+  :root[data-motion="reduced"] .sheen-showcase,
+  :root[data-motion="reduced"] .sheen-showcase-aura,
+  :root[data-motion="reduced"] .sheen-showcase-floor,
+  :root[data-motion="reduced"] .sheen-showcase-plate {
+    transition: none;
+  }
+  :root[data-motion="reduced"] .sheen-showcase .sheen-showcase-aura,
+  :root[data-motion="reduced"] .sheen-showcase .sheen-showcase-sweep {
+    animation: none;
+  }
+  /* Forced colours: no light, no aura; the plate keeps its system border. */
+  @media (forced-colors: active) {
+    .sheen-showcase-aura,
+    .sheen-showcase-floor,
+    .sheen-showcase-fx {
+      display: none;
+    }
+    .sheen-showcase-plate {
+      border: 1px solid CanvasText;
+      box-shadow: none;
+    }
+  }
+
+  /* ---- Showcase stage: more lights (off, lit, dim), the dim layer, and the six pilot scenes ---- */
+  .sheen-showcase[data-state="off"] {
+    --stage-strength: 8%;
+  }
+  .sheen-showcase[data-state="off"] .sheen-showcase-aura {
+    opacity: 0.25;
+  }
+  .sheen-showcase[data-state="off"] .sheen-showcase-floor {
+    opacity: 0.1;
+  }
+  .sheen-showcase[data-state="lit"] {
+    --stage-aura: var(--sheen-warning-glow);
+    --stage-strength: 70%;
+  }
+  .sheen-showcase[data-state="lit"] .sheen-showcase-aura {
+    opacity: 0.95;
+  }
+  .sheen-showcase[data-state="dim"] .sheen-showcase-aura {
+    opacity: 0.35;
+  }
+  .sheen-showcase-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 25%, var(--sheen-scrim));
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .sheen-showcase[data-state="dim"] .sheen-showcase-dim {
+    opacity: 1;
+  }
+  .sheen-showcase[data-state="dim"] .sheen-showcase-plate {
+    transform: scale(0.94);
+  }
+  .sheen-showcase-plate {
+    transition:
+      box-shadow var(--sheen-duration-slower) var(--sheen-ease-out),
+      transform var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .sheen-stage-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    text-align: center;
+  }
+  .sheen-stage-col label {
+    text-align: start;
+  }
+  .sheen-stage-title {
+    margin: 0;
+    font-weight: 600;
+    color: var(--sheen-fg);
+  }
+  .sheen-stage-sub {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--sheen-fg-muted);
+  }
+  .sheen-stage-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.75rem;
+  }
+  .sheen-stage-desc {
+    min-height: 2.75rem;
+  }
+  .sheen-stage-wide {
+    width: min(100%, 26rem);
+  }
+  .sheen-stage-steps {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: start;
+  }
+  .sheen-stage-step {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    color: var(--sheen-fg);
+  }
+  .sheen-stage-step em {
+    margin-inline-start: auto;
+    font-style: normal;
+    color: var(--sheen-fg-muted);
+  }
+  .sheen-stage-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--sheen-fg-muted);
+    transition: background-color var(--sheen-duration-slow) var(--sheen-ease-out);
+  }
+  .sheen-stage-step[data-s="ok"] .sheen-stage-dot {
+    background: var(--sheen-success);
+  }
+  .sheen-stage-step[data-s="bad"] .sheen-stage-dot {
+    background: var(--sheen-danger);
+  }
+  .sheen-stage-step[data-s="run"] .sheen-stage-dot {
+    background: var(--sheen-accent);
+  }
+  /* Tabs scene: a light under the active tab and a comet that travels between tabs. */
+  .sheen-stage-tabsbar {
+    position: relative;
+    width: 100%;
+  }
+  .sheen-stage-under,
+  .sheen-stage-trail {
+    position: absolute;
+    inset-block-end: -0.5rem;
+    left: 0;
+    height: 0.5rem;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  .sheen-stage-under {
+    background: radial-gradient(
+      closest-side,
+      color-mix(in oklab, var(--sheen-accent-glow) 80%, transparent),
+      transparent
+    );
+    transition: transform var(--sheen-duration-slow) var(--sheen-ease-out);
+  }
+  .sheen-stage-trail {
+    inset-block-end: auto;
+    inset-block-start: 0;
+    height: 100%;
+    border-radius: var(--radius-sheen-xl, 1.5rem);
+    opacity: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--sheen-accent-glow) 55%, transparent) 60%,
+      color-mix(in oklab, white 55%, transparent)
+    );
+    transform-origin: left center;
+    animation: sheen-stage-trail var(--sheen-duration-gentle) var(--sheen-ease-out) both;
+  }
+  .sheen-stage-trail[data-dir="left"] {
+    transform-origin: right center;
+    background: linear-gradient(
+      270deg,
+      transparent,
+      color-mix(in oklab, var(--sheen-accent-glow) 55%, transparent) 60%,
+      color-mix(in oklab, white 55%, transparent)
+    );
+  }
+}
+@keyframes sheen-stage-trail {
+  0% {
+    opacity: 0;
+    transform: translateX(var(--trail-x)) scaleX(0.15);
+  }
+  45% {
+    opacity: 1;
+    transform: translateX(var(--trail-x)) scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--trail-x)) scaleX(0.15);
+  }
+}
+@layer pages {
+  .sheen-stage-badge {
+    display: inline-block;
+    min-width: 1.25rem;
+    margin-inline-start: 0.375rem;
+    padding: 0 0.375rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    text-align: center;
+    background: var(--sheen-accent);
+    color: var(--sheen-accent-fg, white);
+  }
+  .sheen-stage-badge[data-pop] {
+    animation: sheen-stage-pop var(--sheen-duration-press) var(--sheen-ease-press) both;
+  }
+}
+@keyframes sheen-stage-pop {
+  from {
+    transform: scale(1.6);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@layer pages {
+  .sheen-stage-panel {
+    min-height: 7.5rem;
+    padding-top: 1rem;
+    text-align: start;
+  }
+  .sheen-stage-feed {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--sheen-fg);
+  }
+  .sheen-stage-feed li {
+    animation: sheen-stage-rise var(--sheen-duration-smooth) var(--sheen-ease-out) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+}
+@keyframes sheen-stage-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+@layer pages {
+  /* Dialog scene: the real dialog is portalled out of the stage; its scrim is replaced by the stage's own dim layer
+     (the scene renders the dialog with backdrop={false}). */
+  .sheen-stage-dialog {
+    width: min(25rem, calc(100vw - 2rem));
+  }
+  .sheen-stage-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    background: color-mix(in oklab, var(--sheen-success) 18%, transparent);
+    color: var(--sheen-fg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-stage-trail,
+    .sheen-stage-feed li,
+    .sheen-stage-badge[data-pop] {
+      animation: none;
+    }
+    .sheen-showcase-dim,
+    .sheen-stage-under {
+      transition: none;
+    }
+  }
+  :root[data-motion="reduced"] .sheen-stage-trail,
+  :root[data-motion="reduced"] .sheen-stage-feed li,
+  :root[data-motion="reduced"] .sheen-stage-badge[data-pop] {
+    animation: none;
+  }
+  :root[data-motion="reduced"] .sheen-showcase-dim,
+  :root[data-motion="reduced"] .sheen-stage-under {
+    transition: none;
+  }
+
+  /* ---- Showcase stage: the studio look. Near-black in both themes (the stage scopes the dark tokens via data-theme),
+   a key light behind the object, a floor plane with a light pool, a vignette. Lights are sibling layers: nothing
+   here puts opacity, filter or a mask on an element that contains glass. ---- */
+  .sheen-showcase {
+    --stage-strength: 62%;
+    --stage-floor-y: 62%;
+    min-height: max(var(--stage-min, 17rem), 24rem);
+    padding: 2.5rem 1rem 3rem;
+    border-radius: var(--radius-sheen-xl, 1.5rem);
+    color: var(--sheen-fg);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 38%, #12151f, transparent 70%),
+      linear-gradient(180deg, #05060a 0%, #07080d 60%, #0b0c12 100%);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.07),
+      inset 0 0 9rem 1rem rgb(0 0 0 / 0.65);
+  }
+  :root[data-theme="dark"] .sheen-showcase {
+    --stage-strength: 62%;
+  }
+  /* Light theme: a slightly lifted deep blue-grey instead of pure black, so the stage still reads as a stage on a pale page. */
+  :root[data-theme="light"] .sheen-showcase {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 38%, #232a3b, transparent 70%),
+      linear-gradient(180deg, #0d1018 0%, #121521 60%, #171a27 100%);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .sheen-showcase {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 38%, #232a3b, transparent 70%),
+        linear-gradient(180deg, #0d1018 0%, #121521 60%, #171a27 100%);
+    }
+  }
+  .sheen-showcase-aura {
+    top: 42%;
+    width: min(44rem, 130%);
+    aspect-ratio: 1.3;
+    filter: none;
+    opacity: 0.6;
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  /* The floor plane: a lit horizon line and a soft gradient below it. */
+  .sheen-showcase-floor {
+    inset: auto 0 0 0;
+    left: 0;
+    width: auto;
+    height: calc(100% - var(--stage-floor-y));
+    translate: none;
+    border-radius: 0;
+    filter: none;
+    opacity: 1;
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.1) 0, rgb(255 255 255 / 0) 1px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.045), rgb(0 0 0 / 0.35));
+  }
+  /* The light pool on the floor, under the object. */
+  .sheen-showcase-pool {
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    left: 50%;
+    top: calc(var(--stage-floor-y) + 0.25rem);
+    width: min(30rem, 96%);
+    height: 6rem;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--stage-aura) 80%, transparent), transparent);
+    opacity: 0.75;
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+  .sheen-showcase[data-state="working"] .sheen-showcase-pool {
+    animation: sheen-showcase-breathe calc(var(--sheen-duration-slower) * 1.5) var(--sheen-ease-in-out) infinite
+      alternate;
+  }
+  .sheen-showcase[data-state="success"] .sheen-showcase-pool,
+  .sheen-showcase[data-state="error"] .sheen-showcase-pool,
+  .sheen-showcase[data-state="warning"] .sheen-showcase-pool {
+    opacity: 1;
+  }
+  .sheen-showcase[data-state="off"] {
+    --stage-strength: 10%;
+  }
+  .sheen-showcase[data-state="off"] .sheen-showcase-aura {
+    opacity: 0.15;
+  }
+  .sheen-showcase[data-state="off"] .sheen-showcase-pool {
+    opacity: 0.08;
+  }
+  .sheen-showcase[data-state="lit"] {
+    --stage-strength: 78%;
+  }
+  .sheen-showcase[data-state="dim"] .sheen-showcase-pool {
+    opacity: 0.25;
+  }
+  /* The glass object: a stronger lit edge and a glow of the light colour on the floor side. */
+  .sheen-showcase-plate {
+    box-shadow:
+      0 2.75rem 4.5rem -2rem color-mix(in oklab, var(--stage-aura) 60%, transparent),
+      0 0 0 1px rgb(255 255 255 / 0.04);
+  }
+  .sheen-showcase-edge {
+    background: linear-gradient(
+      165deg,
+      color-mix(in oklab, white 78%, transparent),
+      transparent 28%,
+      transparent 55%,
+      color-mix(in oklab, var(--stage-aura) 95%, transparent)
+    );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-showcase-pool {
+      transition: none;
+      animation: none;
+    }
+  }
+  :root[data-motion="reduced"] .sheen-showcase-pool {
+    transition: none;
+    animation: none;
+  }
+  @media (forced-colors: active) {
+    .sheen-showcase-pool {
+      display: none;
+    }
+    .sheen-showcase {
+      background: Canvas;
+      box-shadow: none;
+    }
+  }
+
+  /* No layout shift (motion rule: no layout shift): the plate is centred in the stage, so a plate whose height changed
+   during a story moved by half the change. The plate always fills the stage's content box (the stage height, 24rem at least, minus the
+   padding), so a story that stays inside it never changes the plate's size or position. Size minHeight for the tallest frame. */
+  .sheen-showcase-plate {
+    min-height: max(18.5rem, calc(var(--stage-min, 0rem) - 5.5rem));
+  }
+  /* Centred text that changes (a status line, a title) keeps the column's width, so its box does not move as the words change. */
+  .sheen-stage-col > :is(.sheen-stage-sub, .sheen-stage-title, .sheen-stage-desc) {
+    align-self: stretch;
+  }
+  /* A story that grows (a stage reserved taller than the floor): the content hangs from the top of the plate, so what it
+   adds pushes nothing up. */
+  .sheen-showcase[data-grows] .sheen-showcase-plate {
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+
+  /* ---------- Phone text floor ----------
+   Nothing reads below 12 px on a phone: the 11 px labels and the inline code (0.85em of a small parent) step up. The
+   theme's own `.text-2xs` has the same rule (theme styles/index.css). */
+  @media (max-width: 639.98px) {
+    :is(.home-mini__label, .wall-tile__label, .morph-window__kicker, .nf-kbd, .text-\[0\.7rem\]) {
+      font-size: 0.75rem;
+    }
+    .font-sheen-mono.text-\[0\.85em\] {
+      font-size: max(0.85em, 0.75rem);
+    }
+  }
+}
+
+@layer pages {
+  /* The home sections below the hero skip style, layout and paint until they near the viewport (the browser still finds
+     their text, and renders each one as it comes within about half a screen). The first layout and every font-swap
+     restyle then cover the hero and what follows it, not the 1300 elements of the whole page. The clip margin keeps
+     shadows and focus rings from being cut by the containment, so nothing changes on screen. */
+  .home-wall,
+  .home-morph,
+  .home-depth,
+  .home-features {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 700px;
+    overflow-clip-margin: 2rem;
+  }
+}

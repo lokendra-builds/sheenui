@@ -1,0 +1,76 @@
+/* Home hero, light looks: the lamp login is a dark room BY CONCEPT, so in the pastel page it is framed as a dusk-indigo window
+   with a soft glass bezel, warm light spilling onto the page and a coloured shadow (the frame sits on the stage element itself,
+   because the room's own box clips its overflow). The tokens inside the room resolve dark (see tokens.css, nested [data-theme]).
+   Dark looks keep the pool. Imported from index.css (layer `stage`, after the page rules). */
+
+html:root[data-theme="light"] .home-comp-ph,
+html:root[data-theme="light"] .home-stage > [data-slot="lamp-login"]::before {
+  inset: 0;
+  border-radius: var(--sheen-radius-xl, 1.5rem);
+  /* A dusk-indigo room (not a black hole), lit by a warm lamp from the top and a violet floor glow. */
+  background:
+    radial-gradient(ellipse 70% 46% at 50% 4%, rgb(255 196 110 / 0.34), transparent 72%),
+    radial-gradient(ellipse 100% 56% at 50% 108%, color-mix(in oklab, var(--sheen-accent) 46%, #2a2160), transparent 72%),
+    linear-gradient(176deg, #2b2559 0%, #221d4e 52%, #2a2160 100%);
+}
+html:root[data-theme="light"] .home-comp-ph,
+html:root[data-theme="light"] .home-stage > [data-slot="lamp-login"] {
+  border-radius: var(--sheen-radius-xl, 1.5rem);
+  /* A soft glass bezel around the room, warm light spilling up onto the page, a coloured shadow below. */
+  outline: 7px solid rgb(255 255 255 / 0.5);
+  outline-offset: 0;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    0 0 0 8px color-mix(in oklab, var(--sheen-accent) 22%, transparent),
+    0 -18px 64px -8px rgb(255 190 90 / 0.5),
+    0 40px 80px -24px color-mix(in oklab, var(--sheen-accent) 60%, transparent);
+}
+html:root[data-theme="light"] .home-stage > [data-slot="lamp-login"] {
+  overflow: clip;
+}
+
+/* Proof chips: readable ink on a frosted white pill with an accent edge (the pale ribbons of the aurora sky washed them out). */
+html:root[data-theme="light"] .home-proof {
+  color: var(--sheen-fg);
+}
+html:root[data-theme="light"] .home-proof li {
+  background: oklch(100% 0 0 / 0.78);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--sheen-accent) 30%, transparent);
+}
+
+@media (prefers-color-scheme: light) {
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-proof {
+  color: var(--sheen-fg);
+}
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-proof li {
+  background: oklch(100% 0 0 / 0.78);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--sheen-accent) 30%, transparent);
+}
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-comp-ph,
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-stage > [data-slot="lamp-login"]::before {
+  inset: 0;
+  border-radius: var(--sheen-radius-xl, 1.5rem);
+  /* A dusk-indigo room (not a black hole), lit by a warm lamp from the top and a violet floor glow. */
+  background:
+    radial-gradient(ellipse 70% 46% at 50% 4%, rgb(255 196 110 / 0.34), transparent 72%),
+    radial-gradient(ellipse 100% 56% at 50% 108%, color-mix(in oklab, var(--sheen-accent) 46%, #2a2160), transparent 72%),
+    linear-gradient(176deg, #2b2559 0%, #221d4e 52%, #2a2160 100%);
+}
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-comp-ph,
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-stage > [data-slot="lamp-login"] {
+  border-radius: var(--sheen-radius-xl, 1.5rem);
+  /* A soft glass bezel around the room, warm light spilling up onto the page, a coloured shadow below. */
+  outline: 7px solid rgb(255 255 255 / 0.5);
+  outline-offset: 0;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    0 0 0 8px color-mix(in oklab, var(--sheen-accent) 22%, transparent),
+    0 -18px 64px -8px rgb(255 190 90 / 0.5),
+    0 40px 80px -24px color-mix(in oklab, var(--sheen-accent) 60%, transparent);
+}
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .home-stage > [data-slot="lamp-login"] {
+  overflow: clip;
+}
+}

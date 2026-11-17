@@ -1,0 +1,479 @@
+import type { PageContent } from "../page-content";
+
+export const content: Record<string, PageContent> = {
+  "/effects/blur-in": {
+    when: [
+      "Use it as a text reveal animation on the one hero headline of a landing page, where each word sharpens out of a soft blur as it rises into place and gives the page a deliberate first impression.",
+      "Use it for an empty-state or onboarding welcome line, such as a first-run greeting in a dashboard, where one short sentence should arrive with a little ceremony instead of simply appearing.",
+      'Switch to by="character" for a short tagline or for languages written without spaces, each word stays one unbreakable box, so letters never wrap on their own.',
+      "Skip it when the text is body copy, a list or anything people scan quickly; animated paragraphs slow reading, so keep plain text there or use Typewriter for a phrase that changes over time.",
+      "Pair it with ShimmerText for a subtitle that lights up after the headline lands, a Button for the call to action, and the useSheenReducedMotion hook if you gate other motion yourself.",
+    ],
+    faq: [
+      {
+        q: "How do I make a blur text animation in React with BlurIn?",
+        a: "Pass the string as the text prop and choose the element with render, for example render={<h1 />}. Tune it with by, delay, stagger, duration, blur (starting px, default 10) and offset (default 0.35em). It plays once when the text scrolls into view.",
+      },
+      {
+        q: "Will screen readers hear the headline word by word?",
+        a: "No. A visually hidden copy of the whole string is read once, and the animated pieces are aria-hidden. That hidden copy is unselectable, so copying the headline gives exactly what is on screen, once, instead of duplicated text.",
+      },
+      {
+        q: "How do I replay the animation or run it on mount?",
+        a: "Set animateOnView={false} to play on mount instead of waiting for the viewport, and once={false} to replay each time it scrolls back in. To trigger it from a button, change the component key so it remounts. onComplete fires after the last piece lands.",
+      },
+      {
+        q: "What happens with reduced motion, and does it leave a filter on the text?",
+        a: "With the OS setting or the in-app toggle on, you get plain static text with nothing to wait for. When each piece lands its filter is removed, so finished text is ordinary text. Use pieceClassName to style every word, such as a gradient.",
+      },
+    ],
+  },
+
+  "/effects/border-beam": {
+    when: [
+      "Use it on the recommended plan of a pricing table or one featured card in a grid, so a single comet of light circles that edge while its neighbours stay still.",
+      "Use it on a focused input wrapper or a primary call-to-action button to show an AI prompt box is live or that a card is selected, without adding a heavy glow.",
+      "Use double and reverse to make a featured tile look different from its neighbors, and delay to stagger several beams so they never run in lockstep.",
+      "Skip it when the surface is not a rounded element you control or you need a static highlight; a plain border, or SpotlightCard for a hover-driven glow, fits better than a looping animation.",
+      "Pair it with GlassCard as the parent, Badge for a Recommended label, and Button inside the card so the beam draws attention to the action rather than competing with it.",
+    ],
+    faq: [
+      {
+        q: "How do I add a border beam in React?",
+        a: "Place BorderBeam as a child of a positioned, rounded element, such as a GlassCard with relative and a radius class. It fills its parent, takes the parent's border radius and is masked to a thin ring, so it never covers content or touches the parent's blur.",
+      },
+      {
+        q: "Which props change the beam's speed, size and colors?",
+        a: "duration is seconds per lap (default 8), length is the beam length in px (120), and width is the ring thickness (1.5). colorFrom is the tail and colorTo the head, defaulting to the accent and teal. Also available: reverse, double, glow, track, offset and delay.",
+      },
+      {
+        q: "Is it accessible, and does it hurt performance?",
+        a: "It is purely decorative: aria-hidden, not focusable, no pointer events, and hidden in forced colors. It pauses while off screen, and the halo moves by transform with nothing blurred per frame. The paused prop holds it in place until you release it.",
+      },
+      {
+        q: "What does the border beam do with reduced motion, and how does it handle a wide bar?",
+        a: "Under reduced motion it shows a still beam lit on the top-left corner. The keyframes follow the real outline, so on a wide bar the beam keeps one speed and one length all the way round instead of racing along the long sides like a spinning gradient.",
+      },
+    ],
+  },
+
+  "/effects/macos-dock": {
+    when: [
+      "Use it as a floating dock with magnification for an app launcher or quick-action bar in a desktop-style web app, where icons near the pointer swell and push neighbors apart like the macOS Dock.",
+      "Use it as a floating bottom bar in a portfolio or a docs playground, with DockItem links to sections, a DockSeparator before utility items and a badge on an inbox icon.",
+      'Set side="top" to pin the bar to the top edge instead of the default bottom; icons grow away from that edge and labels appear on the far side. Only top and bottom are supported, so use VerticalNav for a vertical rail.',
+      "Skip it when you need editor controls or primary site navigation: use Toolbar for formatting controls and Navbar for site navigation, since magnification adds nothing to a menu of text links.",
+      "Pair it with Dialog or MorphingDialog so an item opens a window-like panel, Badge for status elsewhere in the shell, and DockItem badge for counts; no Tooltip is needed because the dock draws its own labels.",
+    ],
+    faq: [
+      {
+        q: "How do I build a macOS dock in React with SheenUI?",
+        a: "Wrap DockItem children in Dock and give the dock a label. Each DockItem needs a label and an icon, plus onClick or href. Use size for the resting icon size (default 48), magnification from 1 to 2 (default 1.6) and distance for how far the swell reaches.",
+      },
+      {
+        q: "How do keyboard users and screen readers work with the dock?",
+        a: 'It is a Base UI toolbar: one Tab stop, with arrow keys, Home and End moving between items. The focused item magnifies and shows its label; Escape hides the label. Each control carries its label as its accessible name, and active links get aria-current="page".',
+      },
+      {
+        q: "What happens on touch screens or when there is no room to magnify?",
+        a: "The dock falls back to a plain bar on touch screens and coarse pointers, under reduced motion, and when there is too little room beside it. With limited room the swell is scaled down to fit. If the bar is wider than its container it scrolls inside itself.",
+      },
+      {
+        q: "How do I mark an item as open or show a badge?",
+        a: "Set active on a DockItem to draw a dot under the icon. Links get aria-current, and buttons add labels.active to their name, such as Finder, open. The badge prop shows a count on the corner, and badgeLabel sets what screen readers hear, like 3 unread.",
+      },
+    ],
+  },
+
+  "/effects/liquid-glass": {
+    when: [
+      "Use it as a liquid glass effect for a few hero surfaces that sit over photos or video, such as a floating media control, a caption overlay or a navigation pill that visibly bends the page behind it in Chromium.",
+      'Use shape="pill" for a floating action bar and shape="circle" for a round play button, with variant="clear" when the content is only an icon or a bold label over imagery.',
+      "Add interactive when the lens is a control, so it grows slightly on hover and presses in on tap, and give it role, tabIndex and handlers yourself.",
+      "Skip it when you have more than a handful of surfaces or ordinary cards: refraction is limited to three lenses per page, so GlassCard is the right tool for lists, grids and panels.",
+      "Pair it with Button for the action inside the lens, GlassCard for everything else on the page, and the supportsLiquidGlass helper when you want to adjust copy or layout by engine.",
+    ],
+    faq: [
+      {
+        q: "How do I use liquid glass in React, and does it work in every browser?",
+        a: "Render LiquidGlass with a shape and your content. The real refraction runs in Chromium through an SVG filter on backdrop-filter. Safari and Firefox draw nothing for that filter, so they get SheenUI frosted glass instead. supportsLiquidGlass() tells you which one you got.",
+      },
+      {
+        q: "Why do only some of my lenses bend the background?",
+        a: "Refraction has a page-wide budget of three lenses near the viewport at once; the rest render as frosted glass until a slot frees up, and a lens that scrolls away hands over its slot. Treat it as an accent for hero surfaces, not a card style.",
+      },
+      {
+        q: "Which props tune the look of the lens?",
+        a: "variant is regular (tinted, for text) or clear. refraction runs from 0 to 2 with a default of 1, bezel sets the rim width, frost the blur, saturation the color boost (1.5), aberration splits edge colors from 0 to 1, and specular toggles the bright rim.",
+      },
+      {
+        q: "Is text on a lens readable, and what about reduced transparency?",
+        a: "Text on a regular lens is designed to keep 4.5:1 contrast on any backdrop. With reduced transparency, more contrast or no backdrop-filter support you get a solid surface, forced colors use system colors, and no displacement map is drawn. Only scale ever animates.",
+      },
+    ],
+  },
+
+  "/effects/marquee": {
+    when: [
+      "Use it for a Trusted by strip of customer logos below a landing page hero, or a row of short testimonials, that scrolls on its own at a steady pace.",
+      "Use it for a review wall or testimonial rows, running two marquees in opposite directions with reverse, or a vertical column with vertical and a fixed height for a sidebar of quotes.",
+      "Pass itemClassName with a glass class to turn every item into a glass card; the edge fade is then applied item by item so the backdrop blur keeps working.",
+      "Skip it when the content is long, must be read carefully or contains important actions; moving content competes for attention, so use a static grid where users control the pace.",
+      "Pair it with Avatar and Badge for testimonial cards, GlassCard for each item, and a Switch or your own button wired to the paused prop to control several marquees at once.",
+    ],
+    faq: [
+      {
+        q: "How do I make a react marquee that never jumps?",
+        a: "Give Marquee children, one per item, and set speed in px per second (default 40). The list is copied as many times as needed to fill the strip, and the loop distance is one copy plus one gap, so it repeats seamlessly. gap, reverse and fade adjust spacing, direction and edges.",
+      },
+      {
+        q: "Is a moving marquee accessible?",
+        a: "A Pause / Play button sits below the strip and comes first in the tab order, which covers WCAG 2.2.2; Enter or Space toggles it. The list is rendered once for assistive tech, named by listLabel, while the copies are aria-hidden and out of the tab order.",
+      },
+      {
+        q: "How do I pause it on hover or from my own control?",
+        a: "Hover or keyboard focus inside eases the strip to a stop, and pauseOnHover={false} keeps it running under the mouse. For external control use paused with onPausedChange, which lets one button drive several marquees. defaultPaused starts it stopped.",
+      },
+      {
+        q: "What happens with reduced motion or right-to-left layouts?",
+        a: "With reduced motion it does not move: a row wraps onto as many lines as it needs, a column keeps its height and scrolls, and there are no copies, fade or button. In right-to-left pages the row starts from the right and moves the other way.",
+      },
+    ],
+  },
+
+  "/effects/morphing-dialog": {
+    when: [
+      "Use it as a card to modal animation for gallery and product cards that open into detail, where the picture, title and subtitle fly from the card into the dialog instead of a modal appearing from nowhere.",
+      "Use it for a portfolio grid, a travel destination list or a recipe index, composing MorphingDialogTrigger with MorphingDialogContent and the shared Media, Title, Subtitle, Description and Actions pieces.",
+      "Keep the media's aspect ratio the same in the card and in the dialog, otherwise the shared image stretches during the flight and the morph looks unclean.",
+      "Skip it when the dialog is a form or a confirmation with no card to grow from; use Dialog for those, since a morph only makes sense when the trigger visibly becomes the content.",
+      "Pair it with Button inside MorphingDialogActions so each control fades itself, Badge for a category label on the card, and GlassCard grids to lay the triggers out.",
+    ],
+    faq: [
+      {
+        q: "How do I build a morphing dialog in React?",
+        a: "Wrap MorphingDialogTrigger and MorphingDialogContent in MorphingDialog. Put the same MorphingDialogMedia, Title and Subtitle in both so they share layout ids and fly into place, then add Description and Actions in the content. Use open and onOpenChange for control, or defaultOpen.",
+      },
+      {
+        q: "How do focus and the keyboard work?",
+        a: "Enter or Space on the card opens it; focus moves in and is trapped, Escape closes, and focus returns to the card. Tab and Shift+Tab are handled by the dialog through every control, which keeps the trap exact in Safari. It is built on the Base UI Dialog.",
+      },
+      {
+        q: "What does the trigger render, and how do I style it?",
+        a: 'The trigger is a native button with aria-haspopup="dialog", named by its text. It accepts level (1 to 3, default 2) for the glass, tint for an accent surface and radius in px, which defaults to the theme\'s --sheen-radius-lg. Radii are scale-corrected so corners stay round mid-flight.',
+      },
+      {
+        q: "What happens with reduced motion, and why use MorphingDialogActions?",
+        a: "With reduced motion nothing flies: the dialog simply fades in over the card and out again. Controls belong in MorphingDialogActions because each one fades itself; wrapping a glass button in a faded wrapper would switch its backdrop blur off while it appears.",
+      },
+    ],
+  },
+
+  "/effects/number-ticker": {
+    when: [
+      "Use it for the headline figure of a KPI tile or a totals row that is recalculated when someone picks another date range or filter, so the change reads as motion instead of a jump.",
+      "Use it for a price or revenue figure with currency formatting, such as 48,250 dollars with no decimals, or a stat row on a landing page that counts up when it scrolls into view.",
+      "Use prefix and suffix for units like a plus sign or a percent, and locales with format for compact numbers or other numbering systems; right-to-left locales are laid out correctly.",
+      'Skip it when the number is static or updates many times a second; plain text is better, and live="off" or a non-animated figure suits values that change constantly and would spam screen readers.',
+      "Pair it with GlassCard for a stat tile, Sparkline for the trend beside it, and SegmentedControl so switching the period makes the digits roll to the new values.",
+    ],
+    faq: [
+      {
+        q: "How do I build a number ticker in React with currency formatting?",
+        a: 'Pass value and a format object, for example format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}. Formatting is Intl.NumberFormat, so locales, percent, compact and unit styles all work. from sets the starting number, and setting it equal to value skips the intro roll.',
+      },
+      {
+        q: "Which direction do the digits roll?",
+        a: 'By default they roll up when the value rises and down when it falls. trend="up" or "down" forces a direction. Each digit keeps its place when the number grows or shrinks, so new places slide in instead of everything jumping, and large changes spin an extra turn.',
+      },
+      {
+        q: "How do screen readers hear the changing number?",
+        a: 'The wheels are aria-hidden, and the final value sits in a visually hidden live region, read once and correctly formatted rather than digit by digit. live defaults to "polite", can be "assertive", and "off" suits numbers that change constantly. prefix and suffix are read too.',
+      },
+      {
+        q: "When does the first roll start, and what about reduced motion?",
+        a: "It rolls from from to value the first time it scrolls into view; animateOnView={false} rolls on mount, and delay and duration tune that first roll. With reduced motion the value simply changes with no rolling. It uses transforms and fades, with no backdrop blur.",
+      },
+    ],
+  },
+
+  "/effects/shimmer-text": {
+    when: [
+      'Use it as a text shine effect for a Thinking or Generating your report status line, with trigger="loop" so a band of light keeps sweeping while the work is pending.',
+      'Use it to draw the eye to a badge or announcement link once, with trigger="view" (the default) so the light passes the first time the text scrolls into view.',
+      'Use trigger="hover" inside a link or button so the sweep runs when a pointer enters the control or keyboard focus reaches it, padding included.',
+      "Skip it when you want a text reveal rather than a highlight: BlurIn arrives word by word on a headline, Typewriter types phrases, and neither fits a status that should simply stay readable.",
+      "Pair it with Badge for an announcement pill, Button for a hover-triggered label, and the paused prop plus your own loading state to stop the loop when work finishes.",
+    ],
+    faq: [
+      {
+        q: "How do I add a shimmer text animation in React?",
+        a: "Wrap your text in ShimmerText and choose a trigger: view, hover, loop or mount. duration (default 1.6 seconds), delay, repeatDelay (1 second between loop sweeps), color and spread (band width in em, default 5) shape the sweep. children can include inline icons.",
+      },
+      {
+        q: "Does shimmer text change what screen readers read?",
+        a: "No. The real text is untouched and stays the accessible text, nothing is split or hidden. The highlight is an aria-hidden copy in the highlight color seen through a soft-edged band. The default color is the accent, which keeps AA contrast.",
+      },
+      {
+        q: "Why is it cheap to run, and does it stop when off screen?",
+        a: "The sweep is transform only, using native Web Animations on two transforms, with no per-frame paint. A looping shimmer pauses off screen and in hidden tabs, and paused stops it from outside. The overlay is clipped sideways so it can never widen the page.",
+      },
+      {
+        q: "What happens with reduced motion or forced colors?",
+        a: "With reduced motion there is no overlay at all, just the text. In forced colors the overlay is hidden. Avoid interactive content in children, because the content is copied for the highlight layer and a duplicate control would be confusing.",
+      },
+    ],
+  },
+
+  "/effects/spotlight-card": {
+    when: [
+      "Use it as a cursor glow effect for a feature grid on a landing page, where a soft glow follows the pointer across each glass card and the rim lights up as the cursor nears an edge.",
+      "Use it for pricing tiles or integration cards in a dashboard, with tint to give one accent-colored tile more weight than its neighbors.",
+      "Wrap neighboring cards in SpotlightGroup so a card's rim picks up the light even while the pointer is still over the next card, as on Linear-style grids.",
+      "Skip it when you want a calm surface or a card that physically leans: use GlassCard for static panels and TiltCard for 3D movement toward the pointer, since glow adds noise to dense lists.",
+      "Pair it with SpotlightGroup for the grid, Badge for a plan label, and Button or Switch inside the cards, which keep their own focus rings while the glow reacts to focus.",
+    ],
+    faq: [
+      {
+        q: "How do I make a spotlight card in React?",
+        a: "Render SpotlightCard like a div with padding. level (1 to 3, default 2) and tint pick the glass; size sets the glow diameter in px, defaulting to 90 percent of the card width up to 320px. color sets the glow, rimColor the edge light, and rim={false} removes the rim.",
+      },
+      {
+        q: "How does it avoid re-rendering on every mouse move?",
+        a: "The pointer position is handled at most once per frame, with no React state, and written straight to the glow layers. Those layers are pre-painted gradients moved with translate, so a pointer move never repaints the card or touches its backdrop blur.",
+      },
+      {
+        q: "What happens on touch screens and with the keyboard?",
+        a: "Tracking is mouse and pen only, because a finger dragging across a card is scrolling. Without hover the glow stays static near the top. A plain card is not focusable, but keyboard focus inside it lights it, so interactive children still get the glow.",
+      },
+      {
+        q: "Is it accessible, and what about reduced motion?",
+        a: "The glow and rim are aria-hidden and hidden in forced colors. Text contrast is measured against the glass, not the glow. Reduced motion removes the fades. The card is one backdrop-filter surface, and the glow layers sit inside it behind your content.",
+      },
+    ],
+  },
+
+  "/effects/3d-tilt-card": {
+    when: [
+      "Use it on a hero tile, a pricing card or a product card that should feel physical under the pointer: it tilts in 3D, and the glare and rim light slide across the glass as it moves.",
+      "Use it for a pricing card or a profile showcase, wrapping the title in TiltCardLayer with a depth so it drifts toward the pointer and appears to float above the surface.",
+      "Tune the motion with maxTilt (0 to 8 degrees), hoverScale and perspective, and set glare={false} when you want the lean without the light.",
+      "Skip it when the card is large, dense or full of controls; a flat glow from SpotlightCard or a calm GlassCard is easier to read, and tilting a form makes it harder to aim.",
+      "Pair it with TiltCardLayer for parallax, Badge for a Featured tag, and Button inside the card, whose tab stops and focus ring stay put while the card tilts.",
+    ],
+    faq: [
+      {
+        q: "How do I build a 3D tilt card in React?",
+        a: "Render TiltCard with padding and optionally maxTilt, a value from 0 to 8 degrees with a default of 6. hoverScale defaults to 1.02, and perspective defaults to 1000 px, where a smaller number is more dramatic. level and tint choose the glass, like other cards.",
+      },
+      {
+        q: "Does tilting break the glass blur?",
+        a: "No. The tilt is applied to the glass element itself, as a perspective, rotateX and rotateY transform, never to a wrapper, so the backdrop blur keeps working. TiltCardLayer fakes depth without preserve-3d, which glass cannot use, by drifting toward the pointer.",
+      },
+      {
+        q: "Why does the card not shake when the pointer rests near a corner?",
+        a: "Whether the pointer is on the card is decided against the card's untilted box, not the tilted shape. A tilted corner pulls in a few pixels, and testing against the moving shape would make the card jitter. It also eases into the lean even when entering at an edge.",
+      },
+      {
+        q: "What happens on touch and with reduced motion?",
+        a: "Tilt is off for touch, since a finger on a card is scrolling, and under reduced motion; you then get a still glass card. The glare, streak and rim are aria-hidden and hidden in forced colors, and the glare sits behind your content so text stays crisp.",
+      },
+    ],
+  },
+
+  "/effects/typewriter": {
+    when: [
+      "Use it for the rotating tagline in a portfolio or landing page hero, where one line has to say several things in turn: each phrase is typed out, held long enough to read, then deleted.",
+      "Use it for a terminal-style intro or a demo of a search box suggestion, where one phrase types once with the caret blinking and fading at the end.",
+      "Use typeSpeed, deleteSpeed, hold and startDelay to tune the rhythm; typing already has uneven keystrokes and a beat after punctuation, so it reads as human.",
+      "Skip it when only a single word changes inside a sentence, where WordRotate slides words in a fixed slot, or when the text matters for scanning; BlurIn is better for a one-time headline reveal.",
+      "Pair it with Button for the call to action below the line, ShimmerText for a supporting status line, and reserveSpace so the layout under the text never moves.",
+    ],
+    faq: [
+      {
+        q: "How do I create a typewriter effect in React?",
+        a: "Pass words as a string or an array to Typewriter. With several phrases, loop defaults to true; with one it types once and onComplete fires after the last phrase. typeSpeed defaults to 0.055 seconds per character, deleteSpeed to 0.028, hold to 1.8 and startDelay to 0.2.",
+      },
+      {
+        q: "Does the text jump around while it types?",
+        a: "Not by default. reserveSpace is true, so the space of the longest phrase is reserved up front and nothing around it moves. Characters are grapheme clusters through Intl.Segmenter, so emoji and accents never split in the middle of a character.",
+      },
+      {
+        q: "What do screen readers read, and can people stop it?",
+        a: "Screen readers get every phrase once as plain text, or whatever you pass in label; the typing itself is aria-hidden. It pauses while the tab is hidden or the pointer rests on it, and the paused prop pauses it from your own button, for WCAG 2.2.2.",
+      },
+      {
+        q: "How does the caret behave, and what is the reduced-motion result?",
+        a: "The caret is solid while typing and blinks while waiting, and solid and still when paused. Style it with cursorClassName or hide it with cursor={false}. With reduced motion you get the first phrase, complete, with no caret and nothing to wait for.",
+      },
+    ],
+  },
+
+  "/effects/word-rotate": {
+    when: [
+      "Use it as a word rotate animation for one changing word in a headline, such as Design for designers, developers and everyone, where each word slides in from below as the last slides out the top. Use it as a text loop in React that cycles through a few phrases inside one headline.",
+      "Use it for a feature tagline in a product page that lists audiences or use cases, with highlightClassName adding a pill behind the current word that morphs to fit each one. It is a quiet way to flip words in a headline without moving the layout under the text.",
+      "Use controlled index with onIndexChange when other UI, like tabs or an illustration, should follow the word that is currently shown.",
+      "Skip it when you need whole phrases typed out: Typewriter fits that, and a static sentence fits better when the words are important content, since users may not wait for every one.",
+      "Pair it with BlurIn for the rest of the headline, Button for the action, and a Switch or your own button that sets paused so people can stop the cycling.",
+    ],
+    faq: [
+      {
+        q: "How do I make rotating text in React with WordRotate?",
+        a: "Put WordRotate inside your heading and pass words in order. interval is seconds per word (default 2.6), direction is up or down, and align places a shorter word in the slot. Use defaultIndex to choose the first word when uncontrolled.",
+      },
+      {
+        q: "Will the sentence reflow as the words change?",
+        a: "No. The slot is as wide as the longest word from the first paint, so the text around it never reflows or jumps while a word is in flight. The clipped window uses clip-path as well as overflow, so words in flight are clipped too.",
+      },
+      {
+        q: "How do screen readers and keyboard users experience it?",
+        a: "Screen readers hear every word once as a list, such as designers, developers, and everyone, not a stream of changes. Override that with label, and set the list language with locales. It has no keyboard interaction, because it is text.",
+      },
+      {
+        q: "Can visitors pause it, and what about reduced motion?",
+        a: "It pauses while off screen, while the tab is hidden and while a mouse or pen rests on it, with pauseOnHover turning the last one off. paused stops it from outside, for WCAG 2.2.2. With reduced motion it stays on the current word, static.",
+      },
+    ],
+  },
+
+  "/dashboards/web-analytics": {
+    when: [
+      "Use it for the traffic or site-stats screen of a SaaS app, where a strip of KPI tiles (visitors, pageviews, bounce rate, visit duration) sits above the charts that explain them.",
+      "Use it for a client-facing site report where the trend chart shows the previous period dashed, a realtime panel streams the current visitors and active pages, while top pages, referrers, devices and a country map sit below.",
+      "Connect it to your own API through load, which receives the range, the active filters and an abort signal, then set locale and labels to translate every number and string.",
+      "Skip it when you need funnels and retention, or revenue figures: ProductDashboard covers user journeys and cohorts, and SaasRevenueDashboard handles MRR and churn, so pick the block that matches your data.",
+      "Pair it with SegmentedControl for your own filters beside it, Switch for toggles in surrounding settings, and useAnalyticsDashboard if you build a custom dashboard from the same kit.",
+    ],
+    faq: [
+      {
+        q: "How do I use this web analytics dashboard template with my own data?",
+        a: "Pass load to WebAnalyticsDashboard. It receives the range, the active filters and an abort signal, and returns a WebAnalyticsData object, synchronously or as a promise: points, totals, pages, referrers, countries, devices, browsers and realtime. There is no fake data fallback; demo loaders live in the demo-data export.",
+      },
+      {
+        q: "What props control the header, filters and live mode?",
+        a: "site sets the title, ranges and filters set the range options and channel chips, and range, defaultRange and onRangeChange control the time range. Live and Compare use live, compare and their defaults and callbacks. liveStep evolves data each tick, and onExport replaces the CSV download.",
+      },
+      {
+        q: "Is the dashboard accessible to keyboard and screen reader users?",
+        a: "It is a labeled region, and a polite live region announces loading and updates, but never live ticks. Charts are single tab stops read with arrow keys, and the main charts have a table view behind a Chart and Table switch. Change badges carry arrows and signed numbers, not color alone.",
+      },
+      {
+        q: "How does it behave while loading, on errors and with reduced motion?",
+        a: "The frame stays while skeletons hold each panel on first load, later loads keep the old data on screen, dimmed under a thin scan line, and empty or failed loads say so in words, with Retry when the loader threw. Reduced motion removes rolling digits, draw-in and panel rise.",
+      },
+    ],
+  },
+
+  "/dashboards/saas": {
+    when: [
+      "Use it for the finance or growth screen of a subscription product, where MRR, ARR, churn rate and ARPU roll up as headline numbers with deltas and a sparkline beside each.",
+      "Use it for investor updates or an internal finance review, where MRR stacked by plan, the plan mix donut, an MRR movement waterfall and retention cohorts explain why revenue changed.",
+      "Use currency, locale and labels to render a non-US dashboard, for example amounts in euros formatted German style with translated cohort columns.",
+      "Skip it when you need traffic or conversion data: WebAnalyticsDashboard covers visitors and sources, and EcommerceDashboard covers orders and checkout, so use this one only for subscription metrics.",
+      "Pair it with DonutChart and WaterfallChart for custom panels, SegmentedControl for switching views, and AnalyticsShell with AnalyticsPanel when you adapt the layout.",
+    ],
+    faq: [
+      {
+        q: "How do I build a SaaS dashboard in React with SheenUI?",
+        a: "Render SaasRevenueDashboard with a load function that returns SaasRevenueData: MRR by plan per point, kpis, trends, movement, cohorts and customers. product sets the title and currency the ISO code. The default ranges are 7d, 30d, 90d and 12m, since MRR is a slow metric.",
+      },
+      {
+        q: "What does the MRR movement waterfall show?",
+        a: "It breaks the change in MRR over the range into a starting amount plus new business, expansion, reactivation, contraction and churn, so you can see which movement drove the change. Churn is passed as a monthly ratio, while MRR, ARR and ARPU are in currency units.",
+      },
+      {
+        q: "How do region filters and the customer table work?",
+        a: "Pass filters as region chips; their values reach load as filters, so your API returns the matching data. defaultFilters starts with one region on. The top-customers table is sortable by MRR, seats, change or tenure, and each chart has a table view.",
+      },
+      {
+        q: "Can I translate it or change the headline numbers?",
+        a: "Yes, through the labels prop, a Partial of SaasRevenueLabels that covers every string including cohort columns. locale formats numbers and dates through Intl, and onExport replaces the default CSV of MRR by plan. headingLevel sets the heading level.",
+      },
+    ],
+  },
+
+  "/dashboards/ecommerce": {
+    when: [
+      "Use it as a sales dashboard template for a store admin home screen that shows revenue, orders, average order value and conversion rate for a chosen period with rolling numbers and deltas.",
+      "Use it for a weekly sales review where revenue bars sit beside the previous period or a moving average, with a checkout funnel from sessions to purchase and a category treemap.",
+      "Use the filters prop for sales channels like store, marketplace, app and social, then return the matching channel data from load.",
+      "Skip it when you sell subscriptions, where SaasRevenueDashboard handles MRR and churn, or when you only need a single tile; the stat cards block fits better for one headline number.",
+      "Pair it with Treemap, Heatmap and FunnelChart when you build custom panels, plus Badge and Button for order status and actions around the dashboard.",
+    ],
+    faq: [
+      {
+        q: "How do I build an ecommerce dashboard in React with this block?",
+        a: "Render EcommerceDashboard with load returning EcommerceData: points with revenue and orders, kpis, trends, funnel, categories, an hour-by-weekday heatmap and top products. store sets the title, currency the ISO code, and defaultRange the first range.",
+      },
+      {
+        q: "What does Compare do on the revenue chart?",
+        a: "With Compare on, last period's revenue is drawn as a dashed line on the same axis as the bars, and KPIs show previous values. With it off, the line is a moving average. Points can carry previousRevenue for that comparison.",
+      },
+      {
+        q: "How do I handle live orders and exports?",
+        a: "Pass liveStep to evolve the data on each tick; the Live toggle pauses it, and updates stop off screen and in hidden tabs. Export downloads a CSV of revenue and orders unless you pass onExport. range can be controlled with onRangeChange.",
+      },
+      {
+        q: "Is every chart readable without a mouse or color?",
+        a: "Most panels switch between the chart and a data table. Each chart is one tab stop whose arrow keys read its points, and the treemap has a breadcrumb for zoom levels. Reduced motion removes draw-in and rolling digits, and reduced transparency makes the glass solid.",
+      },
+    ],
+  },
+
+  "/dashboards/product": {
+    when: [
+      "Use it for a product team's weekly review, where the funnel, the retention cohorts and the Sankey user flows show where people drop off, and daily, weekly and monthly active users show whether they come back across web, iOS and Android.",
+      "Use it for a growth review, where a sankey shows how sign-ups flow from sources to onboarding and outcomes, an activation funnel shows drop-off, and cohorts show retention.",
+      "Use platforms chips to filter by web, iOS and Android, and Compare to show the previous period beside every figure and the funnel's conversion.",
+      "Skip it when you need revenue metrics or site traffic: SaasRevenueDashboard covers MRR and churn, and WebAnalyticsDashboard covers page views and referrers, so use this one for in-product behavior.",
+      "Pair it with SankeyChart, FunnelChart and CohortChart when assembling custom panels, and useDashboardData with useLiveTicker if you build your own live panels.",
+    ],
+    faq: [
+      {
+        q: "How do I use this product analytics dashboard with my data?",
+        a: "Pass load to ProductDashboard; it is required, and receives range, platforms, now and locale, and returns ProductData: dau, wau, mau, flow, funnel, adoption, cohorts, events and eventsPerMinute. Demo loaders and liveStep helpers come from the demo-data export.",
+      },
+      {
+        q: "What charts does it include?",
+        a: "Active-user KPIs with sparklines, a sankey of the sign-up journey, the activation funnel with the previous period, feature adoption as a bar list, retention cohorts and a calendar heatmap of daily events. Each chart has a Chart and Table tab.",
+      },
+      {
+        q: "How do filters, live mode and keyboard control work?",
+        a: "The range control moves with the arrow keys, and platform chips toggle with Space or Enter, then Live, Compare and Export. Inside a chart, arrow keys read points and Escape clears the reading. Live pauses off screen and in background tabs, and liveInterval defaults to 2000 ms.",
+      },
+      {
+        q: "How do I handle loading, empty and error states?",
+        a: "The load function can return data or a promise. The first load shows skeletons, later loads keep old data under a veil, and an empty or failed load shows a message, with Retry after a thrown error. The glass prop auto-falls back to solid cards on weak devices.",
+      },
+    ],
+  },
+
+  "/dashboards/crypto-dashboard": {
+    when: [
+      "Use it for the home screen of a trading or wallet app, where the balance chart is scrubbed to read the figure at any moment, or dragged to measure the gain between two points.",
+      "Use it for a trading watchlist with live ticking prices, candles with volume for the selected asset, and allocation as a donut or treemap beside a transactions table.",
+      "Use currency, locale, defaultClasses and defaultAsset to start on euros in German formatting with stocks and ETFs only and a chosen symbol like NWT.",
+      "Skip it when you need order entry or exchange-grade depth charts; this block is read-only analytics, so build trading forms with Input and Button, and use another chart for order books.",
+      "Pair it with CandlestickChart, DonutChart and Sparkline for custom panels, SegmentedControl for the range, and NumberTicker for any extra price figures you add.",
+    ],
+    faq: [
+      {
+        q: "How do I build a crypto dashboard in React with FinanceDashboard?",
+        a: "Pass load, which returns FinanceData: assets, a portfolio value series with previous values, candles per symbol and transactions. defaultAsset (default BTC) picks the candle asset, and classes filter crypto, stocks, ETFs or cash. liveInterval defaults to 1600 ms.",
+      },
+      {
+        q: "How do I read or measure the balance chart by keyboard?",
+        a: "Left and Right arrows read the value at each point and the big number follows; Alt moves 10 points. Shift plus arrows measures the move from where you started, Home and End jump to first and latest, and Escape clears the reading.",
+      },
+      {
+        q: "How are gains and losses shown without relying on color?",
+        a: "Candles are hollow or filled, badges carry arrows and signs, and transaction statuses carry icons and words. Watchlist rows are toggle buttons whose names say the asset, price and 24-hour change. Price ticks are visual only and are not announced.",
+      },
+      {
+        q: "How do live prices and reduced motion behave?",
+        a: "Prices tick with rolling digits only while Live is on, and they stop off screen and in background tabs. Reduced motion removes rolling digits, flashes, draw-ins and pings; data changes appear at once. The transactions table scrolls in its own focusable region.",
+      },
+    ],
+  },
+};

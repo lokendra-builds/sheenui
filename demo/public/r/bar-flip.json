@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bar-flip",
+  "type": "registry:ui",
+  "title": "Bar flip",
+  "description": "Wraps a horizontal bar whose `x` and `width` are written as final attributes, and animates changes of them with a transform only (FLIP): the group is scaled and shifted from the previous geometry...",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "dependencies": [
+    "motion@^14.10.1"
+  ],
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json"
+  ],
+  "files": [
+    {
+      "path": "theme/src/components/charts/bar-flip.tsx",
+      "content": "\"use client\";\n\nimport { useLayoutEffect, useRef, type ReactNode } from \"react\";\nimport { animate, type Transition } from \"motion/react\";\n\nimport { useLatest } from \"../hooks/use-latest\";\n\n/** Narrowest rendered bar (SVG user units): a bar that shrinks to nothing keeps a sliver so the scale ratio stays finite. */\nexport const MIN_BAR = 0.01;\n\n/**\n * Wraps a horizontal bar whose `x` and `width` are written as final attributes, and animates changes of them with a\n * transform only (FLIP): the group is scaled and shifted from the previous geometry back to identity around its left\n * edge, so no SVG `width` or `x` is ever interpolated. The first render and `Transition` of `duration: 0` (reduced\n * motion) do not animate. Put the bar's own grow-in (a `scaleX` from its anchored edge) on the child.\n *\n * Props: `x` and `width` are the bar's final geometry in user units; `transition` is the Motion transition to use.\n * Accessibility: purely visual; the group adds no semantics and the child keeps its own.\n *\n * @internal Not part of the public barrel: the example documents the module's own helper.\n * @example\n * ```tsx\n * import { BarFlip } from \"./bar-flip\";\n *\n * export function Example() {\n *   return (\n *     <svg width={100} height={20}>\n *       <BarFlip x={10} width={60} transition={{ duration: 0.3 }}>\n *         <rect x={10} width={60} height={10} />\n *       </BarFlip>\n *     </svg>\n *   );\n * }\n * ```\n *\n * @see /charts/population-pyramid\n */\nexport function BarFlip({\n  x,\n  width,\n  transition,\n  children,\n}: {\n  x: number;\n  width: number;\n  transition: Transition;\n  children: ReactNode;\n}) {\n  const ref = useRef<SVGGElement>(null);\n  const prev = useRef({ x, width });\n  // A fresh object every render: read it through a ref so only a geometry change restarts the animation.\n  const latest = useLatest(transition);\n  useLayoutEffect(() => {\n    const was = prev.current;\n    prev.current = { x, width };\n    const el = ref.current;\n    const options = latest.current;\n    if (!el || (was.x === x && was.width === width) || (options as { duration?: number }).duration === 0) return;\n    const scale = Math.max(was.width, MIN_BAR) / Math.max(width, MIN_BAR);\n    const controls = animate(el, { x: [was.x - x, 0], scaleX: [scale, 1] }, options);\n    return () => controls.stop();\n  }, [x, width, latest]);\n  return (\n    <g ref={ref} style={{ transformBox: \"fill-box\", transformOrigin: \"0% 50%\" }}>\n      {children}\n    </g>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@components/sheenui/charts/bar-flip.tsx"
+    }
+  ],
+  "docs": "Bar flip: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+  "categories": [
+    "charts"
+  ],
+  "meta": {
+    "kind": "chart",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/charts/population-pyramid",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/charts/population-pyramid"
+  }
+}

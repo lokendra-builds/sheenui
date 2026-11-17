@@ -1,0 +1,32 @@
+{
+  "_comment": "old path -> new path. 'planned' = the 17 planned slug changes; 'additional' = other live URLs that drop the keyword the map assigns them (lens 7 review, issue 10). Run: node scripts/rename-routes.mjs [--map scripts/rename-map.json] [--root <repo>] [--dry] Round-2 review corrections applied: scatter -> scatter-plot; the three /chat renames dropped. Owner approved all 17 planned + 8 additional renames on 16 Nov 2026; /navigation/vertical -> /navigation/vertical-nav because /navigation/sidebar is now the Sidebar page.",
+  "planned": {
+    "/navigation/horizontal": "/navigation/navbar",
+    "/navigation/vertical": "/navigation/vertical-nav",
+    "/charts/percent-bars": "/charts/percent-stacked-bar-chart",
+    "/charts/bullet": "/charts/bullet-chart",
+    "/charts/combo": "/charts/combo-chart",
+    "/charts/funnel": "/charts/funnel-chart",
+    "/charts/pie": "/charts/pie-chart",
+    "/charts/radar": "/charts/radar-chart",
+    "/charts/radial-bar": "/charts/radial-bar-chart",
+    "/charts/range-area": "/charts/range-area-chart",
+    "/charts/scatter": "/charts/scatter-plot",
+    "/charts/stacked-area": "/charts/stacked-area-chart",
+    "/charts/step-line": "/charts/step-line-chart",
+    "/charts/waterfall": "/charts/waterfall-chart",
+    "/effects/dock": "/effects/macos-dock",
+    "/effects/tilt-card": "/effects/3d-tilt-card",
+    "/blocks/auth-split": "/blocks/signup-page"
+  },
+  "additional": {
+    "/charts/tracker": "/charts/uptime-tracker",
+    "/charts/streaming": "/charts/realtime-chart",
+    "/charts/cohort": "/charts/cohort-retention",
+    "/charts/gauge": "/charts/gauge-chart",
+    "/charts/sankey": "/charts/sankey-diagram",
+    "/charts/chord": "/charts/chord-diagram",
+    "/charts/network": "/charts/network-graph",
+    "/dashboards/finance": "/dashboards/crypto-dashboard"
+  }
+}

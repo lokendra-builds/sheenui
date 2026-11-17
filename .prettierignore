@@ -1,0 +1,25 @@
+# Generated or vendored output: formatted by its generator, not by Prettier.
+node_modules
+# macOS AppleDouble metadata files
+**/._*
+dist
+dist-*
+coverage
+test-results
+pnpm-lock.yaml
+registry.json
+demo/public
+demo/src/generated
+theme/dist
+**/playwright-report
+# Prose, styles and workflows keep their hand-wrapped layout.
+*.md
+*.css
+*.yml
+*.yaml
+*.svg
+*.html
+# Agents' scratch scripts left in the tree (kept, not source)
+**/*.tmp.mjs
+**/.w9*-verify.mjs
+**/.scan-tmp.mjs

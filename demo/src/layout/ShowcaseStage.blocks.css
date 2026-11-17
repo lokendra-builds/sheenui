@@ -1,0 +1,93 @@
+/* Block stages: the page's real block, cropped to a fixed frame on the plate (no layout shift). The block is
+   laid out at its own width and cropped to its height. */
+html:root .sheen-showcase.sheen-stage-block.sheen-stage-block .sheen-showcase-plate {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.75rem;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+}
+.sheen-blk {
+  container-type: inline-size;
+  position: relative;
+  overflow: hidden;
+  /* Laid out at its own width (or the plate's, when that is narrower: the block reflows instead of shrinking, so its text
+     stays at its real size, 12px and up) and cropped to a fixed height, so the frame is the same in the prerendered HTML,
+     while the story plays and at every viewport (no layout shift). */
+  width: calc(var(--bw) * 1px);
+  max-width: 100%;
+  height: calc(min(var(--bh), var(--fit)) * 1px);
+  border-radius: var(--radius-sheen-lg, 1rem);
+}
+.sheen-blk-in {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  /* "safe": a block taller than the frame hangs from the top and is cropped at the bottom, never at both ends. */
+  place-items: safe center;
+}
+/* A cropped block fades into the plate at its bottom edge: an overlay of the plate's own colour (the glass below it is
+   untouched: no mask, opacity or filter on the wrapper), so a cut row reads as scrolling on, not as a mistake. */
+.sheen-blk[data-fade]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2.5rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, oklch(0.13 0.035 285 / 0.9));
+}
+html:root[data-theme="light"] .sheen-blk[data-fade]::after,
+html:root:not([data-theme="dark"]):not([data-theme="light"]) .sheen-blk[data-fade]::after {
+  background: linear-gradient(to bottom, transparent, oklch(0.97 0.02 295 / 0.9));
+}
+.sheen-blk-in > * {
+  max-width: 100%;
+}
+.sheen-blk[data-align="start"] > .sheen-blk-in {
+  place-items: start center;
+}
+
+/* Room reserved for what a story opens, so nothing below it moves (no layout shift): each FAQ item holds the height of its
+   open state (trigger plus the longest answer, 119px at the block's own size), and the panel unfolds inside its own slot. */
+.sheen-blk-faq [data-slot="accordion-item"] {
+  min-height: 7.5rem;
+}
+
+/* The footer's subscribe confirmation turns from screen-reader-only into a visible line (20px plus the 12px gap). The newsletter
+   column holds that room from the start and gives it up when the line arrives, so the rows below it never move. */
+.sheen-blk-footer [data-slot="site-footer-newsletter"] {
+  padding-bottom: 2rem;
+}
+.sheen-blk-footer [data-slot="site-footer-newsletter"]:has(> [role="status"]:not(.sr-only)) {
+  padding-bottom: 0;
+}
+
+/* The OTP stage holds the whole block (code, Verify, the resend line) inside its 304px frame, at every width: the card's padding
+   and gaps are tighter, and the shield / check mark is left out of the layout (it would appear and disappear as the story swaps
+   Verify for the verified state, moving everything under it). The block hangs from the top of the frame, so nothing above the
+   part that changes ever moves. The frame never changes height; nothing the story presses is cropped. */
+.sheen-blk-otp .glass-3 {
+  padding-block: 0.75rem;
+}
+.sheen-blk-otp .glass-3 .mt-5 {
+  margin-top: 0.75rem;
+}
+.sheen-blk-otp .glass-3 .mt-3 {
+  margin-top: 0.25rem;
+}
+.sheen-blk-otp .glass-3 > div > :first-child {
+  display: none;
+}
+
+/* A dashboard stage on a phone: the KPI tiles keep their label and figure (the change chip, the previous-period line and the
+   sparkline are dropped; the chart below still compares) so the trend chart shows in full inside the 476px frame. */
+@container (max-width: 24rem) {
+  .sheen-blk-dash [role="tab"] > :is(div, span:last-of-type) {
+    display: none;
+  }
+  .sheen-blk-dash [role="tab"] > .mt-1\.5 > :nth-child(2) {
+    display: none;
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-sheen-style="liquid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- Runs first. Old hash links (/#/components/button) become the real path, and a trailing
+         slash on a page URL is dropped (GitHub Pages answers /components/button/ with 404.html;
+         the canonical form is /components/button), except on the hub folders, which serve both. -->
+    <script>
+      document.documentElement.setAttribute("data-js", "");
+    </script>
+    <script>
+      (function () {
+        var p = location.pathname, h = location.hash;
+        if (h.slice(0, 2) === "#/") return location.replace(p.replace(/\/$/, "") + h.slice(1) + location.search);
+        // Hub pages are folders too (hubs list: written by scripts/prerender.mjs). A host may redirect
+        // /charts to /charts/ itself, so both spellings are valid there and must not be redirected back.
+        var hubs = /*sheen-hubs*/[];
+        if (p.length > 1 && p.slice(-1) === "/" && !/^\/[^/]*\/$/.test(p) && hubs.indexOf(p) < 0) location.replace(p.slice(0, -1) + location.search + h);
+      })();
+    </script>
+    <!-- The title, description, canonical, Open Graph and Twitter tags are rendered by React
+         (src/seo/Seo.tsx) and hoisted here, on the server at build time and on the client. -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#4b3bd1" />
+    <!-- Apply the saved style preset / theme / motion / transparency before first paint (no flash).
+         The exact text of sheenPreferenceScript (@sheenui/theme). -->
+    <script>
+      (function(){try{var r=document.documentElement;["theme","motion","transparency","glass"].forEach(function(k){var v=localStorage.getItem("sheen:"+k);if(v)r.setAttribute("data-"+k,v);});var s=localStorage.getItem("sheen:style");r.setAttribute("data-sheen-style",s==="aurora"||s==="liquid"?s:"liquid");}catch(e){document.documentElement.setAttribute("data-sheen-style","liquid");}})();
+    </script>
+    <!-- Remember a Ctrl/Cmd+K or a click on the header Search button made before React has hydrated; SiteSearch
+         (src/layout/SiteSearch.tsx) replays it once and removes the listeners. -->
+    <script>
+      (function(){var w=window,f=function(e){if(e.type==="keydown"?(e.key||"").toLowerCase()==="k"&&(e.metaKey||e.ctrlKey)&&!e.altKey&&!e.shiftKey:e.target.closest&&e.target.closest('button[aria-label="Search the docs"]')){if(e.type==="keydown")e.preventDefault();w.__sheenSearch={n:1,off:function(){removeEventListener("keydown",f);removeEventListener("click",f);}};}};addEventListener("keydown",f);addEventListener("click",f);w.__sheenSearch={n:0,off:function(){removeEventListener("keydown",f);removeEventListener("click",f);}};})();
+    </script>
+    <!--app-head-->
+  </head>
+  <body class="sheen-backdrop">
+    <div id="root"><!--app-html--></div>
+    <!-- The prerender's rel=expect link holds the first paint until the parser has reached this marker (see scripts/prerender.mjs). -->
+    <i id="sheen-end" hidden></i>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

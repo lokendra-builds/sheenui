@@ -1,0 +1,294 @@
+@layer sheen {
+  /*
+ * SheenUI design tokens.
+ *
+ * Three tiers:
+ *   1. Primitives  (--sheen-ink-*, --sheen-violet-*, --sheen-teal-*): raw OKLCH values
+ *   2. Semantics   (--sheen-bg, --sheen-fg, --sheen-accent, ...): what a value is FOR
+ *   3. Component   (--sheen-glass-*, in glass.css; --sheen-blob-*, in backgrounds.css)
+ *
+ * Components use tier 2 (or 3), never raw colours. Every semantic colour is exposed to
+ * Tailwind in index.css: --sheen-accent-soft → bg-sheen-accent-soft, and so on.
+ *
+ * Light/dark is resolved by `color-scheme` + `light-dark()`:
+ *   - no attribute            → follows the OS
+ *   - [data-theme="light"]    → forced light
+ *   - [data-theme="dark"]     → forced dark
+ *
+ * Contrast (WCAG 2), measured in the browser. "flat" is against plain --sheen-bg. Every other
+ * column is the WORST case: the brightest backdrop blob peak, with the demo Stage's extra blobs
+ * on top, at 1440 and 390 wide, as the mean of a chip-sized (92x26) patch.
+ *   blob = straight on the backdrop   g1 / g2 = on glass-1 / glass-2
+ *   tint = on its own *-soft tint straight on the backdrop   tint/g1 = that tint over glass-1
+ * Text needs 4.5:1 (light status text aims for 5:1). Light text tokens were darkened a step (fg-muted L31%, fg-subtle L35%, accent L38-39%, danger-text L36%) after a pixel-by-pixel audit found single worst pixels at 3.5-4.4:1 over Aurora light's brightest backdrop; the table below predates that and understates the light columns; focus and edges need 3:1. Rounded down.
+ *
+ *                 light: flat  blob   g1   g2 tint tint/g1   dark: flat  blob   g1   g2 tint tint/g1
+ *   fg-subtle            6.8   4.5  5.5  5.9                       8.9   4.6  5.4  5.7
+ *   fg-muted             7.8   5.2  6.3  6.7                      10.5   5.5  6.4  6.7
+ *   accent               7.4   5.0  6.0  6.5  4.6   5.5            9.9   5.2  6.0  6.3  4.6   5.2
+ *   success-text         8.3   5.6  6.7  7.2  5.1   6.0           12.4   6.5  7.6  7.9  5.2   6.0
+ *   danger-text          8.8   5.9  7.1  7.6  5.2   6.2           10.3   5.4  6.3  6.6  4.8   5.5
+ *   warning-text         8.3   5.6  6.7  7.2  5.2   6.1           12.7   6.7  7.8  8.2  5.5   6.3
+ *   focus                6.6   4.4  5.3  5.7                       7.9   4.1  4.8  5.1
+ *
+ * Edges (non-text, 3:1): a 1px edge of a glass-1 control vs the backdrop just outside it, worst
+ * single point over the blob peaks (same conditions as above).
+ *                 light: flat  blob   dark: flat  blob
+ *   control-border       5.2   3.1          7.0   3.6
+ *   danger-border        5.8   3.4          7.6   3.9
+ *   success-border       5.3   3.2         10.8   5.6
+ * The base light --sheen-danger / --sheen-success reach only ~2.1 / ~1.5 there: never use them as
+ * a control edge. Rendered pages were audited pixel-by-pixel too (text and edges over real blobs
+ * and glass): all pass.
+ */
+
+  :root,
+  [data-theme] {
+    color-scheme: light dark;
+
+    /* ---------- 1. Primitives ---------- */
+    --sheen-ink-0: oklch(100% 0 0);
+    --sheen-ink-50: oklch(98.5% 0.004 270);
+    --sheen-ink-100: oklch(96.5% 0.006 270);
+    --sheen-ink-200: oklch(92% 0.01 270);
+    --sheen-ink-300: oklch(86% 0.014 270);
+    --sheen-ink-350: oklch(79% 0.016 270);
+    --sheen-ink-400: oklch(72% 0.02 270);
+    --sheen-ink-500: oklch(55% 0.025 270);
+    --sheen-ink-550: oklch(46% 0.025 270);
+    --sheen-ink-600: oklch(43% 0.025 270);
+    --sheen-ink-700: oklch(32% 0.025 270);
+    --sheen-ink-800: oklch(22% 0.022 270);
+    --sheen-ink-900: oklch(16% 0.02 270);
+    --sheen-ink-950: oklch(11% 0.018 270);
+
+    --sheen-violet-300: oklch(80% 0.11 285);
+    --sheen-violet-400: oklch(72% 0.15 285);
+    --sheen-violet-500: oklch(62% 0.19 285);
+    --sheen-violet-600: oklch(53% 0.2 285);
+    --sheen-violet-700: oklch(49% 0.21 285);
+
+    --sheen-teal-300: oklch(87% 0.1 185);
+    --sheen-teal-400: oklch(80% 0.13 185);
+    --sheen-teal-500: oklch(70% 0.13 185);
+    --sheen-teal-600: oklch(58% 0.11 185);
+
+    --sheen-rose-400: oklch(72% 0.16 15);
+    --sheen-rose-500: oklch(64% 0.2 20);
+    --sheen-rose-700: oklch(50% 0.18 25);
+    --sheen-amber-400: oklch(83% 0.14 80);
+    --sheen-amber-500: oklch(65% 0.15 70);
+    --sheen-amber-700: oklch(48% 0.11 60);
+    --sheen-green-400: oklch(78% 0.15 155);
+    --sheen-green-500: oklch(68% 0.16 155);
+    --sheen-green-700: oklch(46% 0.12 155);
+
+    /* ---------- 2. Semantics ---------- */
+    --sheen-bg: light-dark(var(--sheen-ink-50), var(--sheen-ink-950));
+    --sheen-fg: light-dark(var(--sheen-ink-900), var(--sheen-ink-50));
+    --sheen-fg-muted: light-dark(var(--sheen-ink-600), var(--sheen-ink-350));
+    /* Captions, placeholders, group labels. Still body-text contrast (>= 4.5:1), on glass too.
+     Dark sits 2 L above ink-400: at 72% it fell to ~4.3:1 on a demo Stage over the violet blob. */
+    --sheen-fg-subtle: light-dark(var(--sheen-ink-550), oklch(74% 0.02 270));
+    --sheen-border: light-dark(oklch(20% 0.02 270 / 0.1), oklch(100% 0 0 / 0.1));
+
+    /* Accent text sits a step past the brand violet (deeper in light, paler in dark), so it clears
+     4.5:1 on its own soft tint even straight over the violet backdrop blob, the worst case. */
+    --sheen-accent: light-dark(oklch(46% 0.2 285), oklch(78% 0.125 285));
+    --sheen-accent-2: light-dark(var(--sheen-teal-600), var(--sheen-teal-400));
+    --sheen-accent-fg: var(--sheen-ink-0);
+    /* Accent tint for chips, badges, selected rows. --sheen-accent text stays >= 4.5:1 on it.
+     Kept faint: a stronger tint pulls the background toward the text colour. */
+    --sheen-accent-soft: light-dark(oklch(53% 0.2 285 / 0.08), oklch(72% 0.15 285 / 0.09));
+    --sheen-accent-border: light-dark(oklch(53% 0.2 285 / 0.3), oklch(72% 0.15 285 / 0.35));
+    /* Decorative gradient (brand text, blobs): not for backgrounds behind text. */
+    --sheen-accent-gradient: linear-gradient(135deg, var(--sheen-violet-500), var(--sheen-teal-500));
+    /* Gradient for filled controls: dark enough for white text to pass WCAG AA (4.5:1).
+     Elements filled with it should also carry the .sheen-fill class (Windows High Contrast). */
+    --sheen-accent-fill: linear-gradient(135deg, oklch(52% 0.21 285), oklch(50% 0.16 250));
+    /* Coloured glow under accent-filled controls (primary button, slider value bubble). */
+    --sheen-accent-glow: oklch(52% 0.21 285 / 0.8);
+    /* Lit top edge + glow for a solid accent-filled button. */
+    --sheen-accent-fill-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.25), 0 8px 24px -10px var(--sheen-accent-glow);
+    /* Destructive fill (danger button). White text >= 5.6:1 across the whole gradient.
+     --sheen-danger-solid is the same red as one colour: the background-color under the gradient. */
+    --sheen-danger-fill: linear-gradient(135deg, oklch(54% 0.2 22), oklch(48% 0.19 12));
+    --sheen-danger-solid: oklch(51% 0.2 17);
+    --sheen-danger-fill-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.2), 0 8px 24px -10px oklch(55% 0.2 20 / 0.8);
+    /* Coloured glow under the danger button (its --sheen-glow-color). */
+    --sheen-danger-glow: oklch(58% 0.22 25 / 0.6);
+    /* Coloured glows of the success and warning states (a status light behind a toast, a stage, a verified seal).
+     With --sheen-accent-glow and --sheen-danger-glow they are the four state lights. */
+    --sheen-success-glow: oklch(66% 0.17 155 / 0.6);
+    --sheen-warning-glow: oklch(76% 0.16 75 / 0.55);
+
+    /* Interaction */
+    /* Row / item hover and keyboard-highlighted background (menus, lists, tables). */
+    --sheen-hover: light-dark(oklch(30% 0.03 275 / 0.07), oklch(100% 0 0 / 0.08));
+    /* Solid focus colour (>= 3:1 on bg and glass): outline-2 outline-offset-2 outline-sheen-focus. */
+    --sheen-focus: light-dark(var(--sheen-violet-700), var(--sheen-violet-400));
+    /* Soft halo that can sit around the solid focus outline. Decorative only. */
+    --sheen-ring: light-dark(oklch(53% 0.2 285 / 0.45), oklch(72% 0.15 285 / 0.55));
+    --sheen-selection: light-dark(oklch(62% 0.19 285 / 0.28), oklch(72% 0.15 285 / 0.38));
+
+    /* Status: the base colour is for dots, fills and icons that sit next to a word saying the same
+     thing. In light mode it is not a 3:1 graphic on its own (flat --sheen-bg: danger 3.5, warning
+     3.2, success 2.5; less over the blobs). *-text is for words (and icons that stand alone);
+     *-soft is the tinted background they sit on; *-border is the edge of an invalid / valid
+     control (below). */
+    --sheen-success: light-dark(var(--sheen-green-500), var(--sheen-green-400));
+    --sheen-danger: light-dark(var(--sheen-rose-500), var(--sheen-rose-400));
+    --sheen-warning: light-dark(var(--sheen-amber-500), var(--sheen-amber-400));
+
+    /* Words. Light text sits below the -700 primitives and dark text above the -400 ones, so it
+     keeps >= 5:1 (light) / >= 4.5:1 (dark) on its -soft tint even straight over the brightest
+     backdrop blob, and on glass-1/2/3 with or without the tint. */
+    --sheen-success-text: light-dark(oklch(40% 0.105 155), oklch(82% 0.145 155));
+    --sheen-danger-text: light-dark(oklch(36% 0.15 25), oklch(84% 0.11 18));
+    --sheen-warning-text: light-dark(oklch(42% 0.095 60), oklch(85% 0.135 80));
+
+    /* Dark tints are fainter than light ones: a light tint over dark glass lifts the background
+     toward the (light) text colour. */
+    --sheen-success-soft: light-dark(oklch(68% 0.16 155 / 0.14), oklch(78% 0.15 155 / 0.11));
+    --sheen-danger-soft: light-dark(oklch(64% 0.2 20 / 0.12), oklch(72% 0.16 15 / 0.11));
+    --sheen-warning-soft: light-dark(oklch(80% 0.15 75 / 0.22), oklch(83% 0.14 80 / 0.11));
+
+    /* Edge of an invalid (danger) or confirmed (success) control: the status twin of
+     --sheen-control-border, >= 3:1 against glass-1 over the brightest blob, light and dark
+     (WCAG 1.4.11). The base light colours are too pale for a 1px edge on a light backdrop
+     (~2.1:1 danger, ~1.5:1 success). Unlike the decorative --sheen-accent-border, these are solid. */
+    --sheen-danger-border: light-dark(oklch(52% 0.19 22), var(--sheen-rose-400));
+    --sheen-success-border: light-dark(oklch(50% 0.13 155), var(--sheen-green-400));
+
+    /* Expanding success ring (keyframes sheen-ripple). */
+    --sheen-success-ring: light-dark(oklch(68% 0.16 155 / 0.55), oklch(78% 0.15 155 / 0.5));
+
+    /* ---------- Controls ---------- */
+    /* Boundary of small form controls (checkbox, switch and slider tracks, text fields, select
+     triggers): >= 3:1 against the page, glass and the demo stages, light and dark (WCAG 1.4.11).
+     Only controls use it: cards and panels keep the soft --sheen-glass-border. */
+    --sheen-control-border: light-dark(oklch(52% 0.03 275), oklch(68% 0.03 275));
+    /* Thumbs of switches and sliders, and their shadows (resting in a track / floating above one).
+     In light mode a white thumb is ~1.1:1 against a light track and page, so the shadows carry a
+     1px control-border ring: the thumb is the only position cue on a slider at its minimum. */
+    --sheen-thumb: oklch(100% 0 0);
+    /* Fixed ink for text and marks drawn on a data fill whose colour is only known at run time (a heatmap cell, a
+     treemap tile): the chart picks one by contrast, so neither follows the theme. "on-dark" is the light ink for dark
+     fills, "on-light" the dark ink for light fills. */
+    --sheen-ink-on-dark: oklch(100% 0 0);
+    --sheen-ink-on-light: oklch(0% 0 0);
+    --sheen-thumb-ring: light-dark(var(--sheen-control-border), transparent);
+    --sheen-thumb-shadow:
+      0 0 0 1px var(--sheen-thumb-ring), 0 1px 3px oklch(0% 0 0 / 0.3), inset 0 -1px 0 oklch(0% 0 0 / 0.08);
+    --sheen-thumb-shadow-raised:
+      0 0 0 1px var(--sheen-thumb-ring), 0 2px 6px oklch(0% 0 0 / 0.35), inset 0 -1px 0 oklch(0% 0 0 / 0.08);
+    /* The sliding "selected" pill under the active tab. */
+    --sheen-indicator: light-dark(oklch(100% 0 0 / 0.95), oklch(100% 0 0 / 0.14));
+    --sheen-indicator-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.4), 0 2px 10px -2px oklch(20% 0.03 275 / 0.25);
+    /* Dims the page behind modal surfaces (dialog, alert dialog, drawer). Deeper in dark mode,
+     where a light veil would barely show. */
+    --sheen-scrim: light-dark(oklch(15% 0.02 275 / 0.35), oklch(6% 0.015 275 / 0.6));
+    /* Text laid over an arbitrary image (carousel captions): a fixed dark scrim and light text, the same in every
+     look because a photo does not follow the theme. Light text over the scrim over pure white stays >= 9:1. */
+    --sheen-image-scrim: oklch(14% 0.02 275 / 0.82);
+    --sheen-on-image: oklch(100% 0 0);
+
+    /* ---------- Code (CodeBlock syntax colours) ----------
+   * Every colour keeps >= 4.5:1 on the code block's glass (levels 1-3), plain and on its
+   * highlighted, added and removed line tints, in light and dark, over the brightest backdrop
+   * blob with the demo Stage blobs on top (worst pixel: 4.6, light, danger tint on glass-1).
+   * Light L 43-47%, dark L 81-86%: hue carries the meaning, lightness the contrast.
+   * Line numbers: fg-subtle on plain lines, fg-muted on tinted ones, accent on marked ones (>= 4.8).
+   */
+    --sheen-code-keyword: light-dark(oklch(46% 0.2 300), oklch(83% 0.11 300));
+    --sheen-code-string: light-dark(oklch(45% 0.11 155), oklch(84% 0.12 155));
+    --sheen-code-number: light-dark(oklch(47% 0.12 55), oklch(85% 0.11 70));
+    --sheen-code-literal: light-dark(oklch(47% 0.16 30), oklch(83% 0.1 35));
+    --sheen-code-function: light-dark(oklch(46% 0.15 255), oklch(83% 0.09 250));
+    --sheen-code-type: light-dark(oklch(45% 0.08 195), oklch(85% 0.09 190));
+    --sheen-code-tag: light-dark(oklch(47% 0.17 10), oklch(83% 0.1 10));
+    --sheen-code-attr: light-dark(oklch(46% 0.11 75), oklch(86% 0.1 85));
+    --sheen-code-property: light-dark(oklch(45% 0.12 230), oklch(84% 0.08 230));
+    --sheen-code-variable: light-dark(oklch(46% 0.17 340), oklch(83% 0.1 340));
+    --sheen-code-comment: light-dark(oklch(46% 0.02 270), oklch(81% 0.02 270));
+    --sheen-code-punctuation: light-dark(oklch(43% 0.02 270), oklch(84% 0.015 270));
+
+    /* ---------- Charts ----------
+   * Categorical slots, assigned in this fixed order (never cycled past 8).
+   * Validated with the data-viz palette checks (lightness band, chroma floor,
+   * colour-blind separation of adjacent slots, normal-vision floor) against
+   * SheenUI's light (#f6f6fa) and dark (#1d1e29) surfaces: all checks pass.
+   * Slots 2–5 sit below 3:1 on the light surface, so every chart ships a table view.
+   */
+    --sheen-chart-1: light-dark(#4a3aa7, #9085e9); /* violet */
+    --sheen-chart-2: light-dark(#eb6834, #d95926); /* orange */
+    --sheen-chart-3: light-dark(#1baf7a, #199e70); /* aqua */
+    --sheen-chart-4: light-dark(#eda100, #c98500); /* yellow */
+    --sheen-chart-5: light-dark(#e87ba4, #d55181); /* magenta */
+    --sheen-chart-6: light-dark(#008300, #008300); /* green */
+    --sheen-chart-7: light-dark(#2a78d6, #3987e5); /* blue */
+    --sheen-chart-8: light-dark(#e34948, #e66767); /* red */
+    /* Surface colour used for the 2px gaps between marks and rings around dots. */
+    --sheen-chart-surface: light-dark(#f6f6fa, #1d1e29);
+    --sheen-chart-grid: light-dark(oklch(20% 0.02 270 / 0.09), oklch(100% 0 0 / 0.08));
+
+    /* ---------- Shape & type ---------- */
+    --sheen-radius-sm: 0.625rem;
+    --sheen-radius-md: 0.875rem;
+    --sheen-radius-lg: 1.25rem;
+    --sheen-radius-xl: 1.75rem;
+    --sheen-radius-full: 999px;
+
+    /* ---------- Control heights ----------
+     ONE scale for buttons and form fields, so a Button beside an Input lines up at every size.
+     Touch screens (any coarse pointer) grow sm and md to 44px so the 44px target gate holds without hit-area tricks. */
+    --sheen-control-h-sm: 2rem;
+    --sheen-control-h-md: 2.5rem;
+    --sheen-control-h-lg: 3rem;
+
+    --sheen-font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sheen-font-mono: "JetBrains Mono Variable", "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    /* ---------- Style layer contract ----------
+   * Tokens every style preset (styles/presets/*.css) defines for its look. These are the
+   * neutral defaults; the presets re-point them, light and dark.
+   */
+    /* Second page colour: the backdrop's gradient runs from --sheen-bg to this. */
+    --sheen-bg-2: var(--sheen-bg);
+    /* Six decorative colours of the style (backdrop light, rims, casts). Never behind text
+     without glass. 1 violet · 2 magenta · 3 warm · 4 gold · 5 cyan · 6 blue (by role). */
+    --sheen-spectrum-1: var(--sheen-violet-500);
+    --sheen-spectrum-2: var(--sheen-rose-500);
+    --sheen-spectrum-3: var(--sheen-amber-400);
+    --sheen-spectrum-4: var(--sheen-amber-400);
+    --sheen-spectrum-5: var(--sheen-teal-500);
+    --sheen-spectrum-6: oklch(62% 0.17 255);
+    /* Gradient for display TEXT (the hero accent phrase, brand words): every stop keeps large-text
+     AA (>= 3:1, in practice >= 4.5:1) on the page, light and dark. */
+    --sheen-text-gradient: linear-gradient(100deg, var(--sheen-accent), var(--sheen-accent-2));
+    /* Display type: headings and the hero. The accent face is used for ONE word or phrase. */
+    --sheen-font-display: var(--sheen-font-sans);
+    --sheen-font-accent: var(--sheen-font-display);
+    --sheen-display-weight: 650;
+    --sheen-display-tracking: -0.03em;
+    --sheen-accent-style: normal;
+    --sheen-accent-weight: var(--sheen-display-weight);
+    --sheen-accent-size: 1em;
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  @media (any-pointer: coarse) {
+    :root {
+      --sheen-hit-size: 2.75rem;
+      --sheen-control-h-sm: 2.75rem;
+      --sheen-control-h-md: 2.75rem;
+    }
+  }
+}

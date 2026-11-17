@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-figure",
+  "type": "registry:ui",
+  "title": "Chart figure",
+  "description": "The root of an interactive chart, as an accessible figure: `role=\"figure\"` named by `label` (the chart title), the keyboard instructions as its description (`aria-describedby`), and, inside a...",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json"
+  ],
+  "files": [
+    {
+      "path": "theme/src/components/charts/chart-figure.tsx",
+      "content": "\"use client\";\n\nimport { createContext, useContext, useId, type ComponentProps, type ReactNode } from \"react\";\n\n/**\n * The id of the table view that sits beside the chart in a `ChartCard`, or null when there is none. `ChartFigure`\n * points `aria-details` at it: the accessible twin of the drawing, one jump away for a screen reader.\n *\n * @internal Provided by `ChartCard`, read by `ChartFigure`.\n * @example\n * ```tsx\n * import { ChartTwinContext } from \"./chart-figure\";\n *\n * export function Card({ children }: { children: React.ReactNode }) {\n *   return <ChartTwinContext value=\"visits-table\">{children}</ChartTwinContext>;\n * }\n * ```\n * @see /charts\n */\nexport const ChartTwinContext = createContext<string | null>(null);\n\ntype Shared = {\n  /** The accessible name of the chart (its title), without the keyboard instructions. */\n  label: string;\n  /** Short text read after the name: how to use the keyboard, a one-line summary. Linked with `aria-describedby`. */\n  description?: ReactNode;\n  /** What the figure announces itself as. Default \"chart\"; pass the translated word (or \"gauge\"). */\n  roleDescription?: string;\n  children?: ReactNode;\n};\n\n/** Props of {@link ChartFigure}. An `<svg>` (default) or a `<div>` plus the chart's name and description. */\nexport type ChartFigureProps = Shared &\n  (\n    | (Omit<ComponentProps<\"svg\">, \"children\"> & { as?: \"svg\" })\n    | (Omit<ComponentProps<\"div\">, \"children\"> & { as: \"div\" })\n  );\n\n/**\n * The root of an interactive chart, as an accessible figure: `role=\"figure\"` named by `label` (the chart title), the\n * keyboard instructions as its description (`aria-describedby`), and, inside a `ChartCard` that has a table view,\n * `aria-details` pointing at that table. Pass `tabIndex={0}` and the key handler only when the chart is interactive:\n * a static drawing is not a tab stop.\n *\n * Keyboard: whatever the chart's own handler does (arrow keys, Home, End, Escape). Accessibility: the name stays\n * short, the instructions move to the description, and the table twin is the full text alternative.\n *\n * @internal Used by every chart; not part of the public barrel.\n * @example\n * ```tsx\n * import { ChartFigure } from \"./chart-figure\";\n *\n * export function Tiny() {\n *   return (\n *     <ChartFigure width={120} height={40} label=\"Visits\" description=\"Use the arrow keys to read values.\" tabIndex={0}>\n *       <rect width={60} height={40} />\n *     </ChartFigure>\n *   );\n * }\n * ```\n * @see /charts\n */\nexport function ChartFigure(props: ChartFigureProps) {\n  const { as, label, description, roleDescription = \"chart\", children, ...rest } = props;\n  const descId = useId();\n  const twin = useContext(ChartTwinContext);\n  const common = {\n    role: \"figure\",\n    \"aria-roledescription\": roleDescription,\n    \"aria-label\": label,\n    \"aria-describedby\": description ? descId : undefined,\n    \"aria-details\": twin ?? undefined,\n  } as const;\n  if (as === \"div\") {\n    return (\n      <div {...(rest as ComponentProps<\"div\">)} {...common}>\n        {description ? (\n          <span id={descId} className=\"sr-only\">\n            {description}\n          </span>\n        ) : null}\n        {children}\n      </div>\n    );\n  }\n  return (\n    <svg {...(rest as ComponentProps<\"svg\">)} {...common}>\n      {description ? <desc id={descId}>{description}</desc> : null}\n      {children}\n    </svg>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@components/sheenui/charts/chart-figure.tsx"
+    }
+  ],
+  "docs": "Chart figure: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+  "categories": [
+    "charts"
+  ],
+  "meta": {
+    "kind": "chart",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/charts",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/charts"
+  }
+}

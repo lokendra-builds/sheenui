@@ -1,0 +1,1 @@
+var e=`maya@example.com`,t=async({state:t,scene:n,wait:r})=>{await r(800);for(let t=1;t<=10;t+=1)n({value:e.slice(0,t)}),await r(85);n({touched:!0}),t(`error`),await r(1900);for(let t=11;t<=16;t+=1)n({value:e.slice(0,t)}),await r(110);t(`success`),await r(500)};export{e as INPUT_DEMO_EMAIL,t as default};

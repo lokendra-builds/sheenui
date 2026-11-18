@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n=e(()=>t(()=>import(`./Faq-jlOwJdym.js`).then(e=>e.Faq),[]),{minHeight:`20rem`}),r=e(()=>t(()=>import(`./AboutAccordion-BKbSyczE.js`).then(e=>e.AboutSection),[]),{minHeight:`14rem`});export{n,r as t};

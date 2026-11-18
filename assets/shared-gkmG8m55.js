@@ -1,0 +1,1 @@
+import"./rolldown-runtime-WkwZ5CU-.js";import{i as e,t}from"./vendor-react-D30i__oY.js";e();var n=t();function r({children:e,className:t=`size-5`}){return(0,n.jsx)(`svg`,{"aria-hidden":!0,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:`2`,strokeLinecap:`round`,strokeLinejoin:`round`,className:t,children:e})}export{r as t};

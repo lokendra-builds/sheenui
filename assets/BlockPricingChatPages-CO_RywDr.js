@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./vendor-react-D30i__oY.js";import{t as n}from"./preload-helper-BrmCrVM7.js";t(),e(()=>n(()=>import(`./ai-chat-CzgEl9F1.js`).then(e=>e.AiChat),[]),{minHeight:`32rem`,eager:!0});var r=e(()=>n(()=>import(`./BentoGridPageBody-B_UydKTE.js`).then(e=>e.BentoGridPage),[]),{eager:!0,minHeight:`80vh`});export{r as default};

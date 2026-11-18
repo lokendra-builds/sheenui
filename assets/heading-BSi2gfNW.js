@@ -1,0 +1,1 @@
+function e(e,t=0){return e===`none`||e===!1?`p`:`h${Math.min(6,e+t)}`}function t(e,t=1){return e===`none`||e===!1?`none`:Math.min(6,e+t)}var n={1:`h1`,2:`h2`,3:`h3`,4:`h4`,5:`h5`,6:`h6`,none:`p`};export{t as n,e as r,n as t};

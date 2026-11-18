@@ -1,0 +1,1 @@
+import{t as e}from"./chart-card-CecZC59c.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r(t){return(0,n.jsx)(e,{headingLevel:`none`,...t})}export{r as t};

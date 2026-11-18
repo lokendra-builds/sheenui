@@ -1,0 +1,782 @@
+# SheenUI: Overlays (part 2 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## React Slide-Over Panel for Edit & Detail Views
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/side-drawer
+Sidebar name: Side drawer
+
+A glass React slide-over panel (side drawer) to view and edit records without leaving the page: validated form, unsaved-change guard, tabs, next/previous.
+
+What it is: A glass React slide-over panel, or side drawer, that slides in to edit a record or show its details, with an edit form that guards unsaved changes.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/side-drawer.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Side drawer
+
+Files to copy from `theme/src/`:
+
+- `components/description-list/`
+- `components/side-drawer/`
+- `components/alert-dialog/`
+- `components/badge/`
+- `components/button/`
+- `components/drawer/`
+- `components/empty-state/`
+- `components/input/`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `components/tabs/`
+- `components/toast/`
+- `components/tooltip/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: side-drawer. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { UserCell } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { DescriptionItem, DescriptionList } from "@/components/sheenui/description-list/description-list";
+import { Input } from "@/components/sheenui/input/input";
+import { MenuItem, MenuSeparator } from "@/components/sheenui/menu/menu";
+import { Select } from "@/components/sheenui/select/select";
+import { SideDrawerBody, SideDrawerFooter } from "@/components/sheenui/side-drawer/parts/body";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { SideDrawerHeader } from "@/components/sheenui/side-drawer/parts/header";
+import { useSideDrawer } from "@/components/sheenui/side-drawer/parts/model";
+import { SideDrawer, SideDrawerClose, SideDrawerTrigger } from "@/components/sheenui/side-drawer/side-drawer";
+import { SideDrawerDetail, type SideDrawerDetailMode } from "@/components/sheenui/side-drawer/side-drawer-detail";
+import { SideDrawerForm } from "@/components/sheenui/side-drawer/side-drawer-form";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { Textarea } from "@/components/sheenui/textarea/textarea";
+import { Timeline, TimelineItem } from "@/components/sheenui/timeline/timeline";
+```
+
+These examples also use avatar, data-table, select, switch, textarea, timeline: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/data-table.json https://lokendra-builds.github.io/sheenui/r/select.json https://lokendra-builds.github.io/sheenui/r/switch.json https://lokendra-builds.github.io/sheenui/r/textarea.json https://lokendra-builds.github.io/sheenui/r/timeline.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Badge, Button, CopyIcon, DataTable, type DataTableColumn, DescriptionItem, DescriptionList, Input, MenuItem, MenuSeparator, Select, SideDrawer, SideDrawerBody, SideDrawerClose, SideDrawerContent, SideDrawerDetail, type SideDrawerDetailMode, SideDrawerFooter, SideDrawerForm, SideDrawerHeader, SideDrawerTrigger, Switch, Textarea, Timeline, TimelineItem, UserCell, useSideDrawer } from "@sheenui/theme";
+```
+
+### SideDrawer
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| modal | boolean \| "trap-focus" | true | Determines if the drawer enters a modal state when open. - true: user interaction is limited to just the drawer: focus is trapped, document page scroll is locked, and pointer interactions on outside elements are disabled. - false: user interaction with the rest of the document is allowed. - 'trap-focus': focus is trapped inside the drawer, but document page scroll is not locked and pointer interactions outside of it remain enabled. |
+| defaultOpen | boolean | false | Whether the drawer is initially open. To render a controlled drawer, use the open prop instead. |
+| onOpenChange | ((open: boolean, details?: SideDrawerChangeDetails) => void) | optional, no default | Called when the drawer opens or closes. details is Base UI's event details; it is undefined when a close guard settled later (e.g. after "Discard?") or requestClose closed it. |
+| dir | "ltr" \| "rtl" | Base UI's DirectionProvider, then the page's dir | Reading direction: the panel slides from the inline end (right in "ltr", left in "rtl"). |
+| labels | Partial<SideDrawerLabels> | defaultSideDrawerLabels | Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultSideDrawerLabels. All 6 keys of SideDrawerLabels are listed in the key table under the props table. |
+| open / defaultOpen | boolean | false | Controlled / initial open state. |
+| disablePointerDismissal | boolean | modal === false | Keep it open on outside presses. |
+| handle | SideDrawerHandle | optional, no default | From createSideDrawerHandle(): open it from triggers rendered elsewhere. |
+
+### SideDrawerContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The sheet's content: usually DrawerHeader, DrawerBody and DrawerFooter. |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | <body> | Where to portal the drawer (defaults to <body>). |
+| viewportClassName | string | optional, no default | Adds extra classes to the full-screen positioning layer. |
+| backdropClassName | string | optional, no default | Class for the dimmed scrim behind a modal drawer. |
+| inset | boolean | true | Float the panel off the screen edges with a full radius, a lit leading edge and an accent aura spilling onto the page (like an iOS 26 sheet). false attaches it flush to the edge (the old look). |
+| stateLight | boolean | true | Lights the panel while a SideDrawerForm inside it saves (accent glow) or has saved or failed (green, red): a lit edge and a light pool on the glass's own layer (data-state on the panel). The seal and the lit leading edge stay. |
+| size | SideDrawerSize | "md" | Width: sm 24rem · md 32rem · lg 40rem · xl 48rem. Full width under 640px. |
+| resizable | boolean | false | A handle on the free edge to drag (or arrow-key) the width. Hidden under 640px. |
+| defaultWidth | number | optional, no default | Starting width in px when resizable (instead of size). |
+| minWidth | number | 320 | Sets the narrowest width in px when resizing. |
+| maxWidth | number | optional, no default | Widest width in px when resizing (never more than the screen minus 3rem). |
+| storageKey | string | optional, no default | Remember the resized width under this key (localStorage, per browser). |
+| onWidthChange | ((width: number \| null) => void) | optional, no default | Called when a resize ends (pointer up, a key press, a reset). null = back to size. |
+| publishEdge | boolean | false | Publish the panel's width as --sheen-side-drawer-right (or -left) on <html> while it is open, so fixed UI in that corner (a toast stack) can move out of its way. Off by default: an inherited custom property on the root element restyles the whole document on every open and close (200 to 290 ms on a 4x-throttled phone for a 3,500-element page), and nothing in SheenUI reads it. |
+| initialFocus | Base UI initialFocus | smart | Default: [data-autofocus], else the form’s first field (not on touch), else the panel. |
+| finalFocus | Base UI finalFocus | the opener | Sets where focus goes after closing. |
+
+### SideDrawerHeader · Body · Footer
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | Below the title row: Tabs, filters, a toolbar. |
+| title | ReactNode | optional, no default | The drawer's name (rendered as its accessible title). |
+| description | ReactNode | optional, no default | One line under the title (rendered as the accessible description). |
+| leading | ReactNode | optional, no default | Shows an avatar or icon before the title. |
+| status | ReactNode | optional, no default | Next to the title: a status Badge, a count. |
+| actions | ReactNode | optional, no default | Shows the buttons before the ×: Edit, a ⋯ menu. |
+| showClose | boolean | true | Shows the × close button in the header. |
+| SideDrawerBody scrollRef | Ref<HTMLDivElement> | optional, no default | The scrolling element. Scroll shadows show at edges with more to scroll. |
+| SideDrawerFooter start | ReactNode | optional, no default | Content on the inline start (hint, record navigation); children sit at the end. |
+| SideDrawerBody wrapperClassName | string | optional, no default | Class for the outer wrapper (holds the scroll shadows). |
+
+### useSideDrawer() · useSideDrawerCloseGuard()
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| notify | (message: ReactNode \| null, { announce?, duration? }) => void | 2600 ms | A check and the message next to the header’s title, announced politely. For actions that keep the drawer open, where a corner toast would cover the header. null clears it. |
+| requestClose | ({ force? }) => Promise<boolean> | optional, no default | Close through the close guards (force skips them). Resolves true when it closed. |
+| open / side / dir / modal | boolean / "left" \| "right" / "ltr" \| "rtl" / boolean \| "trap-focus" | optional, no default | State of the surrounding drawer (null outside one). |
+| useSideDrawerCloseGuard(guard) | () => boolean \| Promise<boolean> | optional, no default | Asked before every close (×, Escape, scrim, swipe, Cancel). Return a confirm() promise to ask. |
+
+### SideDrawerForm
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| initialValues | TValues | required | Starting values. Read once (give the form a key to reset it for another record). |
+| validate | ((values: TValues) => SideDrawerFormValidateResult<TValues>) | optional, no default | Return a message per invalid field. Runs on submit, then again as fields are fixed. |
+| onSubmit | (values: TValues) => SideDrawerFormSubmitResult<TValues> \| Promise<SideDrawerFormSubmitResult<TValues>> | required | Save. Return or resolve { errors } / { error } to show server-side problems, or throw. |
+| onSuccess | ((values: TValues) => void) | optional, no default | After a successful save (before the drawer closes / returns to the view). |
+| onCancel | (() => void) | optional, no default | After Cancel (once any discard question is answered). |
+| closeOnFinish | boolean | true | Close the drawer after a successful save (or Cancel). Inside SideDrawerDetail it returns to the view instead. |
+| successToast | ReactNode | optional, no default | Toast title after a successful save (needs a <ToastProvider> above); announced when confirmed inline. |
+| successFeedback | "inline" \| "auto" \| "toast" | "auto" | How a successful save is confirmed. "auto": a toast when the drawer closes, "✓ Saved" next to the title when it stays open (inside SideDrawerDetail, or closeOnFinish={false}). |
+| successSeal | boolean | false | Confirm a successful save with a seal: the form dims, a check in a success-lit disc folds in and the panel closes (or returns to the view) about a second later, with the successToast. With reduced motion the seal only fades in. |
+| confirmDiscard | boolean | true | Ask before throwing away changes. |
+| submitLabel | ReactNode | optional, no default | Shorthand for labels.save. |
+| cancelLabel | ReactNode | optional, no default | Shorthand for labels.cancel. |
+| children | (form: SideDrawerFormApi<TValues>) => ReactNode | required | The fields. Receives the form API. |
+| footerStart | ReactNode | optional, no default | Extra footer content on the inline start (replaces the "Unsaved changes" hint). |
+| bodyClassName | string | optional, no default | Adds extra classes to the scrolling body. |
+| labels | Partial<SideDrawerFormLabels> | defaultSideDrawerFormLabels | Every other string, for translation: labels={{ save: "…" }}; omitted keys keep the English of defaultSideDrawerFormLabels. All 12 keys of SideDrawerFormLabels are listed in the key table under the props table. |
+
+### SideDrawerDetail
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | optional, no default | Shows the record's name in the header. |
+| titleText | string | optional, no default | Plain-text title for announcements when title is not a string. |
+| subtitle | ReactNode | optional, no default | Shows text under the title, such as an email or a date. |
+| avatar | ReactNode | optional, no default | Shows an Avatar or icon before the title. |
+| status | ReactNode | optional, no default | Shows content next to the title, usually a Badge. |
+| recordId | string | optional, no default | An id shown as a copyable chip under the title. |
+| recordIdLabel | string | optional, no default | What the id is, for its accessible name ("Order ID"). |
+| actions | ReactNode | optional, no default | Adds extra header buttons, before Edit. |
+| menu | ReactNode | optional, no default | MenuItem elements for the ⋯ menu (Duplicate, Archive, Delete…). |
+| editable | boolean | on when there is an editor or onEdit | Show the Edit button. |
+| onEdit | (() => void) | optional, no default | Called when Edit is pressed (before switching to the editor, if any). |
+| editor | ReactNode | optional, no default | Shown in place of the details while editing: a SideDrawerForm. |
+| mode | SideDrawerDetailMode | optional, no default | Sets the current mode, "view" or "edit", when controlled. |
+| defaultMode | SideDrawerDetailMode | "view" | Sets the starting mode when uncontrolled. |
+| onModeChange | ((mode: SideDrawerDetailMode) => void) | optional, no default | Called when the mode changes (Edit pressed, Cancel, a successful save). |
+| tabs | SideDrawerDetailTab[] | optional, no default | Sections as tabs (list in the header, panels in the body). |
+| tab | string | optional, no default | Sets the active tab's value when controlled. |
+| defaultTab | string | the first | Sets the starting tab when uncontrolled. |
+| onTabChange | ((tab: string) => void) | optional, no default | Called when another tab is chosen. |
+| children | ReactNode | optional, no default | Body content when there are no tabs. |
+| footer | ReactNode | optional, no default | Extra footer content on the end side (view mode). |
+| navigation | SideDrawerRecordNavProps | optional, no default | Controls for moving to the previous or next record. |
+| recordKey | string \| number | optional, no default | Identity of the record: changing it slides the content and announces the move. |
+| loading | boolean | false | The record is loading: the body shows a skeleton. |
+| error | ReactNode | optional, no default | Loading failed: a message (or true), with Retry when onRetry is set. |
+| onRetry | (() => void) | optional, no default | Called when Retry is pressed (the button shows only when this is set). |
+| empty | boolean | false | No record to show. |
+| labels | Partial<SideDrawerDetailLabels> | defaultSideDrawerDetailLabels | Every other string, for translation: labels={{ edit: "…" }}; omitted keys keep the English of defaultSideDrawerDetailLabels. All 11 keys of SideDrawerDetailLabels are listed in the key table under the props table. |
+| bodyClassName | string | optional, no default | Adds extra classes to the scrolling body. |
+
+### SideDrawerRecordNav
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| index | number | required | 0-based index of the record shown. |
+| count | number | required | How many records there are to walk through. |
+| onIndexChange | (index: number) => void | required | Called with the new 0-based index when the person moves to another record. |
+| keyboardShortcuts | boolean | true | J (next) / K (previous) while focus is in the drawer and not in a text field. |
+| labels | Partial<SideDrawerRecordNavLabels> | defaultSideDrawerRecordNavLabels | Every other string, for translation: labels={{ previous: "…" }}; omitted keys keep the English of defaultSideDrawerRecordNavLabels. All 5 keys of SideDrawerRecordNavLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the navigation. |
+
+### DescriptionList · DescriptionItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| layout | DescriptionListLayout | "inline" | "inline" (default): label left, value right. "stacked": label above value. |
+| variant | "glass" \| "plain" | "plain" | "plain" (default): no surface. "glass": its own glass card. |
+| dividers | boolean | true | Draws a hairline between rows. |
+| size | "sm" \| "md" | "md" | Sets the row text: "sm" 13px, "md" 14px (default). |
+| items | DescriptionListEntry[] | optional, no default | Works as shorthand for a list of DescriptionItem children. |
+| children | ReactNode | optional, no default | Holds DescriptionItem rows, shown after any items. |
+| labels | Partial<DescriptionListLabels> | defaultDescriptionListLabels | Every other string, for translation: labels={{ copy: "…" }}; omitted keys keep the English of defaultDescriptionListLabels. All 5 keys of DescriptionListLabels are listed in the key table under the props table. |
+| label | ReactNode | required | Holds the term, rendered as the <dt>. |
+| copyValue | string | optional, no default | Shows a copy button that copies this text. |
+| copyLabel | string | labels.copyValue(label) when the label is text | Sets the accessible name of the copy button. |
+| hint | ReactNode | optional, no default | Shows small muted text under the value. |
+| labelClassName | string | optional, no default | Adds a class name to the <dt> element. |
+| valueClassName | string | optional, no default | Adds a class name to the <dd> element. |
+
+### CopyButton props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | string | required | The text that is copied. |
+| label | string | labels.copy | Sets the accessible name, e.g. "Copy email address". |
+| size | "sm" \| "md" | "sm" | "sm" 28px (rows, chips) or "md" 36px. Both grow to a 44px hit area on touch screens. |
+| labels | Partial<CopyLabels> | defaultCopyLabels | Override the "Copy", "Copied" and failure strings (i18n). Every other string, for translation: labels={{ copy: "…" }}; omitted keys keep the English of defaultCopyLabels. All 3 keys of CopyLabels are listed in the key table under the props table. |
+| onCopied | ((value: string) => void) | optional, no default | Called after a successful copy. |
+
+### CopyChip props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | string | required | The text shown (in mono) and copied, e.g. an id. |
+| label | string | optional, no default | What the value is, for the accessible name: "Order ID" → "Copy Order ID ord_8Hk2Qx". |
+| display | string | optional, no default | Shown instead of value (the full value is still copied). |
+| labels | Partial<CopyLabels> | defaultCopyLabels | Override the "Copy", "Copied" and failure strings (i18n). Every other string, for translation: labels={{ copy: "…" }}; omitted keys keep the English of defaultCopyLabels. All 3 keys of CopyLabels are listed in the key table under the props table. |
+| onCopied | ((value: string) => void) | optional, no default | Called after a successful copy. |
+
+### SideDrawerBody props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| scrollRef | Ref<HTMLDivElement> | optional, no default | Receives the ref to the scrolling element. |
+| wrapperClassName | string | optional, no default | Class for the outer wrapper (holds the scroll shadows). |
+
+### SideDrawerFooter props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| start | ReactNode | optional, no default | Content on the inline start: a hint ("Unsaved changes"), record navigation. |
+
+### SideDrawerNotice props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Adds extra classes to the notice. |
+| variant | "inline" \| "badge" | "inline" | "inline": check + message, for the title row. "badge": just the check, pinned to the corner of an avatar / icon (its parent must be positioned). |
+
+### Example 1 of 5: Edit form
+
+Save with an empty name to see inline errors, the announced summary and focus jumping to the first problem. Edit something, then press Escape, the scrim or × (or swipe it away on a phone): you are asked before your changes are thrown away. ⌘↵ / Ctrl+Enter saves.
+
+```tsx
+import { useState } from "react";
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Select } from "@/components/sheenui/select/select";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { SideDrawerHeader } from "@/components/sheenui/side-drawer/parts/header";
+import { SideDrawer, SideDrawerTrigger } from "@/components/sheenui/side-drawer/side-drawer";
+import { SideDrawerForm } from "@/components/sheenui/side-drawer/side-drawer-form";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { Textarea } from "@/components/sheenui/textarea/textarea";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Button, Input, Select, SideDrawer, SideDrawerContent, SideDrawerForm, SideDrawerHeader, SideDrawerTrigger, Switch, Textarea } from "@sheenui/theme";
+import { Pencil as PencilIcon } from "lucide-react";
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const roles = [
+  { value: "viewer", label: "Viewer" },
+  { value: "editor", label: "Editor" },
+  { value: "admin", label: "Admin" },
+];
+
+const initialProfile = { name: "Ada Lovelace", email: "ada@example.com", role: "editor", bio: "", notifications: true };
+
+// Your API client.
+declare const api: { saveProfile(values: typeof initialProfile): Promise<{ emailTaken?: boolean }> };
+
+export function Example() {
+  const [profile, setProfile] = useState(initialProfile);
+
+  return (
+    <SideDrawer>
+      <SideDrawerTrigger render={<Button leading={<PencilIcon />} />}>Edit profile</SideDrawerTrigger>
+      <SideDrawerContent size="md">
+        <SideDrawerHeader
+          leading={<Avatar name={profile.name} />}
+          title="Edit profile"
+          description="Your name and photo are visible to everyone in Acme."
+        />
+        <SideDrawerForm
+          initialValues={profile}
+          validate={(v) => ({
+            name: v.name.trim() ? undefined : "Enter your full name",
+            email: EMAIL.test(v.email.trim()) ? undefined : "Enter an email address like name@example.com",
+          })}
+          onSubmit={async (values) => {
+            const res = await api.saveProfile(values);
+            if (res.emailTaken) return { errors: { email: "That email is already used by another account" } };
+            setProfile(values);
+          }}
+          successToast="Profile saved"
+          successSeal
+        >
+          {(form) => (
+            <>
+              <Input label="Full name" autoComplete="name" {...form.field("name")} />
+              <Input label="Email" type="email" autoComplete="email" {...form.field("email")} />
+              <Select label="Role" name="role" items={roles} value={form.values.role}
+                onValueChange={(value) => form.setValue("role", value ?? "viewer")} />
+              <Textarea label="Bio" maxLength={160} {...form.field("bio")} />
+              <Switch label="Email notifications" checked={form.values.notifications}
+                onCheckedChange={(on) => form.setValue("notifications", on)} />
+            </>
+          )}
+        </SideDrawerForm>
+      </SideDrawerContent>
+    </SideDrawer>
+  );
+}
+```
+
+### Example 2 of 5: Detail view, edit in place
+
+Header with avatar, status and a copyable id; tabs for Overview, Activity and Notes. Edit swaps the details for a form in the same drawer, and Save or Cancel slides you back. Saving, Duplicate and Archive keep the drawer open, so they confirm in place (a check next to the title, announced) instead of a toast over the header. A half-written note also asks before the drawer closes.
+
+```tsx
+import { useState } from "react";
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { DescriptionItem, DescriptionList } from "@/components/sheenui/description-list/description-list";
+import { Input } from "@/components/sheenui/input/input";
+import { MenuItem, MenuSeparator } from "@/components/sheenui/menu/menu";
+import { Select } from "@/components/sheenui/select/select";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { useSideDrawer } from "@/components/sheenui/side-drawer/parts/model";
+import { SideDrawer, SideDrawerTrigger } from "@/components/sheenui/side-drawer/side-drawer";
+import { SideDrawerDetail, type SideDrawerDetailMode } from "@/components/sheenui/side-drawer/side-drawer-detail";
+import { SideDrawerForm } from "@/components/sheenui/side-drawer/side-drawer-form";
+import { Textarea } from "@/components/sheenui/textarea/textarea";
+import { Timeline, TimelineItem } from "@/components/sheenui/timeline/timeline";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Badge, Button, CopyIcon, DescriptionItem, DescriptionList, Input, MenuItem, MenuSeparator, Select, SideDrawer, SideDrawerContent, SideDrawerDetail, SideDrawerForm, SideDrawerTrigger, Textarea, Timeline, TimelineItem, useSideDrawer, type SideDrawerDetailMode } from "@sheenui/theme";
+import { Archive as ArchiveIcon, Trash2 as TrashIcon } from "lucide-react";
+
+const statuses = [
+  { value: "pending", label: "Pending" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+];
+
+const initialOrder = {
+  id: "ord_8f21",
+  number: 1042,
+  customer: "Grace Hopper",
+  email: "grace@example.com",
+  method: "Card ·· 4242",
+  status: "shipped",
+  address: "1 Compiler Way, Arlington",
+  reference: "PO-7781",
+};
+
+// Your API client.
+declare const api: {
+  archiveOrder(id: string): Promise<void>;
+  updateOrder(id: string, values: Record<string, string>): Promise<void>;
+};
+
+// A component rendered inside the drawer: actions that keep it open confirm in place
+// ("✓ Archived" next to the title, announced), where a corner toast would cover the header.
+function ArchiveItem({ order }: { order: typeof initialOrder }) {
+  const drawer = useSideDrawer();
+  return (
+    <MenuItem
+      icon={<ArchiveIcon />}
+      onClick={async () => {
+        await api.archiveOrder(order.id);
+        drawer?.notify("Archived", { announce: `Order #${order.number} archived` });
+      }}
+    >
+      Archive
+    </MenuItem>
+  );
+}
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<SideDrawerDetailMode>("view");
+  const [order, setOrder] = useState(initialOrder);
+
+  return (
+    <SideDrawer
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (next) setMode("view");
+      }}
+    >
+      <SideDrawerTrigger render={<Button variant="glass" />}>View order</SideDrawerTrigger>
+      <SideDrawerContent size="lg">
+        <SideDrawerDetail
+          avatar={<Avatar name={order.customer} />}
+          title={`Order #${order.number}`}
+          status={<Badge tone="success" dot>Paid</Badge>}
+          subtitle={order.customer}
+          recordId={order.id}
+          recordIdLabel="Order ID"
+          menu={
+            <>
+              <MenuItem icon={<CopyIcon />}>Duplicate</MenuItem>
+              <ArchiveItem order={order} />
+              <MenuSeparator />
+              <MenuItem tone="danger" icon={<TrashIcon />}>Delete…</MenuItem>
+            </>
+          }
+          tabs={[
+            {
+              value: "overview",
+              label: "Overview",
+              content: (
+                <DescriptionList>
+                  <DescriptionItem label="Email" copyValue={order.email}>{order.email}</DescriptionItem>
+                  <DescriptionItem label="Payment">{order.method}</DescriptionItem>
+                  <DescriptionItem label="Shipping address">{order.address}</DescriptionItem>
+                </DescriptionList>
+              ),
+            },
+            {
+              value: "activity",
+              label: "Activity",
+              count: 2,
+              content: (
+                <Timeline aria-label="Order activity">
+                  <TimelineItem title="Order shipped" time="Yesterday" />
+                  <TimelineItem title="Payment received" time="2 days ago" />
+                </Timeline>
+              ),
+            },
+          ]}
+          mode={mode}
+          onModeChange={setMode}
+          editor={
+            <SideDrawerForm
+              initialValues={{ status: order.status, address: order.address, reference: order.reference }}
+              validate={(v) => ({ address: v.address.trim() ? undefined : "Enter a shipping address" })}
+              onSubmit={async (values) => {
+                await api.updateOrder(order.id, values);
+                setOrder({ ...order, ...values });
+              }}
+              // Back in the view: "✓ Saved" next to the title, and this is announced.
+              successToast="Order updated"
+            >
+              {(form) => (
+                <>
+                  <Select
+                    label="Status"
+                    name="status"
+                    items={statuses}
+                    value={form.values.status}
+                    onValueChange={(value) => form.setValue("status", value ?? "pending")}
+                  />
+                  <Textarea label="Shipping address" {...form.field("address")} />
+                  <Input label="Customer reference" {...form.field("reference")} />
+                </>
+              )}
+            </SideDrawerForm>
+          }
+        />
+      </SideDrawerContent>
+    </SideDrawer>
+  );
+}
+```
+
+### Example 3 of 5: From a data table
+
+Open a customer from their name (or the row menu: View details / Edit). Walk the rows in the table’s current sort and search order with the arrows in the footer or J / K; a half-written note stays with its customer, and closing asks before dropping it. Each record loads for a moment (skeleton); the 7th fails once to show the error state. Closing returns focus to the row you ended on.
+
+```tsx
+import { useState } from "react";
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { UserCell } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { SideDrawer } from "@/components/sheenui/side-drawer/side-drawer";
+import { SideDrawerDetail, type SideDrawerDetailMode } from "@/components/sheenui/side-drawer/side-drawer-detail";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Badge, DataTable, SideDrawer, SideDrawerContent, SideDrawerDetail, UserCell, type DataTableColumn, type SideDrawerDetailMode } from "@sheenui/theme";
+
+type Customer = { id: string; name: string; email: string };
+
+const asha: Customer = { id: "c1", name: "Asha Verma", email: "asha@example.com" };
+const customers: Customer[] = [
+  asha,
+  { id: "c2", name: "Ravi Kumar", email: "ravi@example.com" },
+  { id: "c3", name: "Meera Iyer", email: "meera@example.com" },
+];
+
+export function Example() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [mode, setMode] = useState<SideDrawerDetailMode>("view");
+  const index = customers.findIndex((c) => c.id === openId);
+  const current = customers[index] ?? asha;
+
+  const openRecord = (id: string, next: SideDrawerDetailMode = "view") => {
+    setOpenId(id);
+    setMode(next);
+  };
+  const rowButton = (id: string | null) =>
+    id ? document.querySelector<HTMLElement>(`[data-customer-id="${CSS.escape(id)}"]`) : null;
+
+  const columns: DataTableColumn<Customer>[] = [
+    {
+      id: "name",
+      header: "Customer",
+      // The name opens the record (click or Enter).
+      cell: ({ row, highlight }) => (
+        <button type="button" aria-haspopup="dialog" data-customer-id={row.id} onClick={() => openRecord(row.id)}>
+          <UserCell name={row.name} email={row.email} highlight={highlight} />
+        </button>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <DataTable
+        caption="Customers"
+        data={customers}
+        columns={columns}
+        rowActions={[
+          { label: "View details", onSelect: (row) => openRecord(row.id) },
+          { label: "Edit", onSelect: (row) => openRecord(row.id, "edit") },
+        ]}
+      />
+
+      <SideDrawer open={openId !== null} onOpenChange={(next) => !next && setOpenId(null)}>
+        {/* Back to the row shown last (after J / K), not the one first opened. */}
+        <SideDrawerContent size="lg" resizable storageKey="customers" finalFocus={() => rowButton(openId) ?? true}>
+          <SideDrawerDetail
+            recordKey={current.id}
+            avatar={<Avatar name={current.name} />}
+            title={current.name}
+            status={<Badge tone="success" dot>Active</Badge>}
+            subtitle={current.email}
+            recordId={current.id}
+            recordIdLabel="Customer ID"
+            navigation={{
+              index,
+              count: customers.length,
+              onIndexChange: (i) => setOpenId(customers[i]?.id ?? openId),
+              labels: { previous: "Previous customer", next: "Next customer" },
+            }}
+            mode={mode}
+            onModeChange={setMode}
+            tabs={[{ value: "overview", label: "Overview", content: <p>Plan, usage and billing go here.</p> }]}
+            editor={<p>A SideDrawerForm goes here.</p>}
+          />
+        </SideDrawerContent>
+      </SideDrawer>
+    </>
+  );
+}
+```
+
+### Example 4 of 5: Sizes and resizing
+
+Four widths, and an optional handle on the free edge that remembers where you left it.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { SideDrawerBody, SideDrawerFooter } from "@/components/sheenui/side-drawer/parts/body";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { SideDrawerHeader } from "@/components/sheenui/side-drawer/parts/header";
+import { SideDrawer, SideDrawerClose, SideDrawerTrigger } from "@/components/sheenui/side-drawer/side-drawer";
+// Package build (after the first npm release, or a packed tarball): import { Button, SideDrawer, SideDrawerBody, SideDrawerClose, SideDrawerContent, SideDrawerFooter, SideDrawerHeader, SideDrawerTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <SideDrawer>
+        <SideDrawerTrigger render={<Button />}>Open drawer</SideDrawerTrigger>
+        {/* sm 24rem · md 32rem · lg 40rem · xl 48rem; full width under 640px */}
+        <SideDrawerContent size="lg" resizable storageKey="customers" minWidth={360}>
+          <SideDrawerHeader title="Customer" description="Drag its free edge to resize." />
+          <SideDrawerBody>
+            <p>Customer details go here.</p>
+          </SideDrawerBody>
+          <SideDrawerFooter>
+            <SideDrawerClose render={<Button variant="glass" />}>Done</SideDrawerClose>
+          </SideDrawerFooter>
+        </SideDrawerContent>
+      </SideDrawer>
+
+      {/* The panel is a size container: adapt content to the panel, not the screen. */}
+      <div className="grid gap-5 @md/side-drawer:grid-cols-2">
+        <p>Left column</p>
+        <p>Right column</p>
+      </div>
+    </>
+  );
+}
+```
+
+### Example 5 of 5: Inspector (non-modal)
+
+modal={false}: no scrim and no focus trap, so the list stays usable while the panel is open. Clicking another file updates it; clicking the shown file again clears the selection (the empty state). Escape closes it while focus is inside it, and focus goes back to the file shown.
+
+```tsx
+import { useState } from "react";
+import { DescriptionItem, DescriptionList } from "@/components/sheenui/description-list/description-list";
+import { SideDrawerContent } from "@/components/sheenui/side-drawer/parts/content";
+import { SideDrawer } from "@/components/sheenui/side-drawer/side-drawer";
+import { SideDrawerDetail } from "@/components/sheenui/side-drawer/side-drawer-detail";
+// Package build (after the first npm release, or a packed tarball): import { DescriptionItem, DescriptionList, SideDrawer, SideDrawerContent, SideDrawerDetail } from "@sheenui/theme";
+import { File as FileIcon } from "lucide-react";
+
+const files = [
+  { id: "f1", name: "roadmap.pdf", kind: "PDF", path: "/Docs/roadmap.pdf", owner: "Asha" },
+  { id: "f2", name: "logo.svg", kind: "Image", path: "/Brand/logo.svg", owner: "Ravi" },
+];
+
+export function Example() {
+  const [selected, setSelected] = useState<string | null>("f1");
+  const [open, setOpen] = useState(true);
+  const fileButtons = new Map<string, HTMLElement>(); // filled by the file list (ref callbacks)
+  const index = files.findIndex((f) => f.id === selected);
+  const file = files[index]; // undefined: nothing selected
+
+  return (
+    <SideDrawer open={open} onOpenChange={setOpen} modal={false}>
+      {/* Escape / × give focus back to the file shown now, not the one that opened the panel. */}
+      <SideDrawerContent size="sm" inset finalFocus={() => (selected && fileButtons.get(selected)) || true}>
+        <SideDrawerDetail
+          recordKey={file?.id ?? "none"}
+          avatar={file && <FileIcon />}
+          title={file ? file.name : "Details"}
+          subtitle={file?.kind}
+          empty={!file}
+          labels={{ emptyTitle: "No file selected", emptyDescription: "Pick a file in the list to see its details here." }}
+          navigation={
+            file && {
+              index,
+              count: files.length,
+              onIndexChange: (i) => setSelected(files[i]?.id ?? null),
+              labels: { previous: "Previous file", next: "Next file" },
+            }
+          }
+        >
+          {file && (
+            <DescriptionList layout="stacked" size="sm">
+              <DescriptionItem label="Location" copyValue={file.path}>{file.path}</DescriptionItem>
+              <DescriptionItem label="Owner">{file.owner}</DescriptionItem>
+            </DescriptionList>
+          )}
+        </SideDrawerDetail>
+      </SideDrawerContent>
+    </SideDrawer>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Esc | Close (asks first when a form has unsaved changes). Inspector: only while focus is inside it. |
+| Ctrl + Enter / ⌘ + Enter | Save the form from any field. |
+| J / K | Next / previous record (not while typing in a field). |
+| ← / → / Home / End | On the resize handle: wider / narrower (Shift for bigger steps), min / max. |
+| Tab | Moves through the panel; focus stays inside a modal drawer and returns to what opened it. |
+
+### Accessibility
+
+- role="dialog", named by the header title and described by its description. A modal drawer makes the page behind inert and traps focus; modal={false} (an inspector) does neither, and Escape then works only while focus is inside it.
+- On open, focus goes to the element marked data-autofocus, else the first field of a SideDrawerForm (never on touch screens), else the panel itself so screen readers read its title. On close it returns to the opener (or finalFocus).
+- The resize handle is a labeled separator with aria-valuenow, and works with the arrow keys, Home / End and a double-click; Escape cancels a drag. It is hidden under 640 px, where the panel is full width.
+- notify() writes into a polite live region inside the panel, so "Saved" is announced even from a modal drawer. A close guard that keeps the drawer open leaves focus where it is: show your own confirmation so people know why.
+- Under reduced motion the panel fades in place instead of sliding.
+
+### All exports on this page
+
+- CopyButton — A ghost icon button that copies value to the clipboard and swaps its icon for a check mark.
+- CopyChip — A small mono pill that copies its value: ids, keys, hashes.
+- CopyIcon — The 16px "copy" (two sheets) icon used by CopyButton.
+- DescriptionItem — One label / value pair of a DescriptionList: a <div> holding a <dt> and a <dd>.
+- DescriptionList — DescriptionList: key / value pairs for detail views (a record in a side drawer, an order summary, settings read-outs), as a real <dl>.
+- SideDrawer — SideDrawer: a glass panel that slides in from the inline end of the screen (the right in left-to-right pages, the left in right-to-left ones) to edit a record or show its details without leaving the page.
+- SideDrawerBody — The scrolling part.
+- SideDrawerClose — Closes the drawer (through the close guards).
+- SideDrawerCloseButton — The × button, with an "Esc" tooltip.
+- SideDrawerContent — The glass panel of a SideDrawer, portalled to the end of the body.
+- SideDrawerDescription — Muted helper text under the title.
+- SideDrawerDetail — SideDrawerDetail: the "record details" pattern for a SideDrawerContent.
+- SideDrawerEditContext — Provided by SideDrawerDetail around its editor: Cancel / Save in a SideDrawerForm return to the view instead of closing the drawer.
+- SideDrawerFooter — Sticky footer: start on the inline start (a hint such as "Unsaved changes", record navigation), the buttons (children) on the other end.
+- SideDrawerForm — SideDrawerForm: the "edit in a side panel" pattern, wired up.
+- SideDrawerHeader — Sticky header: an optional leading slot, the title with its status, the actions and a close button, with the description underneath.
+- SideDrawerNotice — The visible half of useSideDrawer().notify(): a check and a short message that pops in next to the title and fades away.
+- SideDrawerRecordNav — Previous / next record controls for a SideDrawerFooter: ↑ / ↓ buttons, "3 of 312", and J (next) / K (previous) keys.
+- SideDrawerTitle — The drawer's heading.
+- SideDrawerTrigger — The element that opens a SideDrawer (a <button> by default; use render={<Button />} for a SheenUI button).
+- defaultCopyLabels — Default English strings of CopyLabels; spread it and override single keys to reword.
+- defaultDescriptionListLabels — Default English strings of DescriptionListLabels; spread it and override single keys to reword.
+- defaultSideDrawerDetailLabels — Default English strings of SideDrawerDetailLabels; spread it and override single keys to reword.
+- defaultSideDrawerFormLabels — Default English strings of SideDrawerFormLabels; spread it and override single keys to reword.
+- defaultSideDrawerLabels — Default English strings of SideDrawerLabels; spread it and override single keys to reword.
+- defaultSideDrawerRecordNavLabels — Default English strings of SideDrawerRecordNavLabels; spread it and override single keys to reword.
+- sideDrawerIconButtonClass — Ghost icon button used in drawer headers / footers: 36px, 44px hit area on touch screens.
+- sideDrawerSizes — Width of each size, in rem.
+- useCopyToClipboard — const { status, copied, copy } = useCopyToClipboard().
+- useSideDrawer — The surrounding SideDrawer: open, requestClose() (runs the close guards), side, dir, modal and notify(message).
+- useSideDrawerCloseGuard — Ask before the drawer closes.
+
+
+### When to use the side drawer
+
+- Use it as a slide-over panel for an order or issue detail peek in a table, where clicking a row slides a panel in from the right and the list stays visible behind it, with previous and next navigation.
+- Use it for editing a record, such as a user profile, with the validated SideDrawerForm, an inline error summary and a close guard asking Discard unsaved changes before Escape or the scrim closes it.
+- Use modal={false} for an inspector panel that leaves the page usable: there is no scrim or focus trap, and outside clicks do not close it.
+- Skip it when you need a bottom sheet for phones or a plain navigation menu, which Drawer covers, and use Dialog for a small centered prompt rather than a record panel.
+- Pair it with DescriptionList and Tabs for detail bodies, DataTable for the list that opens it, and AlertDialog or the notify function when saving needs confirmation feedback.
+
+
+### Frequently asked questions
+
+#### How do I build a slide-over panel in React for editing a record?
+
+Compose SideDrawer with SideDrawerTrigger, SideDrawerContent, SideDrawerHeader, SideDrawerBody and SideDrawerFooter, or use SideDrawerForm or SideDrawerDetail for the two common bodies. It slides in from the inline end, right in left-to-right pages and left in right-to-left ones.
+
+#### How do close guards work?
+
+useSideDrawerCloseGuard registers a function returning a boolean or a promise. Every way of closing, the x button, Escape, the scrim, a swipe or a Cancel button, asks it first. Typical use is a Discard unsaved changes prompt; requestClose runs the guards from code.
+
+#### Can users resize the panel?
+
+Yes. Set resizable on SideDrawerContent for a handle on the free edge. Drag it, or focus it and use Left and Right, with Shift for bigger steps, and Home and End for min and max. Double-click resets, and storageKey remembers the width in localStorage. It is hidden under 640px.
+
+#### How do I show feedback like Saved without a toast?
+
+Call useSideDrawer().notify("Saved", { announce: "..." }). A check pops in beside the header title, and the announce text is read politely by screen readers. A corner toast would cover the header, so this suits actions that keep the panel open.
+
+
+### Related pages
+
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

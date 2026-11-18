@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),e(`lit`);for(let e of[1,2,3])t({index:e}),await n(1250);await n(400),e(`idle`)};export{e as default};

@@ -1,0 +1,1 @@
+var e=`428913`,t=async({state:t,scene:n,wait:r})=>{await r(600);for(let t=1;t<=6;t+=1)n({value:e.slice(0,t)}),await r(190);t(`working`),await r(700),n({status:`success`}),t(`success`)};export{t as n,e as t};

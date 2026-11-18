@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1e3),t({open:!0}),e(`working`),await n(1200);for(let e of[`Q3 roadmap v`,`Q3 roadmap v2`])t({draft:e}),await n(300);await n(900),t({open:!1,name:`Q3 roadmap v2`}),e(`idle`),await n(500)};export{e as default};

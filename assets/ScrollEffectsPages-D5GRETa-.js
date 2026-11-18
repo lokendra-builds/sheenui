@@ -1,0 +1,23 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t,t as n}from"./vendor-react-D30i__oY.js";import{t as r}from"./button-BFXhYCnI.js";import{n as i,t as a}from"./confetti-UbKg1NAF.js";import{t as o}from"./switch-p-tSPHMD.js";import{i as s,n as c,o as l,r as u}from"./Page-BRuP8nt1.js";import{t as d}from"./Example-DaSezASZ.js";import{t as f}from"./ShowcaseStage-6bIrHuoy.js";import{t as p}from"./lazy-block-BfzH_8EP.js";import{t as m}from"./preload-helper-BrmCrVM7.js";var h=[[`count`,`number`,`120`,`Sets how many pieces each burst draws.`,!1],[`maxCount`,`number`,`200`,"The most pieces a single burst ever draws, whatever `count` asks for. Halved on weak devices.",!1],[`spread`,`number`,`75`,`Sets the width of the fan in degrees.`,!1],[`angle`,`number`,`90`,`Direction of the centre of the fan in degrees, counter-clockwise from pointing right.`,!1],[`velocity`,`number`,`720`,`Sets the launch speed in px per second.`,!1],[`colors`,`string[]`,`the accent, second accent, success, warning and danger tokens`,`Sets the colours of the pieces, any CSS colours.`,!1],[`badge`,`ReactNode`,``,"Shown instead of a burst when reduced motion is on, in a polite live region, so the moment is still marked (and announced). Without it a reduced-motion `fire()` does nothing.",!1],[`badgeDuration`,`number`,`2.6`,`Seconds the badge stays up.`,!1],[`className`,`string`,``,`Adds extra classes to the badge wrapper (a fixed, centred strip near the top).`,!1]],g=e(t()),_=n();p(()=>m(()=>import(`./ShowcaseStage.text-reveal.scene-C6QcSv04.js`).then(e=>e.TextRevealScene),[]),{minHeight:`19rem`,eager:!0}),p(()=>m(()=>import(`./ShowcaseStage.scroll-progress.scene-Dd14qp7h.js`).then(e=>e.ScrollProgressScene),[]),{minHeight:`19rem`,eager:!0});var v=p(()=>m(()=>import(`./ShowcaseStage.confetti.scene-CuJW-yxE.js`).then(e=>e.ConfettiScene),[]),{minHeight:`14rem`,eager:!0});function y(){let{ref:e,fire:t}=i(),[n,p]=(0,g.useState)(0),[y,b]=(0,g.useState)(!1);return(0,_.jsxs)(c,{eyebrow:`Effect`,title:`Confetti`,description:`A one-shot burst of paper for success moments, fired from an event handler with useConfetti. It costs nothing while idle, caps the piece count (halved on weak devices), ends in a hidden tab, and under reduced motion shows an optional still badge in a polite live region instead of a burst.`,source:[`theme/src/components/confetti/confetti.tsx`,`theme/src/lib/canvas-effects.ts`],children:[(0,_.jsx)(f,{label:`Confetti demo`,story:()=>m(()=>import(`./ShowcaseStage.confetti-BSvuON62.js`),[]),initial:{run:`idle`},minHeight:`14rem`,children:(e,t)=>(0,_.jsx)(v,{scene:e,ctx:t})}),(0,_.jsxs)(d,{title:`Fire from a button`,description:`origin takes an element (the burst starts at its centre) or a point of the viewport. Never let confetti be the only sign of success: the text below changes too. With reduced motion the badge appears at the top of the screen instead.`,controls:(0,_.jsx)(o,{label:`Bigger burst`,checked:y,onCheckedChange:b}),stageClassName:`min-h-48 flex-col gap-3`,code:`
+import { useState } from "react";
+import { Button, Confetti, useConfetti } from "@sheenui/theme";
+
+export function Example() {
+  const { ref, fire } = useConfetti();
+  const [done, setDone] = useState(0);
+
+  return (
+    <>
+      <Button
+        onClick={(event) => {
+          setDone((n) => n + 1);
+          fire({ origin: event.currentTarget, count: 140, spread: 100 });
+        }}
+      >
+        Place order
+      </Button>
+      <p className="text-sm text-sheen-fg-muted">{done === 0 ? "Nothing placed yet." : "Orders placed: " + done}</p>
+      <Confetti ref={ref} badge="Order placed" />
+    </>
+  );
+}`,children:[(0,_.jsx)(r,{onClick:e=>{p(e=>e+1),t({origin:e.currentTarget,count:y?140:80,spread:y?100:75})},children:`Place order`}),(0,_.jsx)(`p`,{className:`text-sm text-sheen-fg-muted`,children:n===0?`Nothing placed yet.`:`Orders placed: ${n}`}),(0,_.jsx)(a,{ref:e,badge:`Order placed`})]}),(0,_.jsx)(u,{of:h}),(0,_.jsx)(l,{rows:[[`Tab`,`Not focusable: the canvas never takes pointer events, so the page stays usable during a burst.`]]}),(0,_.jsx)(s,{items:[`The canvas is decorative and aria-hidden. Always show text or a toast too; confetti is never the only sign of success.`,`Reduced motion: fire() draws nothing. With the badge prop, a still message appears for badgeDuration seconds in a polite live region (role=status), so the moment is marked and announced.`,`Nothing runs while idle. The loop exists only while pieces are in flight, then the canvas hides itself; a hidden tab ends the burst. Count is capped at 220 and halved on devices with little memory, few cores or Save-Data.`,`The canvas lives in a portal on body, never inside a glass surface, so it cannot flatten any glass.`]})]})}export{y as default};

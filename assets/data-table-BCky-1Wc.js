@@ -1,0 +1,1 @@
+export{t as FullExample}from"./data-table-CygfE_ES.js";

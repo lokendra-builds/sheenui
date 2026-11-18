@@ -1,0 +1,2406 @@
+# SheenUI: Overlays (part 1 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## React Alert Dialog for Confirmations
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/alert-dialog
+Sidebar name: Alert dialog
+
+A glass React alert dialog for actions that matter: it focuses the safe choice, shows a spinner while it runs and keeps errors visible. Base UI.
+
+What it is: A glass React alert dialog that asks before destructive actions, focuses the safe choice first and stays open with the error if the action fails.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/alert-dialog.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Alert dialog
+
+Files to copy from `theme/src/`:
+
+- `components/alert-dialog/`
+- `components/button/`
+- `components/input/`
+- `components/spinner/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: alert-dialog. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ConfirmDialog, useConfirm } from "@/components/sheenui/alert-dialog/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/sheenui/alert-dialog/parts/icons-content";
+import { Button } from "@/components/sheenui/button/button";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, Button, ConfirmDialog, useConfirm, useToast } from "@sheenui/theme";
+```
+
+### ConfirmDialog
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| trigger | ReactElement<unknown, string \| JSXElementConstructor<any>> | optional, no default | Element that opens the dialog, e.g. <Button variant="danger">Delete</Button>. Omit it to control the dialog with open. |
+| open | boolean | optional, no default | Controlled open state. Pair it with onOpenChange. |
+| defaultOpen | boolean | false | Initial open state when uncontrolled. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called with the next open state when the dialog opens or is dismissed. |
+| onOpenChangeComplete | ((open: boolean) => void) | optional, no default | Called after the close animation has finished. |
+| tone | AlertDialogTone | "danger" | Colours the icon and the action button, and decides what is focused first. |
+| icon | ReactNode | optional, no default | Replace the tone icon, or pass null to hide it. |
+| title | ReactNode | required | The question, e.g. "Delete 3 files?". It names the dialog for screen readers. |
+| description | ReactNode | optional, no default | Supporting text: what happens and whether it can be undone. |
+| children | ReactNode | optional, no default | Extra content between the text and the buttons (a list of what will be affected, …). |
+| confirmLabel | ReactNode | optional, no default | Shorthand for labels.confirm. |
+| cancelLabel | ReactNode | optional, no default | Shorthand for labels.cancel. |
+| onConfirm | (() => unknown) | optional, no default | Runs when the action is pressed. Return a promise to show a loading state: the dialog stays open (and can't be dismissed) until it settles, closes on success, and shows the error on failure. |
+| onCancel | (() => void) | optional, no default | Called when the dialog is dismissed without confirming (Cancel, Escape). |
+| confirmationText | string | optional, no default | Require typing this text (e.g. a project name) before the action is enabled. |
+| errorMessage | ((error: unknown) => ReactNode) | optional, no default | Turn a thrown error into the message shown in the dialog. |
+| labels | Partial<ConfirmDialogLabels> | defaultConfirmDialogLabels | Every other string, for translation: labels={{ confirm: "…" }}; omitted keys keep the English of defaultConfirmDialogLabels. All 5 keys of ConfirmDialogLabels are listed in the key table under the props table. |
+| initialFocus | boolean \| RefObject<HTMLElement \| null> \| ((openType: InteractionType) => boolean \| HTMLElement \| null \| void) | Cancel (danger, warning), the action (info) | Element focused when it opens: Cancel for danger / warning, the action for info, and the field with confirmationText. |
+| finalFocus | boolean \| RefObject<HTMLElement \| null> \| ((closeType: InteractionType) => boolean \| HTMLElement \| null \| void) | the trigger (or the element focused before it opened) | Where focus goes when it closes. |
+| className | string | optional, no default | Adds extra classes to the dialog panel. |
+
+### Parts and hook
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| AlertDialog | Base UI AlertDialog.Root | optional, no default | open / defaultOpen / onOpenChange, handle for detached triggers. |
+| AlertDialogHeader | div | optional, no default | Icon + title + description: centered on phones, icon on the left from sm. |
+| useConfirm() | [confirm(options) => Promise<boolean>, dialog] | optional, no default | Render dialog once; await confirm() anywhere. Options are ConfirmDialog props (finalFocus / initialFocus included). |
+| createAlertDialogHandle() | () => Handle | optional, no default | One dialog for many triggers (e.g. every table row). |
+
+### AlertDialogAction props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| size | "sm" \| "md" \| "lg" \| "icon" | "md" | Height and padding, the same scale as every form field: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), or "icon" for a square as tall as "md". |
+| nativeButton | boolean | true; false when render is a non-button element | Whether the rendered element is a native <button>. Defaults to true, or to false when render is something else (e.g. a link): then type/disabled are not added and the disabled state is announced with aria-disabled instead. |
+| trailing | ReactNode | optional, no default | Renders an icon after the children. |
+| loading | boolean | false | Shows a spinner, ignores clicks and sets aria-busy. Focus stays on the button. |
+| leading | ReactNode | optional, no default | Renders an icon before the children. |
+| fullWidth | boolean | false | Stretch to the full width of the container. |
+| stateLight | boolean | false | Lights the button by state: loading glows in the accent colour (data-state="working"), and a data-state of "success", "warning" or "error" flashes its own glow once (an aura, a light pool and a lit edge, drawn on the button's own layer). The state is never conveyed by light alone: keep the label or icon that says it. Off with reduced transparency and forced colours; instant with reduced motion. |
+| closeOnClick | boolean | true | Close the dialog when pressed. Turn off to run async work first (and set loading). |
+| variant | "link" \| "danger" \| "primary" \| "glass" \| "outline" \| "ghost" | "danger" for the danger tone, otherwise "primary" | Visual style. By default it follows the dialog's tone: a danger button for the danger tone, a primary one for every other tone. |
+
+### AlertDialogCancel props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| variant | "link" \| "danger" \| "primary" \| "glass" \| "outline" \| "ghost" | "glass" | Look: "primary" (accent fill), "glass" (frosted), "outline" (edge only), "ghost" (text only), "link" (inline link look) or "danger" (destructive). |
+| size | "sm" \| "md" \| "lg" \| "icon" | "md" | Height and padding, the same scale as every form field: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), or "icon" for a square as tall as "md". |
+| loading | boolean | false | Shows a spinner, ignores clicks and sets aria-busy. Focus stays on the button. |
+| leading | ReactNode | optional, no default | Renders an icon before the children. |
+| trailing | ReactNode | optional, no default | Renders an icon after the children. |
+| fullWidth | boolean | false | Stretch to the full width of the container. |
+| stateLight | boolean | false | Lights the button by state: loading glows in the accent colour (data-state="working"), and a data-state of "success", "warning" or "error" flashes its own glow once (an aura, a light pool and a lit edge, drawn on the button's own layer). The state is never conveyed by light alone: keep the label or icon that says it. Off with reduced transparency and forced colours; instant with reduced motion. |
+| nativeButton | boolean | true; false when render is a non-button element | Whether the rendered element is a native <button>. Defaults to true, or to false when render is something else (e.g. a link): then type/disabled are not added and the disabled state is announced with aria-disabled instead. |
+
+### AlertDialogContent props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | Holds the dialog body: usually AlertDialogHeader and AlertDialogFooter. |
+| tone | AlertDialogTone | "danger" | Colours the icon and the default action button. |
+| icon | ReactNode | the built-in icon for the tone | Replace the tone icon, or pass null to hide it. |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | document.body | Sets where the dialog is portalled. |
+| backdropClassName | string | optional, no default | Sets the class of the dimmed scrim. |
+
+### AlertDialogIcon props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tone | AlertDialogTone | the surrounding dialog's tone | Which tone's shape and color to draw; defaults to the surrounding dialog's tone. |
+
+### Example 1 of 4: Destructive confirmation
+
+onConfirm returns a promise: the action shows a spinner, Cancel and Escape wait, and the dialog closes when it resolves. Turn on the failure to see the inline error.
+
+```tsx
+import { ConfirmDialog } from "@/components/sheenui/alert-dialog/alert-dialog";
+import { Button } from "@/components/sheenui/button/button";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Button, ConfirmDialog, useToast } from "@sheenui/theme";
+
+// Your API client.
+declare const api: { deleteProject(id: string): Promise<void> };
+
+export function Example() {
+  const toast = useToast();
+
+  return (
+    <ConfirmDialog
+      trigger={<Button variant="danger">Delete project</Button>}
+      title="Delete “Aurora”?"
+      description="The project, its 24 deployments and every environment variable are removed for the whole team. This can’t be undone."
+      confirmLabel="Delete project"
+      labels={{ pending: "Deleting…" }}
+      onConfirm={async () => {
+        await api.deleteProject("aurora"); // throw to keep the dialog open with the message
+        toast.success("Project deleted");
+      }}
+    />
+  );
+}
+```
+
+### Example 2 of 4: Type to confirm
+
+For the irreversible: the action stays disabled until the name is typed exactly. Enter submits.
+
+```tsx
+import { ConfirmDialog } from "@/components/sheenui/alert-dialog/alert-dialog";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Button, ConfirmDialog } from "@sheenui/theme";
+
+// Your API client.
+declare const api: { deleteRepo(name: string): Promise<void> };
+
+export function Example() {
+  return (
+    <ConfirmDialog
+      trigger={<Button variant="glass">Delete repository</Button>}
+      title="Delete sheenui/theme?"
+      description="All issues, pull requests and 1,284 stars go with it. Forks are not deleted."
+      confirmationText="sheenui/theme"
+      confirmLabel="Delete this repository"
+      onConfirm={() => api.deleteRepo("sheenui/theme")}
+    />
+  );
+}
+```
+
+### Example 3 of 4: useConfirm()
+
+Ask from any event handler and await the answer: true once the action has finished, false if dismissed. One dialog serves the whole list. After a key is revoked, focus moves to the next row's Revoke button (or to Restore once the list is empty), never to the page; pass finalFocus to choose another target.
+
+```tsx
+import { useState } from "react";
+import { useConfirm } from "@/components/sheenui/alert-dialog/alert-dialog";
+// Package build (after the first npm release, or a packed tarball): import { useConfirm } from "@sheenui/theme";
+
+type ApiKey = { id: string; name: string; hint: string };
+
+// Your API client.
+declare const api: { revoke(id: string): Promise<void> };
+
+export function Example() {
+  const [confirm, confirmDialog] = useConfirm();
+  const [keys, setKeys] = useState<ApiKey[]>([{ id: "k1", name: "CI deploy", hint: "sk_live_…a41f" }]);
+
+  async function revoke(key: ApiKey) {
+    const ok = await confirm({
+      tone: "warning",
+      title: `Revoke “${key.name}”?`,
+      description: `Apps using ${key.hint} stop working immediately.`,
+      confirmLabel: "Revoke key",
+      onConfirm: () => api.revoke(key.id),
+      // Optional: focus goes to the same spot in the list by default once the row is removed.
+      // finalFocus: newKeyButtonRef,
+    });
+    if (ok) setKeys((list) => list.filter((k) => k.id !== key.id));
+  }
+
+  return (
+    <>
+      {keys.map((key) => (
+        <button key={key.id} type="button" onClick={() => revoke(key)}>
+          Revoke {key.name}
+        </button>
+      ))}
+      {confirmDialog}
+    </>
+  );
+}
+```
+
+### Example 4 of 4: Composed from parts
+
+Build your own layout from the pieces. tone sets the icon and the action's color (danger → danger button).
+
+```tsx
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/sheenui/alert-dialog/parts/icons-content";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, Button } from "@sheenui/theme";
+
+const discard = () => console.log("discarded");
+
+export function Example() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger render={<Button variant="glass" />}>Close editor</AlertDialogTrigger>
+      <AlertDialogContent tone="warning">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Discard unsaved changes?</AlertDialogTitle>
+          <AlertDialogDescription>You edited 3 fields in “Billing details”. Leaving now loses those edits.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Keep editing</AlertDialogCancel>
+          <AlertDialogAction onClick={discard}>Discard changes</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open it from the trigger. |
+| Tab / Shift + Tab | Cycle inside; focus is trapped. |
+| Escape | Dismiss it (blocked while the action runs) and return focus to the trigger. |
+| Enter | In a type-to-confirm field, submit once the text matches. |
+
+### Accessibility
+
+- role="alertdialog" named by the title and described by the description; the page behind is inert.
+- Initial focus lands on Cancel for danger and warning tones (the safe choice), on the action for info, or on the type-to-confirm field.
+- While pending, aria-busy and a polite status announce it; errors use role="alert". The tone icon is decorative, so the title carries the meaning.
+- If the trigger was removed (a deleted row), focus lands on the same spot in the list.
+
+### All exports on this page
+
+- AlertDialog — Root of an alert dialog: holds the open state and wires the trigger, popup and buttons together.
+- AlertDialogAction — The confirming action.
+- AlertDialogCancel — Closes the dialog without doing anything.
+- AlertDialogClose — Any element inside the dialog that closes it when pressed (Base UI AlertDialog.Close).
+- AlertDialogContent — The dialog panel: portal, dimmed scrim and a glass popup.
+- AlertDialogDescription — Supporting text under the title (Base UI AlertDialog.Description).
+- AlertDialogFooter — Buttons row: stacked full-width on phones (action on top, in thumb reach), a right-aligned row from sm.
+- AlertDialogHeader — Icon + title + description.
+- AlertDialogIcon — The tone icon in a soft tinted disc.
+- AlertDialogTitle — The dialog's name (Base UI AlertDialog.Title, an <h2>).
+- AlertDialogTrigger — The button that opens an AlertDialog (Base UI AlertDialog.Trigger).
+- ConfirmDialog — A complete confirmation dialog in one component: tone icon, title, description, Cancel and the action, a loading state while an async onConfirm runs.
+- createAlertDialogHandle — Connects an AlertDialog to triggers rendered elsewhere (e.g.
+- defaultAlertLabels — The English AlertLabels used when labels is omitted; a partial labels prop is merged over it.
+- defaultConfirmDialogLabels — The English strings of ConfirmDialog (Confirm, Cancel, Working…, a generic error, the type-to-confirm prompt).
+- useConfirm — Ask from any event handler and await the answer: const [confirm, confirmDialog] = useConfirm().
+
+
+### When to use the alert dialog
+
+- Use it as a delete confirmation modal before deleting a project, revoking an API key or discarding unsaved changes, where the person must choose because an outside click will not dismiss it, only nudge the panel.
+- Use ConfirmDialog when you want the whole thing prebuilt: icon, title, description, Cancel and action, a loading state while an async onConfirm runs, and inline errors if it throws.
+- Use useConfirm in an event handler when awaiting the answer reads best, as in if (await confirm({ title: "Delete?" })), or add type-to-confirm for actions as serious as deleting an organization.
+- Skip it when the content is informational or a form that people may dismiss freely; Dialog closes on an outside press, and Toast fits a quiet notice better than a blocking prompt.
+- Pair it with Button for the trigger through the render prop, Toast to confirm that the action happened, and DataTable rows, where ConfirmDialog and useConfirm move focus to the matching control in the neighboring row after a delete.
+
+
+### Frequently asked questions
+
+#### What is the difference between an alert dialog and a dialog in React?
+
+Alert dialogs use role="alertdialog" and do not close on an outside press; the panel nudges instead so the click is not silently ignored. A regular Dialog is dismissable. Focus is trapped, the page behind is inert, and Escape still closes it.
+
+#### Where does focus go when the alert dialog opens?
+
+For danger and warning tones, Cancel is focused first as the safe choice; for info, the action is. With type-to-confirm, the text field gets focus. Focus returns to the trigger on close, and if confirming removes the trigger, ConfirmDialog and useConfirm move it to the matching control in the row that takes its place, or the row before.
+
+#### How do I handle async work in the confirm button?
+
+Return a promise from onConfirm on ConfirmDialog. The action button shows a loading state, the dialog stays open while it runs, and a thrown error appears inline with a shake. On the composable parts, set the action's close behavior off and use its loading prop yourself.
+
+#### Can I open one alert dialog from several triggers?
+
+Yes. Create a handle with createAlertDialogHandle and pass it to AlertDialog and to triggers rendered elsewhere. The tone prop is danger, warning or info. It is built on Base UI AlertDialog; under reduced motion the popup only fades, with no spring.
+
+
+### Related pages
+
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Command Palette (Cmd+K) with Fuzzy Search
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/command-palette
+Sidebar name: Command palette (⌘K)
+
+A glass ⌘K command palette for React: fuzzy search with highlighted matches, recent picks, nested pages and arrow-key navigation. A cmdk alternative. MIT.
+
+What it is: A glass React command palette that opens with ⌘K or Ctrl+K, with fuzzy search, recent picks first and nested pages.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/command.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Command palette (⌘K)
+
+Files to copy from `theme/src/`:
+
+- `components/command/`
+- `components/dialog/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/spinner/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/{presets.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, group-segments.ts, ime.ts, modal-flag.ts, page-size.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: command. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { CommandPalette } from "@/components/sheenui/command/command";
+import { type CommandItem } from "@/components/sheenui/command/parts/model";
+import { useCommandShortcut } from "@/components/sheenui/command/use-command-shortcut";
+import { KbdShortcut } from "@/components/sheenui/kbd/kbd";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, type CommandItem, CommandPalette, KbdShortcut, useCommandShortcut } from "@sheenui/theme";
+```
+
+### CommandPalette
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| items | readonly CommandItem[] | required | The commands. Order is kept when the search field is empty. |
+| open | boolean | optional, no default | Whether the palette is open (controlled). |
+| defaultOpen | boolean | false | Whether it starts open (uncontrolled). |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called with the new state when the palette opens or closes. |
+| modal | boolean | true | Whether the rest of the page is blocked while it is open (Base UI dialog semantics). false leaves the page interactive, drops the scrim and does not trap focus: for previews and demos that open on their own. |
+| initialFocus | boolean \| RefObject<HTMLElement \| null> \| ((openType: InteractionType) => boolean \| HTMLElement \| null \| void) | the search field | Where focus lands when it opens: an element, a ref, or a function (Base UI's initialFocus). false moves focus nowhere, so a palette that opens by itself never steals it. |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | the end of document.body | Where the palette is portalled. Pass an element to keep it inside a region instead of the end of the body. |
+| trigger | ReactElement<unknown, string \| JSXElementConstructor<any>> | optional, no default | Rendered as the button that opens the palette (focus returns to it on close). |
+| shortcut | string \| false | "mod+k" | Global shortcut that toggles the palette. false to register none. |
+| onSelect | ((item: CommandItem) => void) | optional, no default | Called after any command runs (besides its own onSelect). |
+| query | string | optional, no default | Sets the search text when controlled. |
+| defaultQuery | string | "" | The search text on mount (uncontrolled). |
+| onQueryChange | ((query: string) => void) | optional, no default | Called with the search text as it changes (fetch your own results here). |
+| filter | false \| CommandFilter | defaultFilter | How results are matched. Default: fuzzy match on label, description and keywords. Pass a function to match your way, or false to show items as given (e.g. results you fetched yourself in onQueryChange); matches are still highlighted. |
+| deepSearch | boolean | true | From the top level, also search commands inside nested pages. |
+| maxResults | number | 100 | Most results listed while searching (the best ones). Keeps typing quick with thousands of commands. |
+| virtualized | boolean \| "auto" | "auto" | Windows the result list so only the rows near the viewport are in the DOM: true always, false never, "auto" only above 200 results (a long list with no query, or a large maxResults). The active command, the keyboard keys (aria-activedescendant stays on the search field), aria-setsize / aria-posinset and the scroll height work across every result. Windowed rows are a fixed height (a description is cut to fit) and the group headings are visual only. |
+| recent | readonly string[] | optional, no default | Lists the ids of recent commands, newest first, when controlled. |
+| onRecentChange | ((ids: string[]) => void) | optional, no default | Called with the new list of recent ids after a command runs. |
+| recentStorageKey | string | optional, no default | Remember recents in localStorage under this key (uncontrolled). |
+| maxRecent | number | 5 | How many recents to keep. 0 turns the Recent group off. |
+| loading | boolean | false | Shows a spinner in the field (and "Searching…" while there are no results yet). |
+| emptyState | ReactNode \| ((query: string) => ReactNode) | optional, no default | Replaces the empty state. Gets the query. |
+| footer | ReactNode | optional, no default | Extra content at the end of the key-hint footer, or false to hide the footer. Hidden on touch screens. |
+| labels | Partial<CommandPaletteLabels> | defaultCommandPaletteLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultCommandPaletteLabels. All 17 keys of CommandPaletteLabels are listed in the key table under the props table. |
+| shortcutLabels | Partial<KbdLabels> | defaultKbdLabels | Key names in the shortcut hints (i18n). Every other string, for translation: shortcutLabels={{ mac: "…" }}; omitted keys keep the English of defaultKbdLabels. All 4 keys of KbdLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the dialog panel. |
+
+### CommandItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | string | optional, no default | Unique across the tree (recents and keys use it). |
+| label / description | string | optional, no default | What is shown and searched. |
+| keywords | string[] | optional, no default | Extra words that find it but aren't shown. |
+| group | string | optional, no default | Heading it is listed under. |
+| icon / hint / shortcut | ReactNode / ReactNode / string | optional, no default | Icon tile, trailing text or badge (shown on every screen) and a shortcut hint (display only; hidden on phones). |
+| onSelect | (item) => void | optional, no default | Runs when chosen. The palette then closes unless keepOpen. |
+| items / placeholder | CommandItem[] / string | optional, no default | Turns the command into a nested page, with its own placeholder. |
+| disabled / keepOpen / recordRecent | boolean | false / false / true | Skip it, stay open after running, list it under Recent. |
+
+### useCommandShortcut(callback, options)
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| keys | string \| string[] | "mod+k" | Shortcut such as "mod+k", "/" or "shift+mod+p". |
+| enabled | boolean | true | Keeps listening only while true. |
+| allowInInputs | boolean | true | Fire while typing in a field. Turn off for bare keys like "/". |
+| preventDefault | boolean | true | Stop the browser's own action for the shortcut. |
+
+### Example 1 of 3: ⌘K anywhere
+
+Try "dsh" for Dashboard, "prefs" (a hidden keyword) for Settings, or "dark" to reach a theme inside the "Change theme…" page straight from the top. Enter runs a command; Escape or Backspace in an empty field steps back out of a page. Your last picks show under Recent next time.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { CommandPalette } from "@/components/sheenui/command/command";
+import { type CommandItem } from "@/components/sheenui/command/parts/model";
+import { useCommandShortcut } from "@/components/sheenui/command/use-command-shortcut";
+import { KbdShortcut } from "@/components/sheenui/kbd/kbd";
+// Package build (after the first npm release, or a packed tarball): import { Button, CommandPalette, KbdShortcut, useCommandShortcut, type CommandItem } from "@sheenui/theme";
+import { House as HomeIcon, Search as SearchIcon } from "lucide-react";
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+  const setTheme = (theme: "light" | "dark") => document.documentElement.setAttribute("data-theme", theme);
+
+  const commands: CommandItem[] = [
+    { id: "dashboard", label: "Dashboard", group: "Navigation", icon: <HomeIcon />, onSelect: () => location.assign("/") },
+    {
+      id: "settings",
+      label: "Settings",
+      keywords: ["preferences", "account"],
+      group: "Navigation",
+      shortcut: "mod+,",
+      onSelect: () => location.assign("/settings"),
+    },
+    {
+      id: "theme",
+      label: "Change theme…",
+      group: "Actions",
+      placeholder: "Choose a theme…",
+      items: [
+        { id: "theme-light", label: "Light", onSelect: () => setTheme("light") },
+        { id: "theme-dark", label: "Dark", onSelect: () => setTheme("dark") },
+      ],
+    },
+    { id: "export", label: "Export workspace", group: "Actions", disabled: true },
+  ];
+
+  // Only need the shortcut? The hook works on its own ("mod+k" by default):
+  useCommandShortcut(() => setOpen((value) => !value));
+
+  // ⌘K / Ctrl+K toggles the palette; focus returns to the trigger on close.
+  return (
+    <CommandPalette
+      items={commands}
+      open={open}
+      onOpenChange={setOpen}
+      recentStorageKey="my-app:recent-commands"
+      trigger={
+        <Button variant="glass" leading={<SearchIcon />} trailing={<KbdShortcut keys="mod+k" className="ms-auto" />}>
+          Search or jump to…
+        </Button>
+      }
+    />
+  );
+}
+```
+
+### Example 2 of 3: Thousands of commands
+
+Long lists are windowed on their own (virtualized defaults to auto, above 200 results), so the palette stays fast with a big command list. This one lists 3,000 commands and sets maxResults high enough to search them all: arrow down, press Page Down, or type a number.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { CommandPalette } from "@/components/sheenui/command/command";
+// Package build (after the first npm release, or a packed tarball): import { Button, CommandPalette } from "@sheenui/theme";
+
+const commands = Array.from({ length: 3000 }, (_, i) => ({
+  id: `cmd-${i + 1}`,
+  label: `Command ${String(i + 1).padStart(4, "0")}`,
+  group: i < 1500 ? "Alpha" : "Beta",
+}));
+
+export function Example() {
+  return (
+    <CommandPalette
+      items={commands}
+      maxResults={3000}
+      shortcut={false}
+      trigger={<Button variant="glass">Browse 3,000 commands</Button>}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Your own results
+
+filter={false} shows the items you pass, as they are: search a server in onQueryChange and set loading meanwhile. Matches are still highlighted. This one has no global shortcut (shortcut={false}).
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { CommandPalette } from "@/components/sheenui/command/command";
+// Package build (after the first npm release, or a packed tarball): import { Button, CommandPalette } from "@sheenui/theme";
+
+type Person = { id: string; name: string; role: string };
+
+// Your data hook: queries your API for the text typed so far.
+declare function usePeopleSearch(query: string): { data: Person[]; isLoading: boolean };
+
+export function Example() {
+  const [query, setQuery] = useState("");
+  const { data: people, isLoading } = usePeopleSearch(query);
+
+  return (
+    <CommandPalette
+      trigger={<Button variant="glass">Find a person</Button>}
+      shortcut={false}
+      items={people.map((p) => ({ id: p.id, label: p.name, description: p.role, group: "People" }))}
+      query={query}
+      onQueryChange={setQuery}
+      filter={false}
+      loading={isLoading}
+      maxRecent={0}
+      labels={{ placeholder: "Search people…", inputLabel: "Search people" }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Cmd / Ctrl + K | Open or close the palette from anywhere. |
+| Arrow Down / Arrow Up (or Ctrl + N / P) | Move through the results. |
+| Page Up / Page Down | Jump through the results. |
+| Enter | Run the highlighted command. |
+| Escape | Go back one page, then close. |
+| Backspace in an empty field | Go back one page. |
+
+### Accessibility
+
+- The field is an ARIA combobox that owns a listbox (aria-activedescendant), so focus never leaves it.
+- The result count is announced politely and usage instructions are read on open; the dialog is named by labels.title.
+- Shortcut hints expose aria-keyshortcuts. Focus returns to the trigger on close. Every string is translatable.
+
+### API
+
+#### CommandPalette
+
+#### CommandItem
+
+#### useCommandShortcut(callback, options)
+
+
+### All exports on this page
+
+- CommandPalette — Command palette (Cmd/Ctrl+K): a glass dialog with a fuzzy search field over grouped commands.
+- defaultCommandPaletteLabels — The English strings of CommandPalette.
+- highlightMatch — Wrap the matched characters in <mark>.
+- useCommandShortcut — Global keyboard shortcut, ⌘K / Ctrl+K by default.
+
+
+### When to use the command palette
+
+- Use it as a Cmd+K menu, a global Cmd+K or Ctrl+K search in a dashboard, where people jump to pages and run actions without leaving the keyboard, with fuzzy matching on label, description and hidden keywords. As a cmdk alternative it is a styled command palette with a search field, groups and keyboard shortcuts built in.
+- Use it for an app with many settings, where commands with nested items open a page such as Change theme, and deepSearch finds those inner commands straight from the top level. Use it for Spotlight search in React: press the shortcut, type, and pick a command.
+- Use it for async results by passing filter={false} and fetching in onQueryChange, so you can show server search results while the palette still highlights the matched characters.
+- Skip it when the user simply picks a value for a form field; Combobox or Select belong inside the form, and a Dropdown menu fits a short fixed list of actions behind one button.
+- Pair it with KbdShortcut to display the key beside the trigger button, the useCommandShortcut hook for your own bindings, and Button as the trigger element that opens it.
+
+
+### SheenUI Command Palette or cmdk?
+
+cmdk is a popular unstyled command menu for React that you compose and style yourself. SheenUI's CommandPalette is styled glass and ships the behaviors most apps then build: groups, nested pages, fuzzy search with highlighted matches, recent commands and a Cmd or Ctrl+K shortcut. Pick cmdk when you want full control of the markup and styling; pick this one when you want those behaviors ready to use and the source to copy.
+
+
+### Frequently asked questions
+
+#### How do I add a Cmd+K command palette to a React app?
+
+Render CommandPalette with an items array of objects that have id and label, and optionally group, icon, keywords, shortcut and onSelect. The shortcut prop defaults to mod+k, which is Cmd on Apple and Ctrl elsewhere; pass shortcut={false} to register none. A trigger element adds a button that opens it.
+
+#### Which keys work inside the palette?
+
+Up and Down, or Ctrl+N and Ctrl+P, move through results; Enter runs the command; Escape closes it or goes back from a nested page; Page Up and Down jump. Backspace in an empty field also goes back. Focus stays in the field via aria-activedescendant.
+
+#### How do recent commands and shortcuts work?
+
+Used commands are listed first under Recent. They are kept in memory, in localStorage with recentStorageKey, or controlled with recent and onRecentChange; maxRecent defaults to 5 and 0 turns it off. A shortcut on an item is displayed only, so you must bind the key yourself.
+
+#### Will it stay fast with thousands of commands?
+
+Results while searching are limited by maxResults, which defaults to 100, so only the best matches are listed. The result count is announced politely, and the highlight glides between rows. With reduced motion the pages fade instead of sliding sideways.
+
+
+### Related pages
+
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Context Menu: Right-Click & Long-Press
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/context-menu
+Sidebar name: Context menu
+
+A glass right-click context menu for React that also opens on long-press and Shift+F10, sharing parts with the dropdown menu. Base UI, Tailwind CSS v4.
+
+What it is: A glass React context menu that opens on right-click, on long-press on touch screens, or with Shift+F10, right where you pressed.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/context-menu.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Context menu
+
+Files to copy from `theme/src/`:
+
+- `components/context-menu/`
+- `components/menu/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, glide-highlight.tsx, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: context-menu. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/sheenui/context-menu/context-menu";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { Menu, MenuCheckboxItem, MenuContent, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@/components/sheenui/menu/menu";
+```
+
+These examples also use button, description-list: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/description-list.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, ContextMenu, ContextMenuContent, ContextMenuTrigger, CopyIcon, Menu, MenuCheckboxItem, MenuContent, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@sheenui/theme";
+```
+
+### ContextMenu
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| open / defaultOpen / onOpenChange | boolean / (open, details) => void | optional, no default | Controlled or uncontrolled open state. details.event is what opened it: a MouseEvent (right-click, Shift+F10) or a TouchEvent (long-press). |
+| disabled | boolean | false | Let the browser's own menu through. |
+| children | ReactNode | optional, no default | Takes a ContextMenuTrigger and a ContextMenuContent. |
+| ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example closeParentOnEsc, orientation, loopFocus, highlightItemOnHover, onOpenChangeComplete, onItemHighlighted). |
+
+### ContextMenuTrigger
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tabIndex | number | optional, no default | Set 0 on a non-control area so keyboard users can focus it and press Shift+F10 or the Menu key. The menu then opens at the focused element, not the screen corner. |
+| className / render | string / ReactElement | optional, no default | Style it, or render it as your own element. Text selection and the iOS callout are off while long-pressing. |
+| ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style). |
+
+### ContextMenuContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| side | "top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end" | "bottom" | Preferred side of the trigger; it flips when there is no room. |
+| align | "center" \| "end" \| "start" | "start" | Sets the alignment along that side. |
+| sideOffset | number | 2 | Gap between the trigger and the menu, in px (each part has its own default). |
+| alignOffset | number | 0 | Shift along the alignment axis, in px (each part has its own default). |
+| collisionPadding | number | 12 | Space kept from the viewport edges, in px. |
+| positionerClassName | string | optional, no default | Classes for the positioner (the fixed element around the popup). |
+| labels | Partial<ContextMenuLabels> | defaultContextMenuLabels | Spoken text: menu names the popup (it is announced when the menu opens) and submenu names a nested popup. Merged over defaultContextMenuLabels. Every other string, for translation: labels={{ menu: "…" }}; omitted keys keep the English of defaultContextMenuLabels. All 2 keys of ContextMenuLabels are listed in the key table under the props table. |
+
+### Example 1 of 2: Photo grid
+
+Right-click (or long-press) a photo. Every action is also behind the visible ⋯ button: a context menu should be a shortcut, never the only way in.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/sheenui/context-menu/context-menu";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { Menu, MenuContent, MenuItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { Button, ContextMenu, ContextMenuContent, ContextMenuTrigger, CopyIcon, Menu, MenuContent, MenuItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@sheenui/theme";
+import { Ellipsis as DotsIcon, Pencil as PencilIcon, Share2 as ShareIcon, Trash2 as TrashIcon } from "lucide-react";
+
+function PhotoActions({ name }: { name: string }) {
+  return (
+    <>
+      <MenuItem icon={<PencilIcon />} shortcut="enter" onClick={() => console.log("rename", name)}>
+        Rename
+      </MenuItem>
+      <MenuItem icon={<CopyIcon />} shortcut="mod+d">Duplicate</MenuItem>
+      <MenuSub>
+        <MenuSubTrigger icon={<ShareIcon />}>Share</MenuSubTrigger>
+        <MenuSubContent>
+          <MenuItem>Copy link</MenuItem>
+          <MenuItem>Email</MenuItem>
+        </MenuSubContent>
+      </MenuSub>
+      <MenuSeparator />
+      <MenuItem icon={<TrashIcon />} tone="danger">Move to bin</MenuItem>
+    </>
+  );
+}
+
+export function Example() {
+  return (
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger tabIndex={0} role="group" aria-label="Aurora.jpg" aria-describedby="hint">
+          <img src="aurora.jpg" alt="" />
+        </ContextMenuTrigger>
+        <ContextMenuContent><PhotoActions name="Aurora.jpg" /></ContextMenuContent>
+      </ContextMenu>
+
+      {/* The same actions behind a visible button */}
+      <Menu>
+        <MenuTrigger render={<Button variant="glass" size="icon" aria-label="Actions for Aurora.jpg" />}>
+          <DotsIcon />
+        </MenuTrigger>
+        <MenuContent align="end"><PhotoActions name="Aurora.jpg" /></MenuContent>
+      </Menu>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Canvas
+
+A submenu that adds shapes where you pressed (right-click, long-press or Shift+F10), toggles that keep the menu open, a zoom choice and a disabled item. It opens at the pointer and flips to stay on screen near the edges.
+
+```tsx
+import { useRef, useState } from "react";
+import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/sheenui/context-menu/context-menu";
+import { MenuCheckboxItem, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { ContextMenu, ContextMenuContent, ContextMenuTrigger, MenuCheckboxItem, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@sheenui/theme";
+import { Plus as PlusIcon } from "lucide-react";
+
+// onOpenChange gets the event that opened the menu: a MouseEvent for a right-click or
+// Shift+F10, the TouchEvent for a long-press (iOS sends no contextmenu event).
+export function Example() {
+  const point = useRef({ x: 0, y: 0 });
+  const [snap, setSnap] = useState(true);
+  const [zoom, setZoom] = useState("100");
+  const addSquare = () => console.log("add square at", point.current);
+
+  function rememberPoint(open: boolean, { event }: { event: Event }) {
+    const at = event instanceof TouchEvent ? event.touches[0] : (event as MouseEvent);
+    if (open && at) point.current = { x: at.clientX, y: at.clientY };
+  }
+
+  return (
+    <ContextMenu onOpenChange={rememberPoint}>
+      <ContextMenuTrigger tabIndex={0} role="group" aria-label="Canvas">
+        Right-click, press Shift+F10 or long-press here
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <MenuSub>
+          <MenuSubTrigger icon={<PlusIcon />}>Add shape</MenuSubTrigger>
+          <MenuSubContent>
+            <MenuItem onClick={addSquare}>Square</MenuItem>
+          </MenuSubContent>
+        </MenuSub>
+        <MenuItem shortcut="mod+v" disabled>Paste</MenuItem>
+        <MenuSeparator />
+        <MenuCheckboxItem checked={snap} onCheckedChange={setSnap}>Snap to grid</MenuCheckboxItem>
+        <MenuRadioGroup value={zoom} onValueChange={(value) => setZoom(value as string)}>
+          <MenuLabel>Zoom</MenuLabel>
+          <MenuRadioItem value="100">100%</MenuRadioItem>
+        </MenuRadioGroup>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Right-click / Long-press / Shift + F10 / Menu key | Open the menu at the pointer or the focused element. |
+| Arrow Down / Arrow Up | Move between items; the list wraps. |
+| Home / End | Jump to the first or last item. |
+| Type a letter | Jump to the next item that starts with it (typeahead). |
+| Enter / Space | Run the highlighted item (a checkbox or radio item toggles and keeps the menu open). |
+| Escape | Close and return focus to the trigger. |
+
+### Accessibility
+
+- A context menu is a shortcut, never the only way to an action: also show the same actions in a visible menu button.
+- Give the trigger an accessible name that mentions the shortcut; role="menu" with menuitem children, and focus moves into the menu on open.
+- Text selection and the iOS callout are disabled on the trigger so a long press opens the menu.
+
+### API
+
+#### ContextMenu
+
+#### ContextMenuTrigger
+
+#### ContextMenuContent
+
+
+### All exports on this page
+
+- ContextMenu — Root of a context menu: holds the open state for a ContextMenuTrigger and its ContextMenuContent.
+- ContextMenuContent — The menu popup.
+- ContextMenuTrigger — The area that opens the menu.
+- defaultContextMenuLabels — English defaults of ContextMenuLabels: the popup is "Context menu (Shift+F10)".
+
+
+### When to use the context menu
+
+- Use it as a right-click menu for a file list or photo grid where right-click on an item offers Duplicate, Rename and Delete, sharing the same MenuItem parts as a visible three-dot menu button.
+- Use it for a canvas or whiteboard where the menu should open at the exact pointer position, flipping to stay on screen when the click is near an edge.
+- Use it on touch devices where a 500 millisecond long-press opens the menu, with text selection and the iOS callout disabled on the trigger so the press is not stolen.
+- Skip it when an action must be discoverable; a context menu is a shortcut, never the only way, so show the same actions in a Dropdown menu button on the item too.
+- Pair it with Dropdown menu parts such as MenuItem, MenuSeparator and MenuCheckboxItem, with KbdShortcut for shown key combinations, and AlertDialog to confirm destructive entries like Delete.
+
+
+### Frequently asked questions
+
+#### How do I add a right-click menu in React?
+
+Wrap the area in ContextMenuTrigger and put MenuItem children inside ContextMenuContent. It opens on right-click, on a 500 millisecond long-press on touch, or with Shift+F10 or the Menu key on a focused trigger. Items and popup are the dropdown menu's own parts.
+
+#### How can keyboard users open the context menu?
+
+Make the trigger focusable with tabIndex={0} if it is not already a control, then press Shift+F10 or the Menu key; the menu opens just inside the element's top-left corner. Arrow keys, Home and End, typeahead, Enter and Escape work as in any menu.
+
+#### What should the trigger's accessible name say?
+
+Give it a name that mentions the shortcut, for example Photo, press Shift+F10 for actions, so screen reader users learn that a menu exists. The popup is role="menu" with menuitem children, and focus moves into it when it opens.
+
+#### Does it look the same as the dropdown menu?
+
+Yes. It reuses the dropdown menu's glass popup, a single backdrop blur, and the same entrance and exit. Reduced motion keeps a fade. By default it opens with side bottom, align start and a sideOffset of 2, and it flips to stay on screen.
+
+
+### Related pages
+
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Drawer & Bottom Sheet with Swipe
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/drawer
+Sidebar name: Drawer / Sheet
+
+A glass React drawer and bottom sheet: drag handle, swipe to dismiss, snap points and safe-area insets, from any edge. Focus-trapped, Tailwind v4, MIT.
+
+What it is: A glass React drawer that slides in from any edge, with bottom sheets you can drag, snap and swipe away. Use it as a bottom sheet for filters on a mobile product list, with snap points such as peek, half and full so people can glance at the filters or expand them to full height.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/drawer.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Drawer / Sheet
+
+Files to copy from `theme/src/`:
+
+- `components/drawer/drawer.tsx`
+- `components/drawer/parts/{content.tsx, model.ts, parts.tsx}`
+- `hooks/{use-direction.ts, use-latest.ts}`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: drawer. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerClose, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { type DrawerSnapPoint } from "@/components/sheenui/drawer/parts/model";
+import { DrawerBody, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+import { Input } from "@/components/sheenui/input/input";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use button, input, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, type DrawerSnapPoint, DrawerTitle, DrawerTrigger, Input, Switch } from "@sheenui/theme";
+```
+
+### Drawer
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| modal | boolean \| "trap-focus" | true | Determines if the drawer enters a modal state when open. - true: user interaction is limited to just the drawer: focus is trapped, document page scroll is locked, and pointer interactions on outside elements are disabled. - false: user interaction with the rest of the document is allowed. - 'trap-focus': focus is trapped inside the drawer, but document page scroll is not locked and pointer interactions outside of it remain enabled. |
+| side | DrawerSideProp | "bottom" | The edge the drawer slides in from. It is also the direction a swipe dismisses it. "left" and "right" are physical and never flip; "start" and "end" follow the text direction (<html dir> or Base UI's DirectionProvider): "start" is the left edge in ltr and the right edge in rtl. |
+| snapPoints | readonly DrawerSnapPoint[] | optional, no default | Snap heights for a bottom sheet, smallest first. Ignored on other sides. |
+| snapPoint | DrawerSnapPoint \| null | optional, no default | Controlled snap point (use with onSnapPointChange). |
+| defaultSnapPoint | DrawerSnapPoint \| null | the first one | Snap point the sheet opens at. |
+| onSnapPointChange | ((snapPoint: DrawerSnapPoint \| null, eventDetails?: BaseDrawer.Root.SnapPointChangeEventDetails) => void) | optional, no default | Called when the snap point changes: by a drag (with Base UI's event details), or by the handle button / keyboard / focus (no event details). |
+| labels | DrawerLabelsInput | defaultDrawerLabels | Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultDrawerLabels. All 6 keys of DrawerLabelsInput are listed in the key table under the props table. |
+| open / defaultOpen / onOpenChange | boolean / boolean / (open, details) => void | false | Controlled or uncontrolled open state (Base UI). |
+| disablePointerDismissal | boolean | false | Keep it open on outside presses. |
+
+### DrawerContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The sheet's content: usually DrawerHeader, DrawerBody and DrawerFooter. |
+| showClose | boolean | true | Show the × button in the top corner. |
+| handle | boolean | on for bottom and top sheets | Show the drag handle. |
+| inset | boolean | false | Float the panel off the edges (rounded on every side) instead of attaching it to the edge. |
+| keyboardAware | boolean | true | Keep focused fields above the on-screen keyboard (bottom sheets with forms). Uses Base UI's Drawer.VirtualKeyboardProvider. |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | <body> | Where to portal the drawer (defaults to <body>). |
+| viewportClassName | string | optional, no default | Adds extra classes to the full-screen positioning layer. |
+| backdropClassName | string | optional, no default | Class for the dimmed scrim behind a modal drawer. |
+| initialFocus / finalFocus | ref \| function \| boolean | panel / trigger | Where focus goes when it opens and closes (Base UI). |
+
+### Parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| DrawerTrigger / DrawerClose | Base UI Trigger / Close | optional, no default | Use render={<Button />} to style them as buttons. |
+| DrawerHeader | div | optional, no default | Title and description; stays put while the body scrolls. |
+| DrawerBody | Base UI Drawer.Content | optional, no default | The scrolling part. A tab stop only while it overflows; mouse text selection never drags the sheet. |
+| DrawerFooter | div | optional, no default | Actions: stacked on phones, a right-aligned row from sm. |
+| DrawerSwipeArea | Base UI SwipeArea | optional, no default | Invisible edge strip that opens the drawer with a swipe (touch screens). |
+| createDrawerHandle() | () => Handle | optional, no default | Open a drawer from triggers elsewhere: <Drawer handle={h}> + <DrawerTrigger handle={h}>. |
+
+### Example 1 of 4: Bottom sheet
+
+Swipe the sheet down (or press Escape, or tap outside) to dismiss it. Releasing a quick flick keeps its momentum; a button close is shorter and never overshoots.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerClose, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { DrawerBody, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger, Input } from "@sheenui/theme";
+
+const targets = [{ label: "Copy link" }, { label: "Email" }, { label: "Chat app" }];
+const share = (target: { label: string }) => console.log("share via", target.label);
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button />}>Share</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Share “Q3 roadmap”</DrawerTitle>
+          <DrawerDescription>Anyone in Acme with the link can view and comment.</DrawerDescription>
+        </DrawerHeader>
+        <DrawerBody>
+          {targets.map((t) => (
+            <DrawerClose key={t.label} onClick={() => share(t)}>{t.label}</DrawerClose>
+          ))}
+          <Input label="Link" readOnly defaultValue="https://example.com/d/q3-roadmap" />
+        </DrawerBody>
+        <DrawerFooter>
+          <DrawerClose render={<Button variant="glass" />}>Done</DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+
+### Example 2 of 4: Snap points
+
+Peek, half and full heights. Peek is measured from the content (handle, header and the first row) and half always shows more than peek, even on a landscape phone. Drag between them, flick to skip one, or use the handle: it is a button that reads out the current height (Enter cycles, arrow keys step). Keyboard focus is never hidden: rows scroll into view inside the sheet, and a control that can't (below the screen edge) opens it fully. A click or tap never changes the height.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { type DrawerSnapPoint } from "@/components/sheenui/drawer/parts/model";
+import { DrawerBody, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+// Package build (after the first npm release, or a packed tarball): import { Button, Drawer, DrawerBody, DrawerContent, DrawerDescription, DrawerHeader, type DrawerSnapPoint, DrawerTitle, DrawerTrigger } from "@sheenui/theme";
+
+const places = [{ name: "Café Aurora" }, { name: "Riverside Park" }, { name: "Night Market" }];
+
+export function Example() {
+  // "peek" = handle + header + first row (measured); "half" = 50% of the screen, at least a row above peek.
+  // Your own heights work too: snapPoints={["148px", 0.6, 1]}
+  // Translate the handle: labels={{ snapPoints: { half: "Halbe Höhe" } }}
+  const [snap, setSnap] = useState<DrawerSnapPoint | null>("half");
+
+  return (
+    <Drawer snapPoints={["peek", "half", "full"]} snapPoint={snap} onSnapPointChange={setSnap}>
+        <DrawerTrigger render={<Button variant="glass" />}>Nearby places</DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Nearby</DrawerTitle>
+            <DrawerDescription>12 places within 2 km.</DrawerDescription>
+          </DrawerHeader>
+          <DrawerBody>{places.map((p) => (
+                <p key={p.name}>{p.name}</p>
+              ))}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
+  );
+}
+```
+
+### Example 3 of 4: Side and top sheets
+
+side picks the edge (and the swipe direction that closes it). inset floats the panel off the edges with rounded corners.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerClose, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { DrawerBody, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+import { Input } from "@/components/sheenui/input/input";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger, Input, Switch } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Drawer side="left">
+        <DrawerTrigger render={<Button variant="glass" />}>Menu</DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Menu</DrawerTitle>
+          </DrawerHeader>
+          <DrawerBody>
+            <DrawerClose render={<Button variant="ghost" fullWidth />}>Home</DrawerClose>
+            <DrawerClose render={<Button variant="ghost" fullWidth />}>Projects</DrawerClose>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+
+      <Drawer side="right">
+        <DrawerTrigger render={<Button variant="glass" />}>Settings</DrawerTrigger>
+        <DrawerContent inset>
+          <DrawerHeader>
+            <DrawerTitle>Notification settings</DrawerTitle>
+          </DrawerHeader>
+          <DrawerBody>
+            <Input label="Email" type="email" defaultValue="ada@example.com" />
+            <Switch label="Mentions" defaultChecked />
+          </DrawerBody>
+          <DrawerFooter>
+            <DrawerClose render={<Button variant="ghost" />}>Cancel</DrawerClose>
+            <DrawerClose render={<Button />}>Save</DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+
+      <Drawer side="top">
+        <DrawerTrigger render={<Button variant="glass" />}>Announcement</DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>What's new</DrawerTitle>
+          </DrawerHeader>
+          <DrawerFooter>
+            <DrawerClose render={<Button />}>Got it</DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}
+```
+
+### Example 4 of 4: Nested sheets
+
+A drawer opened from inside another one stacks on top; the one behind steps back and dims. Swipe or Escape closes only the front one.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerClose, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { DrawerBody, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+// Package build (after the first npm release, or a packed tarball): import { Button, Drawer, DrawerBody, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@sheenui/theme";
+
+const standard = { id: "standard", label: "Standard · free" };
+const options = [standard, { id: "express", label: "Express · $5" }];
+
+export function Example() {
+  const [delivery, setDelivery] = useState("standard");
+  const chosen = options.find((o) => o.id === delivery) ?? standard;
+
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button />}>Cart (3)</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader><DrawerTitle>Your cart</DrawerTitle></DrawerHeader>
+        <DrawerBody>
+          <p>3 items · $126.00</p>
+          <Drawer>
+            <DrawerTrigger>Delivery: {chosen.label}</DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader><DrawerTitle>Delivery</DrawerTitle></DrawerHeader>
+              <DrawerBody>{options.map((o) => <DrawerClose key={o.id} onClick={() => setDelivery(o.id)}>{o.label}</DrawerClose>)}</DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </DrawerBody>
+        <DrawerFooter>
+          <DrawerClose render={<Button fullWidth />}>Pay $131</DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open it from the trigger. |
+| Tab / Shift + Tab | Cycle inside; focus is trapped while it is modal. |
+| Escape | Close it and return focus to the trigger. |
+| Enter / Arrow Up / Arrow Down | On the handle, with snap points: cycle or step through the heights. |
+
+### Accessibility
+
+- A modal dialog (Base UI): named by DrawerTitle, described by DrawerDescription; the page behind is inert.
+- The handle is a real button with snap points and tells screen readers the current height. A swipe is a shortcut: a button always closes it.
+- Under reduced motion the sheet fades instead of sliding.
+
+### All exports on this page
+
+- Drawer — Drawer / sheet: a strong-glass panel that slides in from an edge of the screen.
+- DrawerBody — The scrolling part of the sheet.
+- DrawerClose — A button inside the drawer that closes it (a "Done" or "Cancel" action in DrawerFooter).
+- DrawerContent — The glass panel of a Drawer, portalled to the end of the body with a dimmed scrim (for a modal drawer).
+- DrawerDescription — Muted helper text under the title.
+- DrawerFooter — Bottom row of actions, separated by a hairline: a column on phones (primary action first on screen) and a right-aligned row from sm up.
+- DrawerHandle — The grab bar.
+- DrawerHeader — Top section of the sheet: stacks the title and description, with room on the right for the × button.
+- DrawerSwipeArea — An invisible strip along a screen edge that opens the drawer with a swipe (touch screens).
+- DrawerTitle — The drawer's heading.
+- DrawerTrigger — The element that opens a Drawer (a <button> by default; use render={<Button />} for a SheenUI button).
+- createDrawerHandle — Connects a Drawer to triggers rendered elsewhere: <Drawer handle={h}> + <DrawerTrigger handle={h}>.
+- createSideDrawerHandle — Connects a SideDrawer to triggers rendered elsewhere: <SideDrawer handle={h}> + <SideDrawerTrigger handle={h}>.
+- defaultDrawerLabels — Default English strings of DrawerLabels; spread it and override single keys to reword.
+- drawerSnapPresets — Starting values of the presets.
+
+
+### When to use the Drawer / Sheet
+
+- Use it for a mobile bottom sheet that people drag between a peek, half and full height, such as filters on a product list or a place card on a map, or as a side panel on desktop.
+- Use it for a navigation menu or cart panel sliding in from the left or right with side="left" or "right", or floating off the edge with the inset prop on DrawerContent.
+- Use it for a quick form on a phone, where keyboardAware (on by default) keeps focused fields above the on-screen keyboard while the sheet remains swipeable.
+- Skip it when you need a centered modal, which Dialog handles, or a record detail and edit panel with close guards and resizing, where SideDrawer is built for that.
+- Pair it with Button through the render prop on DrawerTrigger, Tabs or RadioGroup inside DrawerBody for filter controls, and Toast to report that the applied choices were saved.
+
+
+### Frequently asked questions
+
+#### How do I build a bottom sheet in React with snap points?
+
+Pass snapPoints such as ["peek", "half", "full"] to Drawer, or your own heights as fractions of the viewport, pixel numbers or strings like 18rem. Control it with snapPoint and onSnapPointChange. The peek height is measured from the handle, header and first body row.
+
+#### How do I use the drag handle with a keyboard?
+
+With snap points, the handle is a real button: click or Enter cycles them, ArrowUp and ArrowDown step through them, and it tells screen readers the current height. Escape closes the drawer. The popup is role="dialog" named by DrawerTitle, and the page behind is inert.
+
+#### Which sides and modes does Drawer support?
+
+side can be bottom (the default), top, left or right, plus start and end, which follow the text direction. Snap points apply to bottom sheets only. modal defaults to true, which traps focus and locks scroll. Safe-area insets are padded wherever the panel touches a screen edge, so notches and home indicators do not cover content. It is built on Base UI Drawer.
+
+#### What does reduced motion change?
+
+With reduced motion, from the OS or the data-motion reduced attribute, the panel fades in place instead of sliding. Dragging still follows the finger, because that is direct manipulation. Reduced transparency and forced colors give the glass-3 panel a solid surface.
+
+
+### Related pages
+
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated React Dropdown Menu with Submenus
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu
+Sidebar name: Dropdown menu
+
+A glass React dropdown menu with icons, shortcuts, checkbox and radio items and submenus. The highlight glides with Motion. Base UI, Tailwind CSS v4, MIT.
+
+What it is: A glass React dropdown menu with icons, shortcuts, groups, checkbox and radio items and submenus, whose highlight glides from item to item.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/menu.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Dropdown menu
+
+Files to copy from `theme/src/`:
+
+- `components/menu/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, glide-highlight.tsx, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: menu. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { Menu, MenuCheckboxItem, MenuContent, MenuGroup, MenuHeader, MenuItem, MenuLabel, MenuLinkItem, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@/components/sheenui/menu/menu";
+```
+
+These examples also use avatar, badge, button, description-list: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/badge.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/description-list.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Badge, Button, CopyIcon, Menu, MenuCheckboxItem, MenuContent, MenuGroup, MenuHeader, MenuItem, MenuLabel, MenuLinkItem, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@sheenui/theme";
+```
+
+### Menu
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| mobile | MobilePresentation | "popup" | How the menu opens on a phone-width screen (max-width: 640px): "popup" is the usual menu next to the trigger; "sheet" is a bottom sheet with a drag handle, swipe-down to dismiss, scrolling items capped at 85 dvh and home-indicator padding. Escape closes and focus returns to the trigger in both. |
+| open / defaultOpen | boolean | false | Controlled or uncontrolled open state. |
+| onOpenChange | (open, details) => void | optional, no default | Called when the menu opens or closes; details.reason says why. |
+| modal | boolean | true | Lock page scroll and outside clicks while open. |
+| loopFocus | boolean | true | Arrow keys wrap from the last item to the first. |
+| MenuTrigger render | ReactElement | optional, no default | Render the trigger as your own element, e.g. render={<Button />}. openOnHover and delay are also supported. |
+| Menu ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example highlightItemOnHover, onOpenChangeComplete, onItemHighlighted, orientation, disabled, closeParentOnEsc). |
+| MenuTrigger ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example disabled, handle, payload, delay, closeDelay, openOnHover). |
+
+### MenuContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| side | "top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end" | "bottom" | Preferred side of the trigger; it flips when there is no room. |
+| align | "center" \| "end" \| "start" | "start" | Sets the alignment along that side. |
+| sideOffset | number | 6 | Gap between the trigger and the menu, in px (each part has its own default). |
+| alignOffset | number | 0 | Shift along the alignment axis, in px (each part has its own default). |
+| collisionPadding | number | 12 | Space kept from the viewport edges, in px. |
+| matchTriggerWidth | boolean | false | Make the menu at least as wide as its trigger. |
+| anchor | Element \| VirtualElement \| RefObject<Element \| null> \| (() => Element \| VirtualElement \| null) \| null | optional, no default | Element to position against instead of the trigger. |
+| positionerClassName | string | optional, no default | Classes for the positioner (the fixed element around the popup). |
+| labels | Partial<MenuLabels> | defaultMenuLabels | Spoken text. Merged over defaultMenuLabels. Every other string, for translation: labels={{ submenu: "…" }}; omitted keys keep the English of defaultMenuLabels. All 2 keys of MenuLabels are listed in the key table under the props table. |
+
+### MenuItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | Shows an icon before the label (decorative). |
+| description | ReactNode | optional, no default | Shows the second line under the label. |
+| shortcut | string \| readonly string[] | optional, no default | Keyboard shortcut to show, e.g. "mod+c" (⌘C on a Mac, Ctrl+C elsewhere). It is also set as aria-keyshortcuts. Showing it does not bind it: handle the key yourself. |
+| shortcutLabels | Partial<KbdLabels> | defaultKbdLabels | Key names for the shortcut (i18n). Every other string, for translation: shortcutLabels={{ mac: "…" }}; omitted keys keep the English of defaultKbdLabels. All 4 keys of KbdLabels are listed in the key table under the props table. |
+| trailing | ReactNode | optional, no default | Anything else at the end of the row (a badge, a count). |
+| inset | boolean | optional, no default | Leave the icon slot empty so the label lines up with items that have icons. |
+| tone | "neutral" \| "danger" | "neutral" | "danger" for destructive actions: red text and a red highlight. |
+| disabled / closeOnClick / onClick / label | Base UI Menu.Item props | optional, no default | label overrides the text used for typeahead. |
+
+### Inherited Base UI props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| MenuCheckboxItem: checked / defaultChecked / onCheckedChange | boolean / boolean / (checked: boolean) => void | optional, no default | Controlled or uncontrolled checked state (Base UI). |
+| MenuRadioGroup: value / defaultValue / onValueChange | string / string / (value: string) => void | optional, no default | The chosen item of a radio group; give each MenuRadioItem its own value (Base UI). |
+| MenuSubTrigger: openOnHover / delay | boolean / number | optional, no default | Open the submenu on hover, after the delay in ms (Base UI). |
+
+### MenuCheckboxItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| shortcut | string \| readonly string[] | optional, no default | Keyboard shortcut to show, e.g. "mod+c" (⌘C on a Mac, Ctrl+C elsewhere). It is also set as aria-keyshortcuts. Showing it does not bind it: handle the key yourself. |
+| shortcutLabels | Partial<KbdLabels> | defaultKbdLabels | Key names for the shortcut (i18n). Every other string, for translation: shortcutLabels={{ mac: "…" }}; omitted keys keep the English of defaultKbdLabels. All 4 keys of KbdLabels are listed in the key table under the props table. |
+| description | ReactNode | optional, no default | Shows the second line under the label. |
+| trailing | ReactNode | optional, no default | Anything else at the end of the row (a badge, a count). |
+
+### MenuHighlight props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| active | boolean | required | Show the pill (pass the item's highlighted state). |
+| tone | "neutral" \| "danger" | "neutral" | "danger" tints it red, for destructive items. |
+| className | string | optional, no default | Adds extra classes to the pill. |
+
+### MenuLabel props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| inset | boolean | false | Indent to line up with item labels that sit after an icon. |
+
+### MenuLinkItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | Shows an icon before the label (decorative). |
+| description | ReactNode | optional, no default | Shows the second line under the label. |
+| trailing | ReactNode | optional, no default | Anything else at the end of the row (a badge, a count). |
+| inset | boolean | optional, no default | Leave the icon slot empty so the label lines up with items that have icons. |
+
+### MenuRadioItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| shortcut | string \| readonly string[] | optional, no default | Keyboard shortcut to show, e.g. "mod+c" (⌘C on a Mac, Ctrl+C elsewhere). It is also set as aria-keyshortcuts. Showing it does not bind it: handle the key yourself. |
+| shortcutLabels | Partial<KbdLabels> | defaultKbdLabels | Key names for the shortcut (i18n). Every other string, for translation: shortcutLabels={{ mac: "…" }}; omitted keys keep the English of defaultKbdLabels. All 4 keys of KbdLabels are listed in the key table under the props table. |
+| description | ReactNode | optional, no default | Shows the second line under the label. |
+| trailing | ReactNode | optional, no default | Anything else at the end of the row (a badge, a count). |
+
+### MenuSubContent props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<MenuLabels> | defaultMenuLabels | Spoken text. Merged over defaultMenuLabels. Every other string, for translation: labels={{ submenu: "…" }}; omitted keys keep the English of defaultMenuLabels. All 2 keys of MenuLabels are listed in the key table under the props table. |
+| anchor | Element \| VirtualElement \| RefObject<Element \| null> \| (() => Element \| VirtualElement \| null) \| null | optional, no default | Element to position against instead of the trigger. |
+| sideOffset | number | 4 | Gap between the trigger and the menu, in px (each part has its own default). |
+| alignOffset | number | -6 | Shift along the alignment axis, in px (each part has its own default). |
+| collisionPadding | number | 12 | Space kept from the viewport edges, in px. |
+| positionerClassName | string | optional, no default | Classes for the positioner (the fixed element around the popup). |
+
+### MenuSubTrigger props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | Shows an icon before the label (decorative). |
+| description | ReactNode | optional, no default | Shows the second line under the label. |
+| trailing | ReactNode | optional, no default | Anything else at the end of the row (a badge, a count). |
+| inset | boolean | optional, no default | Leave the icon slot empty so the label lines up with items that have icons. |
+
+### Example 1 of 4: Account menu
+
+Icons, shortcut hints (⌘ on a Mac, Ctrl elsewhere), a badge, a submenu, a disabled item and a destructive one. Open it with Enter, Space or ↓, then move with the arrow keys; → opens the submenu.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { Menu, MenuContent, MenuHeader, MenuItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Badge, Button, Menu, MenuContent, MenuHeader, MenuItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger, MenuTrigger } from "@sheenui/theme";
+import { CreditCard as CardIcon, ChevronDown as ChevronDownIcon, Cloud as CloudIcon, Link as LinkIcon, LogOut as LogoutIcon, Mail as MailIcon, User as UserIcon, UserPlus as UserPlusIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Menu>
+      <MenuTrigger
+        render={<Button variant="glass" leading={<Avatar name="Ada Lovelace" size="sm" />} trailing={<ChevronDownIcon />} />}
+      >
+        Ada Lovelace
+      </MenuTrigger>
+      <MenuContent className="w-72">
+        <MenuHeader>
+          <b>Ada Lovelace</b>
+          <span>ada@example.com</span>
+        </MenuHeader>
+        <MenuSeparator />
+        <MenuItem icon={<UserIcon />} shortcut="shift+mod+p">Profile</MenuItem>
+        <MenuItem icon={<CardIcon />} shortcut="mod+b" trailing={<Badge tone="accent">Pro</Badge>}>
+          Billing
+        </MenuItem>
+        <MenuSeparator />
+        <MenuSub>
+          <MenuSubTrigger icon={<UserPlusIcon />}>Invite people</MenuSubTrigger>
+          <MenuSubContent>
+            <MenuItem icon={<MailIcon />}>Email</MenuItem>
+            <MenuItem icon={<LinkIcon />}>Copy invite link</MenuItem>
+          </MenuSubContent>
+        </MenuSub>
+        <MenuItem icon={<CloudIcon />} disabled>API keys</MenuItem>
+        <MenuSeparator />
+        <MenuItem icon={<LogoutIcon />} tone="danger" shortcut="shift+mod+q" onClick={() => console.log("sign out")}>
+          Log out
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Example 2 of 4: Checkbox and radio items
+
+Toggles and a single choice that keep the menu open, so several can be changed in one go. The preview below follows along.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Menu, MenuCheckboxItem, MenuContent, MenuGroup, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { Button, Menu, MenuCheckboxItem, MenuContent, MenuGroup, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuTrigger } from "@sheenui/theme";
+import { ChevronDown as ChevronDownIcon } from "lucide-react";
+
+export function Example() {
+  const [toolbar, setToolbar] = useState(true);
+  const [density, setDensity] = useState("comfortable");
+
+  return (
+    <Menu>
+      <MenuTrigger render={<Button variant="glass" trailing={<ChevronDownIcon />} />}>View</MenuTrigger>
+      <MenuContent>
+        <MenuGroup>
+          <MenuLabel>Show</MenuLabel>
+          <MenuCheckboxItem checked={toolbar} onCheckedChange={setToolbar} shortcut="shift+mod+t">
+            Toolbar
+          </MenuCheckboxItem>
+          <MenuCheckboxItem disabled description="Needs a folder">Breadcrumbs</MenuCheckboxItem>
+        </MenuGroup>
+        <MenuSeparator />
+        <MenuRadioGroup value={density} onValueChange={setDensity}>
+          <MenuLabel>Density</MenuLabel>
+          <MenuRadioItem value="compact">Compact</MenuRadioItem>
+          <MenuRadioItem value="comfortable">Comfortable</MenuRadioItem>
+          <MenuRadioItem value="spacious">Spacious</MenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Example 3 of 4: Row actions
+
+An icon button per row with the menu aligned to its end. "Open on GitHub" is a real link (MenuLinkItem), so ⌘/Ctrl-click opens it in a new tab.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { CopyIcon } from "@/components/sheenui/description-list/copy-button";
+import { Menu, MenuContent, MenuItem, MenuLinkItem, MenuSeparator, MenuTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { Button, CopyIcon, Menu, MenuContent, MenuItem, MenuLinkItem, MenuSeparator, MenuTrigger } from "@sheenui/theme";
+import { Ellipsis as DotsIcon, ExternalLink as ExternalIcon, Pencil as PencilIcon, Trash2 as TrashIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Menu>
+      <MenuTrigger render={<Button variant="ghost" size="icon" aria-label="Actions for Q3 roadmap.pdf" />}>
+        <DotsIcon />
+      </MenuTrigger>
+      <MenuContent align="end">
+        <MenuItem icon={<PencilIcon />} shortcut="enter">Rename</MenuItem>
+        <MenuItem icon={<CopyIcon />} shortcut="mod+d">Duplicate</MenuItem>
+        <MenuLinkItem icon={<ExternalIcon />} href="https://github.com/" target="_blank">
+          Open on GitHub
+        </MenuLinkItem>
+        <MenuSeparator />
+        <MenuItem icon={<TrashIcon />} tone="danger" shortcut="mod+backspace">Delete</MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Example 4 of 4: Bottom sheet on phones
+
+mobile='sheet' opens the menu as a bottom sheet under 640px wide: full width, a drag handle you can swipe down, items scrolling inside a 85dvh cap, safe-area padding. The default, 'popup', keeps the anchored menu. Press “Preview on a phone” to try it on a desktop screen (or narrow the window).
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@/components/sheenui/menu/menu";
+// Package build (after the first npm release, or a packed tarball): import { Button, Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Menu mobile="sheet">
+      <MenuTrigger render={<Button variant="glass" />}>Options</MenuTrigger>
+      <MenuContent>
+        <MenuItem>Rename</MenuItem>
+        <MenuItem>Duplicate</MenuItem>
+        <MenuSeparator />
+        <MenuItem tone="danger">Delete</MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space / Arrow Down | Open the menu from the trigger. |
+| Arrow Down / Arrow Up | Move between items; the list wraps. |
+| Home / End | Jump to the first or last item. |
+| Type a letter | Jump to the next item that starts with it (typeahead). |
+| Enter / Space | Run the highlighted item (a checkbox or radio item toggles and keeps the menu open). |
+| Arrow Right / Arrow Left | Open or close a submenu (flipped in right-to-left pages). |
+| Escape | Close the menu and return focus to the trigger. |
+
+### Accessibility
+
+- role="menu" with menuitem, menuitemcheckbox and menuitemradio children (Base UI); the trigger has aria-haspopup="menu" and aria-expanded.
+- Give an icon-only trigger an aria-label. A disabled item stays visible and is skipped by the arrow keys.
+- Shortcut hints are shown as keys and exposed through aria-keyshortcuts for the visitor's platform; touch rows are 44 px tall.
+
+### API
+
+#### Menu
+
+#### MenuContent
+
+#### MenuItem
+
+#### Inherited Base UI props
+
+#### MenuCheckboxItem props
+
+#### MenuHighlight props
+
+#### MenuLabel props
+
+#### MenuLinkItem props
+
+#### MenuRadioItem props
+
+#### MenuSubContent props
+
+#### MenuSubTrigger props
+
+
+### All exports on this page
+
+- GlideHighlightScope — Gives every MenuHighlight pill inside it one shared tracker.
+- Menu — Dropdown menu on Base UI Menu: arrow keys, Home/End, typeahead, submenus, Escape and focus return.
+- MenuCheckboxItem — A toggle (menuitemcheckbox).
+- MenuContent — The glass popup of a Menu, portalled to the end of the body and positioned next to the trigger.
+- MenuGroup — Groups related items inside a menu; put a MenuLabel first to name it.
+- MenuHeader — A non-interactive header row, e.g.
+- MenuHighlight — The highlight pill.
+- MenuItem — One action in a menu.
+- MenuLabel — Heading for a MenuGroup or MenuRadioGroup (place it inside the group).
+- MenuLinkItem — A menu item that is a real link (<a href>): opens in a new tab with Cmd/Ctrl-click, shows the URL on hover.
+- MenuRadioGroup — Holds the chosen value of a set of MenuRadioItems: controlled with value + onValueChange, or uncontrolled with defaultValue.
+- MenuRadioItem — One choice in a MenuRadioGroup (menuitemradio).
+- MenuSeparator — A hairline between groups of items.
+- MenuSub — Wraps a MenuSubTrigger and its MenuSubContent.
+- MenuSubContent — The submenu popup.
+- MenuSubTrigger — The item that opens a submenu: hover, click, → (← in RTL) or Enter.
+- MenuTrigger — The element that opens a Menu.
+- createMenuHandle — For triggers that live outside <Menu>: const handle = createMenuHandle().
+- defaultMenuLabels — English defaults of MenuLabels ("Submenu", "Submenu, level 2").
+
+
+### When to use the dropdown menu
+
+- Use it as an animated dropdown menu for a row actions button in a table, where a three-dot trigger opens Edit, Duplicate and Delete, with tone="danger" marking the destructive item.
+- Use it for an account menu in a navbar, with a MenuHeader for the signed-in user, MenuLinkItem entries for Settings and Billing, and a MenuSub for a theme or language choice.
+- Use it for view options with MenuCheckboxItem and MenuRadioGroup, such as showing or hiding columns and choosing a sort order, with the chosen state kept in your own React state.
+- Skip it when the user is choosing a value for a form field; Select is built for that, and an application menu bar with File, Edit and View belongs in Menubar.
+- Pair it with Button via render on MenuTrigger, KbdShortcut or the shortcut prop to show key hints, and AlertDialog to confirm items that cannot be undone.
+
+
+### Frequently asked questions
+
+#### How do I build a dropdown menu in React with submenus?
+
+Compose Menu, MenuTrigger and MenuContent, then add MenuItem rows. Wrap a MenuSubTrigger and its MenuSubContent in MenuSub for a submenu. Right Arrow, or Left in right-to-left, opens it; Left Arrow or Escape closes it. It is built on Base UI Menu.
+
+#### Which keys does the menu respond to?
+
+Enter, Space or Down on the trigger opens it, and Up opens with the last item highlighted. Up and Down move, Home and End jump, typing jumps to a matching item, and Enter or Space activates. Escape closes the menu and returns focus to the trigger.
+
+#### Does the shortcut prop bind the key?
+
+No. The shortcut on a MenuItem shows a platform-aware key combination and sets aria-keyshortcuts, but it does not bind the key; handle it yourself with your own listener. Use icon, description, trailing and inset to shape each row, and onClick for the action.
+
+#### How do I keep the menu open after choosing an item?
+
+The menu closes after an item's onClick by default. Set closeOnClick={false} on that item to keep it open, which suits checkbox items. Disabled items stay in the arrow-key order but cannot be activated. Reduced motion makes the popup fade and the highlight jump.
+
+
+### Related pages
+
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card)
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Hover Card for Link & Profile Previews
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/hover-card
+Sidebar name: Hover card
+
+A glass React hover card that previews a profile or page on hover or focus, with a tap-to-open rule for touch screens. Base UI, Tailwind CSS v4, MIT.
+
+What it is: A glass React hover card that previews what is behind a link, opening on hover or keyboard focus after a short delay.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/hover-card.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Hover card
+
+Files to copy from `theme/src/`:
+
+- `components/hover-card/`
+- `components/avatar/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/light-follower.ts`
+- `lib/{cn.ts, initials.ts, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: hover-card. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { createHoverCardHandle, HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview, ProfilePreview } from "@/components/sheenui/hover-card/hover-card";
+```
+
+These examples also use badge: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Badge, createHoverCardHandle, HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview, ProfilePreview } from "@sheenui/theme";
+```
+
+### HoverCard
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| open / defaultOpen / onOpenChange | boolean / boolean / (open, details) => void | false | Controlled or uncontrolled (Base UI Preview Card). |
+| handle | Handle<Payload> | optional, no default | From createHoverCardHandle(): share one card between detached triggers. |
+| children | ReactNode \| ({ payload }) => ReactNode | optional, no default | The content; a function receives the active trigger's payload. |
+| ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example onOpenChangeComplete, actionsRef, triggerId, defaultTriggerId). |
+
+### HoverCardTrigger / HoverCardContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| delay | number | 500 | How long to wait before the preview card opens. Specified in milliseconds. |
+| closeDelay | number | 250 | How long to wait before closing the preview card. Specified in milliseconds. |
+| variant | "link" \| "plain" | "link" | "link" (default): accent underlined text for links in a sentence. "plain": only the focus ring (avatars, chips). |
+| children | ReactNode | optional, no default | The card's content: your own markup, ProfilePreview or LinkPreview. |
+| side | "top" \| "bottom" \| "left" \| "right" | "bottom" | Preferred side of the trigger; it flips when there is no room. |
+| align | "center" \| "end" \| "start" | "center" | Sets the alignment along that side. |
+| sideOffset | number | 10 | Gap between the trigger and the card, in px. |
+| padded | boolean | true | Pad the content (1rem). Turn off for edge-to-edge content such as LinkPreview's image. |
+| touchHint | ReactNode | "Tap the link again to open it." | Shown under the content when a tap opened the card, so touch users know how to follow the link. Pass null to hide it (e.g. when the trigger is not a link). |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | <body> | Where to portal the card (defaults to <body>). |
+| Trigger href | string | optional, no default | It renders an <a>: the link stays the one accessible element. |
+| Trigger payload / handle | Payload / Handle | optional, no default | For triggers outside <HoverCard>. |
+
+### Content presets
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| ProfilePreview | { name, handle?, avatarSrc?, status?, badge?, bio?, stats?, joined?, joinedLabel?, locale?, cover? } | optional, no default | Profile layout. stats values are shortened (12 400 → 12.4K); joined is formatted with Intl (a date-only string like "2021-08-01" is read as a local date). |
+| LinkPreview | { url, title, description?, image?, imageAlt?, siteName?, favicon? } | optional, no default | Link card. Use with padded={false} on the content. The image fades in once loaded (again when image changes); without an image, or if it fails, the site's initial is shown. |
+
+### LinkPreview props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| url | string | required | The page's address; its host name is shown under the title. |
+| title | ReactNode | required | Shows the page's title as the card heading. |
+| description | ReactNode | optional, no default | Shows one or two lines about the page. |
+| image | string | optional, no default | Sets the preview image (1.91 : 1, the usual social-card shape). |
+| imageAlt | string | "" | Sets the alt text for the image. |
+| siteName | ReactNode | optional, no default | Shown instead of the host name, e.g. "GitHub". |
+| favicon | ReactNode | the site's first letter | Small site icon: an image URL or your own element. |
+| className | string | optional, no default | Adds extra classes to the card content. |
+
+### ProfilePreview props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| name | string | required | Shows the person's name as the card heading. |
+| handle | string | optional, no default | Sets the username, shown as "@handle". |
+| avatarSrc | string | optional, no default | Avatar image URL; without it the avatar shows initials. |
+| status | "online" \| "away" \| "offline" | optional, no default | Shows the presence dot on the avatar ("online", "away", ...). |
+| badge | ReactNode | optional, no default | Small element next to the name, e.g. <Badge tone="accent">Pro</Badge>. |
+| bio | ReactNode | optional, no default | Shows a line or two about the person. |
+| stats | ProfilePreviewStat[] | optional, no default | Numbers are shortened for the locale (12 400 → "12.4K"). |
+| joined | string \| number \| Date | optional, no default | Join date; formatted with Intl for locale. |
+| joinedLabel | ((formattedDate: string) => ReactNode) | (date) => `Joined ${date}` | Wording around the formatted join date (i18n). |
+| locale | string | the browser's | Locale for numbers and dates (defaults to the browser's). |
+| cover | boolean | true | Draws a decorative gradient band behind the avatar. |
+| className | string | optional, no default | Adds extra classes to the card content. |
+
+### Example 1 of 4: Profile preview
+
+Hover or Tab to a mention. ProfilePreview formats numbers and the join date for the locale.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger, ProfilePreview } from "@/components/sheenui/hover-card/hover-card";
+// Package build (after the first npm release, or a packed tarball): import { Badge, HoverCard, HoverCardContent, HoverCardTrigger, ProfilePreview } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <HoverCard>
+      <HoverCardTrigger href="https://example.com/ada-lovelace">@ada-lovelace</HoverCardTrigger>
+      <HoverCardContent>
+        <ProfilePreview
+          name="Ada Lovelace"
+          handle="ada-lovelace"
+          status="online"
+          badge={<Badge tone="accent">Maintainer</Badge>}
+          bio="Builds SheenUI. Likes glass, springs and contrast ratios above 4.5."
+          stats={[{ label: "followers", value: 12400 }, { label: "following", value: 183 }]}
+          joined="2019-03-14"
+        />
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+```
+
+### Example 2 of 4: Link preview
+
+Image, site, title and description. Motion's card has an image (it fades in once loaded) and an image favicon; Base UI and Tailwind CSS have none, so a soft gradient with the site's initial keeps the card's shape. A broken image falls back to the same initial.
+
+```tsx
+import { HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview } from "@/components/sheenui/hover-card/hover-card";
+// Package build (after the first npm release, or a packed tarball): import { HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview } from "@sheenui/theme";
+
+export function Example() {
+  // Any image URL or data: URI works; 1.91 : 1 is the usual social-card shape.
+  const springOgImage = "https://example.com/og/motion.png";
+  const springIcon = "https://motion.dev/favicon.ico";
+
+  return (
+    <>
+      <HoverCard>
+        <HoverCardTrigger href="https://motion.dev" target="_blank" rel="noopener">Motion</HoverCardTrigger>
+        <HoverCardContent padded={false}>
+          <LinkPreview
+            url="https://motion.dev"
+            siteName="Motion"
+            title="Motion – A modern animation library for JavaScript and React"
+            description="Springs, gestures, layout animations and scroll effects."
+            image={springOgImage}
+            imageAlt="A spring curve that overshoots once, then settles on its target."
+            favicon={springIcon}
+          />
+        </HoverCardContent>
+      </HoverCard>
+
+      {/* No image: the card shows a gradient with the site's initial. */}
+      <LinkPreview url="https://tailwindcss.com" siteName="Tailwind CSS" title="Tailwind CSS" description="A utility-first CSS framework." />
+    </>
+  );
+}
+```
+
+### Example 3 of 4: One card, many triggers
+
+A handle links one HoverCard to triggers anywhere; each passes its own payload. Moving between avatars swaps the content without closing.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { createHoverCardHandle, HoverCard, HoverCardContent, HoverCardTrigger, ProfilePreview } from "@/components/sheenui/hover-card/hover-card";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, createHoverCardHandle, HoverCard, HoverCardContent, HoverCardTrigger, ProfilePreview } from "@sheenui/theme";
+
+type Person = { name: string; handle: string; href: string; bio: string };
+
+const team: Person[] = [
+  { name: "Asha Verma", handle: "@asha", href: "https://example.com/asha", bio: "Design systems." },
+  { name: "Ravi Kumar", handle: "@ravi", href: "https://example.com/ravi", bio: "Frontend platform." },
+  { name: "Meera Iyer", handle: "@meera", href: "https://example.com/meera", bio: "Accessibility." },
+];
+
+export function Example() {
+  const teamCard = createHoverCardHandle<Person>();
+
+  return (
+    <>
+      <div className="flex -space-x-2.5 any-pointer-coarse:space-x-1">
+        {team.map((person) => (
+          <HoverCardTrigger key={person.handle} handle={teamCard} payload={person} href={person.href} target="_blank" rel="noopener" variant="plain">
+            <Avatar name={person.name} />
+          </HoverCardTrigger>
+        ))}
+      </div>
+
+      <HoverCard handle={teamCard}>
+        {({ payload }) => payload && (
+          <HoverCardContent>
+            <ProfilePreview {...payload} />
+          </HoverCardContent>
+        )}
+      </HoverCard>
+    </>
+  );
+}
+```
+
+### Example 4 of 4: Placement and delay
+
+side flips to the other side when there is no room. delay is how long the pointer must rest on the link; closeDelay gives it time to reach the card.
+
+```tsx
+import { HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview } from "@/components/sheenui/hover-card/hover-card";
+// Package build (after the first npm release, or a packed tarball): import { HoverCard, HoverCardContent, HoverCardTrigger, LinkPreview } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <HoverCard>
+      <HoverCardTrigger href="https://base-ui.com" target="_blank" rel="noopener" delay={500} closeDelay={250}>
+        Base UI
+      </HoverCardTrigger>
+      <HoverCardContent side="top" align="center" sideOffset={10} padded={false}>
+        <LinkPreview url="https://base-ui.com" siteName="Base UI" title="Base UI" description="Unstyled, accessible React components." />
+      </HoverCardContent>
+    </HoverCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Focusing the link opens the card after the delay. |
+| Enter | Follow the link. |
+| Escape | Close the card. |
+
+### Accessibility
+
+- A hover card is an extra for links: it is not announced, so the link text must make sense alone and the card must not hold the only copy of anything.
+- On touch screens the first tap opens the card and a second tap follows the link.
+- Content inside is not reachable by Tab; use a Popover for interactive content.
+
+### All exports on this page
+
+- HoverCard — Hover card: a glass preview of what is behind a link (a profile, a page) shown on hover or keyboard focus.
+- HoverCardContent — The glass card, portalled to the end of the body and positioned next to the trigger.
+- HoverCardTrigger — The link that opens the card.
+- LinkPreview — Link card content: image, site, title and description.
+- ProfilePreview — Profile card content: avatar, name, handle, bio, stats and join date.
+- createHoverCardHandle — Connects one HoverCard to triggers rendered elsewhere; pass payload on each trigger.
+
+
+### When to use the hover card
+
+- Use it as a profile preview popover for @mentions in a comment thread, where hovering a username link shows a profile preview with avatar, bio, stats and join date after a short delay.
+- Use it for external links in documentation, with LinkPreview content showing the site, title, description and a 1.91 to 1 image so readers can judge a link before leaving.
+- Use it for a link in a table or feed where passing the pointer across should do nothing: the default delay is 500 milliseconds, with a closeDelay of 250, so quick passes stay quiet.
+- Skip it when the content is interactive or essential; the card is not reachable by Tab, so Popover fits buttons and forms, and Tooltip fits a short label for an icon.
+- Pair it with Avatar and Badge inside ProfilePreview, Link-styled triggers using variant="link", and the page the link opens, where the essential version of the information should live.
+
+
+### Frequently asked questions
+
+#### How do I make a React hover card for a link preview?
+
+Use HoverCard with a HoverCardTrigger, which renders an a element, so pass href, and HoverCardContent holding ProfilePreview or LinkPreview. Place it with side, align and sideOffset. Use padded={false} for edge-to-edge content like a preview image.
+
+#### Can keyboard and screen reader users reach the hover card?
+
+Focusing the link opens the card after the delay and Escape closes it, but the card content is not reachable by Tab or read by screen readers. Base UI keeps the link as the one accessible element, so keep essential information on the destination page and avoid buttons inside.
+
+#### What happens on touch screens, where there is no hover?
+
+The first tap on the trigger opens the card and a second tap follows the link; a tap outside closes it. The touchHint prop on HoverCardContent sets the line shown after the first tap, and null hides it, for example when the trigger is not a link. Plain triggers get a 44px tap area.
+
+#### How do I change the delay or style the trigger?
+
+Set delay (default 500) and closeDelay (default 250) in milliseconds on HoverCardTrigger. variant="link" gives accent underlined text for links in a sentence, and "plain" leaves only the focus ring, suiting avatars and chips. Reduced motion makes the card fade only.
+
+
+### Related pages
+
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Kbd Component for React Keyboard Shortcuts
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/kbd
+Sidebar name: Kbd
+
+A Kbd component for React: write mod+k once and it shows ⌘K on Mac and Ctrl+K elsewhere, while screen readers hear key names. Tailwind CSS v4, MIT.
+
+What it is: The Kbd component renders keyboard shortcuts as glass key caps in React, showing ⌘K on a Mac and Ctrl+K on Windows and Linux from one definition.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/kbd.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Kbd
+
+Files to copy from `theme/src/`:
+
+- `components/kbd/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx tailwind-merge
+```
+
+Registry item: kbd. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Kbd, KbdShortcut } from "@/components/sheenui/kbd/kbd";
+import { formatShortcut, matchesShortcut } from "@/components/sheenui/kbd/shortcut";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { formatShortcut, Kbd, KbdShortcut, matchesShortcut } from "@sheenui/theme";
+```
+
+### KbdShortcut
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| keys | string \| readonly string[] | required | The shortcut: "mod+k", "shift+mod+p", "?" or an array of keys. mod = ⌘ on Apple, Ctrl elsewhere. |
+| variant | "chips" \| "inline" | "chips" | "chips": one key cap per key. "inline": plain text as in menus (⇧⌘P, Ctrl+Shift+P). |
+| platform | ShortcutPlatform \| "auto" | "auto" | Force a platform, e.g. to document both. |
+| size | "sm" \| "md" | "sm" | Size of the key caps in the "chips" variant. |
+| labels | Partial<KbdLabels> | defaultKbdLabels | Override the visible or spoken key names (i18n). Every other string, for translation: labels={{ mac: "…" }}; omitted keys keep the English of defaultKbdLabels. All 4 keys of KbdLabels are listed in the key table under the props table. |
+| announce | boolean | true | Read the shortcut to screen readers ("Command K"). Turn off when the parent already exposes it, e.g. a menu item with aria-keyshortcuts. |
+
+### Kbd and helpers
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| size | "sm" \| "md" | "sm" | Height of the key cap: "sm" (default, 20px) or "md" (24px). |
+| <Kbd size> | "sm" \| "md" | "sm" | One key cap; any text or symbol inside. |
+| formatShortcut(keys, platform, labels?) | { keys, spoken, aria } | optional, no default | Visible keys, words for screen readers and an aria-keyshortcuts value. |
+| matchesShortcut(event, keys, platform?) | boolean | optional, no default | Does a keydown event match? Modifiers must match exactly. |
+| useShortcutPlatform(platform?) | "mac" \| "other" | optional, no default | Returns the visitor's platform ("other" during server rendering). |
+
+### Example 1 of 2: Keys and shortcuts
+
+Press CtrlKControl K to search, ? for every shortcut.
+
+```tsx
+import { Kbd, KbdShortcut } from "@/components/sheenui/kbd/kbd";
+// Package build (after the first npm release, or a packed tarball): import { Kbd, KbdShortcut } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Kbd>Esc</Kbd>
+      <Kbd>↵</Kbd>
+      <KbdShortcut keys="mod+k" />
+      <KbdShortcut keys="shift+mod+p" />
+      <KbdShortcut keys="mod+k" size="md" />
+
+      <p>Press <KbdShortcut keys="mod+k" /> to search.</p>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Every platform
+
+Chips for hints in text; inline for menus (⇧⌘P on a Mac, Ctrl+Shift+P elsewhere), in each platform's own modifier order. Pin a platform to document both.
+
+```tsx
+import { useEffect } from "react";
+import { KbdShortcut } from "@/components/sheenui/kbd/kbd";
+import { formatShortcut, matchesShortcut } from "@/components/sheenui/kbd/shortcut";
+// Package build (after the first npm release, or a packed tarball): import { KbdShortcut, formatShortcut, matchesShortcut } from "@sheenui/theme";
+
+export function Example() {
+  // Helpers
+  const parts = formatShortcut("shift+mod+p", "other"); // { keys: ["Ctrl", "Shift", "P"], spoken: "Control Shift P", aria: "Control+Shift+P" }
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (matchesShortcut(event, "mod+k")) console.log("palette"); // in a keydown handler
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  return (
+    <>
+      <p>{parts.spoken}</p>
+      <KbdShortcut keys="shift+mod+p" /> {/* chips */}
+      <KbdShortcut keys="shift+mod+p" variant="inline" /> {/* menu text */}
+      <KbdShortcut keys="shift+mod+p" platform="mac" /> {/* always ⇧ ⌘ P */}
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: Kbd and KbdShortcut only display keys. |
+
+### Accessibility
+
+- Keys render in <kbd> elements. KbdShortcut adds a visually hidden spoken form ("Control Shift P") unless announce is false.
+- Pass platform to force Mac or other symbols; by default the visitor's platform decides, so "mod" shows Cmd on a Mac and Ctrl elsewhere.
+- A shortcut shown in a menu item is only a hint: wire the handler yourself (see useCommandShortcut and matchesShortcut).
+
+### API
+
+#### KbdShortcut
+
+#### Kbd and helpers
+
+
+### When to use the Kbd component
+
+- Use it as a keyboard shortcut component in help text and docs to show a single key, such as pressing Esc to close a panel, as a native kbd element with a sm or md size.
+- Use KbdShortcut next to a search button or a menu item to show a combination like mod+k, which reads as the Command symbol and K on a Mac and Ctrl K elsewhere.
+- Use it inside an onboarding checklist or a shortcuts cheat sheet, where variant="inline" writes plain text like Ctrl+Shift+P and the chips variant draws one cap per key.
+- Skip it when the element is clickable or needs behavior; Kbd is a label and not a control, so Button fits an action, and binding the key still needs your own handler.
+- Pair it with Dropdown menu or Command palette items, which already show shortcuts, Tooltip to reveal a key when hovering an icon button, and the useShortcutPlatform hook for custom text.
+
+
+### Frequently asked questions
+
+#### How do I show a keyboard shortcut in React?
+
+Use KbdShortcut with keys as a string like shift+mod+p or an array. The word mod means Command on Apple platforms and Ctrl elsewhere. It only displays the shortcut; binding the key is up to you, for example with matchesShortcut or the useCommandShortcut hook.
+
+#### Does it cause hydration mismatches for Mac and Windows?
+
+useShortcutPlatform reads the browser once and returns other during server rendering, so the server and client agree on the first render. Pass platform="mac" or "other" to force one, which is useful for docs that show both platforms side by side.
+
+#### How do screen readers read the key caps?
+
+The visible keys are aria-hidden and a visually hidden span reads the key names, such as Command K, instead of symbols. Set announce={false} when a parent already exposes it, for instance a menu item with aria-keyshortcuts. Single Kbd text is read as written.
+
+#### Can I rename keys for another language?
+
+Yes. KbdShortcut takes a labels prop that overrides key names for i18n, and defaultKbdLabels holds the default glyphs and spoken names per platform. The key caps are flat with no backdrop blur and no motion, and forced colors draw a CanvasText border.
+
+
+### Related pages
+
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Menubar: Desktop-Style App Menu
+
+URL: https://lokendra-builds.github.io/sheenui/overlays/menubar
+Sidebar name: Menubar
+
+A glass desktop-style menubar for React (File, Edit, View) with arrow-key navigation and a tint that glides to the open menu. Base UI, Tailwind CSS v4.
+
+What it is: A glass desktop-style React menubar with File, Edit and View menus, reached with one Tab stop and walked with the arrow keys.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/menubar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Menubar
+
+Files to copy from `theme/src/`:
+
+- `components/menu/`
+- `components/menubar/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, glide-highlight.tsx, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: menubar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { MenuCheckboxItem, MenuItem, MenuLabel, MenuLinkItem, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@/components/sheenui/menu/menu";
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from "@/components/sheenui/menubar/menubar";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenuCheckboxItem, MenuItem, MenuLabel, MenuLinkItem, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@sheenui/theme";
+```
+
+### Menubar
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Which arrow keys move between menus. |
+| loopFocus | boolean | true | Arrow keys wrap from the last menu to the first. |
+| modal | boolean | true | Lock page scroll and outside clicks while a menu is open. |
+| disabled | boolean | false | Disable the whole bar. |
+| className | string | optional, no default | Classes for the glass bar. It scrolls sideways if the menus don't fit. |
+| Menubar ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style, render). |
+| Menu ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example defaultOpen, loopFocus, highlightItemOnHover, modal, onOpenChange, onOpenChangeComplete). |
+
+### MenubarMenu · MenubarTrigger · MenubarContent
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<MenuLabels> | defaultMenuLabels | Spoken text. Merged over defaultMenuLabels. Every other string, for translation: labels={{ submenu: "…" }}; omitted keys keep the English of defaultMenuLabels. All 2 keys of MenuLabels are listed in the key table under the props table. |
+| anchor | Element \| VirtualElement \| RefObject<Element \| null> \| (() => Element \| VirtualElement \| null) \| null | optional, no default | Element to position against instead of the trigger. |
+| side | "top" \| "bottom" \| "left" \| "right" \| "inline-start" \| "inline-end" | "bottom" | Preferred side of the trigger; it flips when there is no room. |
+| align | "center" \| "end" \| "start" | "start" | Sets the alignment along that side. |
+| sideOffset | number | 8 | Gap between the trigger and the menu, in px (each part has its own default). |
+| alignOffset | number | -4 | Shift along the alignment axis, in px (each part has its own default). |
+| collisionPadding | number | 12 | Space kept from the viewport edges, in px. |
+| positionerClassName | string | optional, no default | Classes for the positioner (the fixed element around the popup). |
+| MenubarMenu | Menu props (open, onOpenChange…) | optional, no default | Holds one menu in the bar. |
+| MenubarTrigger disabled | boolean | false | Disables this menu so it cannot be opened. |
+
+### Example 1 of 2: Notes app
+
+View toggles the sidebar, the word count and the text size; File → Open recent switches notes. Everything else shows a toast.
+
+```tsx
+import { useState } from "react";
+import { MenuCheckboxItem, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@/components/sheenui/menu/menu";
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from "@/components/sheenui/menubar/menubar";
+// Package build (after the first npm release, or a packed tarball): import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenuCheckboxItem, MenuItem, MenuLabel, MenuRadioGroup, MenuRadioItem, MenuSeparator, MenuSub, MenuSubContent, MenuSubTrigger } from "@sheenui/theme";
+import { File as FileIcon, Printer as PrinterIcon } from "lucide-react";
+
+export function Example() {
+  const [sidebar, setSidebar] = useState(true);
+  const [size, setSize] = useState("md");
+
+  return (
+    <Menubar aria-label="Application menu">
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenuItem icon={<FileIcon />} shortcut="mod+n">New note</MenuItem>
+          <MenuSub>
+            <MenuSubTrigger inset>Open recent</MenuSubTrigger>
+            <MenuSubContent>
+              <MenuItem>Meeting notes</MenuItem>
+              <MenuItem>Shopping list</MenuItem>
+            </MenuSubContent>
+          </MenuSub>
+          <MenuSeparator />
+          <MenuItem icon={<PrinterIcon />} shortcut="mod+p">Print…</MenuItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>View</MenubarTrigger>
+        <MenubarContent>
+          <MenuCheckboxItem checked={sidebar} onCheckedChange={setSidebar} shortcut="mod+\">
+            Sidebar
+          </MenuCheckboxItem>
+          <MenuSeparator />
+          <MenuRadioGroup value={size} onValueChange={setSize}>
+            <MenuLabel>Text size</MenuLabel>
+            <MenuRadioItem value="sm" shortcut="mod+-">Small</MenuRadioItem>
+            <MenuRadioItem value="md" shortcut="mod+0">Medium</MenuRadioItem>
+          </MenuRadioGroup>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+
+### Example 2 of 2: Edit and Help menus
+
+Shortcut hints, a disabled item and a link item. The hints are display only: wire the handlers yourself.
+
+```tsx
+import { MenuItem, MenuLinkItem, MenuSeparator } from "@/components/sheenui/menu/menu";
+import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger } from "@/components/sheenui/menubar/menubar";
+// Package build (after the first npm release, or a packed tarball): import { Menubar, MenubarContent, MenubarMenu, MenubarTrigger, MenuItem, MenuLinkItem, MenuSeparator } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Menubar aria-label="Editor">
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenuItem shortcut="mod+z">Undo</MenuItem>
+          <MenuItem shortcut="shift+mod+z" disabled>Redo</MenuItem>
+          <MenuSeparator />
+          <MenuItem shortcut="mod+x">Cut</MenuItem>
+          <MenuItem shortcut="mod+c">Copy</MenuItem>
+          <MenuItem shortcut="mod+v">Paste</MenuItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Help</MenubarTrigger>
+        <MenubarContent>
+          <MenuLinkItem href="#documentation">Documentation</MenuLinkItem>
+          <MenuItem>Keyboard shortcuts</MenuItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Reach the bar once. |
+| Arrow Left / Arrow Right | Move between menus; while one is open, switch the open menu. |
+| Arrow Down / Enter / Space | Open the focused menu. |
+| Arrow Down / Arrow Up | Move between items; the list wraps. |
+| Home / End | Jump to the first or last item. |
+| Type a letter | Jump to the next item that starts with it (typeahead). |
+| Enter / Space | Run the highlighted item (a checkbox or radio item toggles and keeps the menu open). |
+| Escape | Close the menu and return focus to its trigger. |
+
+### Accessibility
+
+- role="menubar" with menu triggers (aria-haspopup, aria-expanded); name it with aria-label.
+- Items are 44 px tall on touch screens, and the bar scrolls sideways instead of wrapping on narrow screens.
+- Shortcut hints are shown as keys and exposed through aria-keyshortcuts.
+
+### API
+
+#### Menubar
+
+#### MenubarMenu · MenubarTrigger · MenubarContent
+
+
+### When to use Menubar
+
+- Use it as a desktop-style app menu bar for a web-based editor or admin tool with File, Edit and View menus along the top, where many commands are grouped the way a desktop application groups them.
+- Use it when hovering a neighboring trigger should switch the open menu, as in desktop apps, and the accent tint should glide from one trigger to the next.
+- Use it on narrow screens, where the bar scrolls sideways instead of wrapping to a second row, and set orientation="vertical" when you want the triggers stacked in a column.
+- Skip it when you have one menu behind one button; Dropdown menu is simpler, and a site's top-level links with panels of content belong in a navigation menu instead.
+- Pair it with MenuItem, MenuCheckboxItem and MenuSub for the contents, KbdShortcut for shown key combinations, and CommandPalette so rarely used commands are searchable too.
+
+
+### Frequently asked questions
+
+#### How do I build a File Edit View menu bar in React?
+
+Compose Menubar with a MenubarMenu for each menu, each holding a MenubarTrigger and a MenubarContent. Inside the content, use the dropdown menu's parts such as MenuItem, MenuCheckboxItem and MenuSub. It is built on Base UI Menubar and passes its props through.
+
+#### Which keys move between menus?
+
+Tab reaches the bar once. Left and Right move between triggers and, while one menu is open, switch the open menu. Down, Enter or Space open one, and Escape closes it and returns focus to its trigger. Inside a menu, Right opens a submenu and Left closes it.
+
+#### What ARIA roles does the menubar use?
+
+The bar has role="menubar" and each trigger is a real button with aria-haspopup="menu" and aria-expanded. Menu popups are role="menu". Triggers are 44px tall on touch screens, and an inset focus ring ensures focus is never clipped by the scrolling bar.
+
+#### How does the open-menu highlight animate?
+
+The accent tint of the open menu glides between triggers using a shared layout animation. With reduced motion it jumps instead, and in forced colors it is hidden. The bar is a glass-2 surface, and the popup drops below the trigger with left edges aligned.
+
+
+### Related pages
+
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette)
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

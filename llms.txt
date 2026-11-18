@@ -1,0 +1,126 @@
+# SheenUI
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+## Facts
+
+- Name and licence: SheenUI (also written Sheen UI), version 0.1.0 (pre-1.0), MIT, by Lokendra Singh Rathore.
+- What it is: a copy-the-source React library of glassmorphism and Liquid Glass components, animated with Motion, on Base UI primitives and Tailwind CSS v4. Two style presets (Liquid Glass, Aurora Neon), light and dark.
+- Size: 86 components (67 UI components and 19 effects), 48 charts, 20 blocks, 5 dashboards and 13 guides; 183 shadcn registry items.
+- Requires: React 19.2+, Tailwind CSS v4, Motion 14.10.1+, @base-ui/react 1.9+.
+- Install: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json`, or copy the files a page lists. The `@sheenui/theme` package is not on npm yet.
+- Browsers: Liquid Glass refraction runs in Chromium; Safari and Firefox get frosted glass. Reduced motion and reduced transparency are honoured.
+- License: MIT (https://opensource.org/licenses/MIT). Free for personal and commercial use; keep the copyright notice with the copied source.
+- Cite as: "SheenUI. Glassmorphism and Liquid Glass React components. Lokendra Singh Rathore. MIT license. https://lokendra-builds.github.io/sheenui/about". Cite a single fact with the URL of the page it comes from.
+- Every docs page also exists as Markdown: the page URL plus ".md" (the home page is https://lokendra-builds.github.io/sheenui/index.md); each page links its twin with <link rel="alternate" type="text/markdown">.
+
+## Definitions
+
+- Glassmorphism is a UI style where surfaces look like frosted glass: a translucent tint, a background blur (CSS backdrop-filter) and a thin, light border, over a colorful background.
+- Liquid Glass is Apple's design language since iOS 26: it blurs what is behind a surface, also bends it like a lens (refraction) and adds a bright rim. In SheenUI the LiquidGlass component refracts in Chromium and shows frosted glass in Safari and Firefox.
+- SheenUI is a free, MIT-licensed, copy-the-source React library of glass components, charts and blocks, built on Base UI and Tailwind CSS v4 and animated with Motion. You copy the source into your app and own the code.
+- SheenUI is not on npm: install a component with the shadcn CLI (npx shadcn@latest add <url>.json) or copy the files a docs page lists.
+
+Every docs page below is static HTML with a live demo and, for most, a props table, keyboard notes and a "Files to copy" box; the Guides section holds long-form articles (Markdown files in docs/guides). Individual component, chart and block pages are not listed here: their description, props, examples and keyboard notes are in the section files under https://lokendra-builds.github.io/sheenui/llms/ (linked per section below), every page's URL is in llms-full.txt, and each page has a .md twin. Source: https://github.com/lokendra-builds/sheenui (theme/src).
+
+## Install
+
+- Install with the shadcn CLI: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json` (one registry item per component, chart and block). The registry index is [r/registry.json](https://lokendra-builds.github.io/sheenui/r/registry.json); a copy-paste install needs no package.
+- [Installation](https://lokendra-builds.github.io/sheenui/docs/installation): copy-paste and shadcn steps; every code sample shows the import a copied or shadcn install has (`@/components/sheenui/<folder>/<file>`), with the `@sheenui/theme` package form beside it as a comment: use that one after the first npm release, or from a packed tarball (https://lokendra-builds.github.io/sheenui/docs/installation#import-paths).
+- [Framework guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks): tested steps for Next.js and Vite.
+
+## Quick start
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Button } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard>
+      <Button>Hello, glass</Button>
+    </GlassCard>
+  );
+}
+```
+
+## Start
+
+- [Glassmorphism & Liquid Glass React Components](https://lokendra-builds.github.io/sheenui/): Free glassmorphism and Liquid Glass React components with Motion: 86 components (67 UI, 19 effects), 48 charts and 20 blocks for Tailwind v4 and shadcn.
+- [Glass Design Tokens: Blur, Tint, Rim & Motion](https://lokendra-builds.github.io/sheenui/foundations): Glass design tokens behind SheenUI: blur, tint and rim at three levels, OKLCH colors, motion presets and solid fallbacks for reduced transparency.
+- [React Component Showcase with Live Glass Demos](https://lokendra-builds.github.io/sheenui/showcase): An animated React component showcase: 21 live SheenUI stories, from a Button to a login lamp, on glass stages that pause off-screen and for reduced motion.
+- [About SheenUI: MIT Glass React Components](https://lokendra-builds.github.io/sheenui/about): SheenUI is an MIT-licensed, pre-1.0 library of glass React components by Lokendra Singh Rathore: what it is, its status, how it is tested, how to cite it.
+- 6 more Start pages (title, description, props, examples, keyboard notes): [start.txt](https://lokendra-builds.github.io/sheenui/llms/start.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Components
+
+- [Glass UI Components for React & Tailwind (Free)](https://lokendra-builds.github.io/sheenui/components/): Free glass UI components for React: buttons, inputs, menus, dialogs, tables and more on Base UI and Tailwind CSS v4, animated with Motion. Copy the source.
+- 21 more Components pages (title, description, props, examples, keyboard notes): [components-1.txt](https://lokendra-builds.github.io/sheenui/llms/components-1.txt), [components-2.txt](https://lokendra-builds.github.io/sheenui/llms/components-2.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Navigation
+
+- 4 more Navigation pages (title, description, props, examples, keyboard notes): [navigation.txt](https://lokendra-builds.github.io/sheenui/llms/navigation.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Charts
+
+- [Animated React Charts: 48 Chart Types](https://lokendra-builds.github.io/sheenui/charts/): 48 animated React chart components in glass, from line and pie to heatmap and Sankey, with tooltips, keyboard reading and table view. MIT.
+- 48 more Charts pages (title, description, props, examples, keyboard notes): [charts-1.txt](https://lokendra-builds.github.io/sheenui/llms/charts-1.txt), [charts-2.txt](https://lokendra-builds.github.io/sheenui/llms/charts-2.txt), [charts-3.txt](https://lokendra-builds.github.io/sheenui/llms/charts-3.txt), [charts-4.txt](https://lokendra-builds.github.io/sheenui/llms/charts-4.txt), [charts-5.txt](https://lokendra-builds.github.io/sheenui/llms/charts-5.txt), [charts-6.txt](https://lokendra-builds.github.io/sheenui/llms/charts-6.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Blocks
+
+- [Free React & Tailwind Blocks in Glassmorphism](https://lokendra-builds.github.io/sheenui/blocks/): Copy-paste React blocks in glassmorphism: login, sign-up, OTP, checkout, pricing, AI chat, dashboards and settings. Tailwind CSS v4 + Motion. Free, MIT.
+- 20 more Blocks pages (title, description, props, examples, keyboard notes): [blocks-1.txt](https://lokendra-builds.github.io/sheenui/llms/blocks-1.txt), [blocks-2.txt](https://lokendra-builds.github.io/sheenui/llms/blocks-2.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Forms
+
+- 13 more Forms pages (title, description, props, examples, keyboard notes): [forms-1.txt](https://lokendra-builds.github.io/sheenui/llms/forms-1.txt), [forms-2.txt](https://lokendra-builds.github.io/sheenui/llms/forms-2.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Overlays
+
+- 9 more Overlays pages (title, description, props, examples, keyboard notes): [overlays-1.txt](https://lokendra-builds.github.io/sheenui/llms/overlays-1.txt), [overlays-2.txt](https://lokendra-builds.github.io/sheenui/llms/overlays-2.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Layout
+
+- 11 more Layout pages (title, description, props, examples, keyboard notes): [layout.txt](https://lokendra-builds.github.io/sheenui/llms/layout.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Data display
+
+- 6 more Data display pages (title, description, props, examples, keyboard notes): [data-display.txt](https://lokendra-builds.github.io/sheenui/llms/data-display.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Chat
+
+- 3 more Chat pages (title, description, props, examples, keyboard notes): [chat.txt](https://lokendra-builds.github.io/sheenui/llms/chat.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Effects
+
+- [Animated React Components & Effects with Motion](https://lokendra-builds.github.io/sheenui/effects/): Animated React components made with Motion (formerly Framer Motion): Liquid Glass, border beam, dock, number ticker and text effects. Reduced-motion safe.
+- 19 more Effects pages (title, description, props, examples, keyboard notes): [effects-1.txt](https://lokendra-builds.github.io/sheenui/llms/effects-1.txt), [effects-2.txt](https://lokendra-builds.github.io/sheenui/llms/effects-2.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Dashboards
+
+- [React Glass Dashboard Template Pack (Free)](https://lokendra-builds.github.io/sheenui/dashboards/): Free glassmorphism dashboard templates for React: web analytics, SaaS revenue, e-commerce, product analytics and crypto, with animated charts. Tailwind v4.
+- 5 more Dashboards pages (title, description, props, examples, keyboard notes): [dashboards.txt](https://lokendra-builds.github.io/sheenui/llms/dashboards.txt); every page's URL is in [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt)
+
+## Guides
+
+- [React Glass UI Guides and Tutorials](https://lokendra-builds.github.io/sheenui/guides/): Guides for accessible glass UI in React: glassmorphism, Liquid Glass with a Safari fallback, backdrop-filter speed, Motion, Base UI and installing SheenUI.
+- [Install SheenUI Glass UI in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks): Tested install steps for SheenUI in Next.js App Router and Vite (React Router or TanStack Router): the shadcn CLI, the packed package, or copying files.
+- [Glassmorphism React Tutorial: Step by Step](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial): Glassmorphism in React is a frosted-glass UI style: a tint, backdrop-filter blur and light border. Build it in CSS, Tailwind v4 and React, with contrast.
+- [Liquid Glass CSS & React with Safari Fallback](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react): Liquid Glass CSS for React: Apple's iOS 26 look with an SVG displacement map, plus a frosted fallback for Safari and Firefox. Working code.
+- [Glassmorphism Accessibility: Contrast & Fallbacks](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism): Glassmorphism accessibility in React: WCAG contrast on glass, prefers-reduced-transparency, prefers-contrast, forced colors and reduced motion, with code.
+- [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass): Glassmorphism vs Liquid Glass vs Neumorphism: how each works in CSS, browser support, accessibility and cost, when to use which, with React code.
+- [backdrop-filter Performance: Fast Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance): backdrop-filter performance, measured: what blur costs, why a moving backdrop is the real problem, rules for fast glass, and a lite mode for weak devices.
+- [Accessible React Charts with a Table Fallback](https://lokendra-builds.github.io/sheenui/guides/accessible-react-charts): Accessible React charts with a table fallback: color-blind-safe palettes, keyboard reading, screen-reader summaries, never relying on color. Tested code.
+- [Framer Motion Examples for React: 12 Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples): 12 Framer Motion examples for React in Motion (motion/react): springs, shared layouts, scroll reveals, drag, tilt, reduced motion. Copy-paste code.
+- [Framer Motion to Motion: Migrating to motion/react](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion): Framer Motion to Motion migration: switch from framer-motion to the motion package and motion/react imports, with a codemod, Next.js notes and bundle size.
+- [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix): Base UI vs Radix UI for React compared on checked data: component coverage, render prop vs asChild, release dates, shadcn support and migration notes.
+- [Best Glassmorphism React Libraries (2026)](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries): The best glassmorphism React libraries compared on checked data: components, Liquid Glass refraction, Safari fallback, accessibility, license, install.
+- [shadcn Alternatives with Animation in 2026](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives): shadcn alternatives with animation, glass and charts, checked on 8 Nov 2026: license, install method, primitives and paid tiers for nine libraries.
+- [Glassmorphism UI Prompt for Claude, Cursor & v0](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt): A glassmorphism UI prompt for Claude, Cursor and v0: copy-paste prompts, a rules file and a review checklist for accessible glass and Liquid Glass UI.
+
+## Optional
+
+- [llms-full.txt](https://lokendra-builds.github.io/sheenui/llms-full.txt): the table of contents of the full text, split into section files under https://lokendra-builds.github.io/sheenui/llms/ (each under 150 KB)
+- [API index](https://lokendra-builds.github.io/sheenui/llms/api-index.txt): the names the examples import, with the page that documents each
+- [All exports](https://lokendra-builds.github.io/sheenui/llms/exports.txt): every public export, the page that documents it and a one-line summary

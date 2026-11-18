@@ -1,0 +1,1324 @@
+# SheenUI: Data display
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## React Carousel with Swipe, Loop & Autoplay
+
+URL: https://lokendra-builds.github.io/sheenui/components/carousel
+Sidebar name: Carousel
+
+A glass React carousel: swipe, drag or flick with momentum, endless loop, responsive slides per view and autoplay that pauses on hover. Accessible, MIT.
+
+What it is: A glass React carousel you can swipe, drag or flick, with an endless loop, responsive slides per view and autoplay that pauses on hover and focus.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/carousel.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Carousel
+
+Files to copy from `theme/src/`:
+
+- `components/carousel/carousel.tsx`
+- `components/button/`
+- `components/carousel/parts/`
+- `components/spinner/`
+- `hooks/{use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, math.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: carousel. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Carousel } from "@/components/sheenui/carousel/carousel";
+import { CarouselCaption } from "@/components/sheenui/carousel/carousel-caption";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Carousel, CarouselCaption } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | Each child becomes one slide of the carousel. |
+| aria-label | string | required | Accessible name of the carousel, e.g. "Featured products". Required. |
+| slidesPerView | number \| Record<number, number> | 1 | Slides visible at once. A number, or breakpoints keyed by the carousel's own width in px (container width, not the window): { 0: 1.15, 640: 2, 1024: 3 }. Fractions show a peek of the next slide. |
+| gap | number | 16 | Sets the space left between slides, in px. |
+| align | "center" \| "start" | "start" | Where the current slide sits: at the start, or centred (great with a fractional view + loop). |
+| loop | boolean | false | Endless in both directions. Needs enough slides to fill the view plus one; otherwise it rewinds. |
+| slidesToScroll | number \| "page" | 1 | How far the arrows move: a number of slides, or "page" (the slides in view). |
+| autoplay | number \| boolean | false | Advance on its own: true (every 5 s) or an interval in ms. Never starts by itself under reduced motion. |
+| arrows | false \| "bottom" \| "overlay" | "bottom" | "bottom": in the control row. "overlay": floating on the slides' edges. false: none. |
+| dots | boolean | true | Show the dots (a "3 / 12" counter replaces them when they don't fit). |
+| index | number | optional, no default | Controlled position (snap index; with loop, the slide index). Update it from onIndexChange. |
+| defaultIndex | number | 0 | Sets the starting position when uncontrolled. |
+| onIndexChange | ((index: number) => void) | optional, no default | A user or autoplay move asks for a new position (never fired on mount or when following index). |
+| effect | "none" \| "scale" | "none" | "scale": slides away from the current one shrink a little (transform only). |
+| labels | Partial<CarouselLabels> | defaultCarouselLabels | Every other string, for translation: labels={{ carousel: "…" }}; omitted keys keep the English of defaultCarouselLabels. All 14 keys of CarouselLabels are listed in the key table under the props table. |
+| slideClassName | string | optional, no default | Adds extra classes to each slide wrapper. |
+| viewportClassName | string | optional, no default | Adds extra classes to the clipping viewport. |
+
+### CarouselCaption props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| position | "top" \| "bottom" | "bottom" | Where the bar sits on the slide: "bottom" or "top". |
+
+### Example 1 of 4: Gallery with autoplay
+
+One slide per view, loop, overlay arrows, autoplay every 5 s. The active dot fills as the next slide nears; hover, drag or Tab into it to pause, and use the pause button to stop it. Under reduced motion autoplay waits for Play. The overlay arrows sit on a page-colored veil with a two-tone focus ring, so they stay legible on any image; ←/→ work on them too.
+
+```tsx
+import { Carousel } from "@/components/sheenui/carousel/carousel";
+import { CarouselCaption } from "@/components/sheenui/carousel/carousel-caption";
+// Package build (after the first npm release, or a packed tarball): import { Carousel, CarouselCaption } from "@sheenui/theme";
+
+const scenes = [
+  { title: "Dunes", from: "from-amber-300", to: "to-rose-500" },
+  { title: "Glacier", from: "from-sky-200", to: "to-indigo-500" },
+  { title: "Forest", from: "from-lime-300", to: "to-emerald-700" },
+];
+
+function Scene({ title, from, to }: (typeof scenes)[number]) {
+  return (
+    <div className={`relative aspect-video overflow-hidden rounded-sheen-lg bg-gradient-to-br ${from} ${to}`}>
+      {/* The caption bar carries its own dark scrim, so the words stay readable over any image. */}
+      <CarouselCaption>{title}</CarouselCaption>
+    </div>
+  );
+}
+
+export function Example() {
+  return (
+    <Carousel aria-label="Landscapes" loop autoplay={5000} arrows="overlay">
+      {scenes.map((scene) => (
+        <Scene key={scene.title} {...scene} />
+      ))}
+    </Carousel>
+  );
+}
+```
+
+### Example 2 of 4: Responsive cards
+
+Slides per view follow the carousel's own width: 1.15 on phones (a peek of the next card), 2 from 560px, 3 from 900px. Arrows move a page at a time; the ends rubber-band. With several cards in view, the dots and announcements name the range (“Slides 4 to 6 of 6”).
+
+```tsx
+import { Carousel } from "@/components/sheenui/carousel/carousel";
+// Package build (after the first npm release, or a packed tarball): import { Carousel } from "@sheenui/theme";
+
+const products = [
+  { name: "Dashboard", price: "$49" },
+  { name: "Landing page", price: "$29" },
+  { name: "Docs site", price: "$39" },
+  { name: "Admin panel", price: "$59" },
+];
+
+function ProductCard({ name, price }: (typeof products)[number]) {
+  return (
+    <div className="glass-1 flex flex-col gap-1 rounded-sheen-lg p-5">
+      <h3 className="font-semibold">{name}</h3>
+      <p className="text-sm text-sheen-fg-muted">{price}</p>
+    </div>
+  );
+}
+
+export function Example() {
+  return (
+    <Carousel
+      aria-label="Templates"
+      slidesPerView={{ 0: 1.15, 560: 2, 900: 3 }}
+      slidesToScroll="page"
+      gap={16}
+    >
+      {products.map((p) => (
+        <ProductCard key={p.name} {...p} />
+      ))}
+    </Carousel>
+  );
+}
+```
+
+### Example 3 of 4: Centered, with depth
+
+align="center" with a fractional view and loop: neighbors peek on both sides. effect="scale" shrinks slides as they leave the center (transform only, follows your finger while dragging).
+
+```tsx
+import { Carousel } from "@/components/sheenui/carousel/carousel";
+// Package build (after the first npm release, or a packed tarball): import { Carousel } from "@sheenui/theme";
+
+const quotes = [
+  { name: "Asha", text: "Shipped our dashboard in a week." },
+  { name: "Ravi", text: "The motion feels native." },
+  { name: "Meera", text: "Accessible out of the box." },
+];
+
+function Quote({ name, text }: (typeof quotes)[number]) {
+  return (
+    <figure className="glass-1 rounded-sheen-lg p-6">
+      <blockquote>{text}</blockquote>
+      <figcaption className="mt-3 text-sm text-sheen-fg-muted">{name}</figcaption>
+    </figure>
+  );
+}
+
+export function Example() {
+  return (
+    <Carousel
+      aria-label="What teams say"
+      align="center"
+      loop
+      effect="scale"
+      slidesPerView={{ 0: 1.2, 640: 1.6, 1024: 2.2 }}
+      gap={12}
+    >
+      {quotes.map((q) => <Quote key={q.name} {...q} />)}
+    </Carousel>
+  );
+}
+```
+
+### Example 4 of 4: Right to left
+
+In a right-to-left page the first slide sits on the right, Next moves leftwards, the arrows and the dot pill mirror and ←/→ swap meaning. Every string comes from labels, here in Arabic.
+
+```tsx
+import { Carousel } from "@/components/sheenui/carousel/carousel";
+// Package build (after the first npm release, or a packed tarball): import { Carousel } from "@sheenui/theme";
+
+const scenes = [
+  { title: "كثبان", from: "from-amber-300", to: "to-rose-500" },
+  { title: "جبال", from: "from-sky-200", to: "to-indigo-500" },
+];
+
+function Scene({ title, from, to }: (typeof scenes)[number]) {
+  return (
+    <div className={`grid aspect-video place-items-center rounded-sheen-lg bg-gradient-to-br ${from} ${to} text-xl font-semibold text-white`}>
+      {title}
+    </div>
+  );
+}
+
+export function Example() {
+  return (
+    <div dir="rtl" lang="ar">
+      <Carousel
+        aria-label="مناظر"
+        loop
+        labels={{
+          carousel: "عرض شرائح",
+          slide: "شريحة",
+          slideLabel: (i, n) => `${i} من ${n}`,
+          previous: "الشريحة السابقة",
+          next: "الشريحة التالية",
+          goTo: (i) => `الشريحة ${i}`,
+          picker: "اختر شريحة",
+          status: (i, n) => `الشريحة ${i} من ${n}`,
+        }}
+      >
+        {scenes.map((scene) => <Scene key={scene.title} {...scene} />)}
+      </Carousel>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Reach the pause button, the dots and the arrows. |
+| Arrow Left / Arrow Right | Previous or next slide (swapped in right-to-left pages). |
+| Home / End | First or last slide. |
+| Enter / Space | Press the focused button (Play or Pause, an arrow, a dot). |
+
+### Accessibility
+
+- Follows the WAI-ARIA carousel pattern: aria-roledescription="carousel", slides as groups named "3 of 8", and a polite live region that announces the slide after you navigate.
+- Off-screen slides are inert. Autoplay pauses on hover, drag, a hidden tab or when off-screen, and stops for good when keyboard focus enters (press Play to resume).
+- Under reduced motion autoplay does not start and slides change without a glide.
+
+### All exports on this page
+
+- Carousel — Swipeable slides with arrows, dots, autoplay and loop.
+- CarouselCaption — A caption bar for a slide that is an image.
+- defaultCarouselLabels — The English strings of Carousel.
+
+
+### When to use Carousel
+
+- Use it as a React carousel with swipe for a product gallery with one slide per view, loop, overlay arrows and autoplay every five seconds, where users can also swipe, drag or use the dots. Use it as an image slider in Tailwind for a gallery or a row of testimonials, where children are the slides and swipe, arrows and dots come with it.
+- Use slidesPerView breakpoints for a row of testimonial or product cards, such as 1.15 on phones to peek at the next card and 2 or 3 as the carousel widens. Set loop for an infinite loop carousel in React, where the last slide wraps around to the first.
+- Use align="center" with effect="scale" for a featured showcase where neighbors peek on both sides and slides shrink as they leave the center.
+- Skip it when users need to compare all items at once or when the content is critical; a grid or a Tabs panel shows everything, and Scroll area suits a simple sideways list.
+- Pair it with GlassCard for slide content, Button for call-to-action links on slides, and Badge for labels over images.
+
+
+### Frequently asked questions
+
+#### How do I make a react carousel with loop and autoplay?
+
+Render Carousel with one child per slide and a required aria-label. Set loop for an endless carousel that wraps without cloning slides, and autoplay to true for 5000 ms or a number of milliseconds. Autoplay pauses on hover, drag, a hidden tab or off screen, and stops when keyboard focus enters.
+
+#### Is the carousel keyboard and screen reader friendly?
+
+It follows the WAI-ARIA carousel pattern: aria-roledescription="carousel", slides named like "3 of 8", and a polite live region announcing the slide after you navigate. On the pause button, dots and arrows, Left and Right move, and Home and End jump to the first or last slide. Off-screen slides are inert, so Tab cannot reach hidden content.
+
+#### How do I control it from outside and translate it?
+
+Use index with onIndexChange for a controlled carousel, or defaultIndex for an uncontrolled one. onIndexChange is not called on mount. The labels prop holds every string, including slide names, arrows, dots and play and pause, and right-to-left pages mirror the layout, with the arrow keys swapped.
+
+#### What happens with reduced motion?
+
+Autoplay never starts by itself under reduced motion and waits until the user presses Play, and slides snap into place instead of gliding, although dragging still follows the finger. Use arrows set to bottom, overlay or false to place or remove the buttons, and dots to show or hide the dots.
+
+
+### Related pages
+
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter)
+- [Table](https://lokendra-builds.github.io/sheenui/components/table)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Code Block with Copy Button & Highlighting
+
+URL: https://lokendra-builds.github.io/sheenui/components/code-block
+Sidebar name: Code block
+
+A glass React code block with built-in syntax highlighting (no dependency), line numbers, diff lines, file tabs and a copy button. Tailwind CSS v4, MIT.
+
+What it is: A glass React code block with a small built-in syntax highlighter, line numbers, highlighted and diff lines, a file tab and a copy button.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/code-block.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Code block
+
+Files to copy from `theme/src/`:
+
+- `components/code-block/`
+- `components/button/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, presets.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: code-block. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { CodeBlock, CodeBlockTabs } from "@/components/sheenui/code-block/code-block";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { CodeBlock, CodeBlockTabs } from "@sheenui/theme";
+```
+
+### CodeBlock
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onCopy | (ClipboardEventHandler<HTMLDivElement> & ((code: string) => void)) | optional, no default | Called after a successful copy, with the copied text. |
+| showLineNumbers | boolean | true when there is more than one line | Show line numbers. |
+| startLineNumber | number | 1 | Number of the first line (for excerpts of a longer file). |
+| highlightLines | LineSpec | optional, no default | Lines to highlight: [3, 4] or "3-4, 9". Rendered as <mark>. |
+| addedLines | LineSpec | optional, no default | Marks added lines in a diff (green, "+", <ins>). |
+| removedLines | LineSpec | optional, no default | Marks removed lines in a diff (red, "−", <del>). |
+| wrap | boolean | optional, no default | Controlled wrapping of long lines. |
+| defaultWrap | boolean | false | Sets the starting wrap state when uncontrolled. |
+| onWrapChange | ((wrap: boolean) => void) | optional, no default | Called with the new value when the wrap toggle is pressed. |
+| showWrapToggle | boolean | true | Show the wrap toggle in the header. |
+| copyable | boolean | true | Show the copy button. |
+| maxHeight | string \| number | "32rem" | Taller code scrolls inside. A number is px; "none" never limits it. |
+| level | 2 \| 1 \| 3 | 2 | Glass level of the block (1 lightest, 3 most opaque). |
+| labels | Partial<CodeBlockLabels> | defaultCodeBlockLabels | Every other string, for translation: labels={{ copy: "…" }}; omitted keys keep the English of defaultCodeBlockLabels. All 10 keys of CodeBlockLabels are listed in the key table under the props table. |
+| code | string | required | The source. Leading blank lines and trailing whitespace are trimmed. |
+| language | (string & {}) \| CodeLanguage | "text" | ts, tsx, js, jsx, json, css, bash, python, html, text (or an alias like "typescript", "sh"). |
+| filename | ReactNode | optional, no default | File name shown as a tab in the header (e.g. "app/page.tsx"). |
+| icon | ReactNode | a file, or a terminal for shell | Icon before the file name (defaults to a file, or a terminal for shell). |
+| header | boolean | true | Show the header bar (file name, language, wrap, copy). Without it, copy floats top-right. |
+
+### CodeBlockTabs
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onCopy | (ClipboardEventHandler<HTMLDivElement> & ((code: string) => void)) | optional, no default | Called after a successful copy, with the copied text. |
+| labels | Partial<CodeBlockLabels> | defaultCodeBlockLabels | Every other string, for translation: labels={{ copy: "…" }}; omitted keys keep the English of defaultCodeBlockLabels. All 10 keys of CodeBlockLabels are listed in the key table under the props table. |
+| wrap | boolean | optional, no default | Controlled wrapping of long lines. |
+| showLineNumbers | boolean | true when there is more than one line | Show line numbers. |
+| startLineNumber | number | 1 | Number of the first line (for excerpts of a longer file). |
+| defaultWrap | boolean | false | Sets the starting wrap state when uncontrolled. |
+| onWrapChange | ((wrap: boolean) => void) | optional, no default | Called with the new value when the wrap toggle is pressed. |
+| showWrapToggle | boolean | true | Show the wrap toggle in the header. |
+| copyable | boolean | true | Show the copy button. |
+| maxHeight | string \| number | "32rem" | Taller code scrolls inside. A number is px; "none" never limits it. |
+| level | 2 \| 1 \| 3 | 2 | Glass level of the block (1 lightest, 3 most opaque). |
+| files | CodeBlockFile[] | required | The tabs to show, in order. |
+| value | string | optional, no default | Controlled active tab (a file label). |
+| defaultValue | string | the first | Initially active tab when uncontrolled (defaults to the first). |
+| onValueChange | ((label: string) => void) | optional, no default | Called with the label of the tab that was just selected. |
+
+### Theming tokens
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| --sheen-code-keyword | color | tokens.css | Also: string, number, literal, function, type, tag, attr, property, variable, comment, punctuation. |
+| Defaults |  | optional, no default | Each >= 4.5:1 on the block's glass and on highlighted, added and removed lines, in light and dark. Override on the block or any ancestor. |
+
+### Example 1 of 4: A file with highlighted lines
+
+highlightLines takes "10-11, 16" or an array. Highlighted lines are <mark>; numbers are left out of copy and of screen readers.
+
+```tsx
+import { CodeBlock } from "@/components/sheenui/code-block/code-block";
+// Package build (after the first npm release, or a packed tarball): import { CodeBlock } from "@sheenui/theme";
+
+// The file's text: fetched, or imported with Vite's ?raw suffix.
+declare const source: string;
+
+export function Example() {
+  return (
+    <CodeBlock
+      filename="components/counter.tsx"
+      language="tsx"
+      highlightLines="10-11, 16"
+      code={source}
+    />
+  );
+}
+```
+
+### Example 2 of 4: Diff
+
+addedLines and removedLines render as <ins> / <del> with + and − markers, so color is never the only signal.
+
+```tsx
+import { CodeBlock } from "@/components/sheenui/code-block/code-block";
+// Package build (after the first npm release, or a packed tarball): import { CodeBlock } from "@sheenui/theme";
+
+// The file's text: fetched, or imported with Vite's ?raw suffix.
+declare const source: string;
+
+export function Example() {
+  return (
+    <CodeBlock
+      filename="motion/tokens.ts"
+      language="ts"
+      startLineNumber={28}
+      removedLines={[31]}
+      addedLines={[32]}
+      code={source}
+    />
+  );
+}
+```
+
+### Example 3 of 4: Tabs: commands and languages
+
+CodeBlockTabs keeps several snippets in one block. The underline slides between tabs (transform only); copy and wrap act on the active one. When the tabs don't fit, the hidden edge fades and the list scrolls sideways.
+
+```tsx
+import { CodeBlockTabs } from "@/components/sheenui/code-block/code-block";
+// Package build (after the first npm release, or a packed tarball): import { CodeBlockTabs } from "@sheenui/theme";
+
+// File contents for the second group of tabs.
+declare const css: string, json: string, bash: string, python: string, html: string;
+
+export function Example() {
+  return (
+    <>
+      <CodeBlockTabs
+        labels={{ tabs: "Package manager" }}
+        files={[
+          { label: "pnpm", language: "bash", code: "pnpm add motion @base-ui/react" },
+          { label: "npm", language: "bash", code: "npm install motion @base-ui/react" },
+          { label: "yarn", language: "bash", code: "yarn add motion @base-ui/react" },
+          { label: "bun", language: "bash", code: "bun add motion @base-ui/react" },
+        ]}
+      />
+
+      <CodeBlockTabs
+        files={[
+          { label: "toast.css", language: "css", code: css, highlightLines: "7" },
+          { label: "package.json", language: "json", code: json },
+          { label: "dev.sh", language: "bash", code: bash },
+          { label: "swatch.py", language: "python", code: python },
+          { label: "index.html", language: "html", code: html },
+        ]}
+      />
+    </>
+  );
+}
+```
+
+### Example 4 of 4: Long lines and no header
+
+Unwrapped, a long line scrolls inside the block (it becomes keyboard-focusable only when it actually scrolls): the line numbers stay pinned and a fade at the end edge shows there is more. Toggle wrap in the header, or start wrapped with defaultWrap. Without a header, copy floats in the corner.
+
+```tsx
+import { CodeBlock } from "@/components/sheenui/code-block/code-block";
+// Package build (after the first npm release, or a packed tarball): import { CodeBlock } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <CodeBlock
+        language="tsx"
+        filename="hero.tsx"
+        code={`<Button className="…a very long class list…">Get started</Button>`}
+      />
+      <CodeBlock header={false} language="bash" code="npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/carousel.json" />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Reach the wrap toggle and the copy button. |
+| Enter / Space | Press the focused button. |
+| Arrow keys | Scroll the code once it is focused; it is focusable only when it actually scrolls. |
+| Arrow Left / Arrow Right, Home / End | CodeBlockTabs: move between file tabs. |
+
+### Accessibility
+
+- The code area is a named region ("Code: button.tsx"). Line numbers and diff markers are not read or copied; diff lines also carry +/- text.
+- Copy announces "Code copied" politely; if copying fails, the code is selected for manual copy.
+- Code is always left to right and translate="no". Syntax colors keep 4.5:1 on glass in light and dark.
+
+### All exports on this page
+
+- CodeBlock — Syntax-highlighted code on glass, with no highlighting dependency (a small built-in tokenizer for ts, tsx, js, jsx, json, css, bash, python and html).
+- CodeBlockTabs — Several files (or one command for several package managers) in one block.
+- defaultCodeBlockLabels — The English strings of CodeBlock and CodeBlockTabs.
+- parseLineSpec — Turn a LineSpec ("1, 4-6" or [1, 4, 5, 6]) into a set of 1-based line numbers.
+
+
+### When to use the code block
+
+- Use it as a syntax highlighter in documentation and blog posts to show a file with a filename tab, line numbers and highlightLines for the two or three lines the paragraph is explaining.
+- Use addedLines and removedLines to show a migration or a diff, since the lines render as ins and del elements with plus and minus markers, so color is never the only signal.
+- Use CodeBlockTabs for an install command in npm, pnpm and yarn, or the same snippet in several languages, with one copy and wrap control acting on the active tab.
+- Skip it when users need to edit or run the code; it is a read-only display, so a real editor or sandbox fits, and Kbd is the right tool for a single key or short inline command.
+- Pair it with Tabs-style CodeBlockTabs for variants, Toast for your own copy confirmation through onCopy, and GlassCard or Accordion to group long examples.
+
+
+### Frequently asked questions
+
+#### How do I add a react code block with a copy button?
+
+Render CodeBlock with the code string and a language. A copy button is shown by default, copyable controls it, and onCopy fires after a successful copy. A successful copy is announced politely, and if the clipboard and its fallback both fail, the code is selected so the user can copy it by hand.
+
+#### Which languages does the syntax highlighting support?
+
+A small built-in tokenizer covers ts, tsx, js, jsx, json, css, bash, python, html and text, with aliases such as typescript, sh and py. There is no highlighting dependency to install. Colors are CSS variables like --sheen-code-keyword that you can override on the block or any ancestor.
+
+#### How are long lines and line numbers handled?
+
+Unwrapped, a long line scrolls inside the block while the line numbers stay pinned, and the code area becomes keyboard-focusable only when it scrolls. The wrap toggle in the header, or defaultWrap, wraps lines. Line numbers are left out of copy and from screen readers.
+
+#### Does it work in right-to-left pages?
+
+Code always reads left to right, and the block carries translate="no" so browsers do not translate it. The code area is a named region such as Code: button.tsx. Use the labels prop to translate the copy, wrap and region strings, and startLineNumber when showing an excerpt.
+
+
+### Related pages
+
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter)
+- [Table](https://lokendra-builds.github.io/sheenui/components/table)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Empty State Component for React & Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/components/empty-state
+Sidebar name: Empty state
+
+An animated empty state component for React: a glass orb springs in over soft rings with one clear next step, plus a compact row for tables. MIT.
+
+What it is: An animated React empty state component that shows one clear next step when a page, list or search has nothing in it yet.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/empty-state.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Empty state
+
+Files to copy from `theme/src/`:
+
+- `components/empty-state/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, heading.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: empty-state. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { EmptyState } from "@/components/sheenui/empty-state/empty-state";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, EmptyState } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | An icon (24px, currentColor) shown in the glass orb (full) or tile (compact). |
+| illustration | ReactNode | optional, no default | Your own artwork, shown instead of the orb (an SVG or image, sized by you). |
+| title | ReactNode | required | The heading: say what is missing ("No messages yet"). |
+| description | ReactNode | optional, no default | One sentence on why it is empty and what to do. |
+| action | ReactNode | optional, no default | The main next step, usually a primary Button. |
+| secondaryAction | ReactNode | optional, no default | A lower-emphasis alternative, usually a ghost or glass Button / link. |
+| variant | "full" \| "compact" | "full" | full (default): centred, for pages and panels. compact: one row, for tables and small cards. |
+| surface | "glass" \| "none" \| "dashed" | "none" | none (default), glass (its own card) or dashed (a drop-zone-like outline). |
+| tone | "neutral" \| "accent" \| "success" \| "warning" \| "danger" | "accent" | Colour of the icon and its tint (default "accent"). Words carry the meaning; colour only supports it. |
+| headingLevel | false \| HeadingLevelOption | 3 | Heading level of the title (1 to 6, default 3), to fit the page outline. "none" renders a paragraph with no heading role. false is the deprecated spelling of "none" (still accepted, removed in 1.0). |
+| animated | boolean | true | Entrance animation (off under reduced motion either way). |
+| announce | string \| boolean | optional, no default | Announce the empty state to screen readers when it appears (e.g. a search with no results): true speaks the title and description (when they are text), a string speaks that. Uses one persistent polite region, so it is read reliably. |
+
+### Example 1 of 3: First run
+
+Full variant on a dashed outline: icon, title, description, a primary and a secondary action.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { EmptyState } from "@/components/sheenui/empty-state/empty-state";
+// Package build (after the first npm release, or a packed tarball): import { Button, EmptyState } from "@sheenui/theme";
+import { Folder as FolderIcon, Plus as PlusIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <EmptyState
+      surface="dashed"
+      icon={<FolderIcon />}
+      title="Create your first project"
+      description="Projects keep your screens, tokens and assets together. Start from scratch or import a design file."
+      action={<Button leading={<PlusIcon />}>New project</Button>}
+      secondaryAction={<Button variant="glass">Import a file</Button>}
+    />
+  );
+}
+```
+
+### Example 2 of 3: No results
+
+Neutral tone on a glass card. announce reads it out when a search comes back empty, through one status region that stays mounted (a region that mounts with its text is often skipped by screen readers).
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { EmptyState } from "@/components/sheenui/empty-state/empty-state";
+// Package build (after the first npm release, or a packed tarball): import { Button, EmptyState } from "@sheenui/theme";
+import { Search as SearchIcon } from "lucide-react";
+
+export function Example() {
+  const [query, setQuery] = useState("flrbl");
+
+  return (
+    <EmptyState
+      announce
+      surface="glass"
+      tone="neutral"
+      icon={<SearchIcon />}
+      title={`No results for “${query}”`}
+      description="Check the spelling or try fewer words."
+      action={<Button variant="glass" onClick={() => setQuery("")}>Clear search</Button>}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Compact and error
+
+Compact: one row for tables, inboxes and sidebars (it wraps on phones). Tones color the icon only; the words carry the meaning.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { EmptyState } from "@/components/sheenui/empty-state/empty-state";
+// Package build (after the first npm release, or a packed tarball): import { Button, EmptyState } from "@sheenui/theme";
+import { CloudOff as CloudOffIcon, Inbox as InboxIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <EmptyState
+        variant="compact"
+        surface="glass"
+        icon={<InboxIcon />}
+        title="Inbox zero"
+        description="New messages from your team show up here."
+        action={<Button size="sm" variant="glass">Compose</Button>}
+      />
+      <EmptyState
+        variant="compact"
+        surface="glass"
+        tone="danger"
+        icon={<CloudOffIcon />}
+        title="Couldn't load invoices"
+        description="The server took too long to answer."
+        action={<Button size="sm">Try again</Button>}
+      />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the block is not focusable. The buttons in action and secondaryAction are normal tab stops. |
+
+### Accessibility
+
+- Plain markup with a heading; the icon is decorative. Pass announce to tell screen readers when the state appears after a search or filter.
+- Always offer a way forward (clear the filter, create the first item); do not leave an empty state without an action when one exists.
+
+### When to use the empty state
+
+- Use it as an empty state UI for a first-run dashboard or project list, with an icon, a title, one sentence of explanation, a primary Button to create the first item and a secondary action such as Import.
+- Use it for search and filter results that come back empty, with the neutral tone, a hint to check spelling and announce so screen readers hear that nothing matched.
+- Use variant="compact" inside tables, inboxes and sidebars, where a single row such as Inbox zero or Couldn't load invoices fits and the danger tone colors the icon and its tint.
+- Skip it for content that is still loading; Skeleton holds the layout while data arrives, and Alert is better for a persistent warning or error message above existing content.
+- Pair it with Button for the next step, Input in children for a search field, and Skeleton to show the loading state before the empty one.
+
+
+### Frequently asked questions
+
+#### How do I build an empty state component in React?
+
+Render EmptyState with a required title and optionally description, icon, action and secondaryAction. The full variant is centered for pages and panels. Pick a surface of none, glass or dashed, and a tone of accent, neutral, success, warning or danger, which colors the icon and its tint while the words carry the meaning.
+
+#### How do I make screen readers announce an empty search result?
+
+Set announce to true to speak the title and description, or pass a string to speak that text. It uses one persistent polite status region, because a region that mounts together with its text is often skipped by screen readers. Do it when results change after a search or filter.
+
+#### Which heading level should the title use?
+
+The title renders as an h3 by default. Use headingLevel (1 to 6, or false for a paragraph) to fit the page outline, for instance p inside a small table cell. The icon is decorative and the markup is not focusable, but buttons in action and secondaryAction are normal tab stops.
+
+#### Can I replace the glass orb or turn off the animation?
+
+Pass illustration to use your own artwork instead of the orb, and animated={false} to skip the entrance, which is also always off under reduced motion. The icon should be a 24px currentColor icon. Extra content such as links goes in children, under the actions.
+
+
+### Related pages
+
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter)
+- [Table](https://lokendra-builds.github.io/sheenui/components/table)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Meter: Usage, Quota & Password Strength
+
+URL: https://lokendra-builds.github.io/sheenui/components/meter
+Sidebar name: Meter
+
+A glass React meter for levels in a known range: storage, battery, signal or password strength. Green, amber or red by HTML meter rules. Base UI, MIT.
+
+What it is: A glass React meter for a level inside a known range, such as storage, battery or password strength, that is spoken as well as colored.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/meter.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Meter
+
+Files to copy from `theme/src/`:
+
+- `components/meter/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, math.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: meter. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Meter } from "@/components/sheenui/meter/meter";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Meter } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| max | number | 100 | Largest value of the scale; a value above it is clamped. |
+| min | number | 0 | Smallest value of the scale; a value below it is clamped. |
+| label | ReactNode | optional, no default | Visible label (also the meter's accessible name). Without it, pass aria-label. |
+| description | ReactNode | optional, no default | Help text under the bar, e.g. "4.2 GB of 16 GB used". Linked with aria-describedby. |
+| low | number | optional, no default | Upper bound of the low region. With high, enables good / warning / critical colouring. |
+| high | number | optional, no default | Sets the lower bound of the high region. |
+| optimum | number | the middle of the range (HTML <meter> rules) | Sets where the best value lies. |
+| valueText | ReactNode \| ((formatted: string, value: number) => ReactNode) | Base UI's formatted value | The value text on the right: Base UI's formatted value (percentage of the range, or format applied to the value). A function receives (formatted, value). false hides it. |
+| showLevel | boolean | false | Write the level ("Good", "Warning", "Critical") next to the value. |
+| levelLabels | Partial<Record<MeterLevel, string>> | optional, no default | Words for each level (spoken in aria-valuetext, shown with showLevel). |
+| variant | "bar" \| "segmented" | "bar" | bar (default): one continuous fill. segmented: a row of cells, like a battery or signal meter. |
+| segments | number | 10 | Sets the number of cells for the segmented variant. |
+| size | "sm" \| "md" \| "lg" | "md" | Thickness of the bar: "sm" (6px), "md" (10px, default) or "lg" (16px). |
+| showThresholds | boolean | on for the bar variant | Small ruler ticks under the bar at low and high. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+| value | number | required | Required. Clamped to [min, max] (NaN falls back to min). |
+| format / locale | Intl.NumberFormatOptions / string | optional, no default | Number formatting (Intl), also used for aria-valuetext. |
+| getAriaValueText | (formatted, value) => string | optional, no default | Gives full control over the spoken value. |
+
+### Example 1 of 2: Levels
+
+Storage: lower is better (optimum 0), so it goes amber past 70% and red past 90%. Battery: higher is better. CPU updates live; the fill springs and the number counts with it.
+
+```tsx
+import { Meter } from "@/components/sheenui/meter/meter";
+// Package build (after the first npm release, or a packed tarball): import { Meter } from "@sheenui/theme";
+
+export function Example() {
+  const storage = 82; // percent used
+  const cpu = 41;
+
+  return (
+    <>
+      <Meter label="Storage" value={storage} low={70} high={90} optimum={0} showLevel
+        description={`${(storage * 0.64).toFixed(1)} GB of 64 GB used`} />
+      <Meter label="Battery" value={18} low={20} high={60} optimum={100} showLevel />
+      <Meter label="CPU" value={cpu} low={60} high={85} optimum={0} size="sm" />
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Segmented and custom values
+
+variant=segmented draws cells, like a battery or signal meter. format / valueText change the number; levelLabels rename the levels.
+
+```tsx
+import { Meter } from "@/components/sheenui/meter/meter";
+// Package build (after the first npm release, or a packed tarball): import { Meter } from "@sheenui/theme";
+
+export function Example() {
+  const strength = 60; // 0 to 100, from your password checker
+
+  return (
+    <>
+      <Meter
+        label="Password strength"
+        value={strength}
+        low={40}
+        high={75}
+        optimum={100}
+        variant="segmented"
+        segments={4}
+        showLevel
+        valueText={false}
+        levelLabels={{ critical: "Weak", suboptimal: "Fair", optimum: "Strong" }}
+      />
+      <Meter label="Bandwidth" value={7.4} max={10} format={{ style: "unit", unit: "gigabyte", maximumFractionDigits: 1 }} />
+      <Meter label="Signal" value={3} max={5} variant="segmented" segments={5} valueText={(_, v) => `${v} of 5 bars`} />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a meter is a read-out, not a control. |
+
+### Accessibility
+
+- role="meter" named by label (or aria-label), described by description, with aria-valuenow, aria-valuemin and aria-valuemax.
+- The level (critical, suboptimal, optimum) is part of the spoken value (aria-valuetext) and, with showLevel, written next to the value, so color is never the only signal.
+- Use variant="segmented" for battery- or signal-style read-outs; the same spoken value applies.
+
+### All exports on this page
+
+- Meter — Meter: a measurement within a known range (disk usage, battery, password strength, CPU load).
+- defaultMeterLevelLabels — Default words for each MeterLevel (Good, Warning, Critical).
+- getMeterLevel — Which region the value falls in, by the HTML <meter> algorithm.
+
+
+### When to use Meter
+
+- Use it as a storage usage bar, such as 41 GB of 64 GB, where lower is better and the bar turns amber past 70 percent and red past 90 percent using low, high and optimum.
+- Use it for a battery or signal read-out with variant="segmented", which draws cells like a battery icon, and for password strength with levelLabels renamed to Weak and Strong.
+- Use it for a live value such as CPU load, where the fill springs to the new level and the number counts with it.
+- Skip it when the value shows progress toward completion of a task; Progress is the right component for uploads and steps, because a meter describes a level in a range rather than how far along something is.
+- Pair it with Badge to repeat the level in words, Tooltip for the exact value, and GlassCard to group several meters in a dashboard.
+
+
+### Frequently asked questions
+
+#### What is the difference between a react meter and a progress bar?
+
+A meter shows a level in a known range, such as disk usage or battery, and can change color by region. A progress bar shows how far a task has come. This Meter is built on Base UI's Meter and exposes role="meter" with aria-valuenow, aria-valuemin and aria-valuemax.
+
+#### How do the low, high and optimum props color the bar?
+
+They follow the HTML meter element's rules. With low or high set, the fill is colored by level: green for optimum, amber for suboptimal, red for critical. optimum says where the best value lies, so storage with optimum 0 stays green up to low, turns amber between low and high, and goes red past high, while a battery with optimum at the maximum is the reverse.
+
+#### Is color the only signal for the level?
+
+No. The level is part of the spoken aria-valuetext, and showLevel also writes it next to the value. Rename the words through levelLabels, Good, Warning and Critical by default, or take full control with getAriaValueText. A meter is a read-out and is not focusable.
+
+#### How do I change how the value is displayed?
+
+valueText takes a node or a function of the formatted value and the number, and false hides it. format accepts Intl.NumberFormatOptions and locale picks the language, and both feed aria-valuetext. Add label for the visible name and description for help text linked by aria-describedby.
+
+
+### Related pages
+
+- [Table](https://lokendra-builds.github.io/sheenui/components/table)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+
+#### Guides that cover it
+
+- [Accessible React Charts](https://lokendra-builds.github.io/sheenui/guides/accessible-react-charts)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Table Component: Styled HTML Table
+
+URL: https://lokendra-builds.github.io/sheenui/components/table
+Sidebar name: Table
+
+Styled React table primitives for small static tables: real table elements in a glass region that scrolls sideways. Tailwind CSS v4, copy-paste, MIT.
+
+What it is: The React table component is a set of plain, styled table primitives for small static tables, in a glass region that scrolls sideways on narrow screens. Use Table for small static tables: a pricing comparison, a spec sheet, a list of keyboard shortcuts or API limits.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/table.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Table
+
+Files to copy from `theme/src/`:
+
+- `components/table/`
+- `hooks/use-latest.ts`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx tailwind-merge
+```
+
+Registry item: table. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/sheenui/table/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| Table regionLabel | string | the text of the TableCaption | Accessible name of the scrolling region while the table overflows; defaults to the caption's text. |
+| Table className | string | optional, no default | Extra classes for the outer glass region that scrolls sideways (the root element). |
+| Table tableClassName | string | optional, no default | Extra classes for the <table> itself. Other table attributes are forwarded. |
+| TableCaption / TableHeader / TableBody / TableFooter / TableRow / TableHead / TableCell | element props | optional, no default | Each is the matching HTML element with glass styling; props and className pass through. |
+
+### Example: Plan limits
+
+Compose Table, TableCaption, TableHeader, TableBody, TableFooter, TableRow, TableHead and TableCell like HTML.
+
+```tsx
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/sheenui/table/table";
+// Package build (after the first npm release, or a packed tarball): import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@sheenui/theme";
+export function Example() {
+  return (
+    <Table regionLabel="Plan limits table" tableClassName="min-w-96">
+      <TableCaption>Plan limits</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead scope="col">Plan</TableHead>
+          <TableHead scope="col" className="text-end">Seats</TableHead>
+          <TableHead scope="col" className="text-end">Price</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow><TableHead scope="row">Free</TableHead><TableCell className="text-end">1</TableCell><TableCell className="text-end">$0</TableCell></TableRow>
+        <TableRow><TableHead scope="row">Team</TableHead><TableCell className="text-end">10</TableCell><TableCell className="text-end">$29</TableCell></TableRow>
+        <TableRow><TableHead scope="row">Business</TableHead><TableCell className="text-end">50</TableCell><TableCell className="text-end">$99</TableCell></TableRow>
+      </TableBody>
+      <TableFooter>
+        <TableRow><TableCell colSpan={3} className="text-sheen-fg-muted">Prices per month, billed yearly.</TableCell></TableRow>
+      </TableFooter>
+    </Table>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focuses the scrolling region; the arrow keys then scroll it sideways without a mouse. |
+
+### Accessibility
+
+- Native table semantics: use TableCaption (or aria-label) to name the table, and scope="col" or scope="row" on TableHead.
+- The glass wrapper is a focusable region named by regionLabel, so a table wider than the screen can be scrolled from the keyboard (WCAG 2.1.1).
+- Row hover tint is decoration only; nothing depends on it. Text keeps 4.5:1 on the glass.
+
+### When to use Table
+
+- Use Table for a pricing comparison, a spec sheet or the rate limits of an API plan: a handful of rows read top to bottom, with no sorting or paging. It renders a real table element, so screen readers announce rows and columns, and on a narrow screen the glass region scrolls sideways.
+- Give every table a TableCaption, visible or sr-only. It names the table, and the scrolling region takes the caption text as its own name unless you pass regionLabel.
+- Use scope="col" or scope="row" on TableHead so a screen reader announces the right header for each cell.
+- Skip it when people need to sort, filter, page or select rows. Use DataTable for that, and Pagination below a long list.
+- Pair it with Badge in cells for status, Tooltip for column help, and ScrollArea only when you need a fixed height.
+
+
+### Frequently asked questions
+
+#### How do I build an accessible React table with glass styling?
+
+Compose Table, TableCaption, TableHeader, TableBody, TableRow, TableHead and TableCell like HTML. Table renders native table semantics inside one glass-2 region, so no ARIA roles are added by hand.
+
+#### What happens when the table is wider than its container?
+
+The region becomes a keyboard tab stop and scrolls sideways, so the page never overflows. A table that fits adds no tab stop.
+
+#### Where do className and ref go?
+
+To the outer scrolling region. Use tableClassName to style the table element itself; every other attribute lands on the table.
+
+#### Should I use Table or DataTable?
+
+Use Table for static content you write by hand. Use DataTable when the data is dynamic and needs sorting, filtering, paging, selection or column visibility.
+
+#### How does a screen reader name the table and its scrolling region?
+
+The table is named by its TableCaption, visible or with className="sr-only". While the table overflows, the scrolling region becomes a named region that takes the caption text as its name, or the regionLabel prop if you pass one. TableHead with scope="col" or scope="row" tells assistive tech which header belongs to each cell.
+
+#### Can I add a totals row?
+
+Yes. TableFooter holds the summary rows and is written like TableBody. The full set is Table, TableCaption, TableHeader, TableBody, TableFooter, TableRow, TableHead and TableCell.
+
+#### Does the table animate?
+
+No. Rows tint on hover and nothing moves, so reduced motion has nothing to switch off.
+
+
+### Related pages
+
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Skeleton Loader with Shimmer Effect
+
+URL: https://lokendra-builds.github.io/sheenui/components/skeleton
+Sidebar name: Skeleton
+
+Glass skeleton loaders for React that hold the exact layout while content loads, with one shimmer beam per group. Reduced-motion safe. Tailwind CSS v4.
+
+What it is: A glass React skeleton loader that holds the exact layout while content loads, so nothing jumps when it arrives.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/skeleton.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Skeleton
+
+Files to copy from `theme/src/`:
+
+- `components/skeleton/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx tailwind-merge
+```
+
+Registry item: skeleton. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Skeleton, SkeletonCard, SkeletonCircle, SkeletonGroup, SkeletonList, SkeletonRect, SkeletonText } from "@/components/sheenui/skeleton/skeleton";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Skeleton, SkeletonCard, SkeletonCircle, SkeletonGroup, SkeletonList, SkeletonRect, SkeletonText } from "@sheenui/theme";
+```
+
+### Skeleton
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| shape | "circle" \| "rect" \| "text" \| "pill" | "rect" | rect (rounded box, default), text (one line), pill (button / chip), circle (avatar). |
+| width | string \| number | optional, no default | CSS width: a number is px, a string is used as is ("60%", "12rem"). |
+| height | string \| number | their width | CSS height: a number is px, a string is used as is. Circles default to their width. |
+| shimmer | boolean | true | Sweep of light across the shape. Never drawn under reduced motion. |
+
+### SkeletonText
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| lines | number | 3 | Number of lines (0 renders none). |
+| size | "sm" \| "md" \| "lg" \| "heading" \| "xs" | "md" | Matches the text it stands in for: xs 12px … lg 18px body text, or a heading. |
+| lastLineWidth | string | "62%" | Width of the last line (it is usually shorter). |
+| shimmer | boolean | true | Sets the sweep of light across the lines. |
+| labels | Partial<SkeletonLabels> | defaultSkeletonLabels | When labels.loading is set, the block announces itself as a loading region (role="status"). Every other string, for translation: labels={{ loading: "…" }}; omitted keys keep the English of defaultSkeletonLabels. Its only key is listed in the key table under the props table. |
+
+### SkeletonCard / SkeletonList
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| media | boolean | true | Shows a 16:9 media block on top. |
+| avatar | boolean | true | An avatar with a name and a meta line. |
+| lines | number | 3 | Sets the number of body text lines (14px text; 0 for none). |
+| actions | number | 2 | Number of pill buttons in the footer, sized like small buttons (0 for none). |
+| surface | "glass" \| "plain" | "glass" | glass: its own glass card (default). plain: shapes only, to drop into your own card. |
+| shimmer | boolean | true | Sets the sweep of light across the shapes. |
+| labels | Partial<SkeletonLabels> | defaultSkeletonLabels | Spoken text: labels.loading is heard while loading (null when an outer SkeletonGroup already announces it). Every other string, for translation: labels={{ loading: "…" }}; omitted keys keep the English of defaultSkeletonLabels. Its only key is listed in the key table under the props table. |
+| rows | number | 4 | Number of rows (0 renders none). |
+| trailing | boolean | true | A trailing pill (a status badge or button) at the end of each row. |
+
+### SkeletonGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<SkeletonLabels> | defaultSkeletonLabels | Spoken text. labels.loading is what screen readers hear while this region loads (null when an outer region already announces it). Every other string, for translation: labels={{ loading: "…" }}; omitted keys keep the English of defaultSkeletonLabels. Its only key is listed in the key table under the props table. |
+
+### SkeletonCircle props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| shimmer | boolean | true | Sweep of light across the shape. Never drawn under reduced motion. |
+| size | "sm" \| "md" \| "lg" \| "xl" \| "xs" | "md" | Sets the size: xs 24 · sm 32 · md 40 (default) · lg 48 · xl 64 px. |
+
+### SkeletonRect props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| height | string \| number | their width | CSS height: a number is px, a string is used as is. Circles default to their width. |
+| width | string \| number | "100%" | CSS width: a number is px, a string is used as is ("60%", "12rem"). |
+| shimmer | boolean | true | Sweep of light across the shape. Never drawn under reduced motion. |
+| ratio | string | optional, no default | CSS aspect ratio, e.g. "16 / 9" (media) or "1" (square). Ignored when height is set. |
+
+### Example 1 of 2: Presets
+
+SkeletonCard and SkeletonList match a real card and list line for line: text skeletons use the same line boxes as the text (20px for 14px text), so nothing jumps when the content arrives. Each preset is one named loading region, never one label per line.
+
+```tsx
+import { SkeletonCard, SkeletonList } from "@/components/sheenui/skeleton/skeleton";
+// Package build (after the first npm release, or a packed tarball): import { SkeletonCard, SkeletonList } from "@sheenui/theme";
+
+export function Example({ loading }: { loading: boolean }) {
+  return (
+    <>
+      {loading ? <SkeletonCard labels={{ loading: "Loading article" }} /> : <article>Your article card</article>}
+      {loading ? <SkeletonList rows={4} labels={{ loading: "Loading activity" }} /> : <ul>Your activity list</ul>}
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Building blocks
+
+Compose your own from Skeleton (rect, text, pill, circle), SkeletonText, SkeletonCircle and SkeletonRect. Wrap them in SkeletonGroup: it names the loading region once, and one beam of light crosses the whole group, every shape in step wherever it sits.
+
+```tsx
+import { Skeleton, SkeletonCircle, SkeletonGroup, SkeletonRect, SkeletonText } from "@/components/sheenui/skeleton/skeleton";
+// Package build (after the first npm release, or a packed tarball): import { Skeleton, SkeletonCircle, SkeletonGroup, SkeletonRect, SkeletonText } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <SkeletonGroup labels={{ loading: "Loading profile" }} className="glass-2 rounded-sheen-lg p-6">
+      <div className="flex items-center gap-4">
+        <SkeletonCircle size="xl" />
+        <div className="flex flex-1 flex-col gap-3">
+          <SkeletonText size="heading" lines={1} />
+          <Skeleton shape="text" width="40%" />
+        </div>
+        <Skeleton shape="pill" width={96} />
+      </div>
+      <SkeletonRect height={140} className="mt-6" />
+      <SkeletonText lines={2} size="sm" className="mt-5" />
+    </SkeletonGroup>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: skeletons are not focusable. |
+
+### Accessibility
+
+- Shapes are aria-hidden. Wrap a loading region in SkeletonGroup, or give a preset its own label, so screen readers hear one polite "Loading…" instead of nothing.
+- Remove the skeleton (and the status) as soon as content arrives so the real content is announced in its place.
+- The live demos on this page pass role="none": a skeleton that is already on screen when the page loads should not be announced. Keep the status role for a skeleton that appears after a user action.
+- One shared shimmer beam; it does not run under reduced motion.
+
+### All exports on this page
+
+- Skeleton — Skeleton: one placeholder shape that holds the layout while content loads.
+- SkeletonCard — A content card preset: media, author row, text and actions, in a SkeletonGroup.
+- SkeletonCircle — An avatar or icon placeholder: a Skeleton circle.
+- SkeletonGroup — Wraps skeleton shapes: a named loading region (role="status" with a visually hidden label) and the box the shimmer sweeps across in one beam.
+- SkeletonList — Rows of a list, inbox or table: avatar, two lines, a trailing pill, in a SkeletonGroup.
+- SkeletonRect — A box: media, a chart, a thumbnail.
+- SkeletonText — Lines of text.
+- defaultSkeletonLabels — English defaults of SkeletonLabels.
+
+
+### When to use Skeleton
+
+- Use SkeletonCard as a skeleton loading state while a product or article card loads, so the 16:9 media block, avatar, text lines and button pills occupy the same space as the real card and nothing jumps.
+- Use SkeletonList for an inbox, a user table or a settings list, where each row has an avatar, two text lines and a trailing pill, and rows count is set to match the page size.
+- Compose your own layout from Skeleton shapes inside SkeletonGroup for a dashboard widget, so one beam of light crosses every shape in step and the region is named once.
+- Skip it for tiny waits or actions that start from a click; Spinner suits a button or inline wait, and Empty state is the right component once loading has finished with no data.
+- Pair it with GlassCard for the final content, Avatar for the loaded profile, and a persistent status region if you want a reliable spoken Loaded message.
+
+
+### Frequently asked questions
+
+#### How do I build a react skeleton loader that matches my layout?
+
+Use the presets SkeletonCard and SkeletonList, or compose Skeleton with shape rect, text, pill or circle, plus SkeletonText, SkeletonCircle and SkeletonRect. Text skeletons use the same line box as the real text, 20px for 14px text, so the content does not shift when it arrives.
+
+#### How do screen readers know something is loading?
+
+Shapes are aria-hidden. Wrap a region in SkeletonGroup, or give a preset its own label, and it becomes a role="status" region that says Loading politely, once. Pass label={null} on a preset inside a group so it is not announced twice, and remove the skeleton when content arrives.
+
+#### Does the shimmer run for users who prefer reduced motion?
+
+No. The sweep of light is never drawn under reduced motion, so the shapes are simply still. Otherwise one band crosses a whole group in a single beam using transform only. Set shimmer={false} on a Skeleton, SkeletonText or a preset to turn the sweep off yourself.
+
+#### How do I size the placeholders?
+
+Skeleton takes width and height as numbers in px or as strings such as "60%"; a circle's height defaults to its width. SkeletonText takes lines, 3 by default, size from xs to heading, and lastLineWidth, 62% by default. Use className, such as h-4 or rounded-sheen-lg, for the rest.
+
+
+### Related pages
+
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter)
+- [Table](https://lokendra-builds.github.io/sheenui/components/table)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{let r=[`design`,`motion`,`glass`,`a11y`];await n(900),e(`working`);for(let e=2;e<=r.length;e+=1)t({tags:r.slice(0,e)}),await n(650);e(`idle`)};export{e as default};

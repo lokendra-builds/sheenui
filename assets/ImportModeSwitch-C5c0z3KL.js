@@ -1,0 +1,1 @@
+import{t as e}from"./segmented-CFArq4bJ.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r({value:t,onValueChange:r}){return(0,n.jsx)(e,{"aria-label":`Import path`,size:`sm`,value:t,onValueChange:e=>r(e),items:[{value:`package`,label:`Package`},{value:`files`,label:`Copied files`}]})}export{r as ImportModeSwitch};

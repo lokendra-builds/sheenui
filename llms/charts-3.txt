@@ -1,0 +1,2451 @@
+# SheenUI: Charts (part 3 of 6)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Diverging Bar Chart & Population Pyramid (React)
+
+URL: https://lokendra-builds.github.io/sheenui/charts/diverging-bar
+Sidebar name: Diverging bar chart
+
+A React diverging bar chart for Likert survey answers around a neutral midpoint, plus a butterfly population pyramid on one shared scale. Accessible, MIT.
+
+What it is: A React diverging bar chart centers survey answers on a neutral midpoint; the butterfly variant draws a population pyramid. Pass data as readonly ChartRow[]: one row per item (a question, a product, an age group).
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/diverging-bar-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Diverging bar chart
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{diverging-bar-chart.tsx, histogram.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/diverging-bar-chart/`
+- `components/charts/heatmap/`
+- `components/charts/histogram/`
+- `components/charts/kits/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: diverging-bar-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { DivergingBarChart } from "@/components/sheenui/charts/diverging-bar-chart";
+import { divergingLegend, type DivergingLevel } from "@/components/sheenui/charts/diverging-bar-chart/model";
+import { DivergingBarTable } from "@/components/sheenui/charts/diverging-bar-chart/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, DivergingBarChart, DivergingBarTable, divergingLegend, type DivergingLevel } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per item (a question, a product, an age group). |
+| index | string | required | Key of the row name in each data row. |
+| levels | readonly DivergingLevel[] | required | Likert: the answer levels, most negative first ("Strongly disagree" … "Strongly agree"); with an odd count the middle one is neutral and straddles the centre line. Butterfly: exactly two levels, drawn to the left and right of the spine (e.g. Men / Women). |
+| variant | "likert" \| "butterfly" | "likert" | "likert": stacked levels diverging from a neutral midpoint. "butterfly": two sides back to back (population pyramid). |
+| neutral | string \| null | the middle level of an odd count | Likert: sets the key of the neutral level. |
+| normalize | boolean | true for Likert, false for butterfly (follows mode) | Likert: draw shares (each row sums to 100%). Default true. Butterfly: draw each side's share of the grand total. Default false. |
+| showNet | boolean | true | Likert: print the net score (positive minus negative) after each row. |
+| showValues | boolean | true | Print values in (Likert) or past (butterfly) the bars where they fit. |
+| negativeColor | ChartColor | 8 | Likert: palette slots of the negative and positive poles (a diverging pair). |
+| positiveColor | ChartColor | 7 | Sets thepalette slot (1 to 8) of the positive arm. |
+| colors | readonly [ChartColor, ChartColor] | [7, 5] | Butterfly: palette slots of the left and right sides. |
+| height | number | 200 | Sets the height of the plot in px. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a response count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share as text (0.42 → "42%"). |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<DivergingBarChartLabels> | defaultDivergingBarChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultDivergingBarChartLabels. All 10 keys of DivergingBarChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### DivergingBarTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per item (a question, a product, an age group). |
+| neutral | string \| null | the middle level of an odd count | Likert: sets the key of the neutral level. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a response count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| variant | "likert" \| "butterfly" | "likert" | "likert": stacked levels diverging from a neutral midpoint. "butterfly": two sides back to back (population pyramid). |
+| labels | Partial<DivergingBarChartLabels> | defaultDivergingBarChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultDivergingBarChartLabels. All 10 keys of DivergingBarChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| index | string | required | Key of the row name in each data row. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share as text (0.42 → "42%"). |
+| levels | readonly DivergingLevel[] | required | Likert: the answer levels, most negative first ("Strongly disagree" … "Strongly agree"); with an odd count the middle one is neutral and straddles the centre line. Butterfly: exactly two levels, drawn to the left and right of the spine (e.g. Men / Women). |
+| showNet | boolean | true | Likert: print the net score (positive minus negative) after each row. |
+| indexLabel | string | optional, no default | Sets the header of the row-name column. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Likert survey
+
+Six statements, 460 answers each. Shares sit inside the segments where they fit (black or white ink, whichever reads better), and the net score follows each row. Switch the quarter and the segments morph. Up and down move between statements, left and right between answers.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { DivergingBarChart } from "@/components/sheenui/charts/diverging-bar-chart";
+import { divergingLegend, type DivergingLevel } from "@/components/sheenui/charts/diverging-bar-chart/model";
+import { DivergingBarTable } from "@/components/sheenui/charts/diverging-bar-chart/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, divergingLegend, DivergingBarTable, DivergingBarChart, type DivergingLevel } from "@sheenui/theme";
+
+const levels: DivergingLevel[] = [
+  { key: "sd", label: "Strongly disagree" },
+  { key: "d", label: "Disagree" },
+  { key: "n", label: "Neutral" },
+  { key: "a", label: "Agree" },
+  { key: "sa", label: "Strongly agree" },
+];
+const data = [
+  { statement: "The product is easy to learn", sd: 12, d: 30, n: 64, a: 214, sa: 160 },
+  { statement: "It saves me time every week", sd: 9, d: 24, n: 51, a: 222, sa: 174 },
+  { statement: "Support answers quickly", sd: 22, d: 48, n: 90, a: 196, sa: 124 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Customer survey"
+      legend={divergingLegend(levels)}
+      table={<DivergingBarTable data={data} index="statement" levels={levels} indexLabel="Statement" caption="Survey answers" />}
+    >
+      <DivergingBarChart data={data} index="statement" levels={levels} aria-label="Survey answers, from strongly disagree to strongly agree" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Population pyramid
+
+variant="butterfly" with two levels: men to the left, women to the right of the spine, the age groups in the middle. One scale for both sides, so the halves compare honestly.
+
+```tsx
+import { DivergingBarChart } from "@/components/sheenui/charts/diverging-bar-chart";
+// Package build (after the first npm release, or a packed tarball): import { DivergingBarChart } from "@sheenui/theme";
+
+const population = [
+  { age: "60+", men: 3_400_000, women: 4_100_000 },
+  { age: "40–59", men: 4_900_000, women: 5_000_000 },
+  { age: "20–39", men: 5_200_000, women: 5_100_000 },
+  { age: "0–19", men: 4_300_000, women: 4_100_000 },
+];
+
+export function Example() {
+  return (
+    <DivergingBarChart
+      variant="butterfly"
+      data={population}
+      index="age"
+      levels={[
+        { key: "men", label: "Men" },
+        { key: "women", label: "Women" },
+      ]}
+      aria-label="Population by age group and sex"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ↑ / ↓ | Move between rows. |
+| ← / → | Move between a row's segments. |
+| Home / End | Jump to the first / last row. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The figure takes focus as one stop and is named by its aria-label, the chart title. A one-line hint explains the keys, and a ChartCard table view is linked through aria-details. Values are announced politely, once per move. Shares are printed as text and every Likert row has a net score, so color never carries the reading; each move announces the row and segment.
+- DivergingBarTable is the table view: pair it with ChartCard's table prop (Chart / Table tabs) so every value can be read without color or sight.
+- Reduced motion: the bars appear at their final lengths on either side of zero and data changes jump instead of morphing.
+
+### All exports on this page
+
+- DivergingBarChart — Bars that diverge from a midpoint.
+- DivergingBarTable — Every row's count and share per level (plus the net score of a Likert row).
+- defaultDivergingBarChartLabels — The built-in English strings of DivergingBarChart; spread it into your own labels and change what you need.
+- divergingLegend — Legend items for a diverging chart, in level order (or the two sides of a butterfly).
+- divergingLevels — Each level's side and colour: equal steps per arm, strongest at the extremes, a grey neutral.
+
+
+### When to use the diverging bar chart
+
+- Use the likert variant as a Likert scale chart for survey results, such as strongly disagree through strongly agree per question, with each row summing to 100 percent and a net score after it.
+- Use the butterfly variant for a population pyramid or an A/B comparison, drawing two groups back to back from a central spine on one shared scale with row names down the middle.
+- Use it for sentiment by product feature or NPS-style breakdowns, where positive and negative answers should pull to opposite sides of a neutral midpoint.
+- Skip it when the categories are not ordered or have no meaningful midpoint, because a Bar chart or Percent bar chart fits unordered parts of a whole better.
+- Pair it with ChartCard and DivergingBarTable for a text view, ChartLegend to explain the answer levels, and a Select to switch the survey wave.
+
+
+### Frequently asked questions
+
+#### How do I make a diverging bar chart for Likert data in React?
+
+Pass data rows with an index key, then levels from most negative to most positive. With an odd count the middle level is neutral and straddles the center line, or set neutral to a key. negativeColor and positiveColor pick the two poles.
+
+#### How do I draw a population pyramid?
+
+Set variant to butterfly and give exactly two levels, which draw left and right of the spine. colors takes a pair of palette slots, defaulting to 7 and 5. Set normalize to show each side's share of the grand total instead of raw counts.
+
+#### Does it rely on color to carry the meaning?
+
+No. Shares are printed inside segments where they fit, and each Likert row ends with a net score of positive minus negative, controlled by showNet. The group is named by aria-label, and keyboard moves announce the row and segment.
+
+#### Which keys move between rows and segments?
+
+Tab focuses the chart. Up and Down move between rows, Left and Right move between a row's segments, Home and End jump to the first and last row, and Escape clears. Under reduced motion segments draw and morph instantly rather than sweeping out from the center.
+
+
+### Related pages
+
+- [Bump chart](https://lokendra-builds.github.io/sheenui/charts/bump-chart)
+- [Error bars](https://lokendra-builds.github.io/sheenui/charts/error-bar-chart)
+- [Population pyramid](https://lokendra-builds.github.io/sheenui/charts/population-pyramid)
+- [Dumbbell & slope chart](https://lokendra-builds.github.io/sheenui/charts/dumbbell)
+- [Funnel chart](https://lokendra-builds.github.io/sheenui/charts/funnel-chart)
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Bump Chart for React: Rank Over Time
+
+URL: https://lokendra-builds.github.io/sheenui/charts/bump-chart
+Sidebar name: Bump chart
+
+A React bump chart that shows how a ranking changes over time, with the rank in every dot, end labels and dash patterns. Animated, accessible.
+
+What it is: A React bump chart that shows how a ranking changes over time, one line per series with the rank in every dot. Pass data as readonly ChartRow[]: one row per point in time with a number per series, plus index and series.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/bump-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Bump chart
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{bump-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/bump-chart/`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: bump-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { BumpChart } from "@/components/sheenui/charts/bump-chart";
+import { bumpLegend } from "@/components/sheenui/charts/bump-chart/model";
+import { BumpTable } from "@/components/sheenui/charts/bump-chart/table";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { BumpChart, bumpLegend, BumpTable, ChartCard } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per point in time: the index key plus one number per series key, e.g. { year: "2022", ada: 82, bo: 77 }. |
+| index | string | required | The key of each row that names the point in time (the x axis). |
+| series | readonly ChartSeries[] | required | The competing series: { key, label, color? }. Ranks are computed per row across them. |
+| rankBy | "value" \| "rank" | "value" | What the numbers are: "value" ranks them in each row, "rank" treats them as ready-made ranks (1 = best). |
+| higherIsBetter | boolean | true | With rankBy="value": whether a larger value ranks higher. Set false for times or error rates. |
+| highlight | string | optional, no default | Emphasise one series (by key); the others step back. Hovering or reading a series does this too. |
+| showLabels | boolean | true | Print the series names at the end of the lines. |
+| patterns | boolean | true when series.length > 3 | Tell series apart without colour (dash styles). |
+| height | number | max(220, ranks × row height + padding) | Sets the height of the plot in px. It grows with the number of ranks (at least 220). |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the tooltip and table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number format. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<BumpChartLabels> | defaultBumpChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultBumpChartLabels. All 9 keys of BumpChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### BumpTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per point in time: the index key plus one number per series key, e.g. { year: "2022", ada: 82, bo: 77 }. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the tooltip and table: takes the number, returns the text shown. |
+| labels | Partial<BumpChartLabels> | defaultBumpChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultBumpChartLabels. All 9 keys of BumpChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number format. |
+| index | string | required | The key of each row that names the point in time (the x axis). |
+| series | readonly ChartSeries[] | required | The competing series: { key, label, color? }. Ranks are computed per row across them. |
+| rankBy | "value" \| "rank" | "value" | What the numbers are: "value" ranks them in each row, "rank" treats them as ready-made ranks (1 = best). |
+| higherIsBetter | boolean | true | With rankBy="value": whether a larger value ranks higher. Set false for times or error rates. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Rank by revenue
+
+Revenue per region and quarter, ranked in each quarter. The lines draw in as the chart scrolls into view; hover a dot and the other lines step back. Pick a region to keep it in colour.
+
+```tsx
+import { BumpChart } from "@/components/sheenui/charts/bump-chart";
+import { bumpLegend } from "@/components/sheenui/charts/bump-chart/model";
+import { BumpTable } from "@/components/sheenui/charts/bump-chart/table";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+// Package build (after the first npm release, or a packed tarball): import { BumpChart, BumpTable, bumpLegend, ChartCard } from "@sheenui/theme";
+
+const regions = [
+  { key: "north", label: "North" },
+  { key: "south", label: "South" },
+  { key: "east", label: "East" },
+];
+const quarters = [
+  { quarter: "Q1", north: 412, south: 388, east: 301 },
+  { quarter: "Q2", north: 398, south: 421, east: 335 },
+  { quarter: "Q3", north: 405, south: 447, east: 392 },
+  { quarter: "Q4", north: 436, south: 430, east: 441 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Regions by revenue"
+      legend={bumpLegend(regions)}
+      table={<BumpTable data={quarters} index="quarter" series={regions} caption="Revenue rank by quarter" />}
+    >
+      <BumpChart data={quarters} index="quarter" series={regions} highlight="east" aria-label="Regions ranked by revenue, by quarter" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Lower is better, with dash patterns
+
+higherIsBetter={false} ranks the smallest number first, here the median response time per channel. patterns gives each line its own dash style, so the lines differ without colour; it turns on by itself from four series.
+
+```tsx
+import { BumpChart } from "@/components/sheenui/charts/bump-chart";
+import { bumpLegend } from "@/components/sheenui/charts/bump-chart/model";
+import { BumpTable } from "@/components/sheenui/charts/bump-chart/table";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+// Package build (after the first npm release, or a packed tarball): import { BumpChart, BumpTable, bumpLegend, ChartCard } from "@sheenui/theme";
+
+const channels = [
+  { key: "chat", label: "Chat" },
+  { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
+  { key: "social", label: "Social" },
+];
+const responseTimes = [
+  { month: "Jan", chat: 4, email: 190, phone: 22, social: 95 },
+  { month: "Mar", chat: 7, email: 120, phone: 21, social: 61 },
+  { month: "Jun", chat: 17, email: 33, phone: 23, social: 12 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Response time by channel"
+      legend={bumpLegend(channels)}
+      table={<BumpTable data={responseTimes} index="month" series={channels} higherIsBetter={false} caption="Response time rank" />}
+    >
+      <BumpChart
+        data={responseTimes}
+        index="month"
+        series={channels}
+        higherIsBetter={false}
+        patterns
+        format={(n) => n + " min"}
+        aria-label="Support channels ranked by response time"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ← / → | Move to the previous / next point in time (flipped in right-to-left text). |
+| ↑ / ↓ | Move to the series ranked one place higher / lower at that point. |
+| Home / End | Jump to the first / last point in time. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is a focusable figure named by its aria-label (the chart title), with the keyboard hint as its description and, inside a ChartCard with a table view, aria-details pointing at that table. Moving through it announces the series, the period, its rank and how far it moved, politely, once.
+- The rank is written in each dot and the series name at the end of its line, and from four series on every line gets its own dash style (patterns), so colour never identifies a series.
+- BumpTable is the table view: one row per period, one column per series, each cell its rank and value.
+- Reduced motion: the lines and dots appear at once and data changes jump instead of gliding.
+
+### All exports on this page
+
+- BumpChart — A bump chart: how the ranking of several series changes over time.
+- BumpTable — Every point in time with each series' rank (and its value), one column per series.
+- defaultBumpChartLabels — The built-in English strings of BumpChart; spread it into your own labels and change what you need.
+
+
+### When to use the bump chart
+
+- Use it for league tables and leaderboards over time, such as sales regions ranked by revenue each quarter, where who is ahead matters more than by how much.
+- Use it for top-N lists that reshuffle: search rankings, product popularity, support channels by response time. Set higherIsBetter to false when a smaller number ranks higher.
+- Pass ready-made ranks with rankBy="rank" when your data already holds positions, and highlight one series to tell the story of a single climber or faller.
+- Skip it when the size of the values matters, where a Line chart shows the gap between series, or with more than about ten series, where the lines cross too often to follow.
+- Pair it with ChartCard, bumpLegend and BumpTable for the legend, the Chart / Table tabs and a text version of every rank.
+
+
+### Frequently asked questions
+
+#### How do I make a bump chart in React?
+
+Pass data as one row per point in time with a number per series, index as the key that names the row, and series as { key, label } entries. Ranks are computed per row, so the highest value ranks first. aria-label is required.
+
+#### Can I use ranks I already have?
+
+Yes. Set rankBy to rank and the numbers are taken as positions, 1 being the best. With rankBy value, higherIsBetter decides whether a larger number ranks higher; ties keep the series order, so every rank is used once.
+
+#### How are the lines told apart without colour?
+
+The rank is written in each dot and the series name at the end of its line. From four series on, patterns gives every line its own dash style as well. Inside a ChartCard the legend hides a series and the rest are re-ranked.
+
+#### How does keyboard use work?
+
+Tab focuses the chart. Left and Right move through time, Up and Down move to the series one rank higher or lower, Home and End jump to the first and last point, Escape clears. Each move announces the series, period, rank and how far it moved.
+
+
+### Related pages
+
+- [Error bars](https://lokendra-builds.github.io/sheenui/charts/error-bar-chart)
+- [Population pyramid](https://lokendra-builds.github.io/sheenui/charts/population-pyramid)
+- [Dumbbell & slope chart](https://lokendra-builds.github.io/sheenui/charts/dumbbell)
+- [Funnel chart](https://lokendra-builds.github.io/sheenui/charts/funnel-chart)
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Error Bar Chart for React: Confidence Intervals
+
+URL: https://lokendra-builds.github.io/sheenui/charts/error-bar-chart
+Sidebar name: Error bars
+
+A React error bar chart with bars, points or a shaded confidence band. Whiskers show the interval, with keyboard reading and a table view. Accessible.
+
+What it is: A React error bar chart that draws an estimate with its confidence interval as bars, points or a shaded band. Pass data as readonly ErrorBarItem[]: one item per mark, { label, value, low, high }.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/error-bar-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Error bars
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{error-bar-chart.tsx, bar-flip.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/error-bar-chart/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: error-bar-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { ErrorBarChart } from "@/components/sheenui/charts/error-bar-chart";
+import { type ErrorBarItem, errorBarLegend } from "@/components/sheenui/charts/error-bar-chart/model";
+import { ErrorBarTable } from "@/components/sheenui/charts/error-bar-chart/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, ErrorBarChart, type ErrorBarItem, errorBarLegend, ErrorBarTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ErrorBarItem[] | required | One item per mark: { label, value, low, high, color? }. |
+| variant | "bar" \| "point" \| "band" | "bar" | "bar": bars from the baseline with a whisker; "point": a dot with a whisker (for estimates and effects); "band": a line with a shaded confidence band over ordered categories (a time series). |
+| baseline | number | 0 | Where the bars start (variant "bar"). |
+| reference | { value: number; label: string; } | optional, no default | A reference line, e.g. { value: 0, label: "No effect" }. |
+| showValues | boolean | true | Print each estimate next to its mark (not on a band). |
+| color | ChartColor | 1 | Sets the palette slot (1–8) used for the whole chart. |
+| patterns | boolean | true when item colours > 3 | Tell items of different colours apart without colour: hatched bars, and different marker shapes for points and bands (the first colour stays solid and round). |
+| height | number | 300 | Height of the plot in px. Bars and points grow with the number of rows; a band chart uses it as is. |
+| valueLabel | string | optional, no default | Names the value axis. |
+| intervalLabel | string | labels.intervalName | Names the interval in the legend, readout and table (e.g. "95% CI"). |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number format. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<ErrorBarChartLabels> | defaultErrorBarChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultErrorBarChartLabels. All 9 keys of ErrorBarChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### ErrorBarTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ErrorBarItem[] | required | One item per mark: { label, value, low, high, color? }. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| labels | Partial<ErrorBarChartLabels> | defaultErrorBarChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultErrorBarChartLabels. All 9 keys of ErrorBarChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number format. |
+| valueLabel | string | optional, no default | Names the value axis. |
+| intervalLabel | string | labels.intervalName | Names the interval in the legend, readout and table (e.g. "95% CI"). |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 3: Bars and points
+
+Conversion rate per variant with a 95% interval. Bars grow from the baseline and the whiskers draw outwards; switch to points when the baseline is not meaningful.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { ErrorBarChart } from "@/components/sheenui/charts/error-bar-chart";
+import { errorBarLegend, type ErrorBarItem } from "@/components/sheenui/charts/error-bar-chart/model";
+import { ErrorBarTable } from "@/components/sheenui/charts/error-bar-chart/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, ErrorBarChart, ErrorBarTable, errorBarLegend, type ErrorBarItem } from "@sheenui/theme";
+
+const variants: ErrorBarItem[] = [
+  { label: "Control", value: 12.4, low: 11.1, high: 13.7 },
+  { label: "Variant A", value: 14.2, low: 12.9, high: 15.5 },
+  { label: "Variant B", value: 13.1, low: 11.4, high: 14.8 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Conversion rate"
+      legend={errorBarLegend("Rate", "95% interval")}
+      table={<ErrorBarTable data={variants} valueLabel="Rate (%)" intervalLabel="95% interval" caption="Conversion rate by variant" />}
+    >
+      <ErrorBarChart
+        data={variants}
+        variant="bar"
+        valueLabel="Conversion rate (%)"
+        aria-label="Conversion rate by variant, with 95% intervals"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Effects against a reference line
+
+variant="point" with a reference line at 0: an effect whose whisker crosses the line is not clearly different from "no change". Values and ends are printed in the tooltip and the table.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { ErrorBarChart } from "@/components/sheenui/charts/error-bar-chart";
+import { type ErrorBarItem } from "@/components/sheenui/charts/error-bar-chart/model";
+import { ErrorBarTable } from "@/components/sheenui/charts/error-bar-chart/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, ErrorBarChart, ErrorBarTable, type ErrorBarItem } from "@sheenui/theme";
+
+const effects: ErrorBarItem[] = [
+  { label: "New onboarding", value: 4.2, low: 1.8, high: 6.6 },
+  { label: "Social proof", value: 0.8, low: -1.5, high: 3.1 },
+  { label: "Price anchor", value: -3.4, low: -6.2, high: -0.6 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Change in sign-ups"
+      table={<ErrorBarTable data={effects} valueLabel="Change (pp)" caption="Change in sign-up rate" />}
+    >
+      <ErrorBarChart
+        data={effects}
+        variant="point"
+        reference={{ value: 0, label: "No change" }}
+        valueLabel="Change in sign-up rate (percentage points)"
+        aria-label="Change in sign-up rate by experiment"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 3 of 3: Confidence band
+
+variant="band": a line through the estimates with the interval shaded around it, widening as the forecast looks further ahead. The band fades in, the line draws on.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { ErrorBarChart } from "@/components/sheenui/charts/error-bar-chart";
+import { type ErrorBarItem } from "@/components/sheenui/charts/error-bar-chart/model";
+import { ErrorBarTable } from "@/components/sheenui/charts/error-bar-chart/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, ErrorBarChart, ErrorBarTable, type ErrorBarItem } from "@sheenui/theme";
+
+const forecast: ErrorBarItem[] = [
+  { label: "Jan", value: 120, low: 114, high: 126 },
+  { label: "Feb", value: 133, low: 125, high: 141 },
+  { label: "Mar", value: 146, low: 136, high: 156 },
+  { label: "Apr", value: 151, low: 139, high: 163 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Revenue forecast"
+      table={<ErrorBarTable data={forecast} valueLabel="Revenue ($K)" caption="Revenue forecast" />}
+    >
+      <ErrorBarChart data={forecast} variant="band" height={260} aria-label="Revenue forecast with a confidence band" />
+    </ChartCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ↑ / ↓ | Bars and points: move between items. |
+| ← / → | Band: move between points (flipped in right-to-left text). |
+| Home / End | Jump to the first / last item. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is a focusable figure named by its aria-label (the chart title), with the keyboard hint as its description and, inside a ChartCard with a table view, aria-details pointing at that table. Moving through it announces each item, its estimate and both ends of its interval.
+- The interval is a drawn whisker with end caps (or a dashed-edged band), a shape rather than a colour, and its ends are printed as numbers in the tooltip and in ErrorBarTable.
+- Reduced motion: bars, whiskers and the band appear at once and data changes jump instead of gliding.
+
+### All exports on this page
+
+- ErrorBarChart — An error bar chart: an estimate for each item with the interval around it, drawn as a whisker.
+- ErrorBarTable — Every item with its estimate and the lower and upper end of its interval.
+- defaultErrorBarChartLabels — The built-in English strings of ErrorBarChart; spread it into your own labels and change what you need.
+
+
+### When to use the error bar chart
+
+- Use it for A/B test results, survey estimates and model scores, where how sure a number is matters as much as the number: each bar or dot carries a whisker from the low to the high end of its interval.
+- Use variant="point" with a reference line for effect sizes in the forest-plot style, so any whisker that crosses the line reads as no clear difference.
+- Use variant="band" for a forecast or a measurement over time: a line of estimates with the confidence interval shaded around it, widening as the future gets less certain.
+- Skip it when you have the raw observations, where a Box plot or Beeswarm shows the whole distribution, or when every value is exact and there is no interval to draw.
+- Pair it with ChartCard, errorBarLegend and ErrorBarTable so the card gets a legend, a Chart / Table switch and a text version of every interval.
+
+
+### Frequently asked questions
+
+#### How do I add confidence intervals to a bar chart in React?
+
+Pass data as items with label, value, low and high. Each bar gets a whisker with end caps from low to high, and the tooltip and table print both ends. Name the interval with intervalLabel, for example 95% CI. aria-label is required.
+
+#### How do I draw a confidence band on a line?
+
+Set variant to band. The items become the points of a line through value, with the area between low and high shaded and dashed at its edges. Use height to size it; categories sit evenly along the x axis, so keep them in order.
+
+#### Can I show a no-effect line?
+
+Yes. reference takes { value, label } and draws a dashed line with its label, for example 0 for no change. baseline sets where bars start, and the scale always covers every interval, the baseline and the reference.
+
+#### How does keyboard use work?
+
+Tab focuses the chart. Up and Down move between bars and points, Left and Right between the points of a band, Home and End jump to the first and last, Escape clears. Each move announces the estimate and both ends of the interval.
+
+
+### Related pages
+
+- [Population pyramid](https://lokendra-builds.github.io/sheenui/charts/population-pyramid)
+- [Dumbbell & slope chart](https://lokendra-builds.github.io/sheenui/charts/dumbbell)
+- [Funnel chart](https://lokendra-builds.github.io/sheenui/charts/funnel-chart)
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Population Pyramid Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/population-pyramid
+Sidebar name: Population pyramid
+
+A React population pyramid: mirrored horizontal bars by age group on one scale, with counts or shares, hatching and keyboard reading. Animated, accessible.
+
+What it is: A React population pyramid: two sets of horizontal bars mirrored around a centre line, one row per age group. Pass data as readonly PyramidGroup[]: one item per group, { label, start, end }.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/population-pyramid.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Population pyramid
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{population-pyramid.tsx, bar-flip.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/charts/population-pyramid/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: population-pyramid. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { PopulationPyramid } from "@/components/sheenui/charts/population-pyramid";
+import { populationPyramidLegend, type PyramidGroup } from "@/components/sheenui/charts/population-pyramid/model";
+import { PopulationPyramidTable } from "@/components/sheenui/charts/population-pyramid/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, PopulationPyramid, populationPyramidLegend, PopulationPyramidTable, type PyramidGroup } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly PyramidGroup[] | required | One item per age group: { label, start, end }, from the first group to the last, e.g. 0–4 up to 85+. |
+| share | boolean | false | Show each bar as a share of the whole population (%) instead of a count. |
+| firstAt | "top" \| "bottom" | "bottom" | Which end of data sits at the bottom. "bottom" puts the first group at the bottom, so the youngest are at the base. |
+| colors | readonly [ChartColor, ChartColor] | [1, 2] | Palette slots (1–8) of the start and the end side. |
+| patterns | boolean | false | Tell the two sides apart without colour (hatch fills on the end side). Off by default: only two sides, and they sit on opposite sides of the centre line. |
+| showValues | boolean | true | Print each bar's value past its end where it fits. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share (0.082 → "8.2%"). |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<PopulationPyramidLabels> | defaultPopulationPyramidLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultPopulationPyramidLabels. All 8 keys of PopulationPyramidLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### PopulationPyramidTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly PyramidGroup[] | required | One item per age group: { label, start, end }, from the first group to the last, e.g. 0–4 up to 85+. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| labels | Partial<PopulationPyramidLabels> | defaultPopulationPyramidLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultPopulationPyramidLabels. All 8 keys of PopulationPyramidLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share (0.082 → "8.2%"). |
+| share | boolean | false | Show each bar as a share of the whole population (%) instead of a count. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Counts or shares
+
+A fictional country by age and sex, in millions. Both halves share one scale, so they compare honestly. Show each bar as a share of the whole population, and hatch one side so the two differ without colour.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { PopulationPyramid } from "@/components/sheenui/charts/population-pyramid";
+import { populationPyramidLegend, type PyramidGroup } from "@/components/sheenui/charts/population-pyramid/model";
+import { PopulationPyramidTable } from "@/components/sheenui/charts/population-pyramid/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, PopulationPyramid, PopulationPyramidTable, populationPyramidLegend, type PyramidGroup } from "@sheenui/theme";
+
+const ages: PyramidGroup[] = [
+  { label: "0–19", start: 13.3, end: 12.5 },
+  { label: "20–39", start: 16.8, end: 16.3 },
+  { label: "40–59", start: 17.4, end: 18.1 },
+  { label: "60–79", start: 12.2, end: 14.4 },
+  { label: "80+", start: 2.0, end: 3.7 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Population by age"
+      legend={populationPyramidLegend("Male", "Female")}
+      table={<PopulationPyramidTable data={ages} caption="Population by age group, in millions" />}
+    >
+      <PopulationPyramid data={ages} patterns aria-label="Population by age group and sex, in millions" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Beyond demographics
+
+Any ordered bands with two sides work: here customers by tenure on two plans, with the labels renamed through the legend and labels prop. firstAt="top" puts the first band at the top.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { PopulationPyramid } from "@/components/sheenui/charts/population-pyramid";
+import { populationPyramidLegend, type PyramidGroup } from "@/components/sheenui/charts/population-pyramid/model";
+import { PopulationPyramidTable } from "@/components/sheenui/charts/population-pyramid/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, PopulationPyramid, PopulationPyramidTable, populationPyramidLegend, type PyramidGroup } from "@sheenui/theme";
+
+const tenure: PyramidGroup[] = [
+  { label: "< 1 year", start: 5200, end: 3900 },
+  { label: "1–2 years", start: 4100, end: 3800 },
+  { label: "2–3 years", start: 3300, end: 3100 },
+  { label: "3–5 years", start: 2400, end: 2600 },
+];
+const labels = { start: "Pro", end: "Team", group: "Tenure" };
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Customers by tenure"
+      legend={populationPyramidLegend("Pro", "Team", [3, 4])}
+      table={<PopulationPyramidTable data={tenure} labels={labels} caption="Customers by tenure and plan" />}
+    >
+      <PopulationPyramid data={tenure} firstAt="top" colors={[3, 4]} labels={labels} aria-label="Customers by tenure and plan" />
+    </ChartCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ↑ / ↓ | Move between groups, top to bottom. |
+| Home / End | Jump to the top / bottom group. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is a focusable figure named by its aria-label (the chart title), with the keyboard hint as its description and, inside a ChartCard with a table view, aria-details pointing at that table. Moving through it announces the group, both sides, the total and its share of the population.
+- The two sides sit on opposite sides of the centre line and patterns hatches one of them, so colour never separates them; every bar's value is printed where it fits and always in the tooltip and table.
+- In a ChartCard the legend toggles a side on and off; the scale follows the sides that remain.
+- Reduced motion: the bars appear at once and data changes jump instead of gliding. In right-to-left text the sides swap.
+
+### All exports on this page
+
+- PopulationPyramid — A population pyramid: two sets of horizontal bars mirrored around a centre line, one row per age group.
+- PopulationPyramidTable — Every group with the size of each side and the total, and (with share) its share of the population.
+- defaultPopulationPyramidLabels — The built-in English strings of PopulationPyramid; spread it into your own labels and change what you need.
+
+
+### When to use the population pyramid
+
+- Use it for demographics: a country, city or customer base by age group and sex, where the two halves sit back to back on one scale so their shapes compare honestly.
+- Use it for any two-sided split across ordered bands, such as customers by tenure on two plans, survey answers by age, or applicants against hires by seniority.
+- Set share to read each bar as a part of the whole population instead of a count, and firstAt to choose whether the first group sits at the base or at the top.
+- Skip it for more than two sides or for unordered categories, where a grouped Bar chart is clearer, and for a single series, where a Bar chart needs no mirror.
+- Pair it with ChartCard, populationPyramidLegend and PopulationPyramidTable for a legend that toggles a side, Chart / Table tabs and a text table.
+
+
+### Frequently asked questions
+
+#### How do I make a population pyramid in React?
+
+Pass data as one item per age group with a label and the size of each side, start and end, from the first group to the last. The first group sits at the base. Rename the sides with the labels prop and set aria-label.
+
+#### Which side is on the left?
+
+start sits at the inline start, so on the left in left-to-right text and on the right in right-to-left text. Both halves share one scale. colors takes a palette slot for each side, and patterns hatches the end side for a non-colour cue.
+
+#### Can it show shares instead of counts?
+
+Yes. share shows every bar as a percentage of the whole population, with formatPercent and locale for the text. The tooltip and PopulationPyramidTable still give the group's total and, in count mode, its share of the whole.
+
+#### How does keyboard use work?
+
+Tab focuses the chart. Up and Down move between groups from top to bottom, Home and End jump to the top and bottom group, Escape clears. Each move announces the group, both sides, the total and its share.
+
+
+### Related pages
+
+- [Dumbbell & slope chart](https://lokendra-builds.github.io/sheenui/charts/dumbbell)
+- [Funnel chart](https://lokendra-builds.github.io/sheenui/charts/funnel-chart)
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Dumbbell & Slope Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/dumbbell
+Sidebar name: Dumbbell & slope chart
+
+React dumbbell and slope charts for before-and-after comparisons, with every change printed as ▲/▼ so it never depends on color. Animated, accessible.
+
+What it is: A React dumbbell or slope chart shows before and after for each item, with every change printed in words and arrows. Pass data as readonly DumbbellItem[]: takes one item per row: { label, from, to }.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dumbbell-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Dumbbell & slope chart
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{dumbbell-chart.tsx, histogram.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/dumbbell-chart/`
+- `components/charts/heatmap/`
+- `components/charts/histogram/`
+- `components/charts/kits/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: dumbbell-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { DumbbellChart } from "@/components/sheenui/charts/dumbbell-chart";
+import { type DumbbellItem, dumbbellLegend } from "@/components/sheenui/charts/dumbbell-chart/model";
+import { DumbbellTable } from "@/components/sheenui/charts/dumbbell-chart/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, DumbbellChart, type DumbbellItem, dumbbellLegend, DumbbellTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly DumbbellItem[] | required | Takes one item per row: { label, from, to }. |
+| variant | "slope" \| "dumbbell" | "dumbbell" | "dumbbell": a row per item, a dot at each end. "slope": two columns joined by a line per item. |
+| fromLabel | string | optional, no default | Sets the name of the "before" end, e.g. "2024". |
+| toLabel | string | optional, no default | Sets the name of the "after" end, e.g. "2025". |
+| sort | "none" \| "from" \| "to" \| "change" | "none" | Order of the items. "change" puts the biggest rise first. |
+| higherIsBetter | boolean | true | Is a rise good (revenue) or bad (costs, churn)? Picks the status colour of the change. |
+| change | "none" \| "percent" \| "absolute" | "absolute" | Show each item's change: "absolute" (+12), "percent" (+8%), or "none". |
+| highlight | string \| string[] | optional, no default | Emphasise these items (by label); the rest step back to grey. |
+| color | ChartColor | 1 | Palette slot (1–8): the "after" dot in full, the "before" dot a lighter shade of it. |
+| includeZero | boolean | false | Keep 0 on the value axis. |
+| height | number | 340 | Height of a slope chart. Dumbbell rows grow with the items. |
+| valueLabel | string | optional, no default | Names the value axis. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats percent changes (0.08 → "8%"). |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<DumbbellChartLabels> | defaultDumbbellChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultDumbbellChartLabels. All 10 keys of DumbbellChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### DumbbellTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly DumbbellItem[] | required | Takes one item per row: { label, from, to }. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| sort | "none" \| "from" \| "to" \| "change" | "none" | Order of the items. "change" puts the biggest rise first. |
+| labels | Partial<DumbbellChartLabels> | defaultDumbbellChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultDumbbellChartLabels. All 10 keys of DumbbellChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats percent changes (0.08 → "8%"). |
+| fromLabel | string | optional, no default | Sets the name of the "before" end, e.g. "2024". |
+| toLabel | string | optional, no default | Sets the name of the "after" end, e.g. "2025". |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Dumbbell
+
+Median salary by department, 2024 to 2025. On first view each “after” dot travels out from its “before” dot. Sort by the change and the rows slide into their new order.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { DumbbellChart } from "@/components/sheenui/charts/dumbbell-chart";
+import { dumbbellLegend, type DumbbellItem } from "@/components/sheenui/charts/dumbbell-chart/model";
+import { DumbbellTable } from "@/components/sheenui/charts/dumbbell-chart/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, dumbbellLegend, DumbbellTable, DumbbellChart, type DumbbellItem } from "@sheenui/theme";
+
+const salaries: DumbbellItem[] = [
+  { label: "Engineering", from: 128, to: 141 },
+  { label: "Design", from: 104, to: 112 },
+  { label: "Product", from: 121, to: 133 },
+  { label: "Marketing", from: 92, to: 96 },
+  { label: "Sales", from: 98, to: 94 },
+  { label: "Support", from: 61, to: 68 },
+];
+const thousands = (n: number) => (n < 0 ? "−" : "") + "$" + Math.abs(Math.round(n)) + "K";
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Median salary"
+      legend={dumbbellLegend("2024", "2025")}
+      table={<DumbbellTable data={salaries} sort="change" fromLabel="2024" toLabel="2025" format={thousands} caption="Median salary by department" />}
+    >
+      <DumbbellChart
+        data={salaries}
+        fromLabel="2024"
+        toLabel="2025"
+        sort="change"
+        change="percent"
+        format={thousands}
+        aria-label="Median salary by department, 2024 against 2025"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Slope chart
+
+variant="slope": the two ends in columns, a line per channel. Labels spread apart so none collide, and highlight keeps the two channels the story is about in color.
+
+```tsx
+import { DumbbellChart } from "@/components/sheenui/charts/dumbbell-chart";
+import { type DumbbellItem } from "@/components/sheenui/charts/dumbbell-chart/model";
+// Package build (after the first npm release, or a packed tarball): import { DumbbellChart, type DumbbellItem } from "@sheenui/theme";
+
+const npsByChannel: DumbbellItem[] = [
+  { label: "In-app chat", from: 38, to: 54 },
+  { label: "Email", from: 31, to: 29 },
+  { label: "Phone", from: 47, to: 44 },
+  { label: "Help center", from: 22, to: 35 },
+  { label: "Community", from: 41, to: 48 },
+  { label: "Social", from: 12, to: 19 },
+];
+
+export function Example() {
+  return (
+    <DumbbellChart
+      variant="slope"
+      data={npsByChannel}
+      fromLabel="Q1"
+      toLabel="Q2"
+      highlight={["In-app chat", "Help center"]}
+      color={3}
+      aria-label="Net Promoter Score by support channel, Q1 against Q2"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ↑ / ↓ | Move between items. |
+| Home / End | Jump to the first / last item. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- Keyboard and screen-reader users get a single focusable figure labelled by the chart title, with a short reading hint as its description; inside a ChartCard with a table view, aria-details links it to the table. Every value read is announced politely, once. Every change is printed with an up or down arrow and a success or danger tone (set by higherIsBetter), so color never carries it alone.
+- For a non-visual reading, give ChartCard's table prop a DumbbellTable; the Chart / Table tabs then expose each value as plain table cells.
+- Under reduced motion nothing morphs: the dots and the connecting bars render at their final values and new data replaces the old at once.
+
+### All exports on this page
+
+- DumbbellChart — Before → after for each item.
+- DumbbellTable — Every item's two values, its change and its percent change.
+- defaultDumbbellChartLabels — The built-in English strings of DumbbellChart; spread it into your own labels and change what you need.
+- dumbbellColors — The two shades of a dumbbell: the "before" end is a paler step of the "after" hue.
+- dumbbellLegend — Legend items for a dumbbell or slope chart: the two ends.
+
+
+### When to use the dumbbell and slope chart
+
+- Use it as a before and after chart for year-over-year comparisons across named items, such as revenue per product in 2024 against 2025, where the size and direction of each change is the story.
+- Use the slope variant for ranking shifts between two points in time, with the two ends in columns, lines joining them and labels spread so none collide.
+- Sort by change to put the biggest rise first, and set higherIsBetter to false for costs or churn so the status color of each change is not misleading.
+- Skip it when you have more than two time points per item, where a Line chart shows the whole path, or when you compare totals rather than change, where a Bar chart is enough.
+- Pair it with ChartCard and DumbbellTable for a text view, plus a SegmentedControl to switch between the dumbbell and slope variants or between absolute and percent change.
+
+
+### Frequently asked questions
+
+#### How do I build a React dumbbell chart?
+
+Pass data as items with label, from and to, then fromLabel and toLabel such as 2024 and 2025. A light before dot and a full-color after dot are joined by a bar that brightens in the direction of travel. aria-label is required.
+
+#### How are increases and decreases shown without color alone?
+
+Each change is printed with an up or down arrow and a success or danger tone chosen by higherIsBetter. The change prop picks absolute, percent or none. So a rise in churn reads as bad both by tone and by the arrow and sign text.
+
+#### Can I switch to a slope chart or re-sort the items?
+
+Set variant to slope for two columns joined by lines. sort takes none, to, from or change, and re-sorting slides the rows to their new places. highlight takes one label or several and grays out the others. height applies to the slope variant only.
+
+#### How does keyboard use work?
+
+Tab focuses the chart, Up and Down move between items, Home and End jump to the first and last, and Escape clears. Rows are plain SVG moved by one frame loop, and reading a row never re-renders the others. Reduced motion draws, glides and re-sorts instantly.
+
+
+### Related pages
+
+- [Funnel chart](https://lokendra-builds.github.io/sheenui/charts/funnel-chart)
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Funnel Chart for React: Conversion Drop-Off
+
+URL: https://lokendra-builds.github.io/sheenui/charts/funnel-chart
+Sidebar name: Funnel chart
+
+A React funnel chart for conversion: bars narrow by stage and every step shows how many continued and dropped off. Animated, accessible, Tailwind v4.
+
+What it is: A React funnel chart that shows conversion stage by stage, printing how many continued and how many dropped off at every step. Pass data as readonly FunnelStage[]: the stages in order.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/funnel-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Funnel chart
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{funnel-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: funnel-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { FunnelChart, type FunnelStage, FunnelTable } from "@/components/sheenui/charts/funnel-chart";
+import { formatPercent } from "@/components/sheenui/charts/heatmap/kit";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, formatPercent, FunnelChart, type FunnelStage, FunnelTable, useToast } from "@sheenui/theme";
+```
+
+### FunnelChart
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly FunnelStage[] | required | The stages in order, e.g. [{ label: "Visited", value: 48200 }, ...]. Negative values count as 0. |
+| align | "center" \| "start" | "center" | "center": a classic funnel, bars centred; "start": bars from a shared left edge (easier to compare). |
+| color | ChartColor | 1 | Hue: stages step from the full slot colour (first) to lighter (last), an ordinal ramp. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a stage count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a ratio (0.412 → "41.2%"). |
+| locale | string | "en" | Locale of the default number formats. |
+| patterns | boolean | true when data.length > 3 | Tell stages apart without colour (hatch fills). |
+| showDropOff | boolean | true | Show the "continued / dropped off" line between stages. |
+| onStageClick | ((stage: FunnelStage, index: number) => void) | optional, no default | Called with the stage and its index when it is clicked, tapped, or activated with Enter or Space. Makes stages interactive. |
+| emptyState | ReactNode | optional, no default | Shown when there are no stages. |
+| labels | Partial<FunnelChartLabels> | defaultFunnelChartLabels | Every other string, for translation: labels={{ continued: "…" }}; omitted keys keep the English of defaultFunnelChartLabels. All 7 keys of FunnelChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### FunnelTable
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly FunnelStage[] | required | The stages in order, e.g. [{ label: "Visited", value: 48200 }, ...]. Negative values count as 0. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a stage count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a ratio (0.412 → "41.2%"). |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| headers | Partial<{ stage: string; count: string; ofFirst: string; ofPrevious: string; dropped: string; }> | optional, no default | Text of the table's column headers (stage, count, share of first, share of previous, dropped); pass only the ones you translate. |
+| labels | Partial<FunnelTableLabels> | defaultFunnelTableLabels | Strings for the cells that have no value. Merged over defaultFunnelTableLabels. Every other string, for translation: labels={{ notApplicable: "…" }}; omitted keys keep the English of defaultFunnelTableLabels. All 2 keys of FunnelTableLabels are listed in the key table under the props table. |
+| emptyState | ReactNode | optional, no default | Shown when there are no stages. |
+
+### Example 1 of 3: Conversion, stage by stage
+
+Centered bars read as a funnel; start-aligned bars are easier to compare by length. Switch the month to see the bars resize with a transform-only layout animation while the steps morph with them. Focus the chart and use the up and down arrow keys; on a phone the reading docks above the stages.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { FunnelTable, FunnelChart, type FunnelStage } from "@/components/sheenui/charts/funnel-chart";
+import { formatPercent } from "@/components/sheenui/charts/heatmap/kit";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, formatPercent, FunnelTable, FunnelChart, type FunnelStage } from "@sheenui/theme";
+
+const stages: FunnelStage[] = [
+  { label: "Visited site", value: 48210 },
+  { label: "Viewed pricing", value: 21904 },
+  { label: "Started trial", value: 8412 },
+  { label: "Activated", value: 5108 },
+  { label: "Subscribed", value: 1964 },
+];
+const rate = (stages[stages.length - 1]?.value ?? 0) / (stages[0]?.value || 1);
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Signup funnel"
+      aside={<span className="text-2xl font-semibold">{formatPercent(rate)}</span>}
+      table={<FunnelTable data={stages} />}
+    >
+      <FunnelChart data={stages} align="center" aria-label="Signup funnel, October" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Checkout, clickable stages
+
+Start-aligned, in another hue, with stage clicks (pointer, Enter or Space) wired to a handler. Without the drop-off lines it becomes a compact ranked view.
+
+```tsx
+import { FunnelChart, type FunnelStage } from "@/components/sheenui/charts/funnel-chart";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { FunnelChart, useToast, type FunnelStage } from "@sheenui/theme";
+
+const checkout: FunnelStage[] = [
+  { label: "Cart", value: 9240 },
+  { label: "Shipping details", value: 6875 },
+  { label: "Payment", value: 5012 },
+  { label: "Order placed", value: 4386 },
+];
+
+export function Example() {
+  const toast = useToast();
+  return (
+    <FunnelChart
+      data={checkout}
+      align="start"
+      color={7}
+      onStageClick={(stage) => toast.info(stage.label)}
+      aria-label="Checkout funnel"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Patterns
+
+Hatch fills tell the stages apart without colour (the counts are text already). They switch on by themselves above three stages; pass patterns to force them.
+
+```tsx
+import { FunnelChart } from "@/components/sheenui/charts/funnel-chart";
+// Package build (after the first npm release, or a packed tarball): import { FunnelChart } from "@sheenui/theme";
+
+const stages = [
+  { label: "Visited", value: 12000 },
+  { label: "Signed up", value: 3400 },
+  { label: "Subscribed", value: 820 },
+];
+
+export function Example() {
+  return <FunnelChart patterns data={stages} aria-label="Conversion from visit to subscription, hatched" />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ↓ / → | Next stage. |
+| ↑ / ← | Previous stage. |
+| Home / End | Jump to the first / last stage. |
+| Enter / Space | Activate the stage being read, when onStageClick is set. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is one focusable figure: its aria-label is the chart title, a one-line hint describes how to read it, and in a ChartCard with a table view aria-details points at that table. Each move is announced politely, once. Counts and conversion are text, so color never carries the reading; each move announces the stage.
+- FunnelTable is the same data as a real table. Pass it to ChartCard's table prop and the Chart / Table tabs let anyone read every value without color or sight.
+- Under reduced motion nothing morphs: the stages render at their final widths and new data replaces the old at once.
+
+### All exports on this page
+
+- FunnelChart — Stages as horizontal bars with the conversion between each pair.
+- FunnelTable — Every stage with its count, conversion and drop-off.
+- defaultFunnelChartLabels — The built-in English strings of FunnelChart; spread it into your own labels and change what you need.
+- defaultFunnelTableLabels — English defaults of FunnelTableLabels.
+
+
+### When to use the funnel chart
+
+- Use it as a conversion funnel chart for a signup or checkout funnel: visited, signed up, activated, paid, with each stage showing its count and share of the first stage.
+- Keep showDropOff on (it is the default) to print how many continued and how many dropped between stages, so the biggest leak in an onboarding or sales pipeline stands out without hovering.
+- Use onStageClick to turn stages into drill-downs, for example opening the list of accounts lost between Trial and Paid in a side panel.
+- Skip it when the steps are not sequential or users can skip stages, because a Sankey chart shows branching paths, and a plain Bar chart handles independent categories.
+- Pair it with ChartCard and FunnelTable for a text twin, SegmentedControl to flip between weekly and monthly data, and Badge to flag the stage with the worst conversion.
+
+
+### Frequently asked questions
+
+#### How do I make a funnel chart in React?
+
+Pass data as stages in order, each with a label and value, plus an aria-label. Every stage shows its count and its share of the first stage, and negative values count as 0. Stages step from the full color of color to a lighter shade.
+
+#### Should I use center or start alignment?
+
+align center draws the classic funnel with centered bars, while start aligns bars to a shared left edge, which makes lengths easier to compare. Switching alignment or data glides the bars to their new size and place instead of snapping, unless reduced motion is on.
+
+#### What does the layout do on narrow cards?
+
+It uses a container-query layout. On wide cards each stage is label, bar and value on one row. On narrow ones the label and value sit above the bar, and the tooltip docks in a band above the stages, so nothing overflows on a phone.
+
+#### How is the funnel read with a keyboard?
+
+Tab focuses the chart, then Down or Right and Up or Left move between stages, Home and End jump to the ends, and Escape clears. With onStageClick, Enter or Space activates the stage being read. Counts and conversion are text, so color never carries the reading.
+
+
+### Related pages
+
+- [Gantt chart](https://lokendra-builds.github.io/sheenui/charts/gantt)
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+- [Marimekko chart](https://lokendra-builds.github.io/sheenui/charts/marimekko)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Gantt Chart for React with Dependencies
+
+URL: https://lokendra-builds.github.io/sheenui/charts/gantt
+Sidebar name: Gantt chart
+
+A React Gantt chart with progress bars, finish-to-start dependency arrows, milestones, collapsible phases, a today line and day/week/month zoom. Free, MIT.
+
+What it is: A React Gantt chart puts a plan on a timeline, with progress, dependency arrows, milestones and a today line. Pass tasks as a readonly GanttTask[]: an id, a label, a start and an end day, plus optional progress and dependencies.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/gantt-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Gantt chart
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{gantt-chart.tsx, calendar-heatmap.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/gantt/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/segmented/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: gantt-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { GanttChart } from "@/components/sheenui/charts/gantt-chart";
+import { ganttLegend } from "@/components/sheenui/charts/gantt/model";
+import { GanttTable } from "@/components/sheenui/charts/gantt/table";
+import { type GanttTask } from "@/components/sheenui/charts/gantt/types";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, GanttChart, ganttLegend, GanttTable, type GanttTask, useToast } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tasks | readonly GanttTask[] | required | The tasks: { id, label, start, end?, progress?, dependencies?, milestone?, group?, color?, assignee? }. end is the last day, inclusive; milestone: true marks a single day (and ignores end). |
+| scale | GanttScale | optional, no default | Current zoom level of the time axis; pass it with onScaleChange to control it. |
+| defaultScale | "auto" \| GanttScale | "auto" | Sets the starting zoom when uncontrolled. |
+| onScaleChange | ((scale: GanttScale) => void) | optional, no default | Called with "day", "week" or "month" when the zoom changes (controlled scale). |
+| toolbar | boolean | true | Show the Day / Week / Month switch and the Today button. |
+| today | string \| Date \| null | the current date | Sets where the today line goes. |
+| locale | string | the browser's | Locale of dates, numbers and the first day of the week. |
+| labelWidth | number | fits the names, up to a third of the chart | Width of the task-name column in px. |
+| collapsible | boolean | true | Lets the person collapse and expand groups. |
+| defaultCollapsed | readonly string[] | [] | Groups that start collapsed. |
+| onTaskClick | ((task: GanttTask) => void) | optional, no default | Called with a task on click, Enter or Space. |
+| emptyState | ReactNode | optional, no default | Shown when there are no tasks. |
+| labels | Partial<GanttChartLabels> | defaultGanttChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultGanttChartLabels. All 22 keys of GanttChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### GanttTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<GanttChartLabels> | defaultGanttChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultGanttChartLabels. All 22 keys of GanttChartLabels are listed in the key table under the props table. |
+| locale | string | the browser's | Locale of dates, numbers and the first day of the week. |
+| tasks | readonly GanttTask[] | required | The tasks: { id, label, start, end?, progress?, dependencies?, milestone?, group?, color?, assignee? }. end is the last day, inclusive; milestone: true marks a single day (and ignores end). |
+| caption | string | optional, no default | Sets a visually hidden caption that names the table. |
+| emptyState | ReactNode | optional, no default | Shown when there are no tasks. |
+
+### Example 1 of 2: Product launch plan
+
+Four phases, twelve tasks. Hover a bar: its arrows light up and the tooltip lists dates, progress and what it waits for. Collapse a phase and the rows below glide up. It opens at the zoom that fits the whole plan; switch the zoom and the timeline glides around the date in the middle, and an edge fades while there is more plan beyond it.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { GanttChart } from "@/components/sheenui/charts/gantt-chart";
+import { ganttLegend } from "@/components/sheenui/charts/gantt/model";
+import { GanttTable } from "@/components/sheenui/charts/gantt/table";
+import { type GanttTask } from "@/components/sheenui/charts/gantt/types";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, ganttLegend, GanttTable, GanttChart, type GanttTask } from "@sheenui/theme";
+
+const plan: GanttTask[] = [
+  { id: "research", label: "User research", group: "Discovery", start: "2026-02-02", end: "2026-02-13", progress: 1 },
+  { id: "scope", label: "Scope sign-off", group: "Discovery", start: "2026-02-20", milestone: true, dependencies: ["research"] },
+  { id: "ui", label: "UI design", group: "Design", start: "2026-03-02", end: "2026-03-20", progress: 0.8, dependencies: ["scope"] },
+  // …
+];
+
+<ChartCard
+  title="Launch plan"
+  legend={ganttLegend(plan)}
+  table={<GanttTable tasks={plan} />}
+>
+  <GanttChart tasks={plan} today="2026-03-18" aria-label="Product launch plan" />
+</ChartCard>
+```
+
+### Example 2 of 2: Sprint, by day
+
+defaultScale="day" for a two-week sprint: weekends are shaded, today’s date is highlighted in the header and the plan stretches to fill the width. Click a bar (or press Enter on it) to open the task.
+
+```tsx
+import { GanttChart } from "@/components/sheenui/charts/gantt-chart";
+import { type GanttTask } from "@/components/sheenui/charts/gantt/types";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { GanttChart, useToast, type GanttTask } from "@sheenui/theme";
+
+const sprint: GanttTask[] = [
+  { id: "a", label: "Audit chart tokens", start: "2026-03-16", end: "2026-03-17", progress: 1, assignee: "Ravi" },
+  { id: "b", label: "Token cleanup", start: "2026-03-17", end: "2026-03-19", progress: 1, dependencies: ["a"], assignee: "Ravi" },
+  { id: "c", label: "Gantt zoom levels", start: "2026-03-18", end: "2026-03-23", progress: 0.5, assignee: "Leo" },
+  { id: "d", label: "Cohort grid keyboard", start: "2026-03-19", end: "2026-03-24", progress: 0.3, dependencies: ["b"], assignee: "Aiko" },
+  { id: "f", label: "Sprint review", start: "2026-03-26", milestone: true, dependencies: ["c", "d"] },
+];
+
+export function Example() {
+  const toast = useToast();
+  return (
+    <GanttChart
+      tasks={sprint}
+      defaultScale="day"
+      today="2026-03-20"
+      onTaskClick={(task) => toast.info(task.label)}
+      aria-label="Sprint 14 plan"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The toolbar (Today, then the zoom switch), then the phase toggles, then the timeline (one stop). |
+| ↑ / ↓ | Previous / next task; it scrolls into view. |
+| Home / End | First / last task. |
+| ← / → | Scroll the timeline by one column (a day, a week or a month). |
+| T | Jump to today. |
+| + / − | Zoom in / out (month → week → day). |
+| Enter / Space | Call onTaskClick for the active task. |
+| Escape | Clear the active task. |
+
+### Accessibility
+
+- The timeline is one focusable figure (role description “Gantt chart”); each keyboard move is announced once: name, dates, duration, progress, dependencies and owner.
+- Phase rows are disclosure buttons with aria-expanded.
+- Colors follow the phase in a fixed slot; the phase also shows as a dot and a label, never by color alone.
+- The Table view lists every task with start, end, duration, progress, owner and dependencies.
+- Right-to-left pages mirror the timeline: time runs leftwards and the names sit on the right.
+- Reduced motion: no cascade, no glides; zoom and scrolling jump.
+
+### All exports on this page
+
+- GanttChart — Gantt chart: tasks as bars on a timeline, with progress, finish-to-start dependency arrows, milestones, collapsible phases and a today line.
+- GanttTable — Every task as a row: phase, start, end, duration, progress, owner and what it waits for.
+- defaultGanttChartLabels — The built-in English strings of GanttChart; spread it into your own labels and change what you need.
+
+
+### When to use the gantt chart
+
+- Use it as a project timeline chart: a plan with tasks as bars on a timeline, progress fills, finish-to-start dependency arrows, milestones and a today line, such as a product launch schedule.
+- Group tasks by phase or team: groups become collapsible rows and set the bar color, so a long plan can fold down to its phases for a status meeting.
+- Switch between day, week and month zoom with the toolbar, and use scale with onScaleChange when your own control should drive it; it opens at the most detailed zoom that fits the plan.
+- Skip it when you only need to show one task's completion, where Progress is enough, or when you need only a due date, where a Calendar or a plain Badge is lighter.
+- Pair it with ChartCard and GanttTable for a text view, plus Dialog or Drawer opened from onTaskClick to edit a task.
+
+
+### Frequently asked questions
+
+#### How do I build a Gantt chart in React with dependencies?
+
+Pass tasks, each with a unique id, label and start, plus optional end, progress from 0 to 1, group and assignee. dependencies lists the ids that must finish first, drawn as finish-to-start arrows. A milestone true task marks a single day as a diamond.
+
+#### Is the end date inclusive?
+
+Yes. end is the last day, so a task from the 2nd to the 6th covers five days. Date strings like 2026-03-02 are read as local dates and never shifted by time zones. For milestones, end is ignored.
+
+#### Which keys work on the timeline?
+
+Tab focuses it. Up and Down move between tasks, Left and Right scroll, mirrored in right-to-left, Home and End jump to the first and last task, T jumps to today, plus and minus zoom, and Escape clears. Enter calls onTaskClick, and toolbar buttons are normal tab stops.
+
+#### Does a long plan widen the page on a phone?
+
+No. The task names stay put while the timeline scrolls sideways inside its own container, with an edge fade while more plan lies beyond it. Short plans stretch to fill the width. labelWidth sets the name column width, and today moves or hides the today line.
+
+
+### Related pages
+
+- [Gauge](https://lokendra-builds.github.io/sheenui/charts/gauge-chart)
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+- [Marimekko chart](https://lokendra-builds.github.io/sheenui/charts/marimekko)
+- [Network graph](https://lokendra-builds.github.io/sheenui/charts/network-graph)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Gauge Chart for React: Animated Speedometer
+
+URL: https://lokendra-builds.github.io/sheenui/charts/gauge-chart
+Sidebar name: Gauge
+
+A React gauge chart: a semicircle or 270° speedometer whose needle springs to the value while bands light up, with icons and names, never color alone.
+
+What it is: A React gauge chart shows one number against its scale as a semicircle or a speedometer whose needle springs into place. Pass one number as value, with optional min, max, target and colored bands.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/gauge-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Gauge
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{gauge-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts}`
+- `components/charts/chart-parts/`
+- `components/charts/gauge-chart/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/number-ticker/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{canvas-effects.ts, cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: gauge-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GaugeChart } from "@/components/sheenui/charts/gauge-chart";
+import { type GaugeBand } from "@/components/sheenui/charts/gauge-chart/model";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { type GaugeBand, GaugeChart } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | number | required | The number to show. Required. |
+| min | number | 0 | Start of the scale. |
+| max | number | 100 | End of the scale. |
+| target | number | 0 | A goal, drawn as a tick across the arc. |
+| bands | readonly GaugeBand[] | optional, no default | Coloured ranges, lowest first. The arc lights up to the needle in each band's colour. |
+| shape | "semicircle" \| "speedometer" | "semicircle" | Sets the sweep of the arc: "semicircle" (180°) or "speedometer" (270°). |
+| label | ReactNode | optional, no default | Caption under the number, e.g. "Apdex" or "CPU". |
+| color | ChartColor | 1 | Palette slot (1–8) of the arc when there are no bands. |
+| ticks | boolean | true | Print the scale around the arc. |
+| numberFormat | Intl.NumberFormatOptions | optional, no default | Intl options for every number (the big one rolls its digits). E.g. { style: "percent" } or { style: "unit", unit: "millisecond" }. |
+| format | ((n: number) => string) | optional, no default | Format numbers yourself instead (the big number then counts up instead of rolling its digits). |
+| locale | string | the browser's | Locale of the number formats. |
+| higherIsBetter | boolean | true | Is beating the target good (score) or bad (latency, cost)? Picks the tone of the delta. |
+| height | number | 260 | Largest height (px). The gauge fits its card's width up to this. |
+| labels | Partial<GaugeChartLabels> | defaultGaugeChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultGaugeChartLabels. All 15 keys of GaugeChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the gauge for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### GaugeTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| max | number | 100 | End of the scale. |
+| min | number | 0 | Start of the scale. |
+| target | number | optional, no default | A goal, drawn as a tick across the arc. |
+| format | ((n: number) => string) | optional, no default | Format numbers yourself instead (the big number then counts up instead of rolling its digits). |
+| value | number | required | The number to show. Required. |
+| labels | Partial<GaugeChartLabels> | defaultGaugeChartLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultGaugeChartLabels. All 15 keys of GaugeChartLabels are listed in the key table under the props table. |
+| locale | string | the browser's | Locale of the number formats. |
+| bands | readonly GaugeBand[] | optional, no default | Coloured ranges, lowest first. The arc lights up to the needle in each band's colour. |
+| numberFormat | Intl.NumberFormatOptions | { maximumFractionDigits: 2 } | Intl options for every number (the big one rolls its digits). E.g. { style: "percent" } or { style: "unit", unit: "millisecond" }. |
+| measure | string | optional, no default | Sets the name of the measure (first row). |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 3: Semicircle with bands and a target
+
+Apdex score. Take a new reading: the needle springs to it and the digits roll. Hover a band, the target or the needle, or focus the gauge and use the arrow keys.
+
+```tsx
+import { GaugeChart } from "@/components/sheenui/charts/gauge-chart";
+import { type GaugeBand } from "@/components/sheenui/charts/gauge-chart/model";
+// Package build (after the first npm release, or a packed tarball): import { GaugeChart, type GaugeBand } from "@sheenui/theme";
+
+const bands: GaugeBand[] = [
+  { to: 0.7, label: "Poor", tone: "danger" },
+  { to: 0.85, label: "Fair", tone: "warning" },
+  { to: 1, label: "Good", tone: "success" },
+];
+
+export function Example() {
+  const apdex = 0.91; // your latest reading
+  return (
+    <GaugeChart
+      value={apdex}
+      min={0}
+      max={1}
+      target={0.85}
+      bands={bands}
+      label="Apdex"
+      numberFormat={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+      aria-label="Apdex score"
+    />
+  );
+}
+```
+
+### Example 2 of 3: Speedometer
+
+shape="speedometer" sweeps 270°. Drag the slider: the needle chases the value on a spring. higherIsBetter={false} turns a value above the target into a warning.
+
+```tsx
+import { GaugeChart } from "@/components/sheenui/charts/gauge-chart";
+import { type GaugeBand } from "@/components/sheenui/charts/gauge-chart/model";
+// Package build (after the first npm release, or a packed tarball): import { GaugeChart, type GaugeBand } from "@sheenui/theme";
+
+const bands: GaugeBand[] = [
+  { to: 60, label: "Normal", tone: "success" },
+  { to: 85, label: "Busy", tone: "warning" },
+  { to: 100, label: "Overloaded", tone: "danger" },
+];
+
+export function Example() {
+  const cpu = 72; // percent, from your metrics
+  return (
+    <GaugeChart
+      shape="speedometer"
+      value={cpu}
+      target={80}
+      higherIsBetter={false}
+      bands={bands}
+      label="CPU load"
+      numberFormat={{ style: "unit", unit: "percent" }}
+      aria-label="CPU load"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Plain arc, custom format
+
+Without bands the arc fills with one color, lighter at the start. With format the number counts up instead of rolling its digits.
+
+```tsx
+import { GaugeChart } from "@/components/sheenui/charts/gauge-chart";
+// Package build (after the first npm release, or a packed tarball): import { GaugeChart } from "@sheenui/theme";
+
+<GaugeChart
+  value={68.4}
+  max={120}
+  color={3}
+  label="Monthly recurring revenue"
+  format={(n) => `$${Number(n.toFixed(1))}K`}
+  aria-label="Monthly recurring revenue against a $120K goal"
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| Arrow keys | Step through the value, the target and each band. |
+| Home / End | Jump to the first / last stop. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is one focusable figure: its aria-label is the chart title, a one-line hint describes how to read it, and in a ChartCard with a table view aria-details points at that table. Each move is announced politely, once. The value, its band (icon and name) and its distance from the target are text, so status never rests on color alone.
+- For a non-visual reading, give ChartCard's table prop a GaugeTable; the Chart / Table tabs then expose each value as plain table cells.
+- Under reduced motion nothing morphs: the arc and the needle render at the final value and new data replaces the old at once.
+
+### All exports on this page
+
+- GaugeChart — A gauge for one number against its scale: a semicircle or a 270° speedometer whose needle springs to the value (a touch of overshoot, then it settles).
+- GaugeTable — The gauge in text: the value, the target, the scale and every band with its range.
+- defaultGaugeChartLabels — The built-in English strings of GaugeChart; spread it into your own labels and change what you need.
+- gaugeLegend — Legend items for a gauge's bands (a tone's colour always travels with its label).
+
+
+### When to use the gauge chart
+
+- Use it as a speedometer chart for a single health number against its scale, such as an Apdex score, CPU load or a quality rating, with colored bands that name the range the needle sits in.
+- Add a target when the number has a goal: a tick crosses the arc and the readout states the distance from it, with higherIsBetter set to false for latency or cost.
+- Pick the speedometer shape for dashboards that want a dial look and the semicircle for a flatter card, and format the number with numberFormat for percent or unit styles.
+- Skip it when you show many KPIs in a list, because a Bullet chart fits a row each, or when the value needs history, where a Sparkline or Line chart is the right tool.
+- Pair it with ChartCard and GaugeTable for a text view, a Badge to repeat the band name, and Skeleton while the value loads.
+
+
+### Frequently asked questions
+
+#### How do I make a gauge chart in React with colored bands?
+
+Pass value, optionally min and max (default 0 to 100), and bands, each with a to bound and a label. Bands run lowest first, the first starting at min and the last stretching to max. Give a band a tone or a palette slot, and set aria-label.
+
+#### Does status rely on color?
+
+No. The readout under the number shows the band's icon and name, and its distance from the target, all as text, so status never rests on color alone. Hover or tap a band, the target or the needle to read it.
+
+#### How does the number format work?
+
+numberFormat takes Intl.NumberFormat options, such as style percent or style unit with unit millisecond, and the big number rolls its digits. If you pass format as a function instead, the number counts up rather than rolling digit by digit. locale defaults to the browser's.
+
+#### How do I read it with the keyboard and with reduced motion?
+
+Tab focuses the gauge and the arrow keys step through the value, the target and each band. Home and End jump to the first and last, and Escape clears. The needle normally springs to each value with a little overshoot; under reduced motion it is set instantly.
+
+
+### Related pages
+
+- [Heatmap](https://lokendra-builds.github.io/sheenui/charts/heatmap)
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+- [Marimekko chart](https://lokendra-builds.github.io/sheenui/charts/marimekko)
+- [Network graph](https://lokendra-builds.github.io/sheenui/charts/network-graph)
+- [Pie chart](https://lokendra-builds.github.io/sheenui/charts/pie-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## React Heatmap Chart with Scale Legend
+
+URL: https://lokendra-builds.github.io/sheenui/charts/heatmap
+Sidebar name: Heatmap
+
+A React heatmap chart on a single-hue sequential scale, with tooltips on hover, tap and keyboard, a live scale legend and hatched missing values. MIT.
+
+What it is: A React heatmap chart that colors a category-by-category grid from light to dark, with a tooltip on every cell. Pass data as readonly ChartRow[]: one object per row.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/heatmap.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Heatmap
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{heatmap.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-tip.tsx, chart-utils.ts}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: heatmap. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartRow } from "@/components/sheenui/charts/chart-utils";
+import { Heatmap } from "@/components/sheenui/charts/heatmap";
+import { type HeatmapColumn } from "@/components/sheenui/charts/heatmap/kit";
+import { HeatmapTable } from "@/components/sheenui/charts/heatmap/table";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, type ChartRow, Heatmap, type HeatmapColumn, HeatmapTable } from "@sheenui/theme";
+```
+
+### Heatmap
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One object per row, e.g. { day: "Mon", h0: 12, h1: 4, ... }. |
+| index | string | required | Key of the row label in each object. |
+| columns | readonly HeatmapColumn[] | required | The columns, in order: the key of each value and its label. |
+| color | ChartColor | 1 | Hue of the sequential ramp: a palette slot, 1–8. |
+| domain | [number, number] | 0 (or the minimum, if negative) to the maximum | The [min, max] the color scale spans; values outside it take the end colors. |
+| steps | number | 0 | Classes on the scale (e.g. 5); 0 = continuous. |
+| showValues | boolean | false | Print each value inside its cell when it fits. |
+| cellHeight | number | follows the cell width (24–40) | Sets the row height in px. |
+| minCellWidth | number | 12 | Narrowest a column may get before the grid scrolls sideways inside its own container. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a cell value for the tooltips, legend and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number format. |
+| legend | boolean | true | Show the scale legend under the grid. |
+| legendLabel | ReactNode | optional, no default | Sets the caption for the legend, e.g. "Sessions". |
+| onCellClick | ((cell: HeatmapCell) => void) | optional, no default | Called with { row, column, columnLabel, value } on click, Enter or Space: row is the row's index value, column the column's key, columnLabel its display label. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<HeatmapLabels> | defaultHeatmapLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultHeatmapLabels. All 4 keys of HeatmapLabels are listed in the key table under the props table. |
+| aria-label | string | required | Accessible name of the chart; describe what it shows. |
+
+### HeatmapTable
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One object per row, e.g. { day: "Mon", h0: 12, h1: 4, ... }. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a cell value for the tooltips, legend and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number format. |
+| index | string | required | Key of the row label in each object. |
+| columns | readonly HeatmapColumn[] | required | The columns, in order: the key of each value and its label. |
+| indexLabel | string | optional, no default | Sets the header of the row-label column. |
+| caption | string | optional, no default | Visually hidden caption that names the table. |
+| noDataLabel | string | optional, no default | Text for a cell that has no value. |
+| emptyState | ReactNode | optional, no default | Shown when there are no rows. |
+
+### ChartTip props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | string | required | Sets the heading line of the tooltip. |
+| rows | TooltipRow[] | required | One line per series: a swatch, a label and the formatted value. |
+| anchor | ChartTipAnchor | required | The mark being read, in px relative to the chart box. |
+| bounds | { w: number; h: number; } | required | Size of the chart box the tooltip must stay inside. |
+| docked | boolean | false | The one-line readout pinned to the top of a narrow chart instead (see ChartTooltip). |
+| order | readonly ChartTipSide[] | optional, no default | Sides to try, in order, when placing the tooltip next to the anchor: "right", "left", "below" or "above". |
+| minLeft | number | optional, no default | The tooltip never starts further left than this many px, so it does not cover the axis. |
+
+### ChartValueTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| columns | ChartValueTableColumn[] | required | The column headers; the first column holds the row headers. Numbers align to the end unless a column says otherwise. |
+| rows | ReactNode[][] | required | One array of cells per row; the first cell is the row header. |
+| caption | string | optional, no default | Visually hidden caption naming the table (also names its scroll region). |
+| emptyState | ReactNode | "No data" | Shown when there are no rows. |
+
+### MissingValue props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| label | string | labels.noData | Text shown and announced for this cell, e.g. "Not applicable". |
+| labels | Partial<Pick<HeatmapLabels, "noData">> | defaultHeatmapLabels | Overrides for the built-in English string (noData). Merged over defaultHeatmapLabels. Every other string, for translation: labels={{ noData: "…" }}; omitted keys keep the English of defaultHeatmapLabels. Its only key is listed in the key table under the props table. |
+
+### SequentialLegend props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| min | number | required | Lowest and highest value of the scale. |
+| max | number | required | The highest value of the scale, at the right end of the ramp. |
+| color | ChartColor | 1 | The chart color slot (1 to 8) the ramp fades toward. |
+| steps | number | 0 | Number of classes; 0 draws a continuous ramp. |
+| format | ((n: number) => string) | formatCompact | Formats the min and max shown at the ends of the ramp. |
+| label | ReactNode | optional, no default | Shows a caption before the ramp, e.g. "Sessions". |
+| lowLabel | ReactNode | optional, no default | Text at the low / high end instead of the formatted min / max (e.g. "Less" / "More"). |
+| highLabel | ReactNode | optional, no default | Text at the high end instead of the formatted max (for example "More"). |
+| marker | number \| null | null | Position (0–1) of the value being read, drawn as a marker on the ramp. |
+| swatches | readonly string[] | optional, no default | Explicit swatch colours (e.g. a calendar's levels) instead of steps of color. |
+| floor | number | 0.08 | Share of the hue in the lightest step (nearly the surface). A map raises it so data reads against its no-data land. |
+
+### Example 1 of 2: Activity by hour
+
+24 columns stay readable on a phone: columns shrink to 12px, then the grid scrolls sideways inside the card while the day labels stay put. Focus the grid and use the arrow keys; Home and End jump along a row.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartRow } from "@/components/sheenui/charts/chart-utils";
+import { Heatmap } from "@/components/sheenui/charts/heatmap";
+import { type HeatmapColumn } from "@/components/sheenui/charts/heatmap/kit";
+import { HeatmapTable } from "@/components/sheenui/charts/heatmap/table";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, HeatmapTable, Heatmap, type ChartRow, type HeatmapColumn } from "@sheenui/theme";
+
+const hours: HeatmapColumn[] = Array.from({ length: 24 }, (_, h) => ({ key: `h${h}`, label: String(h).padStart(2, "0") }));
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const data: ChartRow[] = days.map((day, d) => {
+  const row: ChartRow = { day };
+  for (let h = 0; h < 24; h++) row[`h${h}`] = Math.round(40 + 600 * Math.exp(-((h - 11) ** 2) / 14) * (d >= 5 ? 0.5 : 1));
+  return row;
+});
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Sessions by hour"
+      description="Local time"
+      table={<HeatmapTable data={data} index="day" indexLabel="Day" columns={hours} />}
+    >
+      <Heatmap
+        data={data}
+        index="day"
+        columns={hours}
+        legendLabel="Sessions"
+        aria-label="Sessions by weekday and hour"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Cohort retention, classed
+
+Five classes instead of a continuous ramp, with values printed inside the cells that fit them: black or white, whichever contrasts more with that cell. Months that haven't happened yet are missing, so they're hatched.
+
+```tsx
+import { type ChartRow } from "@/components/sheenui/charts/chart-utils";
+import { Heatmap } from "@/components/sheenui/charts/heatmap";
+import { type HeatmapColumn } from "@/components/sheenui/charts/heatmap/kit";
+// Package build (after the first npm release, or a packed tarball): import { Heatmap, type ChartRow, type HeatmapColumn } from "@sheenui/theme";
+
+const months: HeatmapColumn[] = [0, 1, 2, 3].map((m) => ({ key: `m${m}`, label: `Month ${m}` }));
+
+// Later months are missing (not yet happened): drawn hatched, never as 0.
+const cohorts: ChartRow[] = [
+  { cohort: "Jan 2026", m0: 100, m1: 57, m2: 44, m3: 36 },
+  { cohort: "Feb 2026", m0: 100, m1: 54, m2: 41 },
+  { cohort: "Mar 2026", m0: 100, m1: 59 },
+  { cohort: "Apr 2026", m0: 100 },
+];
+
+export function Example() {
+  return (
+    <Heatmap
+      data={cohorts}
+      index="cohort"
+      columns={months}
+      domain={[0, 100]}
+      steps={5}
+      showValues
+      color={7}
+      format={(n) => `${n}%`}
+      legendLabel="Retained"
+      aria-label="Share of each signup cohort still active, by month"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the grid. |
+| ↑ / ↓ / ← / → | Move between cells. |
+| Home / End | First / last cell of the row. |
+| Ctrl + Home / Ctrl + End | Top-left / bottom-right corner. |
+| Page Up / Page Down | Top / bottom of the column. |
+| Enter / Space | Activate the cell being read, when onCellClick is set. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The grid is a focusable figure named by its aria-label and described by the reading hint (“Use the arrow keys to move between cells; Home and End jump along a row.”).
+- Missing values are hatched, never painted as zero, and every cell's value is in the tooltip and the table view.
+- On narrow screens the grid scrolls sideways inside its own focusable container while the row labels stay put.
+- For a non-visual reading, give ChartCard's table prop a HeatmapTable; the Chart / Table tabs then expose each value as plain table cells.
+- Reduced motion: the cells appear at their final colors and data changes jump instead of morphing.
+
+### All exports on this page
+
+- ChartDockHint — Muted hint in the band a narrow chart reserves for its docked readout, shown while nothing is being read, so the band is never just empty space.
+- ChartTip — The glass tooltip of these charts.
+- ChartValueTable — A plain table in the ChartTable style for charts whose data isn't one row per category.
+- Heatmap — A category × category grid coloured on a single-hue sequential scale.
+- HeatmapTable — Every heatmap value as a table: rows × columns, missing cells read "No data".
+- MissingValue — A table cell without a value: a dash, read as label ("No data", "Not applicable"...).
+- SequentialLegend — The key to a sequential colour scale: a ramp (or classed swatches) between its end values.
+- chartNumberFormat — The default number formatters of the charts, both in one locale (default "en", like formatCompact).
+- defaultHeatmapLabels — The built-in English strings of Heatmap; spread it into your own labels and change what you need.
+- formatPercent — 0.412 → "41.2%" (in "en", matching formatCompact); non-finite ratios read "–".
+- hueMix — A palette hue mixed into a base colour in OKLab.
+- placeChartTip — Where a tooltip of size goes next to the anchor mark inside bounds (all in px, relative to the chart box).
+- scalePosition — Position of value on a [min, max] scale, optionally snapped to steps classes (0–1).
+- sequentialColor — One step of a single-hue sequential ramp: t = 0 sits just off the chart surface, 1 is the full palette hue.
+
+
+### When to use Heatmap
+
+- Use it as a matrix heatmap for a category-by-category grid, such as traffic by weekday and time of day, error counts by service and hour, or feature usage by plan, where color encodes the value. Use it for a correlation heatmap by putting the variables on both axes and the coefficient in each cell.
+- Use onCellClick to make cells drill into detail: it receives the row, the column key, its label and the value, so a click can filter a table below the grid.
+- Use it when some cells have no data: missing values are hatched, never painted as zero, so a gap in a metric is not mistaken for a real low reading.
+- Skip it when the axes are calendar days over a year, where Calendar heatmap lays them out as weeks, or when the rows are retention cohorts, where Cohort retention adds the average row.
+- Pair it with ChartCard and HeatmapTable for a text view, a Select to switch the metric, and the legend with legendLabel so the color scale is named.
+
+
+### Frequently asked questions
+
+#### How do I build a react heatmap from rows and columns?
+
+Pass data as one object per row, index with the key of the row label, and columns listing each value key and label. Add aria-label. The color prop picks a palette slot from 1 to 8 for the single-hue ramp, and domain overrides the scale range.
+
+#### How are missing values shown?
+
+Cells with a missing or non-numeric value are hatched and read No data, never painted as zero. Values given as numeric strings are parsed. Set showValues to print each value inside its cell when the cell is big enough to fit it.
+
+#### What happens on narrow screens?
+
+Columns shrink down to minCellWidth, 12px by default. Past that, the grid scrolls sideways inside its own focusable container while the row labels stay put. cellHeight overrides the row height, which otherwise follows the cell width between 24 and 40 px.
+
+#### Which keys move between cells?
+
+Focus the grid and use the arrow keys. Home and End move along a row, Ctrl+Home and Ctrl+End go to the corners, Escape clears, and Enter or Space calls onCellClick. The bloom-in wave and the cross-fade on new data are instant with reduced motion.
+
+
+### Related pages
+
+- [Histogram](https://lokendra-builds.github.io/sheenui/charts/histogram)
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+- [Marimekko chart](https://lokendra-builds.github.io/sheenui/charts/marimekko)
+- [Network graph](https://lokendra-builds.github.io/sheenui/charts/network-graph)
+- [Pie chart](https://lokendra-builds.github.io/sheenui/charts/pie-chart)
+- [Polar area chart](https://lokendra-builds.github.io/sheenui/charts/polar-area)
+
+#### Guides that cover it
+
+- [Accessible React Charts](https://lokendra-builds.github.io/sheenui/guides/accessible-react-charts)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Histogram Chart for React with Density Curve
+
+URL: https://lokendra-builds.github.io/sheenui/charts/histogram
+Sidebar name: Histogram
+
+A React histogram with Freedman-Diaconis or Sturges bins, an optional density curve and median or percentile markers. Animated, accessible, Tailwind v4.
+
+What it is: A React histogram shows how a measure is spread, with automatic bins, an optional density curve and percentile markers. Pass values as a readonly number[] of raw measurements: the chart bins them for you.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/histogram.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Histogram
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{histogram.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/charts/histogram/`
+- `components/charts/kits/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: histogram. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { Histogram, HistogramTable } from "@/components/sheenui/charts/histogram";
+import { histogramLegend } from "@/components/sheenui/charts/histogram/model";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, Histogram, histogramLegend, HistogramTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| values | readonly number[] | required | The raw sample, e.g. every request's latency. Non-finite values are ignored. |
+| bins | number \| BinMethod | "auto" | A bin count, or a rule: "auto" (default), "sturges", "freedman-diaconis" or "scott". |
+| domain | readonly [number, number] | the data's extent | Range to bin. Values outside it are left out. |
+| niceBins | boolean | true | Snap bin edges to round numbers (the bin count lands near bins). |
+| measure | "count" \| "percent" | "count" | Height of a bar: the number of values, or their share of the sample. |
+| bars | boolean | true | Draw the bins. Turn off (with density) for a smooth density plot. |
+| density | boolean | false | Overlay a smooth density curve (Gaussian kernel density estimate). |
+| bandwidth | number | Silverman's rule | Sets the KDE bandwidth in data units. |
+| markers | readonly HistogramMarker[] | [] | Reference lines: "median", "mean", "p90", "p95", "p99", or { value, label }. |
+| color | ChartColor | 1 | Sets the palette slot (1–8) of the bars. |
+| height | number | 280 | Height of the chart in px; the width follows the container. |
+| xLabel | string | optional, no default | Names the value axis (shown under it and in the readout). |
+| yLabel | string | optional, no default | Names the count axis (shown above it). |
+| format | ((n: number) => string) | formatCompact in locale | Formats values (bin edges, markers). |
+| formatCount | ((n: number) => string) | formatCompact in locale | Formats a bin count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share as text (0.12 → "12%"). |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<HistogramLabels> | defaultHistogramLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultHistogramLabels. All 14 keys of HistogramLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### HistogramTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| format | ((n: number) => string) | formatCompact in locale | Formats values (bin edges, markers). |
+| values | readonly number[] | required | The raw sample, e.g. every request's latency. Non-finite values are ignored. |
+| labels | Partial<HistogramLabels> | defaultHistogramLabels | Every other string, for translation: labels={{ roleDescription: "…" }}; omitted keys keep the English of defaultHistogramLabels. All 14 keys of HistogramLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share as text (0.12 → "12%"). |
+| domain | readonly [number, number] | the data's extent | Range to bin. Values outside it are left out. |
+| bins | number \| BinMethod | "auto" | A bin count, or a rule: "auto" (default), "sturges", "freedman-diaconis" or "scott". |
+| niceBins | boolean | true | Snap bin edges to round numbers (the bin count lands near bins). |
+| xLabel | string | optional, no default | Names the value axis (shown under it and in the readout). |
+| formatCount | ((n: number) => string) | formatCompact in locale | Formats a bin count for the labels, tooltips and data table: takes the number, returns the text shown. |
+| caption | string | optional, no default | Sets a visually hidden caption that names the table. |
+
+### Example 1 of 3: Latency with percentiles
+
+1,200 API response times. Drag the slider to re-bin: bars morph to the new edges. The dashed lines mark the median, p95 and an SLO of 300 ms; hover, tap or arrow through the bins.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { HistogramTable, Histogram } from "@/components/sheenui/charts/histogram";
+import { histogramLegend } from "@/components/sheenui/charts/histogram/model";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, histogramLegend, HistogramTable, Histogram } from "@sheenui/theme";
+
+// Response times in ms (a sample; yours is the full list)
+const latencies: number[] = [
+  84, 92, 97, 101, 104, 108, 111, 113, 116, 118, 121, 124, 127, 131, 135, 140,
+  146, 153, 161, 172, 188, 206, 233, 271, 342, 96, 109, 119, 129, 150,
+];
+const ms = (n: number) => Math.round(n) + " ms";
+
+export function Example() {
+  return (
+    <ChartCard
+      title="API latency"
+      description="Response times, this week"
+      legend={histogramLegend({ density: true, labels: { bins: "Requests" } })}
+      table={<HistogramTable values={latencies} bins="auto" format={ms} caption="API latency by range" />}
+    >
+      <Histogram
+        values={latencies}
+        bins="auto"
+        density
+        markers={["median", "p95", { value: 300, label: "SLO" }]}
+        format={ms}
+        xLabel="Response time"
+        aria-label="Distribution of API response times"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Density plot
+
+bars={false} with density draws the smooth curve alone, on a gradient that fades to the baseline. Two peaks show at a glance: single items and bundles.
+
+```tsx
+import { Histogram } from "@/components/sheenui/charts/histogram";
+// Package build (after the first npm release, or a packed tarball): import { Histogram } from "@sheenui/theme";
+
+// Basket sizes in $ (a sample; yours is the full list)
+const orderValues: number[] = [
+  38, 42, 45, 47, 51, 36, 58, 44, 49, 62, 33, 54, 41, 46, 139, 148, 126, 155, 171, 133,
+  144, 118, 162, 150, 52, 40, 143, 137, 48, 56,
+];
+const usd = (n: number) => "$" + Math.round(n);
+
+export function Example() {
+  return (
+    <Histogram
+      values={orderValues}
+      bars={false}
+      density
+      measure="percent"
+      markers={["median"]}
+      format={usd}
+      color={3}
+      aria-label="Distribution of order values"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Shares, fixed bins
+
+measure="percent" sizes bars by their share of the sample; bins={8} asks for about eight bins; snapped to round $25 edges, that makes ten.
+
+```tsx
+import { Histogram } from "@/components/sheenui/charts/histogram";
+// Package build (after the first npm release, or a packed tarball): import { Histogram } from "@sheenui/theme";
+
+// Basket sizes in $ (a sample; yours is the full list)
+const orderValues: number[] = [
+  38, 42, 45, 47, 51, 36, 58, 44, 49, 62, 33, 54, 41, 46, 139, 148, 126, 155, 171, 133,
+  144, 118, 162, 150, 52, 40, 143, 137, 48, 56,
+];
+const usd = (n: number) => "$" + Math.round(n);
+
+export function Example() {
+  return (
+    <Histogram
+      values={orderValues}
+      bins={8}
+      measure="percent"
+      markers={["mean"]}
+      format={usd}
+      color={7}
+      aria-label="Orders by value, in $25 bins"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ← / → or ↓ / ↑ | Previous / next bin (← / → are mirrored in right-to-left). |
+| Home / End | Jump to the first / last bin. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- Keyboard and screen-reader users get a single focusable figure labelled by the chart title, with a short reading hint as its description; inside a ChartCard with a table view, aria-details links it to the table. Every value read is announced politely, once. Each move announces the bin's range, count, share and cumulative share.
+- HistogramTable is the table view: pair it with ChartCard's table prop (Chart / Table tabs) so every value can be read without color or sight.
+- Reduced motion: the bins appear at their final heights and data changes jump instead of morphing.
+
+### All exports on this page
+
+- Histogram — A distribution in bins: bars that touch (a 2px surface gap between neighbours: the bins are adjacent intervals, not categories).
+- HistogramTable — Every bin with its count, share and cumulative share: the colour-free twin of a Histogram.
+- defaultHistogramLabels — The built-in English strings of Histogram; spread it into your own labels and change what you need.
+- distributionStats — Summary of SORTED values for a box plot.
+- histogramBins — Bins SORTED values into equal-width intervals.
+- histogramLegend — Legend items for a histogram: the bins, plus the density curve when it is drawn over them.
+- kernelDensity — Gaussian kernel density of SORTED values, evaluated at each of at.
+- quantileSorted — The p-quantile (0–1) of SORTED values, linearly interpolated (R type 7, Excel PERCENTILE.INC).
+- sortedValues — The finite numbers of a list, sorted ascending (a new array; the input is untouched).
+- suggestedBinCount — How many bins a rule suggests for SORTED values.
+
+
+### When to use Histogram
+
+- Use it as a distribution chart for a raw sample, such as every request's latency or order value, with reference lines for the median, mean and p95 or p99.
+- Use density for a smooth kernel estimate over the bars, or turn bars off to get a pure density plot when you compare the shape of the sample with a theoretical curve.
+- Use measure percent when samples of different sizes sit side by side, so bar height is a share of the sample rather than a count.
+- Skip it when you have a few named categories rather than continuous numbers, where a Bar chart is right, or when you compare distributions across groups, where a Box plot fits better.
+- Pair it with ChartCard and HistogramTable for a text twin, a Slider to adjust the bin count, and Select to switch which metric is binned.
+
+
+### Frequently asked questions
+
+#### How do I make a histogram in React from raw values?
+
+Pass values as the raw numbers, such as every latency, plus aria-label. Non-finite values are ignored. Bins default to auto, picked by Freedman-Diaconis or Sturges, and niceBins snaps the edges to round numbers so the bin count lands near what you asked for.
+
+#### Can I set my own bin count or rule?
+
+bins takes a number or one of auto, sturges, freedman-diaconis or scott. domain limits the range that is binned, and values outside it are left out. New data or a new bin count morphs the bars rather than redrawing them.
+
+#### How do I add percentile lines?
+
+markers takes median, mean, p90, p95, p99 or an object with a value and a label. Each draws a reference line on the chart. density overlays a Gaussian kernel density curve, and bandwidth overrides its default, which follows Silverman's rule.
+
+#### How do keyboard users read the bins?
+
+Tab focuses the chart, then Left and Right (mirrored in right-to-left) or Down and Up move between bins. Home and End jump to the ends and Escape clears. Each move announces the bin's range, count, share and cumulative share at or below it.
+
+
+### Related pages
+
+- [Lollipop chart](https://lokendra-builds.github.io/sheenui/charts/lollipop)
+- [Marimekko chart](https://lokendra-builds.github.io/sheenui/charts/marimekko)
+- [Network graph](https://lokendra-builds.github.io/sheenui/charts/network-graph)
+- [Pie chart](https://lokendra-builds.github.io/sheenui/charts/pie-chart)
+- [Polar area chart](https://lokendra-builds.github.io/sheenui/charts/polar-area)
+- [Radar chart](https://lokendra-builds.github.io/sheenui/charts/radar-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+

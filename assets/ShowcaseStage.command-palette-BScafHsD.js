@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({open:!0}),e(`dim`),await n(900);for(let e of[`s`,`se`,`set`])t({query:e}),await n(220);await n(900),t({open:!1,went:`Settings`}),e(`success`),await n(1600),e(`idle`)};export{e as default};

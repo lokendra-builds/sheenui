@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),e(`working`),t({plan:`pro`}),await n(1100),t({plan:`team`}),e(`lit`)};export{e as default};

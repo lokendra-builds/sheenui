@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t}from"./vendor-react-D30i__oY.js";var n=e(t(),1);function r(e){return e.toLowerCase().replace(/['’]/g,``).replace(/[^a-z0-9]+/g,`-`).replace(/^-+|-+$/g,``).slice(0,60)}function i(e){let t=(0,n.useId)();return(e?r(e):``)||t}export{i as n,r as t};

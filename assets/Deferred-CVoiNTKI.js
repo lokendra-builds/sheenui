@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t,t as n}from"./vendor-react-D30i__oY.js";var r=e(t(),1),i=n();function a({children:e}){return(0,i.jsx)(r.Suspense,{fallback:null,children:e})}export{a as t};

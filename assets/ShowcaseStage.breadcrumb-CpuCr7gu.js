@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900);for(let e of[4,5,6])t({depth:e}),await n(900);e(`lit`),await n(1e3)};export{e as default};

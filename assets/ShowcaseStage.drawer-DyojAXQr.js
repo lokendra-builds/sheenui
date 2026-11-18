@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({open:!0}),e(`dim`),await n(1500),t({pick:`Under $50`}),await n(1e3),t({open:!1,applied:!0}),e(`lit`),await n(1600),e(`idle`)};export{e as default};

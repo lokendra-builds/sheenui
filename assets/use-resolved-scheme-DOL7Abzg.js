@@ -1,0 +1,1 @@
+import{c as e}from"./use-media-query-NwSZQ89J.js";import{o as t}from"./use-preferences-CCoq5AYS.js";function n(){let{theme:n}=t(),r=e();return n===`system`?r?`dark`:`light`:n}export{n as t};

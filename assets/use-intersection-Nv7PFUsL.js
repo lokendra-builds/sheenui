@@ -1,0 +1,1 @@
+function e(e,t,n){if(typeof IntersectionObserver>`u`)return()=>void 0;let r=new IntersectionObserver(e=>{let n=e[e.length-1];n&&t(n)},n);return r.observe(e),()=>r.disconnect()}export{e as t};

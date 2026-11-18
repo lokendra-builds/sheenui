@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({step:1}),e(`lit`),await n(1500),t({step:2}),await n(1400),t({step:3}),e(`working`),await n(900),t({step:4}),e(`success`),await n(1300),e(`idle`)};export{e as default};

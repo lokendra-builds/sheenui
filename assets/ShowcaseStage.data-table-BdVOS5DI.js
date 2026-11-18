@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1200),e(`working`),t({sort:`amount`}),await n(1800),t({sort:`name`}),await n(1800),e(`success`),await n(600)};export{e as default};

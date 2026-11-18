@@ -1,0 +1,1 @@
+function e(e,t){return typeof e==`boolean`?e:t!==void 0&&t!==`production`}var t=new Set;function n(n){e(!1,typeof process<`u`?`production`:void 0)&&(t.has(n)||(t.add(n),console.warn(`[SheenUI] ${n}`)))}export{n as t};

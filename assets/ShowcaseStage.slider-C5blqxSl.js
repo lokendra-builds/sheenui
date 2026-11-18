@@ -1,0 +1,1 @@
+var e=e=>e<25?`off`:e<60?`idle`:`lit`,t=async({state:t,scene:n,wait:r})=>{await r(1e3);for(let i=10;i<=85;i+=5)n({value:i}),t(e(i)),await r(150);await r(800)};export{t as n,e as t};

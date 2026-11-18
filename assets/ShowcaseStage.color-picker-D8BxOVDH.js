@@ -1,0 +1,1 @@
+var e=[`#6d4aff`,`#3b82f6`,`#10b981`,`#f59e0b`],t=async({state:e,scene:t,wait:n})=>{await n(800),e(`working`),t({color:`#3b82f6`}),await n(900),t({color:`#f59e0b`}),await n(900),t({color:`#10b981`}),e(`lit`)};export{t as n,e as t};

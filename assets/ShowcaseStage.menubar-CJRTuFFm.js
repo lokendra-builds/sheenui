@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({menu:`file`}),await n(1e3),t({menu:`view`}),await n(900),t({hot:1}),await n(700),t({menu:``,hot:null,size:`md`}),e(`lit`),await n(1500),e(`idle`)};export{e as default};

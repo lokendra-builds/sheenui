@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1e3),e(`working`),t({picked:[`py`]}),await n(1e3),t({picked:[`py`,`django`]}),await n(1e3),t({picked:[`py`,`django`,`react`]}),e(`idle`),await n(500)};export{e as default};

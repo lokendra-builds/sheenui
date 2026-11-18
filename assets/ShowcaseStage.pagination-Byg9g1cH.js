@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),e(`working`);for(let e of[2,3,12,24])t({page:e}),await n(e===3?900:700);e(`idle`),await n(800)};export{e as default};

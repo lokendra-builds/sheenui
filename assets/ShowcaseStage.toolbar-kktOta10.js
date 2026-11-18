@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900);for(let e of[`bold`,`bold,italic`,`bold,italic,underline`])t({styles:e}),await n(800);e(`lit`),await n(1300)};export{e as default};

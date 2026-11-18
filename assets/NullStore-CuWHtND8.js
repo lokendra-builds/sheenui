@@ -1,0 +1,1 @@
+import{i as e}from"./vendor-core-D4q6uJEQ.js";var t=class extends e{setState(e){}update(e){}set(e,t){}notifyAll(){}};export{t};

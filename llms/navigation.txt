@@ -1,0 +1,968 @@
+# SheenUI: Navigation
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Glassmorphism Navbar for React & Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/navigation/navbar
+Sidebar name: Navbar
+
+A glassmorphism navbar for React: a floating Apple-style pill with a morphing highlight, or a full-width glass bar. Shrinks on scroll. Tailwind v4, MIT.
+
+What it is: A glassmorphism navbar for React comes in two forms: a floating Apple-style pill whose highlight morphs between items, and a full-width top bar with a sliding underline.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/navbar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Navbar
+
+Files to copy from `theme/src/`:
+
+- `components/navbar/`
+- `components/drawer/parts/sheet.tsx`
+- `components/popover/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: navbar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Navbar } from "@/components/sheenui/navbar/navbar";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Navbar } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| items | NavbarItem[] | required | Takes the navigation items, in order. |
+| value | string | required | Sets the value of the active item when controlled. |
+| onValueChange | ((value: string) => void) | optional, no default | Called with an item's value when it is chosen (a plain left click on a link also calls it). |
+| brand | ReactNode | optional, no default | Shows the logo or product name on the left. |
+| actions | ReactNode | optional, no default | Buttons on the right (theme toggle, sign in, ...). |
+| renderLink | ((props: NavLinkProps, item: NavbarItem) => ReactElement) | a plain <a> | Render items that have an href through your router's link component. See NavLinkProps. |
+| shrinkOnScroll | number \| false | 24 | Once the page scrolls past this many px, the bar tightens and turns more opaque (the floating pill also shrinks a touch). false turns it off. |
+| hideOnScroll | number \| boolean | false | Slide the bar out of view while scrolling down and bring it back on any scroll up. true starts hiding after 64px; pass a number for a different distance. Make the navbar sticky or fixed for this to make sense. |
+| scrollContainer | RefObject<HTMLElement \| null> | optional, no default | Track this element's scroll instead of the window's (e.g. an app shell's scrolling <main>). |
+| variant | "floating" \| "bar" | "floating" | "floating" = centred glass pill, highlight morphs between items (Apple style). "bar" = full-width top bar, a sliding underline marks the active item. |
+| collapsible | boolean | true | When the items don't fit next to the brand and actions (phones, narrow containers), fold them into a menu button that opens a glass popover. false lets them scroll sideways instead. |
+| labels | Partial<NavbarLabels> | defaultNavbarLabels | Every string, for translation: { menu: "Menu", name: "Main" } (accessible name of the menu button shown when the items are folded away, and the default landmark name). Every other string, for translation: labels={{ menu: "…" }}; omitted keys keep the English of defaultNavbarLabels. All 2 keys of NavbarLabels are listed in the key table under the props table. |
+| aria-label | string | labels.name | Landmark name. Give each navigation on a page its own, e.g. "Main" and "Account". |
+| className | string | optional, no default | Extra classes for the <nav> (position it with sticky, fixed or margins). |
+
+### Example 1 of 3: Floating pill
+
+Click the items to watch the highlight morph.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Navbar } from "@/components/sheenui/navbar/navbar";
+// Package build (after the first npm release, or a packed tarball): import { Button, Navbar } from "@sheenui/theme";
+
+export function Example() {
+  const [active, setActive] = useState("home");
+
+  return (
+    <Navbar
+      aria-label="Main"
+      brand={<span>Sheen</span>}
+      items={[
+        { value: "home", label: "Home" },
+        { value: "work", label: "Work" },
+        { value: "pricing", label: "Pricing" },
+        { value: "blog", label: "Blog" },
+      ]}
+      value={active}
+      onValueChange={setActive}
+      actions={<Button size="sm">Sign in</Button>}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Full-width bar
+
+variant="bar": for app headers. The underline slides to the active item.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Navbar } from "@/components/sheenui/navbar/navbar";
+// Package build (after the first npm release, or a packed tarball): import { Button, Navbar } from "@sheenui/theme";
+
+const items = [
+  { value: "home", label: "Home" },
+  { value: "work", label: "Work" },
+  { value: "pricing", label: "Pricing" },
+  { value: "blog", label: "Blog" },
+];
+
+export function Example() {
+  const [active, setActive] = useState("home");
+
+  return (
+    <Navbar
+      variant="bar"
+      aria-label="Main"
+      brand={<span>Sheen</span>}
+      items={items}
+      value={active}
+      onValueChange={setActive}
+      actions={<Button size="sm" variant="glass">Sign in</Button>}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Folds into a menu
+
+When the items don't fit next to the brand and actions, they fold into a menu button. It opens a glass popover listing every item, with the current one checked; choosing one closes it and returns focus to the button. Pick a width to watch it fold and unfold.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Navbar } from "@/components/sheenui/navbar/navbar";
+// Package build (after the first npm release, or a packed tarball): import { Button, Navbar } from "@sheenui/theme";
+
+const items = [
+  { value: "home", label: "Home" },
+  { value: "work", label: "Work" },
+  { value: "pricing", label: "Pricing" },
+  { value: "blog", label: "Blog" },
+  { value: "docs", label: "Docs" },
+  { value: "changelog", label: "Changelog" },
+];
+
+export function Example() {
+  const [active, setActive] = useState("home");
+
+  // Nothing to set up: the nav measures itself and folds when it must.
+
+  return (
+    <Navbar
+      aria-label="Main"
+      brand={<span>Sheen</span>}
+      items={items}
+      value={active}
+      onValueChange={setActive}
+      actions={<Button size="sm">Sign in</Button>}
+      labels={{ menu: "Menu" }} // the menu button's name; collapsible={false} scrolls instead
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move through the brand, items and actions. |
+| Enter | Follow a link or select an item. |
+| Arrow Down / Arrow Up / Home / End | In the folded menu: move between items. |
+| Escape | Close the folded menu and return focus to the menu button. |
+
+### Accessibility
+
+- A <nav> landmark: pass aria-label ("Main") and give a second bar a different name. The current item has aria-current="page".
+- A bar hidden by hideOnScroll comes back when focus enters it, so keyboard users never tab into an off-screen bar.
+- The folded menu button reports aria-expanded and is named by labels.menu. Targets are 44 px on touch screens.
+
+### All exports on this page
+
+- Navbar — Horizontal navigation.
+- defaultNavbarLabels — The English NavbarLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use Navbar
+
+- Use it as a floating navbar, the glass pill, for a marketing site header with four or five destinations, where the highlight morphing between Home, Work, Pricing and Blog gives the page a polished, app-like first impression.
+- Use variant="bar" for the top of a dashboard or documentation app, where a full-width header with a sliding underline and a Sign in action on the right is what users expect.
+- It suits sites that must work on phones without a second mobile menu, because items that no longer fit next to the brand and actions fold into a menu button on their own.
+- Skip it when your destinations open rich dropdown panels with descriptions and images; Navigation menu is built for that, while this component is a flat list of links or buttons.
+- Pair it with Button for the Sign in action, GlassCard for the page sections underneath, and Avatar in the actions slot to show the signed-in user.
+
+
+### Frequently asked questions
+
+#### How do I build a glassmorphism navbar in React with SheenUI?
+
+Import Navbar from @sheenui/theme and pass brand, items, value and onValueChange. The default variant is a floating glass pill with a morphing highlight. Add actions for a Button on the right, and position it with className, for example sticky or fixed plus top margin.
+
+#### What happens when the items do not fit on a small screen?
+
+With collapsible left at its default of true, the navbar measures itself and folds the items into a menu button that opens a glass popover. The current item shows a checkmark, choosing one closes the popover, and ArrowDown, ArrowUp, Home and End move between items while Escape closes it. Set collapsible={false} to scroll the items sideways instead.
+
+#### How do I use it with React Router or Next.js links?
+
+Give items an href and pass renderLink, a function that receives the link props and the item and returns your router's Link element. The same function renders the links inside the folded menu. Without renderLink, items with an href render as plain anchors. The component file starts with "use client".
+
+#### Can the navbar hide or shrink while I scroll?
+
+Yes. shrinkOnScroll tightens the bar after 24px of scrolling by default, or pass false to disable it. hideOnScroll slides it away while scrolling down and brings it back on any upward scroll or when focus enters it. Use scrollContainer to track an inner scrolling element instead of the window.
+
+
+### Related pages
+
+- [Vertical nav](https://lokendra-builds.github.io/sheenui/navigation/vertical-nav)
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Navigation menu](https://lokendra-builds.github.io/sheenui/navigation/navigation-menu)
+- [Sidebar](https://lokendra-builds.github.io/sheenui/navigation/sidebar)
+
+#### Guides that cover it
+
+- [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial)
+- [Apple Liquid Glass in CSS and React](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Navigation Menu with Mega Dropdowns
+
+URL: https://lokendra-builds.github.io/sheenui/navigation/navigation-menu
+Sidebar name: Navigation menu
+
+A glass React navigation menu with rich dropdown panels that resize and slide between items, hover intent and full keyboard support. Base UI, Tailwind v4.
+
+What it is: A glass React navigation menu whose items open rich dropdown panels, with hover intent, a panel that morphs between items, and full keyboard support.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/navigation-menu.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Navigation menu
+
+Files to copy from `theme/src/`:
+
+- `components/navigation-menu/`
+- `components/status-icons/`
+- `lib/{cn.ts, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: navigation-menu. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/sheenui/navigation-menu/navigation-menu";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@sheenui/theme";
+```
+
+### NavigationMenu props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| delay | number | 120 | How long to wait before opening the navigation popup. Specified in milliseconds. |
+| closeDelay | number | 150 | How long to wait before closing the navigation popup. Specified in milliseconds. |
+| children | ReactNode | optional, no default | NavigationMenuList and anything else that belongs in the nav. |
+| popupClassName | string | optional, no default | Adds extra classes to the shared dropdown panel. |
+| sideOffset | number | 10 | Distance between the bar and the panel, in px. |
+| value / defaultValue | string \| null | optional, no default | Which item's panel is open (controlled / uncontrolled). Each item has a value. |
+| onValueChange | (value: string \| null) => void | optional, no default | Called when the open item changes. |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Sets the direction of arrow-key navigation. |
+| aria-label | string | optional, no default | Names the nav landmark. |
+
+### Parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| NavigationMenuList | ul props | optional, no default | The glass pill that holds the items; wraps on narrow screens. |
+| NavigationMenuItem | li props + value? | optional, no default | One entry: a trigger with its content, or a link. |
+| NavigationMenuTrigger | button props | optional, no default | Opens an item's panel; the chevron turns while it is open. |
+| NavigationMenuContent | div props | optional, no default | What the panel shows for this item. Up to 36rem wide. |
+| NavigationMenuLink | a props + active?, plain?, closeOnClick?, render? | optional, no default | A link; plain skips the pill styling for use inside a panel; render swaps in a router link. |
+
+### NavigationMenuLink props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| plain | boolean | false | A block row with a hover tint instead of the bar's pill: for links inside a NavigationMenuContent panel. |
+
+### Example: A site header with rich panels
+
+Hover or focus Products: a featured card beside icon links. Move to Developers and the panel resizes while the content slides in from the side you came from.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/sheenui/navigation-menu/navigation-menu";
+// Package build (after the first npm release, or a packed tarball): import { Button, NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@sheenui/theme";
+
+const products = [
+  { title: "Charts", text: "Accessible chart components, each with a data table." },
+  { title: "Blocks", text: "Login, checkout, settings and notification centre." },
+  { title: "Dashboards", text: "Five analytics templates with live data." },
+];
+
+export function Example() {
+  return (
+    <div className="glass-2 flex items-center gap-3 rounded-sheen-full py-2 ps-5 pe-2">
+      <strong>Acme</strong>
+      <NavigationMenu aria-label="Main">
+        <NavigationMenuList>
+          <NavigationMenuItem value="products">
+            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+            <NavigationMenuContent className="w-[min(40rem,calc(100vw-2rem))]">
+              <div className="grid gap-2 sm:grid-cols-[13rem_1fr]">
+                <NavigationMenuLink plain href="#featured" className="flex flex-col justify-end gap-1 rounded-sheen-lg p-4 text-white [background-image:linear-gradient(160deg,var(--sheen-accent),oklch(55%_0.2_320))]">
+                  <span className="text-base font-semibold">Liquid Glass</span>
+                  <span className="text-xs">Real refraction for hero surfaces.</span>
+                </NavigationMenuLink>
+                <ul className="m-0 grid list-none gap-1 p-0">
+                  {products.map((p) => (
+                    <li key={p.title}>
+                      <NavigationMenuLink plain href={`#${p.title.toLowerCase()}`}>
+                        <span className="block text-sm font-medium text-sheen-fg">{p.title}</span>
+                        <span className="block text-xs text-sheen-fg-muted">{p.text}</span>
+                      </NavigationMenuLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#pricing" active>Pricing</NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+      <Button size="sm" className="ms-auto">Sign in</Button>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Enters the bar; Tab again moves into an open panel's links and then out. |
+| ← / → | Move between the items of the bar. |
+| Enter / Space / ↓ | Open the focused item's panel and move into it. |
+| Escape | Close the panel and return focus to its trigger. |
+
+### Accessibility
+
+- Renders a <nav> landmark: give it an aria-label ("Main", "Docs") so it is told apart from other navigation.
+- Triggers are buttons with aria-expanded and aria-controls; links use aria-current="page" when active.
+- The dropdown is not a menu role: it is a region of ordinary links, which is what site navigation should be.
+- Hover opens after delay (120 ms) and closes after closeDelay (150 ms); clicking and the keyboard open it at once, so touch and keyboard users never depend on hover.
+- On touch screens targets are 44px. Under reduced motion the panel fades and does not resize or slide.
+
+### When to use the navigation menu
+
+- Use it as a mega menu for a product site header where Products, Solutions and Resources each open a panel of titled links with short descriptions, the kind of mega-menu pattern that a flat list of links cannot carry.
+- Use it for a documentation site whose top bar groups guides, API reference and examples, so visitors can scan every section from one shared glass panel without leaving the current page.
+- The shared panel resizes to each item's content and slides between items, so it suits menus with panels of different sizes, from a three-link list to a grid up to 36rem wide.
+- Skip it when you only have a handful of plain links with no dropdowns; Horizontal nav is simpler and folds into a menu on narrow screens, while Menu is the right tool for action lists.
+- Pair it with Button for a call to action beside the bar, Badge for a New label inside a panel link, and Drawer to hold the navigation on phones.
+
+
+### Frequently asked questions
+
+#### How do I build a react navigation menu with dropdown panels?
+
+Compose NavigationMenu, NavigationMenuList and one NavigationMenuItem per entry. Inside an item put a NavigationMenuTrigger and a NavigationMenuContent holding NavigationMenuLink elements, or use a link directly for items with no panel. Give the root an aria-label such as Main.
+
+#### Is the dropdown a menu role? How does keyboard navigation work?
+
+No. The panel is a region of ordinary links, which is what site navigation needs. Left and Right arrows move between bar items, Enter, Space or Down opens the focused item's panel and moves into it, Tab walks the panel's links, and Escape closes it and returns focus to the trigger.
+
+#### Does it only open on hover?
+
+No. Hover opens a panel after the delay prop, 120 ms by default, and closes it after closeDelay, 150 ms, so crossing the bar does not flicker. Clicking or using the keyboard opens it immediately, so touch and keyboard users never depend on hover.
+
+#### How do I use my router's link component inside the panel?
+
+NavigationMenuLink accepts a render prop that swaps the anchor for your router link. Use the plain prop to skip the pill styling when the link sits inside a panel, and closeOnClick to control whether choosing it closes the panel. Active links get aria-current="page".
+
+
+### Related pages
+
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+- [Vertical nav](https://lokendra-builds.github.io/sheenui/navigation/vertical-nav)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Sidebar](https://lokendra-builds.github.io/sheenui/navigation/sidebar)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Sidebar with Collapsible Groups
+
+URL: https://lokendra-builds.github.io/sheenui/navigation/sidebar
+Sidebar name: Sidebar
+
+A glass React sidebar for app shells: collapsible groups, badges, a footer and an icon-rail mode. Accessible nav landmark, Tailwind CSS v4, MIT.
+
+What it is: A glass React sidebar for app shells with collapsible groups, badges and a collapsed icon rail. Use Sidebar for an app shell: a glass column with a header, collapsible groups of links and a footer for the user menu.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/sidebar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Sidebar
+
+Files to copy from `theme/src/`:
+
+- `components/sidebar/`
+- `components/collapsible/`
+- `components/status-icons/`
+- `hooks/use-controllable.ts`
+- `lib/{cn.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: sidebar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { DrawerBody, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+import { Sidebar, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem } from "@/components/sheenui/sidebar/sidebar";
+```
+
+These examples also use avatar, badge, button, drawer: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/badge.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/drawer.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Badge, Button, Drawer, DrawerBody, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger, Sidebar, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem } from "@sheenui/theme";
+```
+
+### Sidebar props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-label | string | labels?.name ?? defaultSidebarLabels.name | Defines a string value that labels the current element. |
+| children | ReactNode | optional, no default | Holds SidebarHeader, SidebarGroups, SidebarItems and SidebarFooter. |
+| collapsed | boolean | false | Show only the icons (a 64px rail). Labels stay as accessible names and tooltips; groups stay open. |
+| defaultCollapsed | boolean | false | Starts as an icon rail when uncontrolled (collapsed left out). Change it from your own toggle with useSidebar().setCollapsed. |
+| onCollapsedChange | ((collapsed: boolean) => void) | optional, no default | Called with the new state when a part inside the sidebar asks to collapse or expand it (useSidebar().setCollapsed). |
+| morph | boolean | false | Morph between the rail and the full panel instead of swapping them: icons stay exactly where they are, labels and badges fade and slide in on the content (opacity and translate only), and group headings keep their place. The width itself changes once, never through a transition, so nothing outside the sidebar shifts. Reduced motion: the labels switch in one frame. |
+| shape | SidebarShape | "rect" | The outline of the glass. "curved" bows the trailing edge (inline-end, so it flips in right-to-left layouts) outward like a curved glass sheet: the blur, the lit rim and the shadow follow the curve and a soft light sits on its apex. The curve is the glass element's own corner radii, never a mask on a wrapper. With collapsed or morph the rail bows more gently. Reduced transparency, more contrast and forced colours fall back to "rect". |
+| labels | Partial<SidebarLabels> | defaultSidebarLabels | Every string, for translation: { name: "Sidebar" } (the default landmark name; aria-label wins over it). Every other string, for translation: labels={{ name: "…" }}; omitted keys keep the English of defaultSidebarLabels. Its only key is listed in the key table under the props table. |
+
+### SidebarGroup props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| defaultOpen | boolean | true | Open at first when uncontrolled. |
+| label | ReactNode | required | The group's heading, which is also the button that opens and closes it. |
+| icon | ReactNode | optional, no default | Shows an icon before the heading. |
+| children | ReactNode | optional, no default | Holds the items of the group. |
+
+### SidebarItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | Shows an icon before the label. |
+| badge | ReactNode | optional, no default | A count or tag at the end, such as "3". Hidden in a collapsed sidebar. A 0 is hidden unless showZero is set. |
+| showZero | boolean | false | Show the badge when it is 0. |
+| active | boolean | false | Marks the current page (aria-current="page") and fills the item. |
+| disabled | boolean | false | Makes the item unclickable: it is dimmed and skipped by the keyboard. |
+
+### Other parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| SidebarHeader / SidebarFooter | div props | optional, no default | Top and bottom areas; the footer is pushed down. |
+| useSidebar() | { collapsed: boolean } | optional, no default | Read the collapsed state from custom header or footer content. |
+
+### Example 1 of 3: A full app shell
+
+Sidebar with groups and badges, a header with search and actions, stat cards and an activity list. Use Collapse to turn the sidebar into an icon rail; VerticalNav is the shorter choice for a flat list of sections.
+
+```tsx
+import { useState } from "react";
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { Sidebar, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem } from "@/components/sheenui/sidebar/sidebar";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Badge, Button, Sidebar, SidebarFooter, SidebarGroup, SidebarHeader, SidebarItem } from "@sheenui/theme";
+
+export function Example() {
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <div className="flex h-[30rem] w-full gap-3">
+      <Sidebar aria-label="Acme workspace" collapsed={collapsed} className="shrink-0">
+        <SidebarHeader>
+          <strong className={collapsed ? "sr-only" : "text-sm"}>Acme Cloud</strong>
+        </SidebarHeader>
+        <SidebarItem href="#overview" active>Overview</SidebarItem>
+        <SidebarGroup label="Workspace">
+          <SidebarItem href="#projects" badge="12">Projects</SidebarItem>
+          <SidebarItem href="#reports">Reports</SidebarItem>
+          <SidebarItem href="#deploys" badge="3">Deployments</SidebarItem>
+        </SidebarGroup>
+        <SidebarGroup label="Team">
+          <SidebarItem href="#members">Members</SidebarItem>
+          <SidebarItem href="#billing">Billing</SidebarItem>
+        </SidebarGroup>
+        <SidebarFooter>
+          <SidebarItem onClick={() => setCollapsed((c) => !c)}>Collapse</SidebarItem>
+        </SidebarFooter>
+      </Sidebar>
+
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
+        <header className="glass-2 flex items-center gap-3 rounded-sheen-xl px-3 py-2">
+          <h3 className="m-0 flex-1 text-sm font-semibold">Overview</h3>
+          <Button size="sm">New project</Button>
+          <Avatar name="Maya Chen" size="sm" />
+        </header>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {["Active users 12,480", "Revenue $48.2k", "Error rate 0.42%"].map((stat) => (
+            <div key={stat} className="glass-2 flex flex-col gap-1 rounded-sheen-xl p-3 text-sm">
+              {stat}
+              <Badge tone="success" className="w-fit">+8.2%</Badge>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Example 2 of 3: A curved glass sheet
+
+shape="curved" bows the trailing edge outward (the inline-end edge, so it flips in right-to-left layouts). The curve is the glass element's own corner radii, so the blur, the lit rim and the shadow follow it, and a soft light sits on the apex. With morph and the collapse item the rail bows more gently. Reduced transparency, more contrast and forced colours fall back to a plain rectangle.
+
+```tsx
+import { useState } from "react";
+import { Sidebar, SidebarGroup, SidebarItem } from "@/components/sheenui/sidebar/sidebar";
+// Package build (after the first npm release, or a packed tarball): import { Sidebar, SidebarGroup, SidebarItem } from "@sheenui/theme";
+
+function Dot() {
+  return (
+    <svg aria-hidden width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="8" cy="8" r="5.5" />
+    </svg>
+  );
+}
+
+export function CurvedSidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+  return (
+    <div className="h-96">
+      <Sidebar shape="curved" morph collapsed={collapsed} aria-label="Workspace">
+        <SidebarGroup label="Projects">
+          <SidebarItem href="#alpha" active icon={<Dot />}>
+            Alpha
+          </SidebarItem>
+          <SidebarItem href="#beta" icon={<Dot />} badge="3">
+            Beta
+          </SidebarItem>
+          <SidebarItem href="#gamma" icon={<Dot />}>
+            Gamma
+          </SidebarItem>
+        </SidebarGroup>
+        <SidebarItem onClick={() => setCollapsed((c) => !c)} icon={<Dot />}>
+          {collapsed ? "Expand" : "Collapse"}
+        </SidebarItem>
+      </Sidebar>
+    </div>
+  );
+}
+```
+
+### Example 3 of 3: On phones
+
+The sidebar is a column, so on a narrow screen put the same Sidebar inside a Drawer that opens from the left (side="start" follows the reading direction) and give the page a Menu button. Keep the in-layout Sidebar for lg and up.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Drawer, DrawerTrigger } from "@/components/sheenui/drawer/drawer";
+import { DrawerContent } from "@/components/sheenui/drawer/parts/content";
+import { DrawerBody, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/sheenui/drawer/parts/parts";
+import { Sidebar, SidebarGroup, SidebarItem } from "@/components/sheenui/sidebar/sidebar";
+// Package build (after the first npm release, or a packed tarball): import { Button, Drawer, DrawerBody, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger, Sidebar, SidebarGroup, SidebarItem } from "@sheenui/theme";
+
+// Below lg, show the same sidebar in a Drawer that opens from a menu button; from lg up render <Sidebar> in the layout as usual.
+export function PhoneNav() {
+  return (
+    <Drawer side="start">
+      <DrawerTrigger render={<Button variant="glass" />}>Menu</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Navigation</DrawerTitle>
+          <DrawerDescription>Pages of the workspace</DrawerDescription>
+        </DrawerHeader>
+        <DrawerBody>
+          <Sidebar aria-label="Workspace">
+            <SidebarGroup label="Projects" defaultOpen>
+              <SidebarItem href="#alpha" active>Alpha</SidebarItem>
+              <SidebarItem href="#beta">Beta</SidebarItem>
+            </SidebarGroup>
+            <SidebarItem href="#settings">Settings</SidebarItem>
+          </Sidebar>
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves through group headings and items in order. |
+| Enter / Space | Opens or closes a focused group heading; follows a link or presses a button item. |
+
+### Accessibility
+
+- A <nav> landmark (aria-label defaults to "Sidebar"; change it when a page has more than one).
+- Group headings are buttons with aria-expanded; closed items leave the tab order. The current page uses aria-current="page".
+- In the collapsed rail the labels stay as accessible names and as title tooltips; the icons are decorative.
+- Targets are 44px on touch screens. Under reduced motion the groups jump open and shut.
+
+### All exports on this page
+
+- Sidebar — The app-shell sidebar: a glass column with a header, groups of links that fold open and shut, and a footer.
+- SidebarFooter — The bottom of a Sidebar, pushed down by mt-auto: a user menu or a help link.
+- SidebarGroup — A collapsible section of a Sidebar: a heading button and the items under it.
+- SidebarHeader — The top of a Sidebar: a logo or a workspace switcher.
+- SidebarItem — One link (or, without href, one button) of a Sidebar.
+- defaultSidebarLabels — The English SidebarLabels used when labels is omitted; a partial labels prop is merged over it.
+- useSidebar — Whether the surrounding Sidebar is collapsed to its icon rail.
+
+
+### When to use Sidebar
+
+- Use Sidebar for the left navigation of an admin or dashboard app, where groups of links collapse, badges show unread counts and the whole column folds down to an icon rail.
+- Use collapsed to turn it into an icon rail on a narrow layout. Labels stay available as accessible names and title tooltips.
+- Give the nav an aria-label such as Workspace and mark the current page with the active prop, which sets aria-current="page".
+- Skip it for a short flat list of sections. VerticalNav is shorter, and Navbar suits a top bar on a marketing site.
+- Pair it with Drawer for a phone menu, Badge in SidebarItem for counts, and Breadcrumb inside the page header.
+
+
+### Frequently asked questions
+
+#### How do I build a collapsible sidebar in React?
+
+Compose SidebarHeader, SidebarGroup (a section with a label and defaultOpen), SidebarItem and SidebarFooter inside Sidebar. Groups fold open and shut with the shared height animation.
+
+#### How does the keyboard work?
+
+Tab moves through group headings and items in order. Enter or Space opens or closes a group and activates an item. Group headings are real buttons with aria-expanded.
+
+#### What does collapsed do?
+
+It turns the sidebar into an icon rail: labels become accessible names, groups lose their headings, and the width shrinks. Control it from your own button.
+
+#### Sidebar or VerticalNav?
+
+Use VerticalNav for a flat list with one selected value. Use Sidebar when you need collapsible groups or your own header and footer content.
+
+#### Do toggle buttons inside a group keep their pressed state?
+
+Yes. The group adds no state of its own: each button keeps its own name and state, so a toggle keeps aria-pressed, and disabled buttons are skipped by the arrow keys. Name the group with aria-label when the buttons share one meaning.
+
+#### Which variant and size should the buttons use?
+
+Any variant, but the same size, so the joined edges line up. The group squares the corners where buttons touch, overlaps their edges by a pixel and lifts the focused button above its neighbours; the buttons keep their own hover and press motion.
+
+
+### Related pages
+
+- [Vertical nav](https://lokendra-builds.github.io/sheenui/navigation/vertical-nav)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Navigation menu](https://lokendra-builds.github.io/sheenui/navigation/navigation-menu)
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Glass Sidebar for React: Collapsible Icon Rail
+
+URL: https://lokendra-builds.github.io/sheenui/navigation/vertical-nav
+Sidebar name: Vertical nav
+
+A glassmorphism sidebar for React with grouped items, icons and counts, a sliding active highlight and a collapsed icon-rail mode. Tailwind CSS v4, MIT.
+
+What it is: A glass sidebar navigation for React with grouped items, icons and counts that collapses into an icon rail with tooltips.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/vertical-nav.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Vertical nav
+
+Files to copy from `theme/src/`:
+
+- `components/vertical-nav/`
+- `components/drawer/parts/sheet.tsx`
+- `components/navbar/`
+- `components/popover/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: vertical-nav. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { SheenLogo } from "@/components/sheenui/logo/logo";
+import { VerticalNav, type VerticalNavSection } from "@/components/sheenui/vertical-nav/vertical-nav";
+```
+
+These examples also use avatar, glass-card, logo: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/logo.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, GlassCard, SheenLogo, VerticalNav, type VerticalNavSection } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| sections | VerticalNavSection[] | required | Groups of items, each with an optional heading. |
+| value | string | required | Sets the value of the active item when controlled. |
+| onValueChange | ((value: string) => void) | optional, no default | Called with an item's value when it is chosen (a plain left click on a link also calls it). |
+| renderLink | ((props: NavLinkProps, item: VerticalNavItem) => ReactElement) | a plain <a> | Render items that have an href through your router's link component. Same contract as Navbar's renderLink (see NavLinkProps). |
+| header | ReactNode | optional, no default | Logo / product name at the top. Left-aligned; a 28px mark sits centred on the rail. |
+| footer | ReactNode | optional, no default | Pinned to the bottom, e.g. a user card or settings. Clipped (not reflowed) on the rail. |
+| collapsed | boolean | false | Icon-only rail; labels appear as tooltips. |
+| labels | Partial<VerticalNavLabels> | defaultVerticalNavLabels | Every string, for translation: { name: "Sidebar" } (the default landmark name). Every other string, for translation: labels={{ name: "…" }}; omitted keys keep the English of defaultVerticalNavLabels. Its only key is listed in the key table under the props table. |
+| aria-label | string | labels.name ("Sidebar") | Landmark name. Give each navigation on a page its own. |
+| landmark | boolean | true | Whether the <nav> is a navigation landmark (boolean). Set false (a named role="group") for a nav inside a block that can appear twice on one page, so landmark names stay unique. |
+| className | string | optional, no default | Extra classes for the <nav> (set its height; it fills its parent by default). |
+
+### Example 1 of 2: Sidebar and icon rail
+
+Click items to watch the highlight slide; toggle the rail. On a phone, collapse it to see the page beside it.
+
+```tsx
+import { useState } from "react";
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { SheenLogo } from "@/components/sheenui/logo/logo";
+import { VerticalNav, type VerticalNavSection } from "@/components/sheenui/vertical-nav/vertical-nav";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, GlassCard, SheenLogo, VerticalNav, type VerticalNavSection } from "@sheenui/theme";
+
+// Inline 24px line icons: use any icon set (for example lucide-react) instead.
+const icon = (d: string) => (
+  <svg aria-hidden viewBox="0 0 24 24" className="size-[1.1rem]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+
+const sections: VerticalNavSection[] = [
+  {
+    title: "Workspace",
+    items: [
+      { value: "home", label: "Home", icon: icon("M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z") },
+      { value: "inbox", label: "Inbox", icon: icon("M3 13h5l1.5 3h5L16 13h5M5 5h14l2 8v6H3v-6z"), badge: 12 },
+      { value: "projects", label: "Projects", icon: icon("M3 7h7l2 2h9v10H3z") },
+      { value: "analytics", label: "Analytics", icon: icon("M4 20V10M10 20V4M16 20v-7M22 20H2") },
+    ],
+  },
+  {
+    title: "Account",
+    items: [
+      { value: "team", label: "Team", icon: icon("M16 19v-1a4 4 0 0 0-8 0v1M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6M20 19v-1a3 3 0 0 0-3-3M17 5.5a3 3 0 0 1 0 5") },
+      { value: "billing", label: "Billing", icon: icon("M3 6h18v12H3zM3 10h18") },
+      { value: "settings", label: "Settings", icon: icon("M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6M19 12l2-1-2-4-2 .5-1.5-1.5.5-2-4-2-1 2h-2l-1-2-4 2 .5 2L5 6.5 3 7l-2 4 2 1v2l-2 1 2 4 2-.5 1.5 1.5-.5 2 4 2 1-2h2l1 2 4-2-.5-2 1.5-1.5 2 .5 2-4-2-1z") },
+    ],
+  },
+];
+
+const labels = Object.fromEntries(sections.flatMap((s) => s.items.map((item) => [item.value, item.label])));
+
+export function Example() {
+  const [value, setValue] = useState("inbox");
+  const [collapsed, setCollapsed] = useState(false);
+
+  return (
+    <div className="flex gap-4">
+      <VerticalNav
+        aria-label="Workspace"
+        collapsed={collapsed}
+        header={<SheenLogo px={28} variant={collapsed ? "mark" : "full"} glow={false} />}
+        sections={sections}
+        value={value}
+        onValueChange={setValue}
+        footer={
+          <div className="flex items-center gap-2.5 px-1">
+            <Avatar name="Ada Lovelace" size="sm" status="online" />
+            {!collapsed && (
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-medium">Ada</span>
+                <span className="block truncate text-xs text-sheen-fg-muted">Pro plan</span>
+              </span>
+            )}
+          </div>
+        }
+      />
+      <GlassCard level={2} sheen={false} className="min-w-0 flex-1 self-start px-5 py-4">
+        <h3 className="text-lg font-semibold tracking-tight">{labels[value]}</h3>
+        <button onClick={() => setCollapsed((c) => !c)}>Toggle icon rail</button>
+      </GlassCard>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: Text only, for settings
+
+Icons, titles and the header are all optional. A badge still counts things to look at.
+
+```tsx
+import { useState } from "react";
+import { VerticalNav } from "@/components/sheenui/vertical-nav/vertical-nav";
+// Package build (after the first npm release, or a packed tarball): import { VerticalNav } from "@sheenui/theme";
+
+export function Example() {
+  const [value, setValue] = useState("profile");
+
+  return (
+    <VerticalNav
+      aria-label="Settings"
+      value={value}
+      onValueChange={setValue}
+      sections={[
+        {
+          items: [
+            { value: "profile", label: "Profile" },
+            { value: "security", label: "Security" },
+            { value: "notifications", label: "Notifications", badge: 3 },
+            { value: "billing", label: "Billing" },
+          ],
+        },
+      ]}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move between items; a normal list of links and buttons. |
+| Enter / Space | Follow a link or select an item. |
+
+### Accessibility
+
+- A <nav> with a list; the current item has aria-current="page". Name the nav with aria-label.
+- In the icon rail every item keeps its text as an accessible name and shows it in a tooltip on hover and focus.
+- Under reduced motion the rail snaps open and shut in one frame.
+
+### All exports on this page
+
+- VerticalNav — Vertical (sidebar) navigation on glass.
+- defaultVerticalNavLabels — The English VerticalNavLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the vertical nav
+
+- Use it as a React sidebar for an admin dashboard, with Workspace and Account sections, icons on every row and an unread badge on Inbox, so people can reach any screen in one click.
+- Use it for a settings page where Profile, Security, Notifications and Billing sit in a narrow column beside the form, with no icons or section titles needed.
+- The collapsed prop turns it into an icon-only rail, which suits apps where the content area needs the width on small laptops but power users still want one-click navigation.
+- Skip it when the navigation has only a few top-level destinations and lives across the top of the page; Horizontal nav fits there, and Tabs fits switching views inside a single page.
+- Pair it with Avatar in the footer slot for the signed-in user, SheenLogo in the header, and Tooltip behavior already built in for the collapsed rail.
+
+
+### Frequently asked questions
+
+#### How do I build a glass sidebar in React?
+
+Render VerticalNav with sections, value and onValueChange. Each section takes an optional title and items shaped as value, label, icon, badge, href and disabled. Use header for a logo and footer for a user card. The nav fills its parent's height, so set one on className or the parent.
+
+#### How does the collapsed icon rail stay accessible?
+
+Every item keeps its text as an accessible name when collapsed, and the label shows in a tooltip on hover and focus. The rail is a nav with a list, the current item carries aria-current="page", and under reduced motion the rail snaps open and shut in one frame.
+
+#### Can items be real links with my router?
+
+Yes. Give an item an href and pass renderLink, a function receiving the link props and the item that returns your router's Link element. Items without an href render as buttons. Tab moves between items, Enter follows a link, and Enter or Space presses a button item.
+
+#### How do I name the sidebar when there are several navigations?
+
+Pass aria-label, which defaults to Sidebar. Give each navigation landmark on the page its own name, for example Workspace for the sidebar and Main for a top bar, so screen reader users can tell the regions apart in the landmarks list.
+
+
+### Related pages
+
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Navigation menu](https://lokendra-builds.github.io/sheenui/navigation/navigation-menu)
+- [Sidebar](https://lokendra-builds.github.io/sheenui/navigation/sidebar)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

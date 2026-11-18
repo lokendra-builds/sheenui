@@ -1,0 +1,1 @@
+var e=e=>e<.5?4*e*e*e:1-(-2*e+2)**3/2;async function t(t,n,r,i,a,o){if(!n){let n=Math.max(2,Math.round(a/40));for(let s=1;s<n;s+=1)await t(a/n),o(r+(i-r)*e(s/n));await t(a/n)}o(i)}export{t};

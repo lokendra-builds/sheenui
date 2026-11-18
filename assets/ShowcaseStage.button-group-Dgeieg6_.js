@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1e3),e(`working`),t({range:`week`}),await n(1500),t({range:`month`}),e(`idle`),await n(1500)};export{e as default};

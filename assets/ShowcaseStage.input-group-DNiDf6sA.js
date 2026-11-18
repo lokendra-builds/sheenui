@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(700);for(let e=1;e<=16;e+=1)t({text:`example.com/alex`.slice(0,e)}),await n(80);await n(500),e(`working`),await n(500),t({copied:!0}),e(`success`)};export{e as default};

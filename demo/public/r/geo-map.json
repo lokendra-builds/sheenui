@@ -73,7 +73,7 @@
       "target": "@components/sheenui/charts/geo/world-110m.ts"
     }
   ],
-  "docs": "World map: https://lokendra-builds.github.io/sheenui/charts/world-map\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WorldMap, WorldMapTable } from \"@/components/sheenui/charts/geo-map\";\nimport { HatchPattern, NoDataKey, LegendRow, DivergingLegend, BubbleLegend, DockedReadout, Bubble, CountryLayer } from \"@/components/sheenui/charts/geo-map/parts\";\nimport { M } from \"@/components/sheenui/charts/geo-map/projection\";\nimport { WorldMapTable } from \"@/components/sheenui/charts/geo-map/table\";",
+  "docs": "World map: https://lokendra-builds.github.io/sheenui/charts/world-map\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WorldMap, WorldMapTable } from \"@/components/sheenui/charts/geo-map\";\nimport { HatchPattern, NoDataKey, LegendRow, DivergingLegend, BubbleLegend, DockedReadout, Bubble, CountryLayer } from \"@/components/sheenui/charts/geo-map/parts\";\nimport { M } from \"@/components/sheenui/charts/geo-map/projection\";\nimport { WorldMapTable } from \"@/components/sheenui/charts/geo-map/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

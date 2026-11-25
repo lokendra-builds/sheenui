@@ -1,5 +1,7 @@
 # Generated or vendored output: formatted by its generator, not by Prettier.
 node_modules
+# Standalone starter apps: they carry the registry's copied source as written by `shadcn add`.
+templates
 # macOS AppleDouble metadata files
 **/._*
 dist

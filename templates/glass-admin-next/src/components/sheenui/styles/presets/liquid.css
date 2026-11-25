@@ -1,0 +1,283 @@
+/*
+ * ============================================================================
+ *  Style preset: LIQUID GLASS (the default)
+ * ============================================================================
+ * Thick, clear glass held up to a glowing wallpaper: silk ribbons, glossy spheres and (by day)
+ * sunlight caustics behind light, liquid panes. Every pane has a white-hot rim that slides along
+ * its edge toward the pointer, a prism tint either side of the lit arc and a counter-rim on the
+ * far side. Display type: Inter Tight, tight and heavy, with one italic spectrum accent.
+ *
+ * Applies when <html data-sheen-style="liquid"> OR when the attribute is missing.
+ * Every value is a token from tokens.css / glass.css / backgrounds.css re-pointed for the look;
+ * components never need per-style code.
+ *
+ * Source: the approved liquid prototype (recipe: wow/liquid/final.json).
+ * Contrast: text tokens are the prototype's pixel-audited values (0 runs below AA over ~1,000
+ * text runs at 1440 and 390, both themes); re-audited on the docs site, see the report.
+ */
+
+/* Metric-matched fallbacks: until the web fonts arrive the layout already has their size, so
+   nothing reflows when they swap in. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 107%;
+  ascent-override: 90.5%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+}
+
+/* JetBrains Mono advances 0.6em like Courier New / Liberation Mono; its ascent and descent are 102% and 30% of the em. Inline
+   code (a chip inside a paragraph) wraps the same way before and after the web font arrives. */
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Courier New"), local("Liberation Mono"), local("Menlo"), local("DejaVu Sans Mono");
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Inter Tight Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 99%;
+  ascent-override: 97.8%;
+  descent-override: 24.4%;
+  line-gap-override: 0%;
+}
+@layer sheen {
+  :root:not([data-sheen-style="aurora"]),
+  :root:not([data-sheen-style="aurora"]) [data-theme] {
+    /* ---- Page ---- */
+    --sheen-bg: light-dark(oklch(97.6% 0.012 75), oklch(13.5% 0.035 283));
+    --sheen-bg-2: light-dark(oklch(95.5% 0.025 300), oklch(10% 0.03 285));
+    --sheen-fg: light-dark(oklch(18% 0.03 280), oklch(98.5% 0.004 280));
+    /* Night: muted 92 / subtle 86 (were 89 / 83). Measured from pixels, muted text on the bare page
+     fell to 4.4:1 over the rose and violet orbs and on glass-1/2 over a bright orb. Day: muted 37 (was 40): the
+     "Files to copy" summary measured 4.43:1 at its worst pixel on glass; 37 gives 4.7+. */
+    --sheen-fg-muted: light-dark(oklch(31% 0.03 280), oklch(92% 0.015 280));
+    --sheen-fg-subtle: light-dark(oklch(35% 0.03 280), oklch(86% 0.018 280));
+    --sheen-border: light-dark(oklch(25% 0.04 285 / 0.12), oklch(100% 0 0 / 0.12));
+
+    /* ---- Spectrum (wallpaper, rims, casts; never behind text without glass) ---- */
+    --sheen-spectrum-1: light-dark(oklch(70% 0.18 295), oklch(55% 0.25 292)); /* violet */
+    --sheen-spectrum-2: light-dark(oklch(74% 0.19 352), oklch(63% 0.26 350)); /* magenta */
+    --sheen-spectrum-3: light-dark(oklch(80% 0.14 35), oklch(70% 0.19 32)); /* coral */
+    --sheen-spectrum-4: light-dark(oklch(89% 0.13 82), oklch(81% 0.16 72)); /* amber */
+    --sheen-spectrum-5: light-dark(oklch(86% 0.11 212), oklch(76% 0.13 215)); /* cyan */
+    --sheen-spectrum-6: light-dark(oklch(75% 0.15 255), oklch(55% 0.23 264)); /* blue */
+    /* Warm orbs: amber by day, a hot rose at night (low-alpha amber over near-black reads brown). */
+    --sheen-spectrum-warm: light-dark(oklch(89% 0.13 82), oklch(62% 0.23 12));
+
+    /* ---- Accent ---- */
+    --sheen-accent: light-dark(oklch(39% 0.24 290), oklch(84% 0.12 300));
+    --sheen-accent-2: light-dark(oklch(46% 0.13 235), oklch(84% 0.11 212));
+    --sheen-accent-soft: light-dark(oklch(55% 0.24 300 / 0.12), oklch(78% 0.14 300 / 0.18));
+    --sheen-accent-border: light-dark(oklch(50% 0.24 300 / 0.3), oklch(80% 0.13 300 / 0.4));
+    /* Headline gradient (indigo → violet → coral by day; cyan → orchid → gold at night).
+     Every stop >= 4.5:1 on the page. */
+    --sheen-text-gradient: linear-gradient(
+      100deg,
+      light-dark(oklch(50% 0.22 262), oklch(84% 0.12 215)) 0%,
+      light-dark(oklch(50% 0.26 305), oklch(78% 0.17 320)) 30%,
+      light-dark(oklch(53% 0.23 25), oklch(86% 0.14 65)) 60%,
+      light-dark(oklch(50% 0.26 305), oklch(78% 0.17 320)) 85%,
+      light-dark(oklch(50% 0.22 262), oklch(84% 0.12 215)) 100%
+    );
+    --sheen-accent-gradient: var(--sheen-text-gradient);
+    /* Liquid fill: indigo → violet → magenta. White text >= 4.5:1 across the whole sweep. */
+    --sheen-accent-fill: linear-gradient(
+      115deg,
+      oklch(47% 0.23 268) 0%,
+      oklch(47% 0.26 298) 48%,
+      oklch(50% 0.25 338) 100%
+    );
+    --sheen-accent-fg: oklch(100% 0 0);
+    --sheen-accent-glow: oklch(56% 0.26 318 / 0.7);
+    --sheen-accent-fill-shadow:
+      inset 0 1px 0.5px oklch(100% 0 0 / 0.55), inset 0 -3px 8px -3px oklch(22% 0.18 300 / 0.5),
+      inset 0 0 0 1px oklch(100% 0 0 / 0.14), 0 3px 8px -3px oklch(35% 0.2 290 / 0.45),
+      0 14px 34px -12px var(--sheen-accent-glow);
+
+    /* ---- Interaction ---- */
+    --sheen-focus: light-dark(oklch(45% 0.25 290), oklch(88% 0.11 300));
+    --sheen-ring: light-dark(oklch(55% 0.24 300 / 0.35), oklch(80% 0.14 300 / 0.45));
+    --sheen-selection: light-dark(oklch(62% 0.2 300 / 0.28), oklch(72% 0.16 300 / 0.38));
+    --sheen-indicator: light-dark(
+      oklch(100% 0 0 / 0.92),
+      oklch(100% 0 0 / 0.15)
+    ); /* night: 0.15 (was 0.2): the selected segment's white label measured 4.4:1 on it */
+
+    /* ---- Shape: controls become capsules, panes are generous ---- */
+    --sheen-radius-sm: 0.875rem;
+    --sheen-radius-md: 1.5rem;
+    --sheen-radius-lg: 1.75rem;
+    --sheen-radius-xl: 2.25rem;
+
+    /* ---- Type ---- */
+    --sheen-font-sans:
+      "Inter Variable", "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sheen-font-display:
+      "Inter Tight Variable", "Inter Tight", "Inter Tight Fallback", ui-sans-serif, system-ui, -apple-system,
+      "Segoe UI", sans-serif;
+    --sheen-font-accent: var(--sheen-font-display);
+    --sheen-display-weight: 680;
+    --sheen-display-tracking: -0.028em;
+    /* The accent word: a true italic, painted with the spectrum. */
+    --sheen-accent-style: italic;
+    --sheen-accent-weight: 700;
+    --sheen-accent-size: 1em;
+
+    /* ---- Glass material ---- */
+    /* glass-1 has no blur of its own (glass budget), so its tint is a touch denser. Night: 0.64 (was
+     0.56), as segmented-control labels over a bright orb measured 4.1:1. */
+    --sheen-glass-1-bg: light-dark(oklch(100% 0 0 / 0.58), oklch(15% 0.035 285 / 0.64));
+    /* Text-heavy cards: a touch denser than the hero slab, so captions hold AA on any wallpaper
+     (dark: the sidebar's muted links over a bright orb measured 4.4:1 at 0.56; 0.64 gives 5+). */
+    --sheen-glass-2-bg: light-dark(oklch(100% 0 0 / 0.6), oklch(15% 0.035 285 / 0.7));
+    --sheen-glass-3-bg: light-dark(oklch(99.5% 0.006 300 / 0.64), oklch(15% 0.03 285 / 0.72));
+    --sheen-glass-1-blur: 14px;
+    --sheen-glass-2-blur: 20px;
+    --sheen-glass-3-blur: 28px;
+    --sheen-glass-saturate: 190%;
+    --sheen-glass-brightness: 1.05;
+    --sheen-glass-border: light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.14));
+    --sheen-glass-highlight: light-dark(oklch(100% 0 0 / 0.95), oklch(100% 0 0 / 0.34));
+    --sheen-glass-highlight-side: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.1));
+    --sheen-glass-lowlight: light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.09));
+    --sheen-glass-edge: light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.09));
+    --sheen-glass-glow: light-dark(oklch(100% 0 0 / 0.6), oklch(100% 0 0 / 0.08));
+    --sheen-glass-specular: linear-gradient(
+      180deg,
+      light-dark(oklch(100% 0 0 / 0.5), oklch(100% 0 0 / 0.08)),
+      transparent 55%
+    );
+    --sheen-glass-sheen: light-dark(oklch(100% 0 0 / 0.75), oklch(100% 0 0 / 0.12));
+    /* Inner light: the lit top lip, the light lower lip, and a tint of the wallpaper inside. */
+    --sheen-glass-inner-tint: light-dark(oklch(88% 0.09 330 / 0.4), oklch(62% 0.24 330 / 0.24));
+    /* Shadows: a tight contact shadow, a soft drop, and a coloured cast (light through tinted glass). */
+    --sheen-shadow-near: light-dark(oklch(35% 0.08 290 / 0.1), oklch(0% 0 0 / 0.35));
+    --sheen-shadow-far: light-dark(oklch(40% 0.12 300 / 0.2), oklch(4% 0.02 285 / 0.6));
+    --sheen-shadow-cast: light-dark(oklch(68% 0.19 330 / 0.32), oklch(55% 0.25 320 / 0.32));
+    --sheen-glass-1-shadow: 0 1px 2px var(--sheen-shadow-near), 0 8px 20px -10px var(--sheen-shadow-far);
+    --sheen-glass-2-shadow: 0 1px 2px var(--sheen-shadow-near), 0 26px 52px -22px var(--sheen-shadow-far);
+    --sheen-glass-3-shadow:
+      0 2px 4px var(--sheen-shadow-near), 0 30px 60px -22px var(--sheen-shadow-far),
+      0 56px 100px -44px var(--sheen-shadow-cast);
+    /* Order matters: lit top lip, lower lip, hairline edge, inner glow, wallpaper tint, then depth. */
+    --sheen-glass-1-box:
+      inset 0 1px 0.5px var(--sheen-glass-highlight), inset 0 -1px 0.5px var(--sheen-glass-lowlight),
+      inset 0 8px 14px -10px var(--sheen-glass-glow), var(--sheen-glass-1-shadow);
+    --sheen-glass-2-box:
+      inset 0 1px 0.5px var(--sheen-glass-highlight), inset 0 -1px 0.5px var(--sheen-glass-lowlight),
+      inset 0 0 0 1px var(--sheen-glass-edge), inset 0 26px 36px -28px var(--sheen-glass-glow),
+      inset 0 -30px 44px -32px var(--sheen-glass-inner-tint), var(--sheen-glass-2-shadow),
+      0 56px 100px -44px var(--sheen-shadow-cast);
+    --sheen-glass-3-box:
+      inset 0 1px 0.5px var(--sheen-glass-highlight), inset 0 -1px 0.5px var(--sheen-glass-lowlight),
+      inset 0 0 0 1px var(--sheen-glass-edge), inset 0 26px 36px -28px var(--sheen-glass-glow),
+      inset 0 -30px 44px -32px var(--sheen-glass-inner-tint), var(--sheen-glass-3-shadow);
+    --sheen-surface-solid: light-dark(oklch(100% 0 0), oklch(20% 0.035 285));
+
+    /* ---- Rim light: a hot core where the light is, a broad lit side, a prism either side, a
+     counter-rim opposite (a dark edge by day, a faint internal reflection at night). ---- */
+    --sheen-rim-width: 1.5px;
+    --sheen-rim-core: oklch(100% 0 0);
+    --sheen-rim-glow: light-dark(oklch(100% 0 0 / 0.8), oklch(100% 0 0 / 0.7));
+    --sheen-rim-hot: oklch(100% 0 0);
+    --sheen-rim-fall: light-dark(oklch(100% 0 0 / 0.62), oklch(100% 0 0 / 0.42));
+    --sheen-rim-base: light-dark(oklch(100% 0 0 / 0.34), oklch(100% 0 0 / 0.1));
+    --sheen-rim-counter: light-dark(oklch(25% 0.05 290 / 0.22), oklch(100% 0 0 / 0.06));
+    --sheen-rim-iri-a: light-dark(oklch(84% 0.12 215), oklch(84% 0.12 212 / 0.8));
+    --sheen-rim-iri-b: light-dark(oklch(80% 0.15 345), oklch(78% 0.17 348 / 0.8));
+    --sheen-glass-spot: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.1));
+
+    /* ---- Backdrop colours (backgrounds.css blobs, preview stages) ---- */
+    --sheen-blob-1: light-dark(oklch(78% 0.15 295 / 0.6), oklch(48% 0.24 292 / 0.55));
+    --sheen-blob-2: light-dark(oklch(86% 0.11 212 / 0.75), oklch(50% 0.14 215 / 0.45));
+    --sheen-blob-3: light-dark(oklch(81% 0.15 352 / 0.6), oklch(50% 0.24 350 / 0.45));
+    --sheen-blob-4: light-dark(oklch(80% 0.12 255 / 0.55), oklch(46% 0.22 264 / 0.45));
+    --sheen-blob-5: light-dark(oklch(94% 0.06 70 / 0.55), oklch(34% 0.12 300 / 0.3));
+    --sheen-backdrop-grid: light-dark(oklch(40% 0.08 300 / 0.05), oklch(100% 0 0 / 0.035));
+
+    /* ---- Motion intensity: thick glass, slow light ---- */
+    --sheen-motion-intensity: 1;
+    --sheen-duration-ambient: 34s;
+  }
+
+  /* Non-colour values per theme (light-dark() only takes colours). */
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] {
+    --sheen-glass-saturate: 190%;
+    --sheen-glass-brightness: 0.96;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-sheen-style="aurora"]):not([data-theme="light"]) {
+      --sheen-glass-saturate: 190%;
+      --sheen-glass-brightness: 0.96;
+    }
+  }
+
+  :root:not([data-sheen-style="aurora"])[data-theme="light"] {
+    --sheen-glass-saturate: 190%;
+    --sheen-glass-brightness: 1.05;
+  }
+
+  /* Phones: smaller blur kernels (cheaper, and small panes read better with less frost). */
+  @media (max-width: 639px) {
+    :root:not([data-sheen-style="aurora"]) {
+      --sheen-glass-1-blur: 10px;
+      --sheen-glass-2-blur: 14px;
+      --sheen-glass-3-blur: 20px;
+    }
+  }
+
+  /*
+ * The Liquid rim (the "glass catches light" signature), in each surface's ::after:
+ *   1. hot core: a white-hot spot on the edge nearest the pointer (grows on a fast flick)
+ *   2. broad rim: the side facing the light (--sheen-ra) is lit, prism tints either side, a
+ *      counter-rim on the far side
+ *   3. inner light: a soft spot inside the glass under the pointer, behind the content
+ * At rest (touch, reduced motion, pointer far away) the light sits at the top-left.
+ */
+  :root:not([data-sheen-style="aurora"]) :is(.glass-1, .glass-2, .glass-3)::after {
+    background-image:
+      radial-gradient(
+        circle calc(150px * var(--sheen-flare)) at var(--sheen-mx) var(--sheen-my),
+        color-mix(in oklab, var(--sheen-rim-core) calc(clamp(0, (var(--sheen-lit) - 0.3) * 1.6, 1) * 100%), transparent)
+          0%,
+        color-mix(in oklab, var(--sheen-rim-core) calc(clamp(0, (var(--sheen-lit) - 0.3) * 1.6, 1) * 100%), transparent)
+          18%,
+        color-mix(in oklab, var(--sheen-rim-glow) calc(clamp(0, (var(--sheen-lit) - 0.3) * 1.6, 1) * 100%), transparent)
+          40%,
+        transparent 74%
+      ),
+      conic-gradient(
+        from var(--sheen-ra),
+        var(--sheen-rim-hot) 0deg,
+        var(--sheen-rim-fall) 22deg,
+        var(--sheen-rim-iri-a) 36deg,
+        var(--sheen-rim-base) 66deg,
+        var(--sheen-rim-base) 140deg,
+        var(--sheen-rim-counter) 180deg,
+        var(--sheen-rim-base) 220deg,
+        var(--sheen-rim-base) 294deg,
+        var(--sheen-rim-iri-b) 324deg,
+        var(--sheen-rim-fall) 338deg,
+        var(--sheen-rim-hot) 360deg
+      ),
+      radial-gradient(circle 240px at var(--sheen-mx) var(--sheen-my), var(--sheen-glass-spot), transparent 70%);
+    background-clip: border-area, border-area, padding-box;
+    opacity: calc(0.3 + var(--sheen-lit) * 0.7);
+  }
+
+  :root:not([data-sheen-style="aurora"])[data-sheen-flare] [data-sheen-lit]::after {
+    --sheen-flare: 1.25;
+  }
+
+  /* Small controls (glass-1) carry a thinner rim. */
+  :root:not([data-sheen-style="aurora"]) .glass-1::after {
+    --sheen-rim-width: 1px;
+  }
+}

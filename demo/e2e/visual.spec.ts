@@ -4,8 +4,11 @@
 // page x look x engine x OS). Create or refresh them for this machine with:
 //   pnpm e2e:visual:update
 // CI keeps its Linux baselines on the orphan branch `visual-baselines` (see the header of ci.yml): the
-// `visual` job compares with `--update-snapshots=none`, so a missing baseline fails; the manual
+// `visual` job compares with `--update-snapshots=none` and REQUIRE_VISUAL=1, so a missing baseline fails; the manual
 // `update_snapshots` run regenerates and pushes them.
+
+import { readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
@@ -29,6 +32,17 @@ const LOOKS = [
   { theme: "dark", style: "aurora" },
 ] as const;
 
+/** True when this platform and engine have at least one committed or locally created baseline. */
+function hasBaselines(specFile: string, project: string): boolean {
+  try {
+    return readdirSync(join(dirname(specFile), "visual.spec.ts-snapshots")).some((f) =>
+      f.endsWith(`-${project}-${process.platform}.png`),
+    );
+  } catch {
+    return false;
+  }
+}
+
 const slug = (path: string) => (path === "/" ? "home" : path.slice(1).replace(/\//g, "-"));
 
 for (const { theme, style } of LOOKS) {
@@ -42,7 +56,16 @@ for (const { theme, style } of LOOKS) {
     });
 
     for (const path of PAGES) {
-      test(path, async ({ page }) => {
+      test(path, async ({ page }, testInfo) => {
+        // A fresh clone has no baselines (they are git-ignored). Skip with a notice instead of failing on "missing
+        // snapshot"; CI sets REQUIRE_VISUAL=1 once its baselines exist, and `pnpm e2e:visual:update` creates them.
+        const updating = testInfo.config.updateSnapshots === "all" || testInfo.config.updateSnapshots === "changed";
+        if (!updating && process.env.REQUIRE_VISUAL !== "1" && !hasBaselines(testInfo.file, testInfo.project.name)) {
+          console.warn(
+            `visual: no ${testInfo.project.name}-${process.platform} baselines in e2e/visual.spec.ts-snapshots; skipping. Run \`pnpm e2e:visual:update\` once to create them (REQUIRE_VISUAL=1 makes this a failure).`,
+          );
+          testInfo.skip(true, "no visual baselines on this machine");
+        }
         await page.addInitScript(preferenceScript(theme, style, true));
         await page.goto(urlFor(path), { waitUntil: "domcontentloaded" });
         await page.locator("main h1").first().waitFor();

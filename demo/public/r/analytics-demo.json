@@ -17,7 +17,7 @@
       "target": "@components/sheenui/blocks/analytics/demo.ts"
     }
   ],
-  "docs": "Analytics demo helpers: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { seededRandom, hashSeed, createRng, demoSeries, simulateLatency, withLatency } from \"@/components/sheenui/blocks/analytics/demo\";",
+  "docs": "Analytics demo helpers: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { seededRandom, hashSeed, createRng, demoSeries, simulateLatency, withLatency } from \"@/components/sheenui/blocks/analytics/demo\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

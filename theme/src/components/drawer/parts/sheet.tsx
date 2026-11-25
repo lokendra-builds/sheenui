@@ -109,7 +109,7 @@ export const sheetPopupClass = cn(
   "motion-reduced:data-starting-style:opacity-0 motion-reduced:data-ending-style:opacity-0",
   // While a finger holds it, it follows with no easing.
   "data-dragging:[transition:none]",
-  "after:pointer-events-none after:absolute after:-inset-x-px after:top-full after:h-16 after:bg-[inherit] after:content-['']",
+  "after:pointer-events-none after:absolute after:-inset-x-px after:top-full after:bottom-auto after:h-16 after:bg-[inherit] after:content-['']",
 );
 
 const DISMISS_DISTANCE = 96;

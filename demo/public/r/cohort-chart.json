@@ -33,7 +33,7 @@
       "target": "@components/sheenui/charts/cohort-chart/table.tsx"
     }
   ],
-  "docs": "Cohort chart: https://lokendra-builds.github.io/sheenui/charts/cohort-retention\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CohortChart, CohortTable } from \"@/components/sheenui/charts/cohort-chart\";\nimport { DockedReadout, CellTip, CohortRowView } from \"@/components/sheenui/charts/cohort-chart/parts\";\nimport { CohortTable } from \"@/components/sheenui/charts/cohort-chart/table\";",
+  "docs": "Cohort chart: https://lokendra-builds.github.io/sheenui/charts/cohort-retention\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CohortChart, CohortTable } from \"@/components/sheenui/charts/cohort-chart\";\nimport { DockedReadout, CellTip, CohortRowView } from \"@/components/sheenui/charts/cohort-chart/parts\";\nimport { CohortTable } from \"@/components/sheenui/charts/cohort-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

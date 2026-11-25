@@ -66,9 +66,40 @@ function fold(graph, covered) {
 /**
  * @param {{ f: string[]; e: number[][]; p: number[][]; pn: string[]; i: number[]; in: string[]; rd: Record<string, string[]> }} graph
  * @param {string[]} sources repo-relative paths from the page's `source` prop
- * @returns {{ units: string[]; files: string[]; packages: string[]; items: string[] }}
+ * @param {string[]} [samples] repo-relative files of the components the page's code samples import besides its own source
+ * @returns {{ units: string[]; files: string[]; packages: string[]; items: string[]; also: { units: string[]; items: string[]; packages: string[] } }}
+ *   `also` is what the examples need on top of the page's own list (a Dialog example that uses Button): files and registry items
+ *   that the page's own item does not install. It stays empty when the samples add nothing.
  */
-export function resolveCopyList(graph, sources) {
+export function resolveCopyList(graph, sources, samples = []) {
+  const own = resolveOwn(graph, sources);
+  if (samples.length === 0) return { ...own, also: { units: [], items: [], packages: [] } };
+  const all = resolveOwn(graph, [...sources, ...samples]);
+  const have = new Set(own.files);
+  const extraFiles = new Set(all.files.filter((f) => !have.has(f)));
+  // Items the page's own item already installs (its registry dependencies, transitively) are not extras.
+  const covered = new Set(own.items);
+  const stack = [...own.items];
+  while (stack.length) {
+    for (const dep of graph.rd[stack.pop()] ?? []) {
+      if (covered.has(dep)) continue;
+      covered.add(dep);
+      stack.push(dep);
+    }
+  }
+  const extraItems = all.items.filter((n) => !covered.has(n));
+  const units = extraFiles.size ? fold(graph, extraFiles).sort(byRank) : [];
+  return {
+    ...own,
+    also: { units, items: extraItems, packages: all.packages.filter((p) => !own.packages.includes(p)) },
+  };
+}
+
+function byRank(a, b) {
+  return unitRank(a) - unitRank(b) || a.localeCompare(b);
+}
+
+function resolveOwn(graph, sources) {
   const start = matchSources(graph, sources);
   const seen = new Set();
   const stack = [...start];

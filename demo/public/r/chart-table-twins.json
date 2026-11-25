@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/chart-table-twins.tsx"
     }
   ],
-  "docs": "Chart table twins: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarTable, LineTable, StepLineTable, RadarTable, DonutTable } from \"@/components/sheenui/charts/chart-table-twins\";",
+  "docs": "Chart table twins: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarTable, LineTable, StepLineTable, RadarTable, DonutTable } from \"@/components/sheenui/charts/chart-table-twins\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

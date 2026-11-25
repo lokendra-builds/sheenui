@@ -86,6 +86,10 @@ export const SEARCH_SYNONYMS: Readonly<Record<string, Synonyms>> = {
     aliases: ["tailwind", "tailwind 4", "tailwindcss"],
     keywords: ["css setup", "@source", "theme"],
   },
+  "/docs/performance": {
+    aliases: ["performance", "speed", "fast", "budget", "lighthouse", "bundle size"],
+    keywords: ["lcp", "cls", "inp", "blur", "lite", "backdrop-filter", "web vitals", "fps", "slow"],
+  },
   "/docs/dark-mode": {
     aliases: ["dark", "light mode", "theme", "theming", "color scheme"],
     keywords: [

@@ -74,7 +74,7 @@
       "target": "@components/sheenui/charts/sankey-chart/use-sankey-paint.ts"
     }
   ],
-  "docs": "Sankey chart: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SankeyChart, SankeyTable } from \"@/components/sheenui/charts/sankey-chart\";\nimport { SankeyTable } from \"@/components/sheenui/charts/sankey-chart/table\";",
+  "docs": "Sankey chart: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SankeyChart, SankeyTable } from \"@/components/sheenui/charts/sankey-chart\";\nimport { SankeyTable } from \"@/components/sheenui/charts/sankey-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

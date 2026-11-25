@@ -1,7 +1,8 @@
 // node:test: no file git would push may name or point at the owner's local-only notes. Comments and messages must stand alone.
+// CONTRIBUTING.md and CHANGELOG.md are public (owner, 25 Nov 2026), so naming them is fine; every other upper-case note is private.
 // Two checks. (1) Structural, needs no names: a pushed file may only mention an upper-case `NAME.md` that is itself pushed.
 // (2) Name-based: the owner's private note names live in the git-ignored `.handoff/readme-index.json` (key `privateDocs`,
-// plus the notes readme-index already lists); a public clone has no such file, so that check skips with a message.
+// plus the notes readme-index already lists, minus the public ones); a public clone has no such file, so that check skips.
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
@@ -15,6 +16,13 @@ const ALLOWED = new Set([".gitignore", "scripts/test/private-docs.test.mjs"]);
 const TEXT = /\.(mjs|js|ts|tsx|json|css|html|yml|yaml|md|py|sh)$/;
 const GENERATED = /^(docs\/guides\/|demo\/public\/r\/|pnpm-lock)/;
 const CONFIG = join(ROOT, ".handoff", "readme-index.json");
+/** Notes that are pushed on purpose: the name-based check must not treat them as private even if the local config lists them. */
+const PUBLIC_NOTES = new Set(["CONTRIBUTING.md", "CHANGELOG.md"]);
+
+/** Upper-case `NAME.md` mentions in one line that are not in the `pushed` set of file names. */
+export function unpushedMentions(text, pushed) {
+  return [...text.matchAll(/\b([A-Z][A-Z0-9_]{2,})\.md\b/g)].map((m) => m[0]).filter((name) => !pushed.has(name));
+}
 
 function pushable() {
   try {
@@ -55,7 +63,7 @@ function localNames() {
       ...(cfg.notes ?? []).map((n) => n.file),
       cfg.changelog,
       cfg.openTasks?.file,
-    ].filter((n) => typeof n === "string" && n.endsWith(".md"));
+    ].filter((n) => typeof n === "string" && n.endsWith(".md") && !PUBLIC_NOTES.has(n));
     return [...new Set(names)];
   } catch {
     return null;
@@ -68,9 +76,7 @@ test("public files only mention upper-case notes that are pushed too", (t) => {
   const pushed = new Set(files.map((f) => basename(f)));
   const offenders = [];
   for (const { file, line, text } of lines(files)) {
-    for (const m of text.matchAll(/\b([A-Z][A-Z0-9_]{2,})\.md\b/g)) {
-      if (!pushed.has(m[0])) offenders.push(`${file}:${line}: ${m[0]}`);
-    }
+    for (const name of unpushedMentions(text, pushed)) offenders.push(`${file}:${line}: ${name}`);
   }
   assert.deepEqual(offenders, []);
 });
@@ -89,4 +95,19 @@ test("public files never name the private notes listed in the local config", (t)
     if (pattern.test(text)) offenders.push(`${file}:${line}: ${text.trim().slice(0, 100)}`);
   }
   assert.deepEqual(offenders, []);
+});
+
+test("CONTRIBUTING.md and CHANGELOG.md are public files; a link to a note that is not pushed still fails", (t) => {
+  const files = pushable();
+  if (!files) return t.skip("not a git checkout");
+  const pushed = new Set(files.map((f) => basename(f)));
+  assert.ok(
+    pushed.has("CONTRIBUTING.md") && pushed.has("CHANGELOG.md"),
+    "CONTRIBUTING.md and CHANGELOG.md must be pushed",
+  );
+  assert.deepEqual(unpushedMentions("see [CONTRIBUTING.md](CONTRIBUTING.md) and CHANGELOG.md", pushed), []);
+  assert.deepEqual(unpushedMentions("see [NOTES_PRIVATE.md](NOTES_PRIVATE.md)", pushed), [
+    "NOTES_PRIVATE.md",
+    "NOTES_PRIVATE.md",
+  ]);
 });

@@ -31,6 +31,10 @@ export default tseslint.config(
   {
     ignores: [
       "**/node_modules/**",
+      // Standalone starter apps with their own toolchain (copied SheenUI source, their own tsconfig); not part of the workspace.
+      "templates/**",
+      // Local hand-off folder (git-ignored): never linted.
+      ".handoff/**",
       // macOS AppleDouble metadata (`._name`), left by copying the tree from a Mac: binary, not source.
       "**/._*",
       // Scratch scripts left by tooling runs (`name.tmp.mjs`): kept on disk, not source.

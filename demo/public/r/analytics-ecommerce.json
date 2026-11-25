@@ -22,7 +22,7 @@
       "target": "@components/sheenui/blocks/analytics-ecommerce.tsx"
     }
   ],
-  "docs": "E-commerce: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { EcommerceDashboard } from \"@/components/sheenui/blocks/analytics-ecommerce\";",
+  "docs": "E-commerce: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { EcommerceDashboard } from \"@/components/sheenui/blocks/analytics-ecommerce\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

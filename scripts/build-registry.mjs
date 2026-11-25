@@ -423,6 +423,78 @@ const exportedNames = (text) =>
     .map((m) => m[1])
     .filter((n) => isImportable(text, n));
 
+// ---------------------------------------------------------------------------------------------- bundles
+
+/** Bundle items: no files of their own, only `registryDependencies` on the real items, so nothing is duplicated. */
+const BUNDLES = [
+  {
+    name: "components",
+    title: "All components",
+    pick: (i) => i.meta.kind === "component",
+    blurb:
+      "every SheenUI component (buttons, forms, overlays, navigation, tables, chat and the rest) plus the shared theme",
+  },
+  {
+    name: "charts",
+    title: "All charts",
+    pick: (i) => i.meta.kind === "chart",
+    blurb: "every SheenUI chart and its shared chart helpers, plus the shared theme",
+  },
+  {
+    name: "blocks",
+    title: "All blocks",
+    pick: (i) => i.meta.kind === "block",
+    blurb:
+      "every SheenUI block, dashboard and block helper, with the components and charts they use, plus the shared theme",
+  },
+  {
+    name: "dashboards",
+    title: "All dashboards",
+    pick: (i) => i.meta.kind === "block" && /^\/dashboards\//.test(i.meta.route ?? "") && !/-(demo|kit)/.test(i.name),
+    blurb:
+      "the five SheenUI dashboards with every component, chart and demo-data helper they need, plus the shared theme",
+  },
+  {
+    name: "all",
+    title: "The whole SheenUI library",
+    pick: (i) => ["components", "charts", "blocks"].includes(i.name),
+    blurb: "the whole SheenUI library: every component, chart and block, plus the shared theme",
+    bundles: true,
+  },
+];
+
+/** Builds the bundle items from the already built real items. Bundles are not components: `meta.kind` is "bundle". */
+function bundleItems(items, { baseUrl, authorUrl, repoUrl, site }) {
+  const out = [];
+  for (const spec of BUNDLES) {
+    const pool = spec.bundles ? out : items;
+    const picked = pool.filter(spec.pick).map((i) => i.name);
+    if (!picked.length) throw new Error(`build-registry: bundle "${spec.name}" is empty`);
+    if (spec.name === "dashboards" && picked.length !== 5)
+      throw new Error(`build-registry: bundle "dashboards" expected 5 dashboards, got ${picked.length}: ${picked}`);
+    const deps = [THEME, ...picked.sort()];
+    out.push({
+      $schema: SCHEMA_ITEM,
+      name: spec.name,
+      type: "registry:item",
+      title: spec.title,
+      description: `Installs ${spec.blurb}. A bundle: it has no files of its own and only pulls in the existing items (${picked.length} ${spec.bundles ? "bundles" : "items"}).`,
+      author: `lokendra-builds <${authorUrl}>`,
+      registryDependencies: deps.map((d) => `${baseUrl}/${d}.json`),
+      files: [],
+      docs: `${spec.title}: ${site}/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.`,
+      categories: ["bundles"],
+      meta: {
+        kind: "bundle",
+        source: `${repoUrl}/tree/main/theme/src`,
+        route: "/docs/installation",
+        docsUrl: `${site}/docs/installation`,
+      },
+    });
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------------------------------------- build
 
 /**
@@ -605,6 +677,12 @@ export async function createRegistry({ base } = {}) {
             `${title}: ${docsUrl}`,
             ``,
             `Installed in components/${INSTALL_DIR}/${installRel(main.rel).split("/").slice(0, -1).join("/") || "."}/. ${importLines.length ? `Import (use your components alias):\n${importLines.join("\n")}` : "A helper module that the other items import; you rarely import it yourself."}`,
+            ...(kind === "chart" || (kind === "block" && name.startsWith("analytics-"))
+              ? [
+                  ``,
+                  `Next.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with "use client".`,
+                ]
+              : []),
           ].join("\n");
 
     const category = page
@@ -634,7 +712,9 @@ export async function createRegistry({ base } = {}) {
     items.push(item);
   }
 
-  const order = { theme: 0, component: 1, chart: 2, block: 3 };
+  items.push(...bundleItems(items, { baseUrl, authorUrl, repoUrl, site }));
+
+  const order = { theme: 0, component: 1, chart: 2, block: 3, bundle: 4 };
   items.sort((a, b) => order[a.meta.kind] - order[b.meta.kind] || a.name.localeCompare(b.name));
 
   // Self-check: every dependency exists, every target is unique.

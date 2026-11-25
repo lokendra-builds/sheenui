@@ -2,6 +2,7 @@ import { expect, it } from "vitest";
 import { screen, within } from "@testing-library/react";
 import { userEvent } from "vitest/browser";
 
+import { UserCell } from "../../src/components/data-table/cells";
 import { DataTable } from "../../src/components/data-table/data-table";
 import type { DataTableColumn } from "../../src/components/data-table/types";
 import { describeVariants, renderUi, runAxe } from "../render";
@@ -99,4 +100,27 @@ it("animates sorted rows with transform only and keeps the table semantics", asy
     expect(getComputedStyle(row).display).toBe("table-row");
   }
   await expect.poll(() => within(table).getAllByRole("row")[1]!.style.transform, { timeout: 3000 }).toBe("none");
+});
+
+describeVariants((variant) => {
+  it("UserCell keeps a long name and email on one line with an ellipsis (never splitting mid-word) and keeps the full value", () => {
+    const email = "a.very.long.mailbox.name.indeed@example.com";
+    renderUi(
+      <div style={{ width: 160 }}>
+        <UserCell name="Bartholomew Featherstonehaugh-Smythe" email={email} />
+      </div>,
+      variant,
+    );
+    for (const text of [email, "Bartholomew Featherstonehaugh-Smythe"]) {
+      const el = screen.getByText(text);
+      const style = getComputedStyle(el);
+      expect(style.textOverflow).toBe("ellipsis");
+      expect(style.whiteSpace).toBe("nowrap");
+      expect(style.overflowWrap).not.toBe("anywhere");
+      // One line: the text is wider than its box and the box is a single line tall.
+      expect(el.scrollWidth).toBeGreaterThan(el.clientWidth);
+      expect(el.clientHeight).toBeLessThan(2 * parseFloat(style.lineHeight || "0") || 40);
+      expect(el).toHaveAttribute("title", text);
+    }
+  });
 });

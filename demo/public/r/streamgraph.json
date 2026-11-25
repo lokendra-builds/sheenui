@@ -38,7 +38,7 @@
       "target": "@components/sheenui/charts/streamgraph/parts.tsx"
     }
   ],
-  "docs": "Streamgraph: https://lokendra-builds.github.io/sheenui/charts/streamgraph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Streamgraph, StreamgraphTable } from \"@/components/sheenui/charts/streamgraph\";\nimport { StreamLayer } from \"@/components/sheenui/charts/streamgraph/model\";\nimport { StreamgraphTable } from \"@/components/sheenui/charts/streamgraph/parts\";",
+  "docs": "Streamgraph: https://lokendra-builds.github.io/sheenui/charts/streamgraph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Streamgraph, StreamgraphTable } from \"@/components/sheenui/charts/streamgraph\";\nimport { StreamLayer } from \"@/components/sheenui/charts/streamgraph/model\";\nimport { StreamgraphTable } from \"@/components/sheenui/charts/streamgraph/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

@@ -23,7 +23,7 @@
       "target": "@components/sheenui/charts/scatter-chart.tsx"
     }
   ],
-  "docs": "Scatter chart: https://lokendra-builds.github.io/sheenui/charts/scatter-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ScatterChart, ScatterTable } from \"@/components/sheenui/charts/scatter-chart\";",
+  "docs": "Scatter chart: https://lokendra-builds.github.io/sheenui/charts/scatter-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ScatterChart, ScatterTable } from \"@/components/sheenui/charts/scatter-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

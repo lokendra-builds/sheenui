@@ -6,6 +6,7 @@ export const SITE_PUBLISHED = "2026-11-08";
 /** Pages added after the first release keep their own first date. */
 const PUBLISHED_FROM: Record<string, string | undefined> = {
   "/docs/base-ui": "2026-11-11",
+  "/docs/performance": "2026-11-25",
   "/docs/tailwind-v4": "2026-11-11",
   "/docs/dark-mode": "2026-11-11",
   "/docs/rtl": "2026-11-16",

@@ -413,6 +413,33 @@ export function extractInstallPaths(themeRoot = join(REPO_ROOT, "theme")) {
   return { barrel: result[0], demoData: result[1] };
 }
 
+/**
+ * The value exports (components, hooks, helpers; no types) of the package entry, grouped by the theme/src file that
+ * declares them: `{ "components/input/input": ["Input"] }`. A docs page uses it to find which registry item a sample's
+ * `import { Input } from "@sheenui/theme"` needs, so "Files to copy" also lists what the examples use.
+ * @returns {Record<string, string[]>}
+ */
+export function extractExportFiles(themeRoot = join(REPO_ROOT, "theme")) {
+  const srcDir = join(themeRoot, "src") + "/";
+  const entry = join(srcDir, "index.ts");
+  const program = ts.createProgram([entry], compilerOptions(themeRoot));
+  const checker = program.getTypeChecker();
+  const byFile = {};
+  for (const exported of checker.getExportsOfModule(checker.getSymbolAtLocation(program.getSourceFile(entry)))) {
+    let symbol = exported;
+    if (symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+    if (!(symbol.flags & ts.SymbolFlags.Value)) continue;
+    const file = symbol.declarations?.[0]?.getSourceFile().fileName;
+    if (!file || !file.startsWith(srcDir)) continue;
+    (byFile[file.slice(srcDir.length).replace(/\.tsx?$/, "")] ??= []).push(exported.getName());
+  }
+  return Object.fromEntries(
+    Object.entries(byFile)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([f, names]) => [f, names.sort()]),
+  );
+}
+
 /** Drops a sentence that repeats an earlier one of the same text (ignoring case and a trailing period). */
 function dedupeSentences(text) {
   const seen = new Set();

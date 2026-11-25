@@ -36,7 +36,7 @@
       "target": "@components/sheenui/charts/heatmap/table.tsx"
     }
   ],
-  "docs": "Heatmap: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Heatmap, HeatmapTable, SequentialLegend, ChartValueTable, MissingValue, ChartDockHint, ChartTip } from \"@/components/sheenui/charts/heatmap\";\nimport { ChartDockHint, SequentialLegend, MissingValue } from \"@/components/sheenui/charts/heatmap/kit\";\nimport { HeatmapTable } from \"@/components/sheenui/charts/heatmap/table\";",
+  "docs": "Heatmap: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Heatmap, HeatmapTable, SequentialLegend, ChartValueTable, MissingValue, ChartDockHint, ChartTip } from \"@/components/sheenui/charts/heatmap\";\nimport { ChartDockHint, SequentialLegend, MissingValue } from \"@/components/sheenui/charts/heatmap/kit\";\nimport { HeatmapTable } from \"@/components/sheenui/charts/heatmap/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

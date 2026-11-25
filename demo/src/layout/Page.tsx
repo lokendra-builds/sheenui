@@ -133,7 +133,7 @@ export function Page({
   const filesPanel = showFiles ? (
     <div key="files" className="min-w-0">
       <Suspense fallback={filesFallback}>
-        <FilesToCopy sources={sources} />
+        <FilesToCopy sources={sources} path={path} />
       </Suspense>
     </div>
   ) : null;

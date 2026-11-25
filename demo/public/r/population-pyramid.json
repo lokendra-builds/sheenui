@@ -39,7 +39,7 @@
       "target": "@components/sheenui/charts/population-pyramid/table.tsx"
     }
   ],
-  "docs": "Population pyramid: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PopulationPyramid, PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid\";\nimport { PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid/table\";",
+  "docs": "Population pyramid: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PopulationPyramid, PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid\";\nimport { PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

@@ -627,7 +627,9 @@ export function writeLlmsFiles({ dist, siteUrl, pages, counts, author }) {
 
   // ---- Facts: one canonical block, from the route table (counts), registry.json and theme/package.json ----
   const theme = JSON.parse(readFileSync(join(ROOT, "theme/package.json"), "utf8"));
-  const registryItems = JSON.parse(readFileSync(join(ROOT, "registry.json"), "utf8")).items.length;
+  const registryItems = JSON.parse(readFileSync(join(ROOT, "registry.json"), "utf8")).items.filter(
+    (i) => i.meta?.kind !== "bundle",
+  ).length;
   const peer = (name) =>
     String(theme.peerDependencies?.[name] ?? "")
       .replace(/^[^\d]*/, "")

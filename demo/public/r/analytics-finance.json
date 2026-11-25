@@ -59,7 +59,7 @@
       "target": "@components/sheenui/blocks/analytics-finance/portfolio-chart.tsx"
     }
   ],
-  "docs": "Crypto dashboard: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { FinanceDashboard } from \"@/components/sheenui/blocks/analytics-finance\";\nimport { PortfolioChart } from \"@/components/sheenui/blocks/analytics-finance/portfolio-chart\";",
+  "docs": "Crypto dashboard: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { FinanceDashboard } from \"@/components/sheenui/blocks/analytics-finance\";\nimport { PortfolioChart } from \"@/components/sheenui/blocks/analytics-finance/portfolio-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

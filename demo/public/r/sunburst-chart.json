@@ -36,7 +36,7 @@
       "target": "@components/sheenui/charts/sunburst-chart/parts.tsx"
     }
   ],
-  "docs": "Sunburst chart: https://lokendra-builds.github.io/sheenui/charts/sunburst\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SunburstChart, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart\";\nimport { RollingValue, ArcLabel, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart/parts\";",
+  "docs": "Sunburst chart: https://lokendra-builds.github.io/sheenui/charts/sunburst\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SunburstChart, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart\";\nimport { RollingValue, ArcLabel, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

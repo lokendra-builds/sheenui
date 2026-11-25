@@ -21,7 +21,7 @@
       "target": "@components/sheenui/charts/flow-utils.tsx"
     }
   ],
-  "docs": "Flow utils: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+  "docs": "Flow utils: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

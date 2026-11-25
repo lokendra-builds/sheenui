@@ -1,0 +1,1476 @@
+@layer sheen {
+  /*
+ * <SheenBackdrop>, preview stages and display type, per style preset.
+ *
+ *   .sheen-sky                 the page backdrop (fixed, behind everything, aria-hidden)
+ *     .sheen-sky__base         static first paint: page gradient + soft light (pure CSS)
+ *     .sheen-sky__liquid       Liquid Glass: drifting orbs + silk ribbons + daylight caustics (lazy)
+ *     .sheen-sky__aurora       Aurora Neon: an OPAQUE low-res canvas sky (lazy, paints its own base)
+ *     .sheen-sky__grain        a pre-baked bitmap grain tile (never SVG noise: it is re-rasterised per tile)
+ *   .sheen-stage-backdrop      vivid colour behind docs previews, so glass always reads as glass
+ *   .sheen-display / .sheen-accent-text   the style's display face and its accent word
+ *
+ * Glass rule: nothing here wraps glass. The sky is a fixed sibling behind the page (z-index -1)
+ * and never fades, filters or blends an ancestor of glass. Ambient motion is transform only,
+ * driven by the shared ~30 Hz beat (motion/beat.ts) and paused off screen / in hidden tabs.
+ */
+
+  .sheen-sky {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    background-color: var(--sheen-bg);
+  }
+
+  .sheen-sky > * {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* The backdrop is live: the body's CSS blobs (backgrounds.css) would only be painted under it. */
+  :root[data-sheen-backdrop] .sheen-backdrop::before,
+  :root[data-sheen-backdrop] .sheen-backdrop::after {
+    display: none;
+  }
+
+  /* Hero sky below the fold. The vivid hero sky (full ribbons, hot orbs) is made for the first viewport;
+   once it has scrolled away (SheenBackdrop sets [data-away]) a veil of the page tint calms it, so the
+   long-form text further down keeps AA over the brightest ribbon and orb (measured: accent links fell to
+   1.2:1 and body copy to 1.6:1 over the pink ribbon at night). Opacity only, so it costs no extra pass. */
+  .sheen-sky[data-mode="hero"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--sheen-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+  }
+
+  .sheen-sky[data-mode="hero"][data-away]::after {
+    opacity: var(--sheen-sky-away-veil, 0.62);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-sky[data-mode="hero"]::after {
+      transition: none;
+    }
+  }
+
+  /* Aurora, night, below the hero: the fixed canvas sky is veiled to near-black once the hero scrolls away, so the
+   glass sections (wall, depth, accordion, CTA) would sit on a flat navy slab. Three soft lobes (cyan, violet, rose,
+   the hero's colours at a calmer level) are laid over the veil and drift slowly (transform only, running only while the
+   hero is away). The lobes stay mid-dark (OKLCH L 36-45 %), so light text keeps 4.5:1. Day keeps its bright sky. */
+  .sheen-sky[data-mode="hero"][data-style="aurora"]::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    background:
+      radial-gradient(38% 30% at 82% 14%, light-dark(transparent, oklch(46% 0.14 215 / 0.62)), transparent 72%),
+      radial-gradient(40% 34% at 12% 38%, light-dark(transparent, oklch(41% 0.2 295 / 0.6)), transparent 72%),
+      radial-gradient(36% 30% at 78% 66%, light-dark(transparent, oklch(40% 0.18 345 / 0.5)), transparent 72%),
+      radial-gradient(42% 30% at 24% 92%, light-dark(transparent, oklch(44% 0.13 220 / 0.5)), transparent 72%);
+    transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+    animation: sheen-aurora-lobes var(--sheen-duration-aurora-lobes) var(--sheen-ease-in-out) infinite alternate;
+    animation-play-state: paused;
+    will-change: transform;
+  }
+
+  .sheen-sky[data-mode="hero"][data-style="aurora"][data-away]::before {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  .sheen-sky[data-mode="hero"][data-style="aurora"][data-away]::after {
+    z-index: 0;
+  }
+}
+
+@keyframes sheen-aurora-lobes {
+  from {
+    transform: translate3d(-2.5%, 1.5%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2.5%, -2%, 0) scale(1.06);
+  }
+}
+@layer sheen {
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-sky[data-mode="hero"][data-style="aurora"]::before {
+      animation: none;
+      transition: none;
+      will-change: auto;
+    }
+  }
+
+  /* Aurora, night, on the docs pages (mode "page"): the canvas sky settles to near-black down the page, so glass
+   mid-page (props tables, example cards) had nothing to frost. The same four lobes sit under it permanently,
+   static (no animation, no blur, one gradient layer), at the hero-away level so text keeps AA. */
+  .sheen-sky[data-mode="page"][data-style="aurora"]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      radial-gradient(42% 30% at 84% 20%, light-dark(transparent, oklch(46% 0.14 215 / 0.55)), transparent 72%),
+      radial-gradient(44% 34% at 10% 46%, light-dark(transparent, oklch(41% 0.2 295 / 0.55)), transparent 72%),
+      radial-gradient(40% 30% at 80% 74%, light-dark(transparent, oklch(40% 0.18 345 / 0.45)), transparent 72%),
+      radial-gradient(46% 30% at 28% 96%, light-dark(transparent, oklch(44% 0.13 220 / 0.45)), transparent 72%);
+  }
+
+  /* Marks the first viewport of the document: ambient light plays only while it is in view. */
+  .sheen-sky-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100lvh;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* The grain is a pre-baked tile, not a canvas built at mount (that read-back was one ~100 ms task
+   during load): a 128 px PNG (256 px on 2x screens) in two alpha levels of one grey-blue, with the
+   mean and spread of the old random grain. It tiles seamlessly (white noise), costs no JS and is
+   there from the first paint. Override with --sheen-grain-img / --sheen-grain-size. */
+  .sheen-sky__grain {
+    background-image: var(
+      --sheen-grain-img,
+      image-set(
+        url("data:image/png;base64,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")
+          1x,
+        url("data:image/png;base64,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")
+          2x
+      )
+    );
+    background-size: var(--sheen-grain-size, 128px) var(--sheen-grain-size, 128px);
+    opacity: var(--sheen-grain-o, 0.7);
+  }
+
+  /* ======================================================================
+ * LIQUID GLASS
+ * ====================================================================== */
+
+  /* Static first paint (and the whole sky under reduced transparency / forced Lite): the page
+   gradient and five soft orbs. "page" is calm and lit in the middle too, so the gaps between
+   panels never fall to a black (or flat cream) void. */
+  .sheen-sky[data-style="liquid"] .sheen-sky__base {
+    background:
+      radial-gradient(circle 34vmax at 0% 30%, var(--sheen-sky-orb-1), transparent),
+      radial-gradient(circle 30vmax at 100% 72%, var(--sheen-sky-orb-2), transparent),
+      radial-gradient(circle 24vmax at 18% 104%, var(--sheen-sky-orb-5), transparent),
+      radial-gradient(circle 28vmax at 82% 12%, var(--sheen-sky-orb-6), transparent),
+      radial-gradient(circle 32vmax at 48% 54%, var(--sheen-sky-orb-mid), transparent),
+      linear-gradient(170deg, var(--sheen-bg) 10%, var(--sheen-bg-2));
+  }
+
+  .sheen-sky[data-style="liquid"] {
+    --sheen-sky-orb-1: color-mix(in oklab, var(--sheen-spectrum-1) 62%, transparent);
+    --sheen-sky-orb-2: color-mix(in oklab, var(--sheen-spectrum-2) 52%, transparent);
+    --sheen-sky-orb-5: color-mix(in oklab, var(--sheen-spectrum-5) 60%, transparent);
+    --sheen-sky-orb-6: color-mix(in oklab, var(--sheen-spectrum-6) 46%, transparent);
+    --sheen-sky-orb-mid: color-mix(in oklab, var(--sheen-spectrum-1) 26%, transparent);
+    --sheen-grain-o: 1;
+  }
+
+  /* Night: overlapping light adds up (glows) instead of muddying. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sheen-sky[data-style="liquid"] .sheen-sky__base {
+      background-blend-mode: screen, screen, screen, screen, screen, normal;
+    }
+  }
+
+  :root[data-theme="dark"] .sheen-sky[data-style="liquid"] .sheen-sky__base {
+    background-blend-mode: screen, screen, screen, screen, screen, normal;
+  }
+
+  /* Hero <-> page: the outgoing Liquid look rides above the incoming one and fades out (opacity only, no box ever
+   moves, so no layout shift); the route transition's own cross-fade runs over the same ~300 ms. */
+  .sheen-sky--ghost {
+    pointer-events: none;
+    animation: sheen-sky-ghost-out var(--sheen-duration-slow) var(--sheen-ease-in-out) both;
+  }
+}
+@keyframes sheen-sky-ghost-out {
+  to {
+    opacity: 0;
+  }
+}
+@layer sheen {
+  :root[data-motion="reduced"] .sheen-sky--ghost {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheen-sky--ghost {
+      display: none;
+    }
+  }
+
+  /* The animated wallpaper (lazy). ONE drift wrapper moves the whole picture (one composited
+   layer, rasterised once); the orbs and the ribbon SVG inside are static textures. */
+  .sheen-sky__liquid {
+    overflow: hidden;
+  }
+
+  .sheen-sky__liquid > * {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  /* Opaque (its own page gradient): the compositor culls the static base under it. */
+  .sheen-sky__drift {
+    position: absolute;
+    inset: -48px;
+    isolation: isolate;
+  }
+
+  /* The picture itself: its page gradient and everything on it. Hero mode tilts it a fixed 0.8deg, baked into the raster
+   (the drift layer above only translates, which the compositor draws far cheaper than a rotated or scaled layer). */
+  .sheen-sky__pose {
+    position: absolute;
+    inset: 0;
+    isolation: isolate;
+    background: linear-gradient(170deg, var(--sheen-bg) 10%, var(--sheen-bg-2));
+  }
+
+  .sheen-sky[data-mode="hero"] .sheen-sky__pose {
+    transform: rotate(-0.8deg);
+  }
+
+  /* A full-viewport layer is promoted only while the sky plays (first viewport on screen, tab
+   visible, motion allowed): a paused sky gives its compositor memory back. */
+  .sheen-sky[data-live] :is(.sheen-sky__drift, .sheen-sky__caustics > i) {
+    will-change: transform;
+  }
+
+  .sheen-sky__orb {
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, var(--c), transparent);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sheen-sky__orb {
+      mix-blend-mode: screen;
+    }
+  }
+
+  :root[data-theme="dark"] .sheen-sky__orb {
+    mix-blend-mode: screen;
+  }
+
+  /* Hero mode: the brightest colour sits behind the hero composition (right); the copy side stays calm. */
+  .sheen-sky__orb[data-o="a"] {
+    --c: var(--sheen-spectrum-2);
+    width: 68vmax;
+    inset-inline-start: 74%;
+    top: 46%;
+  }
+  .sheen-sky__orb[data-o="b"] {
+    --c: var(--sheen-spectrum-6);
+    width: 62vmax;
+    inset-inline-start: 98%;
+    top: 4%;
+  }
+  .sheen-sky__orb[data-o="c"] {
+    --c: var(--sheen-spectrum-warm);
+    width: 44vmax;
+    inset-inline-start: 84%;
+    top: 100%;
+  }
+  .sheen-sky__orb[data-o="d"] {
+    --c: var(--sheen-spectrum-5);
+    width: 46vmax;
+    inset-inline-start: 4%;
+    top: 96%;
+  }
+  .sheen-sky__orb[data-o="e"] {
+    --c: var(--sheen-spectrum-1);
+    width: 54vmax;
+    inset-inline-start: 22%;
+    top: 2%;
+  }
+
+  /* Page mode: same family, quieter, edges lit and the middle calm under the text column. */
+  .sheen-sky[data-mode="page"] .sheen-sky__orb {
+    opacity: 0.7;
+  }
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="a"] {
+    --c: var(--sheen-spectrum-1);
+    width: 64vmax;
+    inset-inline-start: -2%;
+    top: 30%;
+  }
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="b"] {
+    --c: var(--sheen-spectrum-2);
+    width: 58vmax;
+    inset-inline-start: 102%;
+    top: 74%;
+  }
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="c"] {
+    --c: var(--sheen-spectrum-5);
+    width: 46vmax;
+    inset-inline-start: 18%;
+    top: 108%;
+  }
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="d"] {
+    --c: var(--sheen-spectrum-6);
+    width: 56vmax;
+    inset-inline-start: 86%;
+    top: 10%;
+    opacity: 0.5;
+  }
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="e"] {
+    --c: var(--sheen-spectrum-1);
+    width: 60vmax;
+    inset-inline-start: 50%;
+    top: 58%;
+    opacity: 0.32;
+  }
+
+  /* The rose orb sits behind the page footer and the lower-right text: a touch quieter (muted footer
+   links over it measured 4.3:1 at night). */
+  .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="b"] {
+    opacity: 0.58;
+  }
+
+  /* Night: the silk ribbons are the brightest thing a line of bare text can sit on (accent links measured
+   3.7:1 across them, body copy 3:1). In page mode they step back further than by day; the glass panels and
+   the orbs keep their light. */
+  :root[data-theme="dark"] .sheen-sky[data-mode="page"] .sheen-sky__ribbons {
+    opacity: 0.2;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sheen-sky[data-mode="page"] .sheen-sky__ribbons {
+      opacity: 0.2;
+    }
+  }
+
+  /* Phones: the docs text column spans the whole screen, so every line of bare text (ledes,
+   captions, hints) sits over some orb. Dimmed, muted text keeps AA over the brightest pixel
+   (measured: it fell to 4.0:1 at night over the violet orb and 4.3:1 by day over the pink one). */
+  @media (max-width: 639px) {
+    .sheen-sky[data-mode="page"] .sheen-sky__orb {
+      opacity: 0.45;
+    }
+    .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="b"] {
+      opacity: 0.45;
+    }
+    .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="d"] {
+      opacity: 0.38;
+    }
+    .sheen-sky[data-mode="page"] .sheen-sky__orb[data-o="e"] {
+      opacity: 0.2;
+    }
+    .sheen-sky[data-mode="page"] .sheen-sky__ribbons {
+      opacity: 0.3;
+    }
+  }
+
+  /* Light blooms: soft, out-of-focus pools of coloured light that belong to the sky (hero mode only, behind
+   the composition on the right; page mode has none). No disc edge: a long radial falloff to transparent,
+   so nothing reads as a stamped object and a glass piece in front of one just picks up its colour. */
+  .sheen-sky__sphere {
+    display: none;
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    translate: -50% -50%;
+    pointer-events: none;
+    background: radial-gradient(
+      closest-side,
+      var(--s-glow),
+      color-mix(in oklab, var(--s-glow) 42%, transparent) 38%,
+      transparent 100%
+    );
+  }
+
+  .sheen-sky[data-mode="hero"] .sheen-sky__sphere {
+    display: block;
+  }
+
+  .sheen-sky__sphere[data-sphere="magenta"] {
+    --s-glow: light-dark(oklch(74% 0.2 350 / 0.5), oklch(62% 0.26 345 / 0.42));
+    width: clamp(16rem, 44vmin, 30rem);
+    inset-inline-start: 74%;
+    top: 40%;
+  }
+
+  .sheen-sky__sphere[data-sphere="blue"] {
+    --s-glow: light-dark(oklch(74% 0.16 250 / 0.5), oklch(58% 0.22 262 / 0.4));
+    width: clamp(10rem, 28vmin, 20rem);
+    inset-inline-start: 62%;
+    top: 92%;
+  }
+
+  /* Phones: the composition sits below the copy, so the spheres sink under it (never behind text). */
+  @media (max-width: 63.9rem) {
+    .sheen-sky__sphere[data-sphere="magenta"] {
+      inset-inline-start: 70%;
+      top: 80%;
+    }
+    .sheen-sky__sphere[data-sphere="blue"] {
+      inset-inline-start: 12%;
+      top: 92%;
+    }
+  }
+
+  /* Silk ribbons: crisp, so the glass has edges to bend. Static (no animated children). */
+  .sheen-sky__ribbons {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sheen-sky__ribbons path {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .sheen-ribbon--a,
+  .sheen-ribbon--c {
+    filter: drop-shadow(0 0 22px var(--sheen-ribbon-glow-warm));
+  }
+
+  .sheen-ribbon--b {
+    filter: drop-shadow(0 0 22px var(--sheen-ribbon-glow-cool));
+  }
+
+  .sheen-ribbon--c {
+    opacity: 0.85;
+  }
+
+  .sheen-ribbon__shade {
+    stroke: light-dark(oklch(45% 0.12 300 / 0.12), oklch(8% 0.05 290 / 0.32));
+  }
+
+  /* The lit upper edge of the silk (emissive at night). */
+  .sheen-ribbon__edge {
+    stroke: light-dark(oklch(100% 0 0 / 0.55), oklch(100% 0 0 / 0.38));
+  }
+
+  .sheen-sky__liquid {
+    --sheen-ribbon-glow-warm: light-dark(oklch(80% 0.15 350 / 0.22), oklch(64% 0.26 345 / 0.5));
+    --sheen-ribbon-glow-cool: light-dark(oklch(80% 0.12 240 / 0.22), oklch(62% 0.2 250 / 0.5));
+  }
+
+  .sheen-stop--1 {
+    stop-color: var(--sheen-spectrum-1);
+  }
+  .sheen-stop--2 {
+    stop-color: var(--sheen-spectrum-2);
+  }
+  .sheen-stop--3 {
+    stop-color: var(--sheen-spectrum-3);
+  }
+  .sheen-stop--4 {
+    stop-color: var(--sheen-spectrum-4);
+  }
+  .sheen-stop--5 {
+    stop-color: var(--sheen-spectrum-5);
+  }
+  .sheen-stop--6 {
+    stop-color: var(--sheen-spectrum-6);
+  }
+
+  /* Page mode: the ribbons step back (body text sits on the backdrop between the panels). */
+  .sheen-sky[data-mode="page"] .sheen-sky__ribbons {
+    opacity: 0.42;
+  }
+
+  /* Lite: ribbons without their glow (no filter at all), no caustics. */
+  :root[data-glass="lite"] .sheen-sky__ribbons g {
+    filter: none;
+  }
+
+  /* Daylight caustics: sunlight focused by the glass into a slowly shifting net of light
+   (a narrow band of fractal noise around its midpoint draws soft wavy lines; constant colour,
+   only alpha from the noise, so a line never turns grey). Light theme, hero mode, full glass. */
+  .sheen-sky__caustics {
+    display: none;
+    overflow: hidden;
+    -webkit-mask: radial-gradient(42% 52% at 72% 52%, #000 25%, transparent 80%);
+    mask: radial-gradient(42% 52% at 72% 52%, #000 25%, transparent 80%);
+  }
+
+  .sheen-sky__caustics > i {
+    position: absolute;
+    inset: -240px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='c' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='0.004' numOctaves='3' seed='11' stitchTiles='stitch'/><feComponentTransfer><feFuncR type='table' tableValues='0 0 0 0 0 0 0 0 0 0 0.3 1 0.3 0 0 0 0 0 0 0 0 0 0 0 0'/><feFuncG type='table' tableValues='0 0 0 0 0 0 0 0 0 0 0.3 1 0.3 0 0 0 0 0 0 0 0 0 0 0 0'/></feComponentTransfer><feColorMatrix type='matrix' values='0 -0.22 0 0 1  0 -0.04 0 0 1  0 0 0 0 1  0.8 0.32 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>");
+    background-size: 900px 900px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]):not([data-glass="lite"]) .sheen-sky[data-mode="hero"] .sheen-sky__caustics {
+      display: block;
+    }
+  }
+
+  :root[data-theme="light"]:not([data-glass="lite"]) .sheen-sky[data-mode="hero"] .sheen-sky__caustics {
+    display: block;
+  }
+
+  /* Hero mode (both styles): a calm area of page colour under the copy column (left), so the
+   headline and lede keep AA over any light, and, at night, a vignette that makes the composition
+   pop. Both scroll away with the first viewport (the hero is gone by then). */
+  .sheen-sky__veil {
+    display: none;
+    --sheen-veil: color-mix(in oklab, var(--sheen-bg) 74%, transparent);
+    background: radial-gradient(54% 64% at 22% 46%, var(--sheen-veil), transparent 72%);
+  }
+
+  /* Phones: the copy spans the full width above the composition, so the veil covers the top. */
+  @media (max-width: 63.9rem) {
+    .sheen-sky__veil {
+      background: linear-gradient(to bottom, var(--sheen-veil) 0%, var(--sheen-veil) 56%, transparent 76%);
+    }
+  }
+
+  .sheen-sky__vignette {
+    display: none;
+    background: radial-gradient(
+      120% 100% at 68% 42%,
+      transparent 46%,
+      light-dark(oklch(98% 0.01 75 / 0), oklch(8% 0.03 285 / 0.6))
+    );
+  }
+
+  .sheen-sky[data-mode="hero"] :is(.sheen-sky__veil, .sheen-sky__vignette) {
+    display: block;
+  }
+
+  /* Hero mode calms down into the page look as the first viewport scrolls away (compositor:
+   a scroll-driven opacity on non-glass decoration). */
+  @supports (animation-timeline: scroll()) {
+    /* Small layers only: the ribbon SVG (three drop-shadow filters) is never animated, as promoting
+     it to a layer on the first scroll frame re-rasterises it at full size (a 60+ ms hitch). */
+    .sheen-sky[data-mode="hero"] :is(.sheen-sky__veil, .sheen-sky__caustics, .sheen-sky__sphere) {
+      animation: sheen-sky-calm linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+  }
+}
+
+@keyframes sheen-sky-calm {
+  to {
+    opacity: 0;
+  }
+}
+@layer sheen {
+  /* ======================================================================
+ * AURORA NEON
+ * ====================================================================== */
+
+  /* Static aurora painted in CSS: the first paint, the reduced-motion / reduced-transparency sky.
+   The canvas (opaque) paints this same base itself, so the compositor culls this layer. */
+  .sheen-sky[data-style="aurora"] .sheen-sky__base {
+    background:
+      radial-gradient(
+        70% 55% at 78% 8%,
+        light-dark(oklch(78% 0.15 210 / 0.7), oklch(45% 0.14 215 / 0.35)),
+        transparent 70%
+      ),
+      radial-gradient(
+        60% 50% at 22% 0%,
+        light-dark(oklch(74% 0.18 300 / 0.7), oklch(40% 0.2 295 / 0.5)),
+        transparent 70%
+      ),
+      radial-gradient(
+        55% 45% at 55% 38%,
+        light-dark(oklch(80% 0.16 350 / 0.6), oklch(36% 0.18 340 / 0.35)),
+        transparent 72%
+      ),
+      radial-gradient(
+        90% 60% at 50% 110%,
+        light-dark(oklch(85% 0.11 70 / 0.72), oklch(24% 0.1 280 / 0.6)),
+        transparent 70%
+      ),
+      light-dark(oklch(94% 0.034 300), var(--sheen-bg));
+  }
+
+  .sheen-sky[data-style="aurora"] {
+    --sheen-grain-o: 0.55;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sheen-sky[data-style="aurora"] {
+      --sheen-grain-o: 1;
+    }
+  }
+
+  :root[data-theme="dark"] .sheen-sky[data-style="aurora"] {
+    --sheen-grain-o: 1;
+  }
+
+  /* Low-res canvas upscaled: the bilinear stretch is the blur. */
+  .sheen-sky__aurora {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* A faint grid for the glass to frost (hero mode only, masked to the hero area). */
+  .sheen-sky__grid {
+    display: none;
+    background-image:
+      linear-gradient(to bottom, var(--sheen-backdrop-grid) 1px, transparent 1px),
+      linear-gradient(to right, var(--sheen-backdrop-grid) 1px, transparent 1px);
+    background-size: var(--sheen-backdrop-grid-size, 56px) var(--sheen-backdrop-grid-size, 56px);
+    -webkit-mask: radial-gradient(60% 60% at 70% 40%, #000, transparent 75%);
+    mask: radial-gradient(60% 60% at 70% 40%, #000, transparent 75%);
+  }
+
+  .sheen-sky[data-mode="hero"][data-style="aurora"] .sheen-sky__grid {
+    display: block;
+  }
+
+  /* ======================================================================
+ * Preferences
+ * ====================================================================== */
+
+  /* Reduced transparency: glass turns solid, so the backdrop only tints the page. */
+  :root[data-transparency="reduced"] .sheen-sky > :not(.sheen-sky__base) {
+    display: none;
+  }
+
+  :root[data-transparency="reduced"] .sheen-sky__base {
+    opacity: 0.45;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sheen-sky > :not(.sheen-sky__base) {
+      display: none;
+    }
+
+    .sheen-sky__base {
+      opacity: 0.45;
+    }
+  }
+
+  /* Windows high contrast: decoration only, so it goes. */
+  @media (forced-colors: active) {
+    .sheen-sky,
+    .sheen-stage-backdrop {
+      display: none;
+    }
+  }
+
+  /* ======================================================================
+ * Preview stages (docs): vivid colour behind the glass in every style.
+ * Crisp shapes (spheres, rings, a ribbon) next to soft light, so the blur reads at a glance.
+ *
+ * AA rule (measured from pixels): ghost buttons, captions and hints sit on the
+ * BARE stage, and the most muted text token (--sheen-fg-subtle) must keep 4.5:1 over any pixel
+ * of it. So every shape stays inside a luminance band: by day >= 0.61 (pastel, oklch L >= 86%
+ * at C <= 0.12) and at night <= 0.088 (deep, oklch L <= 46% at C <= 0.22), blended with the page
+ * and the soft blobs they overlap. Colour comes from chroma, not lightness.
+ * ====================================================================== */
+  .sheen-stage-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    overflow: hidden;
+    pointer-events: none;
+    /* Layout-inert art: the stage is a size container, so its layers are placed with transforms measured in its own
+     units (cqh), never with a top/bottom/percentage inset. A stage that grows or shrinks after first paint (a lazy
+     preview, a tab switch, a route change) then moves no layer in layout, so it can never register as a shift. */
+    container-type: size;
+    contain: layout paint;
+    /* A stage is its own little page: an opaque page-coloured base under the blobs, so the live
+     wallpaper (a saturated ribbon, a hot orb) never shows through and breaks the luminance band
+     the rules above rely on. Text on the bare stage (ghost buttons, captions, links, the app
+     frame's address pill) then keeps AA over ANY pixel of it, in both styles and themes. */
+    --sheen-stage-base: var(--sheen-bg);
+  }
+
+  /* Four compositions (data-v, set per stage): where the two lights and the band sit. */
+  .sheen-stage-backdrop {
+    --v-a-end: 6%;
+    --v-a-top: 14cqh;
+    --v-b-start: -4%;
+    --v-b-bottom: -18cqh;
+    --v-r-top: 58cqh;
+    --v-r-rot: -9deg;
+    --v-bx: 18%;
+    --v-by: 30%;
+  }
+  .sheen-stage-backdrop[data-v="1"] {
+    --v-a-end: 62%;
+    --v-a-top: -12cqh;
+    --v-b-start: 70%;
+    --v-b-bottom: -10cqh;
+    --v-r-top: 24cqh;
+    --v-r-rot: 7deg;
+    --v-bx: 78%;
+    --v-by: 22%;
+  }
+  .sheen-stage-backdrop[data-v="2"] {
+    --v-a-end: -3%;
+    --v-a-top: 56cqh;
+    --v-b-start: 8%;
+    --v-b-bottom: 52cqh;
+    --v-r-top: 80cqh;
+    --v-r-rot: -4deg;
+    --v-bx: 40%;
+    --v-by: 74%;
+  }
+  .sheen-stage-backdrop[data-v="3"] {
+    --v-a-end: 30%;
+    --v-a-top: 62cqh;
+    --v-b-start: 56%;
+    --v-b-bottom: 70cqh;
+    --v-r-top: 12cqh;
+    --v-r-rot: 11deg;
+    --v-bx: 64%;
+    --v-by: 58%;
+  }
+
+  .sheen-stage-backdrop > i {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    /* The layer's layout box always starts at the stage's top; --ty (set per layer, in cqh) places it. */
+    top: 0;
+    translate: 0 var(--ty, 0px);
+    pointer-events: none;
+  }
+
+  /* Liquid: soft orbs + a glossy sphere + a silk band. */
+  :root:not([data-sheen-style="aurora"]) .sheen-stage-backdrop {
+    background:
+      radial-gradient(40% 60% at var(--v-bx) var(--v-by), var(--sheen-blob-1), transparent 70%),
+      radial-gradient(36% 56% at 82% 72%, var(--sheen-blob-3), transparent 70%),
+      radial-gradient(30% 44% at 60% 6%, var(--sheen-blob-2), transparent 70%),
+      radial-gradient(28% 40% at 8% 96%, var(--sheen-blob-4), transparent 70%), var(--sheen-stage-base);
+  }
+
+  /* Day: the same dawn the Aurora stages carry (peach, rose, lilac, cyan at the top of the luminance band, L 87-89 % at
+   C <= 0.12, so fg-subtle keeps 4.5:1 on any pixel), laid at a different angle with a soft lit corner, so a Liquid
+   stage is never a pale cream slab. Night keeps the page colour under the blobs. */
+  :root:not([data-sheen-style="aurora"]) .sheen-stage-backdrop {
+    --sheen-stage-base:
+      radial-gradient(60% 80% at 8% 0%, oklch(93% 0.07 85 / 0.9), transparent 70%),
+      linear-gradient(160deg, oklch(89% 0.1 72), oklch(88% 0.11 345) 34%, oklch(87% 0.11 297) 62%, oklch(88% 0.1 212));
+  }
+  /* Night: not a black slab. A broad lit pool sits behind the middle of the stage (where the control is), a second
+   cooler wash under it, over the page colour, so glass has light to refract (L <= 40 %, inside the night band).
+   The pool's hue is per family (--stage-glow-h, below). */
+  :root:not([data-sheen-style="aurora"])[data-theme="dark"] .sheen-stage-backdrop {
+    --sheen-stage-base:
+      radial-gradient(46% 70% at 50% 50%, oklch(37% 0.15 var(--stage-glow-h) / 0.9), transparent 78%),
+      radial-gradient(70% 50% at 50% 108%, oklch(32% 0.12 calc(var(--stage-glow-h) + 70) / 0.7), transparent 75%),
+      var(--sheen-bg);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-sheen-style="aurora"]):not([data-theme="light"]) .sheen-stage-backdrop {
+      --sheen-stage-base:
+        radial-gradient(46% 70% at 50% 50%, oklch(37% 0.15 var(--stage-glow-h) / 0.9), transparent 78%),
+        radial-gradient(70% 50% at 50% 108%, oklch(32% 0.12 calc(var(--stage-glow-h) + 70) / 0.7), transparent 75%),
+        var(--sheen-bg);
+    }
+  }
+
+  /* Two lit orbs: soft-edged light (a bright core falling to nothing), not glossy stickers, so the stage edge never
+   shows a clipped disc and an orb that drifts under a control reads as light behind it. */
+  :root:not([data-sheen-style="aurora"]) .sheen-stage-backdrop > [data-s="1"] {
+    /* Keep-out: in a side gutter, fully inside the stage (never a disc cut by its edge), away from the centred control. */
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: clamp(5cqh, var(--v-a-top), 40cqh);
+    width: clamp(6rem, 17%, 10.5rem);
+    aspect-ratio: 1;
+    background: radial-gradient(
+      circle at 36% 30%,
+      light-dark(oklch(98% 0.03 var(--oh1) / 0.95), oklch(46% 0.2 var(--oh1) / 0.95)) 0 4%,
+      light-dark(oklch(89% 0.1 var(--oh1) / 0.9), oklch(42% 0.2 var(--oh1) / 0.85)) 26%,
+      light-dark(oklch(86% 0.1 var(--oh1) / 0.55), oklch(30% 0.15 var(--oh1) / 0.55)) 54%,
+      transparent 72%
+    );
+  }
+
+  :root:not([data-sheen-style="aurora"]) .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: calc(100cqh - clamp(5cqh, var(--v-b-bottom), 38cqh) - 100%);
+    width: clamp(7rem, 20%, 12rem);
+    aspect-ratio: 1;
+    background: radial-gradient(
+      circle at 36% 30%,
+      light-dark(oklch(98% 0.02 var(--oh2) / 0.95), oklch(42% 0.16 var(--oh2) / 0.95)) 0 4%,
+      light-dark(oklch(90% 0.09 var(--oh2) / 0.9), oklch(38% 0.17 var(--oh2) / 0.85)) 26%,
+      light-dark(oklch(87% 0.1 var(--oh2) / 0.55), oklch(28% 0.15 var(--oh2) / 0.55)) 54%,
+      transparent 72%
+    );
+  }
+
+  /* A silk band: a lit core with a feathered edge on all four sides (no straight cut against the stage). */
+  :root:not([data-sheen-style="aurora"]) .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline-start: -10%;
+    inset-inline-end: -10%;
+    --ty: var(--v-r-top);
+    height: 3.25rem;
+    border-radius: 999px;
+    rotate: var(--v-r-rot);
+    /* The spectrum's hues, held inside the stage's luminance band (the tokens themselves are brighter). */
+    background: linear-gradient(
+      90deg,
+      light-dark(oklch(88% 0.1 212), oklch(42% 0.13 215)),
+      light-dark(oklch(86% 0.1 255), oklch(46% 0.2 264)) 40%,
+      light-dark(oklch(86% 0.1 295), oklch(46% 0.22 292)) 70%,
+      light-dark(oklch(86% 0.1 352), oklch(46% 0.2 350))
+    );
+    opacity: 0.6;
+    mask: linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent);
+    -webkit-mask: linear-gradient(to bottom, transparent, #000 38%, #000 62%, transparent);
+  }
+
+  /* Aurora: lit light behind the glass, no outlines: two soft filled aurora lobes, a slanted lit
+   band and a cool core. Colours stay inside the stage's luminance band (text on a bare stage keeps AA). */
+  :root[data-sheen-style="aurora"] .sheen-stage-backdrop {
+    background:
+      radial-gradient(
+        52% 84% at var(--v-bx) var(--v-by),
+        light-dark(oklch(85% 0.12 300 / 0.9), oklch(48% 0.25 295 / 0.9)),
+        transparent 76%
+      ),
+      radial-gradient(
+        46% 74% at 72% 66%,
+        light-dark(oklch(86% 0.12 345 / 0.85), oklch(46% 0.23 340 / 0.86)),
+        transparent 74%
+      ),
+      radial-gradient(
+        40% 62% at 56% 18%,
+        light-dark(oklch(87% 0.1 205 / 0.9), oklch(49% 0.15 212 / 0.82)),
+        transparent 74%
+      ),
+      radial-gradient(60% 40% at 50% 112%, var(--sheen-blob-5), transparent 70%), var(--sheen-stage-base);
+    /* Light theme: a "dawn" base instead of the page white, so the glass has colour to blur everywhere on the stage:
+     peach, rose, lilac and cyan at the top of the luminance band (L 87-89%, C <= 0.11: fg-subtle keeps 4.5:1 on any
+     pixel), with a darker horizon line two thirds down. */
+    --sheen-stage-base:
+      linear-gradient(to bottom, transparent 62%, oklch(84% 0.08 300 / 0.55) 66%, transparent 71%),
+      linear-gradient(100deg, oklch(89% 0.09 70), oklch(88% 0.1 340) 36%, oklch(87% 0.1 295) 62%, oklch(88% 0.1 210));
+  }
+  :root[data-sheen-style="aurora"][data-theme="dark"] .sheen-stage-backdrop {
+    --sheen-stage-base: linear-gradient(100deg, oklch(25% 0.07 290), oklch(23% 0.08 330) 45%, oklch(24% 0.06 220));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-sheen-style="aurora"]:not([data-theme="light"]) .sheen-stage-backdrop {
+      --sheen-stage-base: linear-gradient(100deg, oklch(25% 0.07 290), oklch(23% 0.08 330) 45%, oklch(24% 0.06 220));
+    }
+  }
+
+  /* A lit band: a soft slanted aurora curtain. */
+  :root[data-sheen-style="aurora"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline-start: -10%;
+    inset-inline-end: -10%;
+    --ty: var(--v-r-top);
+    height: 32%;
+    border-radius: 50%;
+    rotate: var(--v-r-rot);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      light-dark(oklch(86% 0.11 205 / 0.8), oklch(49% 0.17 200 / 0.9)) 25%,
+      light-dark(oklch(86% 0.12 320 / 0.8), oklch(47% 0.24 320 / 0.9)) 65%,
+      transparent
+    );
+    mask: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+    -webkit-mask: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+  }
+
+  /* A filled soft lobe (no ring): a warm-magenta light whose edge dissolves. */
+  :root[data-sheen-style="aurora"] .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline-start: var(--v-b-start);
+    --ty: var(--v-a-top);
+    width: clamp(7rem, 30%, 16rem);
+    aspect-ratio: 1;
+    background: radial-gradient(
+      closest-side,
+      light-dark(oklch(86% 0.12 345 / 0.9), oklch(49% 0.25 335 / 0.95)),
+      transparent 100%
+    );
+  }
+
+  :root[data-sheen-style="aurora"] .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline-start: var(--v-a-end);
+    --ty: calc(100cqh - var(--v-b-bottom) - 100%);
+    width: 40%;
+    aspect-ratio: 1;
+    background: radial-gradient(
+      closest-side,
+      light-dark(oklch(88% 0.1 200 / 0.9), oklch(50% 0.15 205 / 0.85)),
+      transparent 100%
+    );
+  }
+
+  /* ----------------------------------------------------------------------
+ * Stage art per component family (the docs template sets `data-stage-family` from the page's sidebar group).
+ * The same three layers are re-drawn so a stage says what it holds: a bar silhouette and a grid behind charts,
+ * field rows behind forms, stacked panes behind overlays, a pill row behind navigation and layout, two bubbles
+ * behind chat, a brighter sphere and a thin streak (a lens flare) behind effects, an app window behind blocks and
+ * dashboards. Every colour sits inside the luminance band above (light L >= 86% at C <= 0.12, dark L <= 46%), the
+ * shapes keep their drift and parallax, and components and data display keep the default composition.
+ * -------------------------------------------------------------------- */
+  .sheen-stage-backdrop {
+    --sheen-stage-ink-a: light-dark(oklch(86% 0.1 295 / 0.9), oklch(44% 0.2 292 / 0.85));
+    --sheen-stage-ink-b: light-dark(oklch(87% 0.1 212 / 0.9), oklch(42% 0.14 215 / 0.85));
+    --sheen-stage-ink-c: light-dark(oklch(86% 0.11 350 / 0.9), oklch(44% 0.2 348 / 0.85));
+    --sheen-stage-line: light-dark(oklch(80% 0.08 290 / 0.35), oklch(60% 0.1 290 / 0.28));
+    /* Keep-out: family art lives in a stage's side gutters (3 % in, a quarter wide at most), never in the middle where the
+     previewed control sits. The side alternates per stage (data-v), so neighbours still differ; --h-* is the other side. */
+    --g-s: 3%;
+    --g-e: auto;
+    --h-s: auto;
+    --h-e: 3%;
+    /* Liquid's lights per family: the hue of the two orbs and of the lit pool behind the middle (night). */
+    --oh1: 350;
+    --oh2: 225;
+    --stage-glow-h: 285;
+  }
+  .sheen-stage-backdrop:is([data-v="1"], [data-v="3"]) {
+    --g-s: auto;
+    --g-e: 3%;
+    --h-s: 3%;
+    --h-e: auto;
+  }
+
+  /* Every family rule starts with `:root` so it weighs (0,4,0), the same as the per-style rules above, and wins by
+   coming later; each one states its whole geometry (insets, size, rotation, mask), so the shape is the same in both
+   styles. The per-stage composition variables (data-v) still place it. */
+
+  /* Charts: a grid tile where the sphere was, a bar silhouette where the band was. */
+  :root [data-stage-family="charts"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(6cqh, var(--v-a-top), 22cqh);
+    width: clamp(7rem, 22%, 14rem);
+    height: auto;
+    aspect-ratio: 1.45;
+    border-radius: 1rem;
+    filter: blur(0.25rem);
+    rotate: 0deg;
+    box-shadow: none;
+    background:
+      linear-gradient(var(--sheen-stage-line) 1px, transparent 1px) 0 0 / 1.6rem 1.6rem,
+      linear-gradient(90deg, var(--sheen-stage-line) 1px, transparent 1px) 0 0 / 1.6rem 1.6rem,
+      var(--sheen-stage-ink-b);
+    mask: linear-gradient(135deg, #000 40%, transparent);
+    -webkit-mask: linear-gradient(135deg, #000 40%, transparent);
+  }
+  :root [data-stage-family="charts"] .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: calc(100cqh + 6cqh - 100%);
+    width: 24%;
+    height: 46%;
+    filter: blur(0.25rem);
+    aspect-ratio: auto;
+    border-radius: 0.6rem 0.6rem 0 0;
+    rotate: 0deg;
+    opacity: 1;
+    background:
+      repeating-linear-gradient(90deg, var(--sheen-stage-ink-a) 0 9%, transparent 9% 14%),
+      linear-gradient(to top, var(--sheen-stage-ink-c), transparent);
+    mask: linear-gradient(to top, #000 30%, transparent 95%);
+    -webkit-mask: linear-gradient(to top, #000 30%, transparent 95%);
+  }
+
+  /* Forms: three field rows with a label stub each. */
+  :root [data-stage-family="forms"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(8cqh, var(--v-a-top), 24cqh);
+    width: clamp(7rem, 22%, 14rem);
+    height: 48%;
+    filter: blur(0.25rem);
+    aspect-ratio: auto;
+    border-radius: 0.9rem;
+    rotate: 0deg;
+    box-shadow: none;
+    background:
+      repeating-linear-gradient(to bottom, var(--sheen-stage-ink-a) 0 1.4rem, transparent 1.4rem 2.6rem),
+      repeating-linear-gradient(
+          to bottom,
+          transparent 0 1.6rem,
+          var(--sheen-stage-line) 1.6rem 2rem,
+          transparent 2rem 2.6rem
+        )
+        0 0 / 40% 100% no-repeat;
+    mask: linear-gradient(to right, #000 55%, transparent);
+    -webkit-mask: linear-gradient(to right, #000 55%, transparent);
+  }
+
+  /* Overlays: a pane and two more stacked behind it (sized to the stage's height, so the stack never leaves it). */
+  :root [data-stage-family="overlays"] .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(6cqh, var(--v-a-top), 18cqh);
+    width: clamp(5rem, 15%, 9rem);
+    filter: blur(0.25rem);
+    /* The two offset panes of the stack reach 2.4 rem past the box: keep them inside the stage on the end side. */
+    margin-inline-end: 2.6rem;
+    height: auto;
+    aspect-ratio: 1.3;
+    border-radius: 0.8rem;
+    background: var(--sheen-stage-ink-a);
+    box-shadow:
+      1.2rem 1.2rem 0 -0.15rem var(--sheen-stage-ink-c),
+      2.4rem 2.4rem 0 -0.3rem var(--sheen-stage-ink-b);
+  }
+
+  /* Navigation and layout: a row of pills, one lit. */
+  :root [data-stage-family="navigation"] .sheen-stage-backdrop > [data-s="1"],
+  :root [data-stage-family="layout"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(10cqh, var(--v-a-top), 24cqh);
+    width: clamp(8rem, 24%, 16rem);
+    height: 2.4rem;
+    filter: blur(0.2rem);
+    aspect-ratio: auto;
+    border-radius: 999px;
+    rotate: 0deg;
+    box-shadow: none;
+    mask: none;
+    -webkit-mask: none;
+    background:
+      linear-gradient(var(--sheen-stage-ink-c), var(--sheen-stage-ink-c)) 0 0 / 26% 100% no-repeat,
+      repeating-linear-gradient(90deg, var(--sheen-stage-ink-a) 0 22%, transparent 22% 26%);
+  }
+
+  /* Chat: two bubbles, one from each side. */
+  :root [data-stage-family="chat"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: auto 3%;
+    --ty: clamp(8cqh, var(--v-a-top), 20cqh);
+    width: clamp(6rem, 20%, 12rem);
+    height: 24%;
+    filter: blur(0.25rem);
+    aspect-ratio: auto;
+    border-radius: 1.4rem 1.4rem 0.35rem 1.4rem;
+    rotate: 0deg;
+    box-shadow: none;
+    mask: none;
+    -webkit-mask: none;
+    background: var(--sheen-stage-ink-a);
+  }
+  :root [data-stage-family="chat"] .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline: 3% auto;
+    --ty: calc(100cqh - clamp(8cqh, var(--v-b-bottom), 20cqh) - 100%);
+    width: clamp(5rem, 18%, 10rem);
+    height: 18%;
+    filter: blur(0.25rem);
+    aspect-ratio: auto;
+    border-radius: 1.4rem 1.4rem 1.4rem 0.35rem;
+    background: var(--sheen-stage-ink-b);
+  }
+
+  /* Effects: a lens flare, a hotter sphere and a thin bright streak. */
+  :root [data-stage-family="effects"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(6cqh, var(--v-a-top), 24cqh);
+    width: clamp(5rem, 14%, 8rem);
+    filter: blur(0.2rem);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    rotate: 0deg;
+    mask: none;
+    -webkit-mask: none;
+    /* Night cores stay at L 42 % (Y about 0.075): a light chip on a glass card over the flare keeps 4.5:1. */
+    background: radial-gradient(
+      circle at 34% 28%,
+      light-dark(oklch(99% 0.02 90), oklch(42% 0.14 60)) 0 6%,
+      light-dark(oklch(90% 0.1 40), oklch(42% 0.19 340)) 30%,
+      light-dark(oklch(86% 0.12 330), oklch(36% 0.2 300)) 62%,
+      light-dark(oklch(86% 0.1 290), oklch(26% 0.14 290)) 100%
+    );
+  }
+  :root [data-stage-family="effects"] .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline: -10% -10%;
+    --ty: var(--v-r-top);
+    width: auto;
+    height: 0.9rem;
+    aspect-ratio: auto;
+    filter: blur(0.15rem);
+    border-radius: 999px;
+    rotate: -28deg;
+    opacity: 0.9;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--sheen-stage-ink-c) 30%,
+      light-dark(oklch(98% 0.02 90), oklch(42% 0.1 90)) 50%,
+      var(--sheen-stage-ink-b) 70%,
+      transparent
+    );
+  }
+
+  /* Blocks and dashboards: an app window with a title bar and two cards. */
+  :root [data-stage-family="blocks"] .sheen-stage-backdrop > [data-s="2"],
+  :root [data-stage-family="dashboards"] .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(6cqh, var(--v-a-top), 22cqh);
+    width: clamp(8rem, 24%, 16rem);
+    filter: blur(0.25rem);
+    height: auto;
+    aspect-ratio: 1.5;
+    border-radius: 0.9rem;
+    background:
+      linear-gradient(var(--sheen-stage-ink-c), var(--sheen-stage-ink-c)) 0 0 / 100% 16% no-repeat,
+      linear-gradient(var(--sheen-stage-ink-a), var(--sheen-stage-ink-a)) 8% 28% / 40% 60% no-repeat,
+      linear-gradient(var(--sheen-stage-ink-b), var(--sheen-stage-ink-b)) 92% 28% / 40% 30% no-repeat,
+      light-dark(oklch(92% 0.04 290 / 0.8), oklch(22% 0.06 290 / 0.8));
+  }
+
+  /* Liquid, per family: the same two orbs and silk band, but each family lights its stage in its own colours and with its
+   own count and placement, so button, dialog and date picker are three different pictures (night adds the lit pool,
+   see the base above). Components: violet and teal orbs, the band stays. Forms: a violet pool with an amber orb behind
+   the field rows, a column of toggles opposite instead of the band. Overlays: one large teal orb opposite the pane stack,
+   no band. All inside the gutters and the luminance band. */
+  :root [data-stage-family="components"] .sheen-stage-backdrop {
+    --oh1: 300;
+    --oh2: 182;
+    --stage-glow-h: 262;
+  }
+  :root [data-stage-family="forms"] .sheen-stage-backdrop {
+    --oh2: 70;
+    --stage-glow-h: 312;
+  }
+  :root [data-stage-family="overlays"] .sheen-stage-backdrop {
+    --oh1: 196;
+    --stage-glow-h: 205;
+  }
+  :root:not([data-sheen-style="aurora"]) [data-stage-family="forms"] .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: calc(100cqh - 12cqh - 100%);
+    width: clamp(5rem, 16%, 10rem);
+    height: 36%;
+    aspect-ratio: auto;
+    border-radius: 0.9rem;
+    rotate: 0deg;
+    opacity: 1;
+    filter: blur(0.25rem);
+    background:
+      repeating-linear-gradient(to bottom, var(--sheen-stage-ink-b) 0 1.1rem, transparent 1.1rem 2.1rem) 100% 0 / 46%
+        100% no-repeat,
+      repeating-linear-gradient(to bottom, var(--sheen-stage-ink-c) 0 0.9rem, transparent 0.9rem 2.1rem) 0 0 / 40% 100%
+        no-repeat;
+    mask: linear-gradient(to left, #000 50%, transparent);
+    -webkit-mask: linear-gradient(to left, #000 50%, transparent);
+  }
+  :root:not([data-sheen-style="aurora"]) [data-stage-family="overlays"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: clamp(6cqh, var(--v-a-top), 14cqh);
+    width: clamp(5rem, min(24%, 76cqh), 15rem);
+  }
+  :root:not([data-sheen-style="aurora"]) [data-stage-family="overlays"] .sheen-stage-backdrop > [data-s="3"] {
+    display: none;
+  }
+
+  /* Overlays, Aurora: the same picture as Liquid's (one large soft teal orb opposite the pane stack, no third light), so
+   dialog, alert dialog, popover, menus and drawers read as "a sheet over a lit scene" in both styles. */
+  :root[data-sheen-style="aurora"] [data-stage-family="overlays"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: clamp(6cqh, var(--v-a-top), 14cqh);
+    width: clamp(5rem, min(24%, 76cqh), 15rem);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    rotate: 0deg;
+    mask: none;
+    -webkit-mask: none;
+    background: radial-gradient(
+      closest-side,
+      light-dark(oklch(88% 0.1 195 / 0.95), oklch(50% 0.13 195 / 0.92)),
+      transparent 100%
+    );
+  }
+  :root[data-sheen-style="aurora"] [data-stage-family="overlays"] .sheen-stage-backdrop > [data-s="3"] {
+    display: none;
+  }
+
+  /* Controls (button, button group, switch, slider): a different picture from the overlays. A lit diagonal bar low in the
+   stage, crossing under the row of controls, and two small orbs in opposite gutters, in both styles. */
+  :root [data-stage-family="controls"] .sheen-stage-backdrop {
+    --oh1: 330;
+    --oh2: 215;
+    --stage-glow-h: 252;
+  }
+  :root [data-stage-family="controls"] .sheen-stage-backdrop > [data-s="1"] {
+    inset-inline: var(--g-s) var(--g-e);
+    --ty: clamp(8cqh, var(--v-a-top), 22cqh);
+    width: clamp(3.5rem, 9%, 6rem);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    rotate: 0deg;
+    box-shadow: none;
+    mask: none;
+    -webkit-mask: none;
+    background: radial-gradient(
+      circle at 38% 32%,
+      light-dark(oklch(97% 0.04 var(--oh1) / 0.95), oklch(52% 0.2 var(--oh1) / 0.95)) 0 6%,
+      light-dark(oklch(88% 0.1 var(--oh1) / 0.9), oklch(44% 0.2 var(--oh1) / 0.85)) 40%,
+      transparent 72%
+    );
+  }
+  :root [data-stage-family="controls"] .sheen-stage-backdrop > [data-s="2"] {
+    inset-inline: var(--h-s) var(--h-e);
+    --ty: calc(100cqh - clamp(8cqh, var(--v-b-bottom), 22cqh) - 100%);
+    width: clamp(2.75rem, 7%, 4.5rem);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: none;
+    background: radial-gradient(
+      circle at 38% 32%,
+      light-dark(oklch(97% 0.03 var(--oh2) / 0.95), oklch(52% 0.15 var(--oh2) / 0.95)) 0 6%,
+      light-dark(oklch(89% 0.09 var(--oh2) / 0.9), oklch(42% 0.15 var(--oh2) / 0.85)) 42%,
+      transparent 72%
+    );
+  }
+  :root [data-stage-family="controls"] .sheen-stage-backdrop > [data-s="3"] {
+    inset-inline: 14% 14%;
+    --ty: calc(100cqh - 34cqh - 100%);
+    width: auto;
+    height: 2.6rem;
+    aspect-ratio: auto;
+    border-radius: 999px;
+    rotate: -13deg;
+    opacity: 0.8;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      light-dark(oklch(90% 0.09 85), oklch(45% 0.12 300)) 22%,
+      light-dark(oklch(89% 0.1 340), oklch(46% 0.2 340)) 60%,
+      transparent
+    );
+    mask: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+    -webkit-mask: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+  }
+}
+
+/* Ambient depth: the stage's orbs, band and lobes drift slowly at different depths (the `translate`
+   property, which also carries each layer's placement (--ty): transform-only, compositor, and independent of the `rotate` the band already uses). Each
+   is an infinite CSS loop, so the global off-screen hook pauses it while the stage is out of view;
+   reduced motion turns it into a single 1 ms pass (static composition). */
+@keyframes sheen-stage-drift-a {
+  from {
+    translate: -0.75rem calc(var(--ty, 0px) + 0.5rem);
+  }
+  to {
+    translate: 0.75rem calc(var(--ty, 0px) - 0.75rem);
+  }
+}
+@keyframes sheen-stage-drift-b {
+  from {
+    translate: 1rem calc(var(--ty, 0px) - 0.5rem);
+  }
+  to {
+    translate: -1.25rem calc(var(--ty, 0px) + 0.9rem);
+  }
+}
+@keyframes sheen-stage-drift-c {
+  from {
+    translate: -1.5rem var(--ty, 0px);
+  }
+  to {
+    translate: 1.5rem calc(var(--ty, 0px) + 0.25rem);
+  }
+}
+@layer sheen {
+  @media (prefers-reduced-motion: no-preference) {
+    :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="1"] {
+      animation: sheen-stage-drift-a var(--sheen-duration-drift-a) var(--sheen-ease-in-out) infinite alternate;
+    }
+    :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="2"] {
+      animation: sheen-stage-drift-b var(--sheen-duration-drift-b) var(--sheen-ease-in-out) infinite alternate;
+    }
+    :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="3"] {
+      animation: sheen-stage-drift-c var(--sheen-duration-drift-c) var(--sheen-ease-in-out) infinite alternate;
+    }
+  }
+}
+
+/* Parallax depth: as a stage scrolls through the viewport its three layers travel at different rates (the far layer
+   least), on `transform` so it composes with the drift's `translate` and the band's `rotate`. Scroll-linked (a view
+   timeline, not a loop): nothing runs while the stage is off-screen, and reduced motion leaves it still. */
+@keyframes sheen-stage-par-far {
+  from {
+    transform: translateY(5%);
+  }
+  to {
+    transform: translateY(-5%);
+  }
+}
+@keyframes sheen-stage-par-mid {
+  from {
+    transform: translateY(12%);
+  }
+  to {
+    transform: translateY(-12%);
+  }
+}
+@keyframes sheen-stage-par-near {
+  from {
+    transform: translateY(22%);
+  }
+  to {
+    transform: translateY(-22%);
+  }
+}
+@layer sheen {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="1"] {
+        animation:
+          sheen-stage-drift-a var(--sheen-duration-drift-a) var(--sheen-ease-in-out) infinite alternate,
+          sheen-stage-par-mid linear both;
+        animation-timeline: auto, view();
+        animation-range:
+          normal,
+          cover 0% cover 100%;
+      }
+      :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="2"] {
+        animation:
+          sheen-stage-drift-b var(--sheen-duration-drift-b) var(--sheen-ease-in-out) infinite alternate,
+          sheen-stage-par-near linear both;
+        animation-timeline: auto, view();
+        animation-range:
+          normal,
+          cover 0% cover 100%;
+      }
+      :root:not([data-motion="reduced"]) .sheen-stage-backdrop > [data-s="3"] {
+        animation:
+          sheen-stage-drift-c var(--sheen-duration-drift-c) var(--sheen-ease-in-out) infinite alternate,
+          sheen-stage-par-far linear both;
+        animation-timeline: auto, view();
+        animation-range:
+          normal,
+          cover 0% cover 100%;
+      }
+    }
+  }
+
+  :root[data-transparency="reduced"] .sheen-stage-backdrop {
+    opacity: 0.45;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sheen-stage-backdrop {
+      opacity: 0.45;
+    }
+  }
+
+  /* ======================================================================
+ * Display type and the accent word
+ * ====================================================================== */
+  .sheen-display {
+    font-family: var(--sheen-font-display);
+    font-weight: var(--sheen-display-weight);
+    letter-spacing: var(--sheen-display-tracking);
+  }
+
+  /* The style's accent word: Liquid = italic spectrum, Aurora = serif italic aurora. Painted with
+   the AA-checked text gradient. Use on ONE word or short phrase per heading. */
+  .sheen-accent-text {
+    font-family: var(--sheen-font-accent);
+    font-style: var(--sheen-accent-style);
+    font-weight: var(--sheen-accent-weight);
+    font-size: var(--sheen-accent-size);
+    letter-spacing: normal;
+    color: transparent;
+    background-image: var(--sheen-text-gradient);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    /* Room for the italic overhang, so the gradient never clips the last letter. */
+    padding-inline-end: 0.08em;
+  }
+
+  :root:not([data-sheen-style="aurora"]) .sheen-accent-text {
+    letter-spacing: -0.03em;
+  }
+
+  @media (forced-colors: active) {
+    .sheen-accent-text {
+      color: CanvasText;
+      background: none;
+    }
+  }
+
+  /* Aurora, every page: the content area sits under a soft veil of the page tint, so body text and links that
+   fall on the bare sky keep 4.5:1 at the worst pixel in both themes (the vivid light stays in the hero, behind
+   its glass). Opacity of one static layer, so it costs no extra pass. */
+  .sheen-sky[data-mode="page"][data-style="aurora"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--sheen-bg);
+    opacity: 0.34;
+    pointer-events: none;
+  }
+
+  /*
+ * <SheenScene>: a real picture behind glass (so the blur has something to refract).
+ *   .sheen-scene             fills its positioned parent (or the page when [data-fixed]); aria-hidden
+ *     .sheen-scene__layer    the image holder; oversized while [data-parallax] so the drift never shows an edge
+ *     .sheen-scene__dim      the page background mixed in by --sheen-scene-dim, so text over glass keeps 4.5:1
+ * Nothing here wraps glass; no opacity or filter sits on an ancestor of glass.
+ */
+  .sheen-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: var(--sheen-bg);
+  }
+
+  .sheen-scene[data-fixed] {
+    position: fixed;
+    z-index: -1;
+  }
+
+  .sheen-scene__layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sheen-scene[data-parallax] .sheen-scene__layer {
+    inset: -5% 0;
+  }
+
+  .sheen-scene__layer picture,
+  .sheen-scene__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sheen-scene__img {
+    object-fit: cover;
+    user-select: none;
+  }
+
+  .sheen-scene__dim {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--sheen-bg) calc(var(--sheen-scene-dim, 0.5) * 100%), transparent);
+  }
+
+  /* Reduced transparency / forced colours: the solid page background, no image. */
+  @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+    .sheen-scene__layer {
+      display: none;
+    }
+  }
+}

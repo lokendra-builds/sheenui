@@ -32,7 +32,7 @@
       "target": "@components/sheenui/charts/histogram/model.ts"
     }
   ],
-  "docs": "Histogram: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Histogram, HistogramTable } from \"@/components/sheenui/charts/histogram\";",
+  "docs": "Histogram: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Histogram, HistogramTable } from \"@/components/sheenui/charts/histogram\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

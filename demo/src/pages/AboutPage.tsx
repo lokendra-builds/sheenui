@@ -124,7 +124,8 @@ export function AboutPage() {
           Every docs page lists the exact files to copy, computed from the import graph, and a copy test builds each
           list in an empty Vite app. A build check fails on a missing title, a duplicate description, a broken link or a
           number on the site that disagrees with the code. The <A to="/docs/dark-mode">dark mode</A> and{" "}
-          <A to="/docs/rtl">right-to-left</A> pages describe the two behaviours that touch every component.
+          <A to="/docs/rtl">right-to-left</A> pages describe the two behaviours that touch every component, and the{" "}
+          <A to="/docs/performance">performance</A> page lists the budgets and lab numbers.
         </p>
       </Section>
 

@@ -24,7 +24,7 @@
       "target": "@components/sheenui/charts/calendar-heatmap.tsx"
     }
   ],
-  "docs": "Calendar heatmap: https://lokendra-builds.github.io/sheenui/charts/calendar-heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CalendarHeatmap, CalendarHeatmapTable } from \"@/components/sheenui/charts/calendar-heatmap\";",
+  "docs": "Calendar heatmap: https://lokendra-builds.github.io/sheenui/charts/calendar-heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CalendarHeatmap, CalendarHeatmapTable } from \"@/components/sheenui/charts/calendar-heatmap\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

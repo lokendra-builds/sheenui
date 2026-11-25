@@ -23,7 +23,7 @@
       "target": "@components/sheenui/charts/waffle-chart.tsx"
     }
   ],
-  "docs": "Waffle chart: https://lokendra-builds.github.io/sheenui/charts/waffle\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaffleChart, WaffleTable } from \"@/components/sheenui/charts/waffle-chart\";",
+  "docs": "Waffle chart: https://lokendra-builds.github.io/sheenui/charts/waffle\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaffleChart, WaffleTable } from \"@/components/sheenui/charts/waffle-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

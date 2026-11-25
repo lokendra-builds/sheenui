@@ -22,7 +22,7 @@
       "target": "@components/sheenui/blocks/analytics-product.tsx"
     }
   ],
-  "docs": "Product analytics: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { ProductDashboard } from \"@/components/sheenui/blocks/analytics-product\";",
+  "docs": "Product analytics: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { ProductDashboard } from \"@/components/sheenui/blocks/analytics-product\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

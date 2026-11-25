@@ -23,7 +23,7 @@
       "target": "@components/sheenui/blocks/analytics-saas.tsx"
     }
   ],
-  "docs": "SaaS revenue: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { SaasRevenueDashboard } from \"@/components/sheenui/blocks/analytics-saas\";",
+  "docs": "SaaS revenue: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { SaasRevenueDashboard } from \"@/components/sheenui/blocks/analytics-saas\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

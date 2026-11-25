@@ -137,21 +137,24 @@ HANDOFF.md
 !docs/guides/*.md
 # The negation above re-includes macOS AppleDouble copies (._name.md): exclude them again.
 docs/guides/._*
-# GitHub-only templates (shown in the PR form, not in the repo browsing experience).
+# GitHub folder (owner, 25 Nov 2026): CI and Pages workflows, issue/PR templates, Dependabot, CODEOWNERS are public.
+# The PR template is Markdown, so it is re-included here; the rest of .github/ is yml and is not matched by `*.md`.
 !.github/pull_request_template.md
-# Public project docs (owner, 16 Nov 2026): GitHub community standards and license notices.
-# Changelog, contributing and quality notes stay local (owner, 16 Nov 2026).
+.github/**/._*
+# Public project docs (owner, 16 and 25 Nov 2026): GitHub community standards, license notices, contributing guide, changelog.
+# Planning, scoring, motion, SEO and hand-off notes (PLAN, TASKS, QUALITY, MOTION, SEO, HANDOFF, CLAUDE) stay local.
 !SECURITY.md
 !CODE_OF_CONDUCT.md
 !THIRD_PARTY_NOTICES.md
+!CONTRIBUTING.md
+!CHANGELOG.md
 # Test fixtures of the guide code check: `pnpm scripts:test` needs them in a fresh clone.
 !scripts/test/fixtures/**/*.md
 scripts/test/fixtures/**/._*
 
 # --- Never pushed (owner, 16 Nov 2026) ---
-# Editor settings and the GitHub folder (CI and Pages workflows, issue/PR templates, Dependabot, CODEOWNERS).
+# Editor settings stay local (public docs describe the formatting rules in their own words).
 .editorconfig
-.github/
 # Design lab prototypes (hero options, stage and OTP concepts): kept locally as a reference, dev server only.
 demo/dist-lab/
 # A macOS "XSym" symlink stub copied from a Mac: it holds a local machine path.

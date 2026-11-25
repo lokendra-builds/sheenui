@@ -23,7 +23,7 @@
       "target": "@components/sheenui/charts/tracker-chart.tsx"
     }
   ],
-  "docs": "Tracker chart: https://lokendra-builds.github.io/sheenui/charts/uptime-tracker\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TrackerChart, TrackerTable } from \"@/components/sheenui/charts/tracker-chart\";",
+  "docs": "Tracker chart: https://lokendra-builds.github.io/sheenui/charts/uptime-tracker\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TrackerChart, TrackerTable } from \"@/components/sheenui/charts/tracker-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

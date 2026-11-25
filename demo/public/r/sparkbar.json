@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/sparkbar.tsx"
     }
   ],
-  "docs": "Sparkbar: https://lokendra-builds.github.io/sheenui/charts/sparkbar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkbar } from \"@/components/sheenui/charts/sparkbar\";",
+  "docs": "Sparkbar: https://lokendra-builds.github.io/sheenui/charts/sparkbar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkbar } from \"@/components/sheenui/charts/sparkbar\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

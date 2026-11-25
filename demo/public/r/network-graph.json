@@ -115,7 +115,7 @@
       "target": "@components/sheenui/charts/network-graph/use-view.ts"
     }
   ],
-  "docs": "Network graph: https://lokendra-builds.github.io/sheenui/charts/network-graph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { NetworkGraph, NetworkTable } from \"@/components/sheenui/charts/network-graph\";\nimport { GraphMarks, LitLayers, ZoomToolbar } from \"@/components/sheenui/charts/network-graph/layers\";\nimport { ToolIcon } from \"@/components/sheenui/charts/network-graph/layout\";\nimport { NetworkTable } from \"@/components/sheenui/charts/network-graph/table\";",
+  "docs": "Network graph: https://lokendra-builds.github.io/sheenui/charts/network-graph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { NetworkGraph, NetworkTable } from \"@/components/sheenui/charts/network-graph\";\nimport { GraphMarks, LitLayers, ZoomToolbar } from \"@/components/sheenui/charts/network-graph/layers\";\nimport { ToolIcon } from \"@/components/sheenui/charts/network-graph/layout\";\nimport { NetworkTable } from \"@/components/sheenui/charts/network-graph/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

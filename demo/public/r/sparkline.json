@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/sparkline.tsx"
     }
   ],
-  "docs": "Sparkline: https://lokendra-builds.github.io/sheenui/charts/sparkline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkline } from \"@/components/sheenui/charts/sparkline\";",
+  "docs": "Sparkline: https://lokendra-builds.github.io/sheenui/charts/sparkline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkline } from \"@/components/sheenui/charts/sparkline\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

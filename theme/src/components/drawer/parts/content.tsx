@@ -63,28 +63,28 @@ export const attached = {
     "pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)]",
     "[transform:translateY(calc(var(--drawer-snap-point-offset)+var(--drawer-swipe-movement-y)))]",
     "motion-ok:data-starting-style:[transform:translateY(calc(100%+2px))] motion-ok:data-ending-style:[transform:translateY(calc(100%+2px))]",
-    "after:pointer-events-none after:absolute after:-inset-x-px after:top-full after:h-16 after:bg-[inherit] after:content-['']",
+    "after:pointer-events-none after:absolute after:-inset-x-px after:top-full after:bottom-auto after:h-16 after:bg-[inherit] after:content-['']",
   ),
   top: cn(
     "w-full max-w-2xl max-h-[calc(100dvh-var(--sheen-drawer-gap))] rounded-b-sheen-xl border-t-0",
     "pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)]",
     "[transform:translateY(var(--drawer-swipe-movement-y))]",
     "motion-ok:data-starting-style:[transform:translateY(calc(-100%-2px))] motion-ok:data-ending-style:[transform:translateY(calc(-100%-2px))]",
-    "after:pointer-events-none after:absolute after:-inset-x-px after:bottom-full after:h-16 after:bg-[inherit] after:content-['']",
+    "after:pointer-events-none after:absolute after:-inset-x-px after:bottom-full after:top-auto after:h-16 after:bg-[inherit] after:content-['']",
   ),
   left: cn(
     "h-full w-[min(22rem,calc(100vw-3rem))] rounded-r-sheen-xl border-l-0",
     "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]",
     "[transform:translateX(var(--drawer-swipe-movement-x))]",
     "motion-ok:data-starting-style:[transform:translateX(calc(-100%-2px))] motion-ok:data-ending-style:[transform:translateX(calc(-100%-2px))]",
-    "after:pointer-events-none after:absolute after:-inset-y-px after:right-full after:w-16 after:bg-[inherit] after:content-['']",
+    "after:pointer-events-none after:absolute after:-inset-y-px after:right-full after:left-auto after:w-16 after:bg-[inherit] after:content-['']",
   ),
   right: cn(
     "h-full w-[min(22rem,calc(100vw-3rem))] rounded-l-sheen-xl border-r-0",
     "pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)]",
     "[transform:translateX(var(--drawer-swipe-movement-x))]",
     "motion-ok:data-starting-style:[transform:translateX(calc(100%+2px))] motion-ok:data-ending-style:[transform:translateX(calc(100%+2px))]",
-    "after:pointer-events-none after:absolute after:-inset-y-px after:left-full after:w-16 after:bg-[inherit] after:content-['']",
+    "after:pointer-events-none after:absolute after:-inset-y-px after:left-full after:right-auto after:w-16 after:bg-[inherit] after:content-['']",
   ),
 } as const;
 

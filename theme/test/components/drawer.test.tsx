@@ -227,3 +227,24 @@ it("one ArrowUp right after opening moves exactly one snap point", async () => {
   await settle();
   expect((onSnapPointChange.mock.calls as unknown[][]).map((c) => c[0])).toEqual(["half"]);
 });
+
+describeVariants((variant) => {
+  it.each(["left", "right", "top", "bottom"] as const)(
+    "a glass %s drawer's edge bleed sits outside the panel, never as a strip inside it",
+    async (side) => {
+      renderUi(<Example side={side} />, variant);
+      await userEvent.click(trigger());
+      await expect.poll(dialog).not.toBeNull();
+      const panel = dialog()!;
+      const bleed = getComputedStyle(panel, "::after");
+      const left = parseFloat(bleed.left);
+      const top = parseFloat(bleed.top);
+      const width = panel.clientWidth;
+      const height = panel.clientHeight;
+      if (side === "left") expect(left).toBeLessThan(0);
+      if (side === "right") expect(left).toBeGreaterThanOrEqual(width - 2);
+      if (side === "top") expect(top).toBeLessThan(0);
+      if (side === "bottom") expect(top).toBeGreaterThanOrEqual(height - 2);
+    },
+  );
+});

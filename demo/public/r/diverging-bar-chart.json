@@ -48,7 +48,7 @@
       "target": "@components/sheenui/charts/diverging-bar-chart/table.tsx"
     }
   ],
-  "docs": "Diverging bar chart: https://lokendra-builds.github.io/sheenui/charts/diverging-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DivergingBarChart, DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart\";\nimport { DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart/table\";",
+  "docs": "Diverging bar chart: https://lokendra-builds.github.io/sheenui/charts/diverging-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DivergingBarChart, DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart\";\nimport { DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

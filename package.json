@@ -65,17 +65,17 @@
     "motion:literals": "node scripts/check-motion-literals.mjs",
     "motion:properties": "node scripts/check-motion-properties.mjs",
     "types:check": "node scripts/check-prop-types.mjs",
-    "verify": "pnpm generated:check && pnpm outdated:check && pnpm format:check && pnpm motion:literals && pnpm motion:properties && pnpm typecheck && pnpm lint && pnpm test:coverage && pnpm build && pnpm package:check && pnpm treeshake:check && pnpm seo:check && pnpm docs:check && pnpm readme:index --check && pnpm budget && pnpm examples:check && pnpm types:check && pnpm e2e:chromium && pnpm e2e:motion"
+    "verify": "pnpm generated:check && pnpm outdated:check && pnpm format:check && pnpm scripts:test && pnpm motion:literals && pnpm motion:properties && pnpm typecheck && pnpm lint && pnpm test:coverage && pnpm build && pnpm package:check && pnpm treeshake:check && pnpm seo:check && pnpm docs:check && pnpm readme:index --check && pnpm budget && pnpm examples:check && pnpm types:check && pnpm e2e:chromium && pnpm e2e:motion"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "eslint": "10.15.0",
-    "eslint-plugin-jsdoc": "65.4.9",
+    "eslint-plugin-jsdoc": "65.5.4",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.14.0",
     "prettier": "3.10.1",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.2"
+    "typescript-eslint": "8.74.0"
   }
 }

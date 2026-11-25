@@ -21,7 +21,7 @@
       "target": "@components/sheenui/blocks/analytics/demo-finance.ts"
     }
   ],
-  "docs": "Finance demo data: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { financeDemoData, financeDemoLoader, financeLiveStep } from \"@/components/sheenui/blocks/analytics/demo-finance\";",
+  "docs": "Finance demo data: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { financeDemoData, financeDemoLoader, financeLiveStep } from \"@/components/sheenui/blocks/analytics/demo-finance\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

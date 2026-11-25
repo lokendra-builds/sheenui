@@ -5,6 +5,7 @@ import { CommandField } from "../layout/CommandField";
 import { slugify } from "../layout/heading-ids";
 import { HubCards } from "../layout/HubCards";
 import { AllDashboardsStage } from "./DashboardStages";
+import { InstallAliasSection } from "./InstallAliasSection";
 import { Page } from "../layout/Page";
 import { ScrollPre } from "../layout/ScrollPre";
 import { href } from "../router";
@@ -390,7 +391,7 @@ function DashboardsGuide() {
                   Data fields
                 </th>
                 <th scope="col" className={th}>
-                  Registry item
+                  Registry items (component, with demo data)
                 </th>
               </tr>
             </thead>
@@ -408,6 +409,8 @@ function DashboardsGuide() {
                   </td>
                   <td className={td}>
                     <code className={inlineCode}>{t.item}</code>
+                    <br />
+                    <code className={inlineCode}>{t.item.replace("analytics-", "analytics-demo-")}</code>
                   </td>
                 </tr>
               ))}
@@ -421,16 +424,24 @@ function DashboardsGuide() {
         </h2>
         <Prose>
           <p>
-            Each template is a registry item. Run the add command with its URL, for example the SaaS one, and the shadcn
-            CLI copies the dashboard, the dashboard kit and the charts it uses into{" "}
+            Each template is a registry item, and its sample data is a second item named{" "}
+            <code className={inlineCode}>analytics-demo-&lt;name&gt;</code> that also installs the dashboard. Run the
+            add command with the demo item, for example the SaaS one, and the shadcn CLI copies the dashboard, the
+            dashboard kit, the charts it uses and the sample data into{" "}
             <code className={inlineCode}>components/sheenui/</code>:
           </p>
         </Prose>
-        <CommandField command={`npx shadcn@latest add ${SITE_URL}/r/analytics-saas.json`} />
+        <CommandField
+          command={`npx shadcn@latest add ${SITE_URL}/r/analytics-demo-saas.json`}
+          label="Install command: dashboard template"
+        />
         <Prose>
           <p>
-            Your app needs React 19.2 and Tailwind CSS v4; the <A to="/docs/tailwind-v4">Tailwind v4 glass UI setup</A>{" "}
-            covers the two CSS imports, and the <A to="/docs/installation">installation page</A> lists the rest.
+            For production, where <code className={inlineCode}>load</code> returns your own data, install the component
+            only: <code className={inlineCode}>analytics-saas</code> instead of{" "}
+            <code className={inlineCode}>analytics-demo-saas</code>. Your app needs React 19.2 and Tailwind CSS v4; the{" "}
+            <A to="/docs/tailwind-v4">Tailwind v4 glass UI setup</A> covers the two CSS imports, and the{" "}
+            <A to="/docs/installation">installation page</A> lists the rest.
           </p>
         </Prose>
       </section>
@@ -592,6 +603,7 @@ export function InstallationPage() {
           import graph. You end up with plain React components in your own folders that you can read, change and keep.
         </p>
       </Prose>
+      <InstallAliasSection />
       <section aria-labelledby="install-shadcn" className="install-step flex max-w-3xl flex-col gap-3">
         <h2 id="install-shadcn" className="text-2xl font-semibold tracking-tight">
           Install with the shadcn CLI
@@ -603,13 +615,60 @@ export function InstallationPage() {
             registry URL of the component:
           </p>
         </Prose>
-        <CommandField command={`npx shadcn@latest add ${SITE_URL}/r/glass-card.json`} />
+        <CommandField
+          command={`npx shadcn@latest add ${SITE_URL}/r/glass-card.json`}
+          label="Install command: one component"
+        />
         <Prose>
           <p>
             The item installs into <code className={inlineCode}>components/sheenui/</code> and pulls in the shared
             tokens, glass styles, motion presets and hooks. Replace <code className={inlineCode}>glass-card</code> with
             any item name: <code className={inlineCode}>button</code>, <code className={inlineCode}>dialog</code>,{" "}
             <code className={inlineCode}>data-table</code>, a chart or a block.
+          </p>
+        </Prose>
+        <Prose>
+          <p>
+            An example can use more than the page&apos;s own component: the dialog example has an{" "}
+            <code className={inlineCode}>Input</code>, so add <code className={inlineCode}>input</code> too. The Files
+            to copy box on each page lists every item its examples import. A dashboard is the item{" "}
+            <code className={inlineCode}>analytics-demo-saas</code> (dashboard plus sample data; the other four are{" "}
+            <code className={inlineCode}>analytics-demo-web</code>, <code className={inlineCode}>-ecommerce</code>,{" "}
+            <code className={inlineCode}>-product</code> and <code className={inlineCode}>-finance</code>) or{" "}
+            <code className={inlineCode}>analytics-saas</code> for the dashboard alone.
+          </p>
+        </Prose>
+      </section>
+      <section aria-labelledby="install-everything" className="install-step flex max-w-3xl flex-col gap-3">
+        <h2 id="install-everything" className="text-2xl font-semibold tracking-tight">
+          Install everything, or a whole family
+        </h2>
+        <Prose>
+          <p>
+            Five bundle items install a family in one command. A bundle has no files of its own: it lists the real items
+            it needs, so nothing is copied twice and the shared theme comes along once.
+          </p>
+        </Prose>
+        <CommandField command={`npx shadcn@latest add ${SITE_URL}/r/all.json`} label="Install command: everything" />
+        <Prose>
+          <p>
+            <code className={inlineCode}>all</code> is the whole library. The smaller ones are{" "}
+            <code className={inlineCode}>components</code>, <code className={inlineCode}>charts</code>,{" "}
+            <code className={inlineCode}>blocks</code> and <code className={inlineCode}>dashboards</code> (the five
+            dashboards with the components, charts and demo data they need). Expect a lot of files:{" "}
+            <code className={inlineCode}>all</code> copies several hundred, so prefer a family or single items when you
+            only need part of the library. To use short names, add the registry to your{" "}
+            <code className={inlineCode}>components.json</code> once:
+          </p>
+        </Prose>
+        <ScrollPre className="glass-1 overflow-x-auto rounded-sheen-lg p-4 font-sheen-mono text-sm">
+          <code>{`"registries": {\n  "@sheenui": "${SITE_URL}/r/{name}.json"\n}`}</code>
+        </ScrollPre>
+        <CommandField command="npx shadcn@latest add @sheenui/all" label="Install command: everything, short name" />
+        <Prose>
+          <p>
+            The namespace form was tested with shadcn CLI 4.23; the URL form above is the one that needs no setup. The
+            same short form works for single items, for example <code className={inlineCode}>@sheenui/button</code>.
           </p>
         </Prose>
       </section>
@@ -635,6 +694,13 @@ export function InstallationPage() {
             <code className={inlineCode}>sheenPreferenceScript</code> in the document head to avoid a flash of the wrong
             theme (see <A to="/docs/dark-mode">dark mode</A>). The <A to="/docs/tailwind-v4">Tailwind CSS v4 setup</A>{" "}
             explains what the stylesheet defines.
+          </p>
+          <p>
+            In Next.js, a chart or dashboard example that passes a function (a{" "}
+            <code className={inlineCode}>format</code> formatter, <code className={inlineCode}>seriesLegend</code>, a
+            dashboard&apos;s <code className={inlineCode}>load</code>) must live in a file that starts with{" "}
+            <code className={inlineCode}>&quot;use client&quot;</code>; a Server Component cannot pass functions to
+            client components.
           </p>
         </Prose>
       </section>

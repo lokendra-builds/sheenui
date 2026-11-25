@@ -497,6 +497,9 @@ export function PillNav({
         }
         className={cn(
           "flex gap-1 overflow-x-auto overscroll-x-contain rounded-[inherit] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          // Phone width: the pills would not fit in one row, and a scrolling strip shows the last label cut in half under the
+          // fade. Two equal columns instead: every label whole, nothing to scroll.
+          "@max-md/settings:grid @max-md/settings:grid-cols-2 @max-md/settings:overflow-visible",
           "[mask-image:linear-gradient(to_right,transparent,#000_var(--fade-l),#000_calc(100%_-_var(--fade-r)),transparent)]",
           // Room for focus rings inside the clip.
           "p-0.5",
@@ -505,7 +508,7 @@ export function PillNav({
         {items.map((item) => {
           const current = item.value === value;
           return (
-            <li key={item.value} className="shrink-0">
+            <li key={item.value} className="shrink-0 @max-md/settings:min-w-0">
               <a
                 href={item.href}
                 aria-current={current ? "location" : undefined}
@@ -515,7 +518,7 @@ export function PillNav({
                   onSelect(item.value);
                 }}
                 className={cn(
-                  "relative isolate flex h-9 items-center gap-2 rounded-sheen-full px-3.5 text-sm font-medium whitespace-nowrap",
+                  "relative isolate flex h-9 items-center gap-2 rounded-sheen-full px-3.5 text-sm font-medium whitespace-nowrap @max-md/settings:justify-center",
                   "touch-manipulation [-webkit-tap-highlight-color:transparent] any-pointer-coarse:h-11",
                   "transition-colors duration-(--sheen-duration-fast)",
                   "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sheen-focus",

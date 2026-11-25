@@ -19,7 +19,7 @@
       "target": "@components/sheenui/charts/bar-flip.tsx"
     }
   ],
-  "docs": "Bar flip: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+  "docs": "Bar flip: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

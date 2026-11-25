@@ -83,7 +83,7 @@
       "target": "@components/sheenui/charts/candlestick-chart/wheel.ts"
     }
   ],
-  "docs": "Candlestick chart: https://lokendra-builds.github.io/sheenui/charts/candlestick\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CandlestickChart, CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart\";\nimport { Crosshair } from \"@/components/sheenui/charts/candlestick-chart/crosshair\";\nimport { CandleReadout } from \"@/components/sheenui/charts/candlestick-chart/readout\";\nimport { CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart/table\";",
+  "docs": "Candlestick chart: https://lokendra-builds.github.io/sheenui/charts/candlestick\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CandlestickChart, CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart\";\nimport { Crosshair } from \"@/components/sheenui/charts/candlestick-chart/crosshair\";\nimport { CandleReadout } from \"@/components/sheenui/charts/candlestick-chart/readout\";\nimport { CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

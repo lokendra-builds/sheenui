@@ -4,8 +4,9 @@
 // Every entry is a deliberate, documented pin: name, the pinned version, and why. An entry stops matching (and the
 // gate fails again) the moment the pin changes, so it cannot rot silently.
 //
-// Needs the network (it asks the registry); CI and `pnpm verify` have it. When the registry cannot be reached the
-// gate FAILS CLOSED (a silent pass would hide stale dependencies); pass `--offline-ok` to downgrade that to a warning.
+// Needs the network (it asks the registry). When the registry cannot be reached the gate FAILS CLOSED in CI (`CI` is set;
+// a silent pass would hide stale dependencies) and WARNS on a developer machine, so an offline `pnpm verify` is not red
+// for a reason that is not the code. A dependency that really is outdated fails everywhere. `--offline-ok` forces the warning.
 
 import { spawnSync } from "node:child_process";
 import { dirname, resolve } from "node:path";
@@ -62,7 +63,7 @@ export function evaluate(run, options = {}) {
       code: 1,
       stream: "error",
       lines: [
-        `outdated:check: registry unreachable, so the dependency check could not run (failing closed; pass --offline-ok to skip offline): ${detail}`,
+        `outdated:check: registry unreachable, so the dependency check could not run (failing closed in CI; pass --offline-ok to skip offline): ${detail}`,
       ],
     };
   }
@@ -80,8 +81,14 @@ export function evaluate(run, options = {}) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const run = spawnSync("pnpm", ["outdated", "-r", "--format", "json"], { cwd: root, encoding: "utf8" });
-  const result = evaluate(run, { offlineOk: process.argv.includes("--offline-ok") });
+  const lookup = () => spawnSync("pnpm", ["outdated", "-r", "--format", "json"], { cwd: root, encoding: "utf8" });
+  const options = { offlineOk: process.argv.includes("--offline-ok") || !process.env.CI };
+  let result = evaluate(lookup(), options);
+  // A lookup that failed without an answer is tried twice more before the gate is skipped: a single dropped
+  // request must not turn "something is outdated" into a warning nobody reads.
+  for (let attempt = 0; attempt < 2 && result.lines[0]?.includes("registry unreachable"); attempt++) {
+    result = evaluate(lookup(), options);
+  }
   for (const line of result.lines) console[result.stream](line);
   process.exit(result.code);
 }

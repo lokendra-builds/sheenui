@@ -21,7 +21,7 @@
       "target": "@components/sheenui/charts/chart-tip.tsx"
     }
   ],
-  "docs": "Chart tip: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartTip, ChartValueTable } from \"@/components/sheenui/charts/chart-tip\";",
+  "docs": "Chart tip: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartTip, ChartValueTable } from \"@/components/sheenui/charts/chart-tip\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

@@ -27,7 +27,7 @@
       "target": "@components/sheenui/charts/beeswarm.tsx"
     }
   ],
-  "docs": "Beeswarm: https://lokendra-builds.github.io/sheenui/charts/beeswarm\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Beeswarm, BeeswarmTable } from \"@/components/sheenui/charts/beeswarm\";",
+  "docs": "Beeswarm: https://lokendra-builds.github.io/sheenui/charts/beeswarm\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Beeswarm, BeeswarmTable } from \"@/components/sheenui/charts/beeswarm\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

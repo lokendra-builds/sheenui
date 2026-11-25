@@ -26,7 +26,7 @@
       "target": "@components/sheenui/charts/ridgeline-chart.tsx"
     }
   ],
-  "docs": "Ridgeline chart: https://lokendra-builds.github.io/sheenui/charts/ridgeline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RidgelineChart, RidgelineTable } from \"@/components/sheenui/charts/ridgeline-chart\";",
+  "docs": "Ridgeline chart: https://lokendra-builds.github.io/sheenui/charts/ridgeline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RidgelineChart, RidgelineTable } from \"@/components/sheenui/charts/ridgeline-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

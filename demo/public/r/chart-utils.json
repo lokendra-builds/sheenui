@@ -19,7 +19,7 @@
       "target": "@components/sheenui/charts/chart-utils.ts"
     }
   ],
-  "docs": "Chart utils: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartWidthHint } from \"@/components/sheenui/charts/chart-utils\";",
+  "docs": "Chart utils: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartWidthHint } from \"@/components/sheenui/charts/chart-utils\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

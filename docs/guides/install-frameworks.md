@@ -164,12 +164,16 @@ Notes, all verified:
 ### Option B: copy the files with the shadcn CLI
 
 ```bash
-pnpm dlx shadcn@latest init -t next
+pnpm create next-app@latest my-app --ts --tailwind --app --src-dir --import-alias "@/*"
+cd my-app
+pnpm dlx shadcn@latest init -d
 pnpm dlx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json \
-  https://lokendra-builds.github.io/sheenui/r/dialog.json https://lokendra-builds.github.io/sheenui/r/tabs.json
+  https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/dialog.json \
+  https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/backdrop.json \
+  https://lokendra-builds.github.io/sheenui/r/line-chart.json https://lokendra-builds.github.io/sheenui/r/analytics-demo-saas.json
 ```
 
-Each item installs into `components/sheenui/<item>/` and pulls in `sheenui-theme` (tokens, glass, motion, hooks, styles) and the npm packages it needs. Then:
+Each item installs into `components/sheenui/<item>/` and pulls in `sheenui-theme` (tokens, glass, motion, hooks, styles) and the npm packages it needs. `input` is listed because the Dialog example uses it, and `analytics-demo-saas` is the SaaS dashboard together with its sample data (the plain `analytics-saas` item is the dashboard alone). Then:
 
 1. The CLI appends `@import "@/components/sheenui/styles/index.css";` to your global CSS. **Next.js cannot resolve the `@/` alias inside CSS** (`next build` fails with `Can't resolve '@/components/sheenui/styles/index.css'`). Change it to the relative path:
 
@@ -178,8 +182,61 @@ Each item installs into `components/sheenui/<item>/` and pulls in `sheenui-theme
    @import "../components/sheenui/styles/index.css";
    ```
 
-   (`app/globals.css` or `src/app/globals.css`; Vite resolves the alias, keep it there.)
-2. Import from the installed paths, for example `import { Button } from "@/components/sheenui/button/button"`, and write the same layout as in option A with the imports changed to `@/components/sheenui/motion/provider`, `.../toast/toast`, `.../backdrop/backdrop` and `.../hooks/use-preferences`.
+   This is the same text in `src/app/globals.css` and in `app/globals.css` (an app made without `--src-dir`): `components/` sits next to `app/` in both layouts. Vite resolves the alias, so keep the `@/` form there.
+2. Import from the installed paths and mount the motion provider and the backdrop once. Use the `RootLayout` from option A (`src/app/layout.tsx`, or `app/layout.tsx` without `--src-dir`) and replace only its package import with these three copied-files imports (`SheenMotionProvider` from `@/components/sheenui/motion/provider`, `SheenBackdrop` from `@/components/sheenui/backdrop/backdrop`, `sheenPreferenceScript` from `@/components/sheenui/hooks/use-preferences`), written as `import { SheenMotionProvider } from "@/components/sheenui/motion/provider";` and so on. Add `toast.json` and wrap the children in `ToastProvider` and `Toaster` (`@/components/sheenui/toast/toast`, `.../toast/toaster`) only if you use toasts.
+3. Components that only take plain props can sit in a Server Component. Anything that takes a function (a chart's `format`, `legend={seriesLegend(...)}`, a dashboard's `load`) must live in a file that starts with `"use client"`; see "Function props" below. This page is a Server Component (`src/app/page.tsx`):
+
+   ```tsx
+   import { Button } from "@/components/sheenui/button/button";
+   import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+   import {
+     Dialog,
+     DialogClose,
+     DialogContent,
+     DialogDescription,
+     DialogHeader,
+     DialogTitle,
+     DialogTrigger,
+   } from "@/components/sheenui/dialog/dialog";
+   import { Input } from "@/components/sheenui/input/input";
+   import { Revenue, SaasDashboard } from "./sheen-islands";
+
+   export default function Page() {
+     return (
+       <main className="mx-auto grid max-w-5xl gap-6 p-6">
+         <GlassCard className="p-6">
+           <Button>Hello</Button>
+         </GlassCard>
+         <Dialog>
+           <DialogTrigger render={<Button />}>Edit profile</DialogTrigger>
+           <DialogContent>
+             <DialogHeader>
+               <DialogTitle>Edit profile</DialogTitle>
+               <DialogDescription>Change your name.</DialogDescription>
+             </DialogHeader>
+             <Input label="Name" defaultValue="Ada Lovelace" />
+             <DialogClose render={<Button variant="ghost" />}>Close</DialogClose>
+           </DialogContent>
+         </Dialog>
+         <Revenue />
+         <SaasDashboard />
+       </main>
+     );
+   }
+   ```
+
+To install a whole family instead of single items, use a bundle. A bundle has no files of its own, it only lists existing items, so nothing is copied twice:
+
+```bash
+pnpm dlx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json          # the whole library (several hundred files)
+pnpm dlx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dashboards.json   # the 5 dashboards with what they need
+```
+
+The other bundles are `components`, `charts` and `blocks`. With the namespace entry below in `components.json`, the same installs read `pnpm dlx shadcn@latest add @sheenui/all` (also `@sheenui/button` and so on); the CLI replaces `{name}` with the item name. This was run with shadcn CLI 4.23.
+
+```json
+"registries": { "@sheenui": "https://lokendra-builds.github.io/sheenui/r/{name}.json" }
+```
 
 The site serves the registry at `https://lokendra-builds.github.io/sheenui/r/<name>.json`. To test the steps without the network, or against changes you have not published, serve a local copy (this is how the steps above were tested):
 
@@ -187,6 +244,51 @@ The site serves the registry at `https://lokendra-builds.github.io/sheenui/r/<na
 node scripts/build-registry.mjs --base http://127.0.0.1:4410/r --out /tmp/sheenui-registry/r --no-root --quiet
 cd /tmp/sheenui-registry && python3 -m http.server 4410 --bind 127.0.0.1
 pnpm dlx shadcn@latest add http://127.0.0.1:4410/r/button.json
+```
+
+#### Function props: charts and dashboards in Next.js
+
+Every chart and dashboard module already starts with `"use client"`, so you can render them from a Server Component. What cannot cross the server/client boundary is a function: a chart's `format`, the `seriesLegend(...)` and `formatCompact(...)` helpers (they live in client modules, so calling one on the server throws `Attempted to call seriesLegend() from the server but seriesLegend is on the client`), and a dashboard's `load` and `liveStep`. The docs samples for charts and dashboards pass functions, so paste them into a file that starts with `"use client"` and import that file from your page. They work there exactly as written; only the import lines change to the copied paths. For example `src/app/sheen-islands.tsx`:
+
+```tsx
+// src/app/sheen-islands.tsx
+"use client";
+import { LineChart } from "@/components/sheenui/charts/line-chart";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { ChartTable } from "@/components/sheenui/charts/chart-parts/empty-table";
+import { seriesLegend } from "@/components/sheenui/charts/chart-parts/legend-tooltip";
+import { formatCompact, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { SaasRevenueDashboard } from "@/components/sheenui/blocks/analytics-saas";
+import { saasRevenueDemoLoader, saasLiveStep } from "@/components/sheenui/blocks/analytics/demo-saas";
+
+const usd = (n: number) => "$" + formatCompact(n);
+
+const data = [
+  { month: "Jan", organic: 4200, paid: 2100 },
+  { month: "Feb", organic: 4800, paid: 2300 },
+  { month: "Mar", organic: 5600, paid: 2200 },
+];
+
+const series: ChartSeries[] = [
+  { key: "organic", label: "Organic", color: 1 },
+  { key: "paid", label: "Paid", color: 2 },
+];
+
+export function Revenue() {
+  return (
+    <ChartCard
+      title="Monthly revenue by channel"
+      legend={seriesLegend(series, "line")}
+      table={<ChartTable data={data} index="month" series={series} format={usd} />}
+    >
+      <LineChart data={data} index="month" series={series} format={usd} aria-label="Monthly revenue by channel" />
+    </ChartCard>
+  );
+}
+
+export function SaasDashboard() {
+  return <SaasRevenueDashboard load={saasRevenueDemoLoader} liveStep={saasLiveStep} product="Acme Cloud" />;
+}
 ```
 
 ## 2. Vite + React Router or TanStack Router (SPA, no SSR)
@@ -267,6 +369,96 @@ With TanStack Router the shape is the same: replace `<BrowserRouter>…</Browser
 
 Verified: `tsc --noEmit` with `skipLibCheck: false`, `vite build`, `vite preview` and `vite dev` all pass; navigating away and back remounts every component without errors.
 
+### Option B: copy the files with the shadcn CLI
+
+`pnpm dlx shadcn@latest init` stops on a fresh Vite app with `Could not find valid path aliases` until the `@/*` alias exists in three files. Add it first, then run `init`. Start from the same app as above and add Tailwind:
+
+```bash
+pnpm create vite@latest my-app --template react-ts
+cd my-app
+pnpm install
+pnpm add tailwindcss @tailwindcss/vite
+```
+
+1. `src/index.css`: replace the whole file with the Tailwind import (the CLI adds the SheenUI import after it):
+
+   ```css
+   @import "tailwindcss";
+   ```
+
+2. `tsconfig.json` and `tsconfig.app.json`: add the same `paths` entry to the `compilerOptions` of both files. `tsconfig.json` has no `compilerOptions` yet, so add the object; in `tsconfig.app.json` add one line to the existing one. The CLI reads the first file and TypeScript uses the second.
+
+   ```json
+   {
+     "files": [],
+     "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+     "compilerOptions": {
+       "paths": { "@/*": ["./src/*"] }
+     }
+   }
+   ```
+
+   ```json
+   {
+     "compilerOptions": {
+       "paths": { "@/*": ["./src/*"] }
+     }
+   }
+   ```
+
+   The second block shows only the line to add to `tsconfig.app.json`; keep its other options. Do not add `baseUrl`: TypeScript 7 (what `create-vite` installs today) rejects it, and TypeScript 6 deprecates it. `paths` alone has worked since TypeScript 4.1 and resolves relative to the tsconfig file, so this exact form is the same on TypeScript 5, 6 and 7 (checked with 5.9.3, 6.0.3 and 7.0.2). On TypeScript 5 the build also needs `"DOM.Iterable"` in the `lib` array of `tsconfig.app.json` (`"lib": ["ES2023", "DOM", "DOM.Iterable"]`), because the copied files loop over a `NodeList`; 6 and 7 do not need it.
+
+3. `vite.config.ts`: the same alias for the bundler (no `@types/node` needed):
+
+   ```ts
+   import { fileURLToPath } from "node:url";
+   import react from "@vitejs/plugin-react";
+   import tailwindcss from "@tailwindcss/vite";
+   import { defineConfig } from "vite";
+
+   export default defineConfig({
+     plugins: [react(), tailwindcss()],
+     resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+   });
+   ```
+
+Now the CLI works: run the same `shadcn init -d` and `shadcn add` commands as in the Next.js option B above (the list of items is the same).
+
+`init` creates `components.json` and `src/lib/utils.ts`; `add` copies the items into `src/components/sheenui/` and appends `@import "@/components/sheenui/styles/index.css";` to `src/index.css`. Vite resolves the `@/` alias inside CSS, so keep that line as it is (only Next.js needs the relative path). Use `input` for the Dialog example and `analytics-demo-saas` for the SaaS dashboard with its sample data. Wrap the app once in the motion provider and the backdrop (`src/providers.tsx`):
+
+```tsx
+// src/providers.tsx
+import type { ReactNode } from "react";
+import { SheenMotionProvider } from "@/components/sheenui/motion/provider";
+import { SheenBackdrop } from "@/components/sheenui/backdrop/backdrop";
+
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <SheenMotionProvider>
+      <SheenBackdrop />
+      {children}
+    </SheenMotionProvider>
+  );
+}
+```
+
+In `src/main.tsx` add `import { Providers } from "./providers";` and render `<Providers><App /></Providers>` instead of `<App />`. Then `src/App.tsx` can use every item. A Vite app has no server, so the function props of charts and dashboards need no `"use client"` here: copy `sheen-islands.tsx` from the Next.js section into `src/` without its `"use client"` line and import `Revenue` and `SaasDashboard` from it. The `GlassCard` and the `Dialog` are the ones from the Next.js page in step 3 (same imports, same markup):
+
+```tsx
+// src/App.tsx
+import { Revenue, SaasDashboard } from "./sheen-islands";
+
+export default function App() {
+  return (
+    <main className="mx-auto grid max-w-5xl gap-6 p-6">
+      {/* the GlassCard and the Dialog of the Next.js page go here */}
+      <Revenue />
+      <SaasDashboard />
+    </main>
+  );
+}
+```
+
 ## 3. Copy the files by hand
 
 Use this when you want the source in your repo without the CLI (any bundler, any framework):
@@ -304,6 +496,8 @@ Checked against the tarball of `@sheenui/theme`:
 |---|---|
 | Components render unstyled | The CSS import is missing or comes before `@import "tailwindcss"`. Both lines are in the steps above, in that order. |
 | `Can't resolve '@/components/sheenui/styles/index.css'` in Next.js | Use the relative path (Next.js, option B, step 1). |
+| `Could not find valid path aliases` from `shadcn init` in Vite | Add the `@/*` alias to `tsconfig.json`, `tsconfig.app.json` and `vite.config.ts` before `init` (Vite, option B). |
+| `Attempted to call seriesLegend() from the server` (or `formatCompact`, a `format` function, a dashboard `load`) in Next.js | Move that code into a file that starts with `"use client"` (Next.js, function props). |
 | Utilities missing under `next build --webpack` | Add `@tailwindcss/postcss` and `postcss.config.mjs` (Next.js, option A notes). |
 | `Attempted to call X() from the server but X is on the client` | `X` is a helper or hook inside a client module. Call it from a Client Component, or use the server-safe list above. |
 | Theme or style flashes, or a hydration warning on `<html>` | Inline `sheenPreferenceScript` in `<head>` and keep `suppressHydrationWarning` on `<html>`. |

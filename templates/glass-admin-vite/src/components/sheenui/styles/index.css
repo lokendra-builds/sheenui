@@ -1,0 +1,195 @@
+/*
+ * SheenUI styles entry. Import this AFTER Tailwind in your app's CSS:
+ *
+ *   @import "tailwindcss";
+ *   @import "@sheenui/theme/styles.css";
+ *   @source "<path-to>/theme/src";
+ */
+
+@import "./tokens.css";
+@import "./motion.css";
+@import "./glass.css";
+@import "./backgrounds.css";
+/* Style presets: each one re-points the tokens above for its look (data-sheen-style on <html>).
+   Liquid Glass is the default (no attribute, or data-sheen-style="liquid"). */
+@import "./presets/liquid.css";
+@import "./presets/aurora.css";
+/* <SheenBackdrop>, preview stages and the type accents of the presets. */
+@import "./backdrop.css";
+/* prefers-contrast: more. Last, so it overrides the preset tokens. */
+@import "./contrast.css";
+
+/* Dark-mode variant that follows [data-theme], not just the OS. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * motion-ok: apply only when movement is welcome — the OS allows it AND the in-app
+ * toggle ([data-motion="reduced"]) is off. Use for transforms: motion-ok:hover:-translate-y-0.5
+ */
+@custom-variant motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    &:where(:root:not([data-motion="reduced"]) *) {
+      @slot;
+    }
+  }
+}
+
+/*
+ * motion-reduced: the exact inverse of motion-ok. Applies when the OS asks for reduced motion
+ * OR the in-app toggle is on. Use it for the calmer stand-in, e.g. a short fade where
+ * motion-ok gets a slide: motion-ok:translate-x-2 motion-reduced:transition-opacity
+ */
+@custom-variant motion-reduced {
+  @media (prefers-reduced-motion: reduce) {
+    @slot;
+  }
+  &:where(:root[data-motion="reduced"] *) {
+    @slot;
+  }
+}
+
+/*
+ * Expose SheenUI tokens to Tailwind utilities:
+ *   bg-sheen-bg, text-sheen-fg-muted, bg-sheen-accent-soft, text-sheen-danger-text,
+ *   bg-sheen-hover, outline-sheen-focus, rounded-sheen-lg, ease-sheen-exit,
+ *   border-sheen-control-border, border-sheen-danger-border (invalid control edge),
+ *   bg-sheen-thumb, bg-sheen-indicator, bg-sheen-scrim, ...
+ * Shadow tokens are used directly: shadow-(--sheen-accent-fill-shadow).
+ */
+@theme inline {
+  --color-sheen-bg: var(--sheen-bg);
+  --color-sheen-fg: var(--sheen-fg);
+  --color-sheen-fg-muted: var(--sheen-fg-muted);
+  --color-sheen-fg-subtle: var(--sheen-fg-subtle);
+  --color-sheen-border: var(--sheen-border);
+  --color-sheen-surface: var(--sheen-surface-solid);
+
+  --color-sheen-accent: var(--sheen-accent);
+  --color-sheen-accent-2: var(--sheen-accent-2);
+  --color-sheen-accent-fg: var(--sheen-accent-fg);
+  --color-sheen-accent-soft: var(--sheen-accent-soft);
+  --color-sheen-accent-border: var(--sheen-accent-border);
+
+  --color-sheen-hover: var(--sheen-hover);
+  --color-sheen-focus: var(--sheen-focus);
+  --color-sheen-ring: var(--sheen-ring);
+
+  --color-sheen-control-border: var(--sheen-control-border);
+  --color-sheen-thumb: var(--sheen-thumb);
+  --color-sheen-ink-on-dark: var(--sheen-ink-on-dark);
+  --color-sheen-ink-on-light: var(--sheen-ink-on-light);
+  --color-sheen-indicator: var(--sheen-indicator);
+  --color-sheen-scrim: var(--sheen-scrim);
+
+  --color-sheen-success: var(--sheen-success);
+  --color-sheen-danger: var(--sheen-danger);
+  --color-sheen-warning: var(--sheen-warning);
+  --color-sheen-success-text: var(--sheen-success-text);
+  --color-sheen-danger-text: var(--sheen-danger-text);
+  --color-sheen-warning-text: var(--sheen-warning-text);
+  --color-sheen-success-soft: var(--sheen-success-soft);
+  --color-sheen-danger-soft: var(--sheen-danger-soft);
+  --color-sheen-warning-soft: var(--sheen-warning-soft);
+  --color-sheen-danger-border: var(--sheen-danger-border);
+  --color-sheen-success-border: var(--sheen-success-border);
+
+  --radius-sheen-sm: var(--sheen-radius-sm);
+  --radius-sheen-md: var(--sheen-radius-md);
+  --radius-sheen-lg: var(--sheen-radius-lg);
+  --radius-sheen-xl: var(--sheen-radius-xl);
+  --radius-sheen-full: var(--sheen-radius-full);
+
+  --font-sheen: var(--sheen-font-sans);
+  --font-sheen-mono: var(--sheen-font-mono);
+  --font-sheen-display: var(--sheen-font-display);
+
+  --color-sheen-bg-2: var(--sheen-bg-2);
+
+  --ease-sheen-out: var(--sheen-ease-out);
+  --ease-sheen-in-out: var(--sheen-ease-in-out);
+  --ease-sheen-exit: var(--sheen-ease-exit);
+  --ease-sheen-spring: var(--sheen-ease-spring);
+  --ease-sheen-snappy: var(--sheen-ease-snappy);
+  --ease-sheen-smooth: var(--sheen-ease-smooth);
+  --ease-sheen-gentle: var(--sheen-ease-gentle);
+  --ease-sheen-bouncy: var(--sheen-ease-bouncy);
+  --ease-sheen-press: var(--sheen-ease-press);
+}
+
+/* Tiny labels (kbd hints, chart ticks, overlines): text-2xs = 11px. */
+@theme {
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+}
+@layer sheen {
+  /* Phones: nothing reads below 12 px (the 11 px labels and badges step up; desktop keeps the denser size). */
+  @media (max-width: 639.98px) {
+    .text-2xs {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--sheen-bg);
+    color: var(--sheen-fg);
+    font-family: var(--sheen-font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--sheen-focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--sheen-selection);
+  }
+
+  /*
+   * Windows High Contrast / forced colors: backgrounds and shadows are dropped, so a pressable control
+   * with no border of its own (icon buttons, ghost buttons, toolbar and navigation items) loses its
+   * extent. Give every button a 1px edge in the system colour. Base layer on purpose: any component's
+   * own border utility (Button, Tabs, Checkbox...) still wins, and tab triggers sit inside a bordered
+   * track so they stay edge-less.
+   */
+  @media (forced-colors: active) {
+    :where(button:not([role="tab"]), [role="button"]) {
+      border-width: 1px;
+      border-style: solid;
+      border-color: ButtonText;
+    }
+  }
+}
+@layer sheen {
+  /*
+ * Chart scale labels (axis ticks, gauge numbers) sit over gridlines, series and bars. A halo in the chart surface colour
+ * (painted behind the glyphs, so it hides whatever runs through the digits) keeps every label at its own text-on-surface
+ * contrast (WCAG 1.4.3). The pixel-contrast gate in demo/e2e/contrast keeps the halo when it hides the text.
+ */
+  svg[role="figure"] text.fill-sheen-fg-muted,
+  svg[role="figure"] text.fill-sheen-fg-subtle {
+    paint-order: stroke fill;
+    stroke: var(--sheen-chart-surface);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+  @media (forced-colors: active) {
+    svg[role="figure"] text.fill-sheen-fg-muted,
+    svg[role="figure"] text.fill-sheen-fg-subtle {
+      stroke: Canvas;
+    }
+    /* Every chart label in system colours, whatever token class it carries: pale token fills vanish on Canvas. */
+    svg text {
+      fill: CanvasText !important; /* some charts set the fill inline */
+      stroke: Canvas;
+      paint-order: stroke fill;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    svg :focus-visible {
+      outline: 2px solid Highlight;
+    }
+  }
+}

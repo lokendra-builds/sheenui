@@ -194,7 +194,9 @@ const facts = {
   listed: visible.length,
   motion: pinned("motion"),
   baseUi: pinned("@base-ui/react"),
-  registry: registry.length,
+  // Bundles (`all`, `charts`, ...) install other items and have no files: they are not counted as items.
+  registry: registry.filter((i) => i.meta?.kind !== "bundle").length,
+  registryBundles: kinds("bundle"),
   registryUi: kinds("component") + kinds("chart"),
   registryBlocks: kinds("block"),
   exports: barrelValueExports(),
@@ -251,8 +253,10 @@ for (const name of existsSync(guidesDir)
 /** One sentence per gate. A verify step without a sentence here fails the check, so the contributor list cannot go stale. */
 const VERIFY_NOTES = {
   "generated:check":
-    "the generated files are current: props tables (`gen-props --check`), the registry (`registry:check:fast`: schema, consistency, no @internal name or constant in a documented import) and the README and optional local-note numbers and lists (`readme:index --check`).",
+    "the generated files are current: props tables (`gen-props --check`), the registry (`registry:check:fast`: schema, consistency, no @internal name or constant in a documented import) and the README numbers and lists (`readme:index --check`).",
   "format:check": "Prettier, the whole repo.",
+  "scripts:test":
+    "the repo scripts' own tests (`node --test scripts/test`): the generators, the docs checks and the guard that no public file names a private note.",
   "motion:literals":
     "no hard-coded `cubic-bezier(` curve, `ms` duration or `ease: [` array outside the token files (`scripts/check-motion-literals.mjs`).",
   "motion:properties":
@@ -263,7 +267,7 @@ const VERIFY_NOTES = {
     "the unit suite (Vitest browser mode + axe-core) with enforced coverage (lines, functions, statements >= 90 %, branches >= 80 %, and every file >= 55 % lines / 25 % branches; set in `theme/vitest.config.ts`).",
   build: "props tables, registry, demo bundle, SSR bundle and prerender of every route.",
   "outdated:check":
-    "no dependency is behind its latest release except the one documented pin (root `typescript` 6.0.3, for typescript-eslint); the allow-list is in `scripts/check-outdated.mjs`.",
+    "no dependency is behind its latest release except the one documented pin (root `typescript` 6.0.3, for typescript-eslint); the allow-list is in `scripts/check-outdated.mjs`. Needs the npm registry: an unreachable registry is a warning on your machine and a failure in CI (where the job only reports).",
   "treeshake:check":
     "a consumer that imports only `Button` from the built package stays under a gzipped KB budget and pulls in none of the heavy modules (`scripts/check-treeshake.mjs`).",
   "package:check":
@@ -273,12 +277,12 @@ const VERIFY_NOTES = {
   "docs:check":
     "every public prop on its page with a description and a Default that matches the code; every page code sample type-checks as pasted (`pagecode:check`); llms-full.txt carries every code block, heading and paragraph; every runtime export is searchable and summarised on the page it leads to.",
   "readme:index --check":
-    "the README tables and the numbers quoted in the README and optional local notes (this list included) match the code; CI runs every verify gate; the changelog records new pages.",
+    "the README tables and the numbers quoted in the README (this list included) match the code, and CI runs every verify gate.",
   budget: "initial JS per route (gzip) against the 200 KB budget.",
   "examples:check": "every doc-comment `@example` compiles as a complete module (`--strict`).",
   "types:check": "every type named in a props table is exported from the package.",
   "e2e:chromium":
-    "every Playwright spec except the timing gates, in Chromium, in parallel (`E2E_SKIP_TIMING=1`), including the visual snapshots. Local baselines are per machine (`*-darwin.png`, git-ignored): create them once with `pnpm e2e:visual:update`. CI compares against Linux baselines kept on the `visual-baselines` branch and fails when one is missing.",
+    "every Playwright spec except the timing gates, in Chromium, in parallel (`E2E_SKIP_TIMING=1`), including the visual snapshots. Baselines are per machine and git-ignored, so on a fresh clone the visual spec skips itself with a notice; create them once with `pnpm e2e:visual:update` to compare locally. CI compares against Linux baselines kept on the `visual-baselines` branch.",
   "e2e:motion":
     "the timing gates (`motion-gates.spec.ts`: no long task over 50 ms, layout shift under 0.002) alone with `--workers=1`, after the parallel suite. A run on a busy machine retries after the load falls and fails, never silently passes.",
 };

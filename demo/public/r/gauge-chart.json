@@ -38,7 +38,7 @@
       "target": "@components/sheenui/charts/gauge-chart/parts.tsx"
     }
   ],
-  "docs": "Gauge: https://lokendra-builds.github.io/sheenui/charts/gauge-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GaugeChart, GaugeTable } from \"@/components/sheenui/charts/gauge-chart\";\nimport { LitBand } from \"@/components/sheenui/charts/gauge-chart/model\";\nimport { GaugeNumber, CountUp, GaugeTable } from \"@/components/sheenui/charts/gauge-chart/parts\";",
+  "docs": "Gauge: https://lokendra-builds.github.io/sheenui/charts/gauge-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GaugeChart, GaugeTable } from \"@/components/sheenui/charts/gauge-chart\";\nimport { LitBand } from \"@/components/sheenui/charts/gauge-chart/model\";\nimport { GaugeNumber, CountUp, GaugeTable } from \"@/components/sheenui/charts/gauge-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

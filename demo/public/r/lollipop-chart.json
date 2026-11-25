@@ -51,7 +51,7 @@
       "target": "@components/sheenui/charts/lollipop-chart/table.tsx"
     }
   ],
-  "docs": "Lollipop chart: https://lokendra-builds.github.io/sheenui/charts/lollipop\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LollipopChart, LollipopTable } from \"@/components/sheenui/charts/lollipop-chart\";\nimport { LollipopTable } from \"@/components/sheenui/charts/lollipop-chart/table\";",
+  "docs": "Lollipop chart: https://lokendra-builds.github.io/sheenui/charts/lollipop\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LollipopChart, LollipopTable } from \"@/components/sheenui/charts/lollipop-chart\";\nimport { LollipopTable } from \"@/components/sheenui/charts/lollipop-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

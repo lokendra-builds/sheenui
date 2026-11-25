@@ -1,4 +1,14 @@
-import { Fragment, useCallback, useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 
 import { useHeadingId } from "./heading-ids";
 import { Button, Tabs, TabsList, TabsPanel, TabsTab, cn, useSheenReducedMotion } from "@sheenui/theme";
@@ -177,8 +187,15 @@ function ExampleSection({
     <section
       ref={watchNear}
       aria-labelledby={title ? headingId : undefined}
-      className={cn("flex flex-col gap-3", deferRender && "-mx-3 -my-3 [content-visibility:auto] px-3 py-3")}
-      style={deferRender ? { containIntrinsicSize: `auto ${intrinsicHeight + 24}px` } : undefined}
+      className={cn(
+        "flex flex-col gap-3",
+        // Placeholder height while skipped: the desktop number, and 1.4x of it on a phone, where the preview stacks into a
+        // taller one. A placeholder shorter than the real content leaves the skipped content's stale boxes overlapping the
+        // next example (axe target-size on a pagination button); a taller one only lengthens the scroll until it renders.
+        deferRender &&
+          "-mx-3 -my-3 [contain-intrinsic-size:auto_var(--example-h)] [content-visibility:auto] px-3 py-3 max-[40rem]:[contain-intrinsic-size:auto_calc(var(--example-h)*1.4)]",
+      )}
+      style={deferRender ? ({ "--example-h": `${intrinsicHeight + 24}px` } as CSSProperties) : undefined}
     >
       {(Boolean(title) || Boolean(description)) && (
         <div className="flex flex-col gap-1">

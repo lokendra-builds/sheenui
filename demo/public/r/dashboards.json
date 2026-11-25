@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboards",
+  "type": "registry:item",
+  "title": "All dashboards",
+  "description": "Installs the five SheenUI dashboards with every component, chart and demo-data helper they need, plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (5 items).",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+    "https://lokendra-builds.github.io/sheenui/r/analytics-ecommerce.json",
+    "https://lokendra-builds.github.io/sheenui/r/analytics-finance.json",
+    "https://lokendra-builds.github.io/sheenui/r/analytics-product.json",
+    "https://lokendra-builds.github.io/sheenui/r/analytics-saas.json",
+    "https://lokendra-builds.github.io/sheenui/r/analytics-web.json"
+  ],
+  "files": [],
+  "docs": "All dashboards: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+  "categories": [
+    "bundles"
+  ],
+  "meta": {
+    "kind": "bundle",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/docs/installation",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
+  }
+}

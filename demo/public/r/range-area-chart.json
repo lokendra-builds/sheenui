@@ -23,7 +23,7 @@
       "target": "@components/sheenui/charts/range-area-chart.tsx"
     }
   ],
-  "docs": "Range area chart: https://lokendra-builds.github.io/sheenui/charts/range-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RangeAreaChart, RangeAreaTable } from \"@/components/sheenui/charts/range-area-chart\";",
+  "docs": "Range area chart: https://lokendra-builds.github.io/sheenui/charts/range-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RangeAreaChart, RangeAreaTable } from \"@/components/sheenui/charts/range-area-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

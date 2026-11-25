@@ -16,6 +16,7 @@ import { parse } from "node-html-parser";
 import sharp from "sharp";
 
 import { findDuplicatePages } from "./lib/duplicate-pages.mjs";
+import { panelItems, uncoveredItems } from "./lib/files-panel.mjs";
 import { findDuplicatedRun, findRepeatedNumber, htmlTextContent } from "./lib/duplicate-run.mjs";
 import { headingOrderErrors } from "./lib/heading-order.mjs";
 import { visibleFaq } from "./lib/faq.mjs";
@@ -816,8 +817,7 @@ if (existsSync(join(DIST, "llms.txt")) && existsSync(join(DIST, "llms"))) {
       const installItem = /\/r\/([\w-]+)\.json$/.exec(seo.install ?? "")?.[1];
       if (installItem) {
         const have = itemClosure(installMap, installItem);
-        const panel = /<dt[^>]*>shadcn CLI[^<]*<\/dt><dd[^>]*><code[^>]*>([^<]*)<\/code>/.exec(html)?.[1] ?? "";
-        const own = [...panel.matchAll(/\/r\/([\w-]+)\.json/g)].map((m) => m[1]);
+        const { own, also } = panelItems(html);
         const missing = own.filter((n) => !have.has(n));
         if (missing.length)
           fail(
@@ -840,6 +840,15 @@ if (existsSync(join(DIST, "llms.txt")) && existsSync(join(DIST, "llms"))) {
               );
           }
         }
+        // Every component an example imports is in the page's item or in the panel's "The examples also use" group.
+        // An "also uses" item installs its own registry dependencies too (data-table brings avatar and select).
+        const covered = new Set(have);
+        for (const item of also) for (const dep of itemClosure(installMap, item)) covered.add(dep);
+        for (const item of uncoveredItems([...wanted], covered, also))
+          fail(
+            route.path,
+            `an example imports item "${item}", which neither the install item "${installItem}" nor the panel's "The examples also use" group installs`,
+          );
         // The same extras are named in the twin, under the page's import block.
         for (const item of wanted)
           if (!twinText.includes(`/r/${item}.json`) || !/These examples also use /.test(twinText))

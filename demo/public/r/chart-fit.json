@@ -18,7 +18,7 @@
       "target": "@components/sheenui/charts/chart-fit.tsx"
     }
   ],
-  "docs": "Chart fit: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TableScroll } from \"@/components/sheenui/charts/chart-fit\";",
+  "docs": "Chart fit: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TableScroll } from \"@/components/sheenui/charts/chart-fit\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

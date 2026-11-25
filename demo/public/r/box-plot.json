@@ -39,7 +39,7 @@
       "target": "@components/sheenui/charts/box-plot/parts.tsx"
     }
   ],
-  "docs": "Box plot & violin: https://lokendra-builds.github.io/sheenui/charts/box-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BoxPlot, BoxPlotTable } from \"@/components/sheenui/charts/box-plot\";\nimport { BoxPlotTable } from \"@/components/sheenui/charts/box-plot/parts\";",
+  "docs": "Box plot & violin: https://lokendra-builds.github.io/sheenui/charts/box-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BoxPlot, BoxPlotTable } from \"@/components/sheenui/charts/box-plot\";\nimport { BoxPlotTable } from \"@/components/sheenui/charts/box-plot/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

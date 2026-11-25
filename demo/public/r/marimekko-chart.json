@@ -26,7 +26,7 @@
       "target": "@components/sheenui/charts/marimekko-chart.tsx"
     }
   ],
-  "docs": "Marimekko chart: https://lokendra-builds.github.io/sheenui/charts/marimekko\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { MarimekkoChart, MarimekkoTable } from \"@/components/sheenui/charts/marimekko-chart\";",
+  "docs": "Marimekko chart: https://lokendra-builds.github.io/sheenui/charts/marimekko\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { MarimekkoChart, MarimekkoTable } from \"@/components/sheenui/charts/marimekko-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

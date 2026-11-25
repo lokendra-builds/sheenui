@@ -26,7 +26,7 @@
       "target": "@components/sheenui/charts/bar-chart.tsx"
     }
   ],
-  "docs": "Bar chart: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarChart } from \"@/components/sheenui/charts/bar-chart\";",
+  "docs": "Bar chart: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarChart } from \"@/components/sheenui/charts/bar-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

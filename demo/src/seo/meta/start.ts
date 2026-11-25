@@ -96,6 +96,20 @@ export const seoStart: Record<string, SeoMeta> = {
       "React RTL support in SheenUI needs no provider: components follow dir on the html element or any wrapper, so tab pills, arrow keys and drawers mirror, strings come from a partial labels prop and dates and numbers follow a locale prop.",
     secondary: ["react component library rtl", "react i18n labels prop", "react date picker locale arabic"],
   },
+  "/docs/performance": {
+    title: "React Glass UI Performance: Budgets and Numbers",
+    description:
+      "How SheenUI keeps glass fast: blur and refraction budgets, JavaScript per route, motion gates and reduced motion, with labelled lab numbers and limits.",
+    keyword: "react glass ui performance",
+    h1: "React Glass UI Performance",
+    intro:
+      "React glass UI performance in SheenUI is a set of enforced budgets: at most 8 blurred surfaces in view, 3 refracting ones, a JavaScript limit per route, loops that pause off-screen and full reduced-motion support, with lab numbers and their limits.",
+    secondary: [
+      "backdrop-filter performance react",
+      "react glassmorphism lite mode",
+      "react ui library bundle size budget",
+    ],
+  },
   "/about": {
     title: "About SheenUI: MIT Glass React Components",
     description:

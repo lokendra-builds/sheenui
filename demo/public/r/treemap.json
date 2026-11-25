@@ -25,7 +25,7 @@
       "target": "@components/sheenui/charts/treemap.tsx"
     }
   ],
-  "docs": "Treemap: https://lokendra-builds.github.io/sheenui/charts/treemap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Treemap, TreemapTable } from \"@/components/sheenui/charts/treemap\";",
+  "docs": "Treemap: https://lokendra-builds.github.io/sheenui/charts/treemap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Treemap, TreemapTable } from \"@/components/sheenui/charts/treemap\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

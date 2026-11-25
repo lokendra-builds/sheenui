@@ -24,7 +24,7 @@
       "target": "@components/sheenui/charts/combo-chart.tsx"
     }
   ],
-  "docs": "Combo chart: https://lokendra-builds.github.io/sheenui/charts/combo-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ComboChart, ComboTable } from \"@/components/sheenui/charts/combo-chart\";",
+  "docs": "Combo chart: https://lokendra-builds.github.io/sheenui/charts/combo-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ComboChart, ComboTable } from \"@/components/sheenui/charts/combo-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

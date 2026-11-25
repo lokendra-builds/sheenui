@@ -40,7 +40,7 @@
       "target": "@components/sheenui/charts/streaming-chart/parts.tsx"
     }
   ],
-  "docs": "Streaming chart: https://lokendra-builds.github.io/sheenui/charts/realtime-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StreamingChart, StreamingTable } from \"@/components/sheenui/charts/streaming-chart\";\nimport { RollingValue, Tick } from \"@/components/sheenui/charts/streaming-chart/model\";\nimport { Head, StreamingTable } from \"@/components/sheenui/charts/streaming-chart/parts\";",
+  "docs": "Streaming chart: https://lokendra-builds.github.io/sheenui/charts/realtime-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StreamingChart, StreamingTable } from \"@/components/sheenui/charts/streaming-chart\";\nimport { RollingValue, Tick } from \"@/components/sheenui/charts/streaming-chart/model\";\nimport { Head, StreamingTable } from \"@/components/sheenui/charts/streaming-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

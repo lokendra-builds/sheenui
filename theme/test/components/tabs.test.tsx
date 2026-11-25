@@ -200,3 +200,27 @@ describe("TabsList morph", () => {
     }
   });
 });
+
+describeVariants((variant) => {
+  it("in a narrow box the list scrolls sideways and the last tab can be brought fully into view (no label is cut for good)", async () => {
+    renderUi(
+      <div style={{ width: 220 }}>
+        <Example />
+      </div>,
+      variant,
+    );
+    const list = screen.getByRole("tablist");
+    expect(list.scrollWidth).toBeGreaterThan(list.clientWidth);
+    expect(getComputedStyle(list).overflowX).toBe("auto");
+    screen.getByRole("tab", { name: "Settings" }).focus();
+    await userEvent.keyboard("{Enter}");
+    const last = screen.getByRole("tab", { name: "Settings" });
+    await expect
+      .poll(() => {
+        const l = list.getBoundingClientRect();
+        const t = last.getBoundingClientRect();
+        return t.left >= l.left - 1 && t.right <= l.right + 1;
+      })
+      .toBe(true);
+  });
+});

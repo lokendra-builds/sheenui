@@ -4,12 +4,12 @@
     "modified": "2026-11-17"
   },
   "/about": {
-    "hash": "08d881fe7b6286e6",
-    "modified": "2026-11-16"
+    "hash": "fbb7147a49db4dd2",
+    "modified": "2026-11-25"
   },
   "/blocks": {
-    "hash": "5c67dec826afb6bc",
-    "modified": "2026-11-17"
+    "hash": "959e95d9444d9478",
+    "modified": "2026-11-25"
   },
   "/blocks/ai-chat": {
     "hash": "a7d6a0927d8667c3",
@@ -141,7 +141,7 @@
   },
   "/charts/cohort-retention": {
     "hash": "aebd502267ad546e",
-    "modified": "2026-11-16"
+    "modified": "2026-11-25"
   },
   "/charts/combo-chart": {
     "hash": "abd263f8b86a00f8",
@@ -289,7 +289,7 @@
   },
   "/charts/world-map": {
     "hash": "5afe3096498cc95f",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/chat/list": {
     "hash": "1c45dcfde7fd1b32",
@@ -304,12 +304,12 @@
     "modified": "2026-11-17"
   },
   "/components": {
-    "hash": "5c67dec826afb6bc",
-    "modified": "2026-11-17"
+    "hash": "959e95d9444d9478",
+    "modified": "2026-11-25"
   },
   "/components/alert": {
     "hash": "87317578891bfbd1",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/components/avatar": {
     "hash": "969ebe79f4b06825",
@@ -325,7 +325,7 @@
   },
   "/components/button-group": {
     "hash": "a00c5e285e526b0f",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/components/carousel": {
     "hash": "e03d811e78571c53",
@@ -344,8 +344,8 @@
     "modified": "2026-11-17"
   },
   "/components/data-table": {
-    "hash": "4dc6f25b1231e8f4",
-    "modified": "2026-11-17"
+    "hash": "e2e8f42017efba59",
+    "modified": "2026-11-25"
   },
   "/components/dialog": {
     "hash": "be31e86ddb32bcdb",
@@ -393,7 +393,7 @@
   },
   "/components/spinner": {
     "hash": "b8af7120e5f78d05",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/components/switch": {
     "hash": "f6c32f66fed44706",
@@ -416,8 +416,8 @@
     "modified": "2026-11-17"
   },
   "/dashboards": {
-    "hash": "5c67dec826afb6bc",
-    "modified": "2026-11-17"
+    "hash": "959e95d9444d9478",
+    "modified": "2026-11-25"
   },
   "/dashboards/crypto-dashboard": {
     "hash": "133760d7afc5a93e",
@@ -452,8 +452,12 @@
     "modified": "2026-11-16"
   },
   "/docs/installation": {
-    "hash": "5c67dec826afb6bc",
-    "modified": "2026-11-17"
+    "hash": "959e95d9444d9478",
+    "modified": "2026-11-25"
+  },
+  "/docs/performance": {
+    "hash": "6f8eec6588b25b4e",
+    "modified": "2026-11-25"
   },
   "/docs/rtl": {
     "hash": "bbbf20c57b1e179e",
@@ -464,8 +468,8 @@
     "modified": "2026-11-17"
   },
   "/effects": {
-    "hash": "5c67dec826afb6bc",
-    "modified": "2026-11-17"
+    "hash": "959e95d9444d9478",
+    "modified": "2026-11-25"
   },
   "/effects/3d-tilt-card": {
     "hash": "20bfbee8a511b4a5",
@@ -489,7 +493,7 @@
   },
   "/effects/liquid-glass": {
     "hash": "d7315971b06e1a29",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/effects/macos-dock": {
     "hash": "7b9ec4ee1f0aea6a",
@@ -557,7 +561,7 @@
   },
   "/forms/field": {
     "hash": "71f66110afd0841f",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/forms/file-upload": {
     "hash": "85ba931fa5ba9071",
@@ -569,7 +573,7 @@
   },
   "/forms/number-field": {
     "hash": "60f82ef151bfefaa",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/forms/radio-group": {
     "hash": "ec2873babce1d54d",
@@ -589,7 +593,7 @@
   },
   "/forms/textarea": {
     "hash": "d9353a8ef71a0462",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/forms/toggle": {
     "hash": "c69f3eae97955aef",
@@ -617,7 +621,7 @@
   },
   "/layout/collapsible": {
     "hash": "e2e1c2f60f2ed0b4",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/layout/pagination": {
     "hash": "9a75237863888810",
@@ -653,7 +657,7 @@
   },
   "/navigation/navigation-menu": {
     "hash": "480df0a7dbfa9fad",
-    "modified": "2026-11-17"
+    "modified": "2026-11-25"
   },
   "/navigation/sidebar": {
     "hash": "64323ef7010dd377",

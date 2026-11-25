@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/radial-progress.tsx"
     }
   ],
-  "docs": "Radial progress: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialProgress } from \"@/components/sheenui/charts/radial-progress\";",
+  "docs": "Radial progress: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialProgress } from \"@/components/sheenui/charts/radial-progress\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

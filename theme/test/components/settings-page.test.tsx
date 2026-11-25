@@ -250,3 +250,24 @@ describe("sections, notifications and options", () => {
     expect(await runAxe(document.body, { runOnly: ["label-content-name-mismatch"] })).toHaveNoViolations();
   });
 });
+
+describe("narrow section strip", () => {
+  it("shows every section label whole at phone width: nothing scrolls or is cut off", async () => {
+    renderUi(
+      <div style={{ width: 390 }}>
+        <Page />
+      </div>,
+    );
+    await settle();
+    const group = screen.getAllByRole("group", { name: /sections/i }).find((g) => g.getBoundingClientRect().width > 0)!;
+    const scroller = group.querySelector("ul")!;
+    expect(scroller.scrollWidth).toBeLessThanOrEqual(scroller.clientWidth);
+    const box = group.getBoundingClientRect();
+    for (const link of group.querySelectorAll("a")) {
+      const r = link.getBoundingClientRect();
+      expect(r.left).toBeGreaterThanOrEqual(box.left);
+      expect(r.right).toBeLessThanOrEqual(box.right);
+      expect(link.scrollWidth).toBeLessThanOrEqual(link.clientWidth);
+    }
+  });
+});

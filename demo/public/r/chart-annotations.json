@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/chart-annotations.tsx"
     }
   ],
-  "docs": "Chart annotations: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartAnnotationsLayer } from \"@/components/sheenui/charts/chart-annotations\";",
+  "docs": "Chart annotations: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartAnnotationsLayer } from \"@/components/sheenui/charts/chart-annotations\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

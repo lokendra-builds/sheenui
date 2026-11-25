@@ -14,7 +14,7 @@
         "@base-ui/react@^1.9.0",
         "clsx@^2.1.1",
         "motion@^14.10.1",
-        "tailwind-merge@^3.7.0"
+        "tailwind-merge@^3.7.1"
       ],
       "files": [
         {
@@ -3467,7 +3467,7 @@
           "target": "@components/sheenui/charts/bar-chart.tsx"
         }
       ],
-      "docs": "Bar chart: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarChart } from \"@/components/sheenui/charts/bar-chart\";",
+      "docs": "Bar chart: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarChart } from \"@/components/sheenui/charts/bar-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3498,7 +3498,7 @@
           "target": "@components/sheenui/charts/bar-flip.tsx"
         }
       ],
-      "docs": "Bar flip: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Bar flip: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3533,7 +3533,7 @@
           "target": "@components/sheenui/charts/bar-list.tsx"
         }
       ],
-      "docs": "Bar list: https://lokendra-builds.github.io/sheenui/charts/bar-list\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarList, BarListTable } from \"@/components/sheenui/charts/bar-list\";",
+      "docs": "Bar list: https://lokendra-builds.github.io/sheenui/charts/bar-list\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarList, BarListTable } from \"@/components/sheenui/charts/bar-list\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3572,7 +3572,7 @@
           "target": "@components/sheenui/charts/beeswarm.tsx"
         }
       ],
-      "docs": "Beeswarm: https://lokendra-builds.github.io/sheenui/charts/beeswarm\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Beeswarm, BeeswarmTable } from \"@/components/sheenui/charts/beeswarm\";",
+      "docs": "Beeswarm: https://lokendra-builds.github.io/sheenui/charts/beeswarm\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Beeswarm, BeeswarmTable } from \"@/components/sheenui/charts/beeswarm\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3621,7 +3621,7 @@
           "target": "@components/sheenui/charts/box-plot/parts.tsx"
         }
       ],
-      "docs": "Box plot & violin: https://lokendra-builds.github.io/sheenui/charts/box-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BoxPlot, BoxPlotTable } from \"@/components/sheenui/charts/box-plot\";\nimport { BoxPlotTable } from \"@/components/sheenui/charts/box-plot/parts\";",
+      "docs": "Box plot & violin: https://lokendra-builds.github.io/sheenui/charts/box-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BoxPlot, BoxPlotTable } from \"@/components/sheenui/charts/box-plot\";\nimport { BoxPlotTable } from \"@/components/sheenui/charts/box-plot/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3657,7 +3657,7 @@
           "target": "@components/sheenui/charts/bullet-chart.tsx"
         }
       ],
-      "docs": "Bullet chart: https://lokendra-builds.github.io/sheenui/charts/bullet-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BulletChart, BulletTable } from \"@/components/sheenui/charts/bullet-chart\";",
+      "docs": "Bullet chart: https://lokendra-builds.github.io/sheenui/charts/bullet-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BulletChart, BulletTable } from \"@/components/sheenui/charts/bullet-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3705,7 +3705,7 @@
           "target": "@components/sheenui/charts/bump-chart/table.tsx"
         }
       ],
-      "docs": "Bump chart: https://lokendra-builds.github.io/sheenui/charts/bump-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BumpChart, BumpTable } from \"@/components/sheenui/charts/bump-chart\";\nimport { BumpTable } from \"@/components/sheenui/charts/bump-chart/table\";",
+      "docs": "Bump chart: https://lokendra-builds.github.io/sheenui/charts/bump-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BumpChart, BumpTable } from \"@/components/sheenui/charts/bump-chart\";\nimport { BumpTable } from \"@/components/sheenui/charts/bump-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3741,7 +3741,7 @@
           "target": "@components/sheenui/charts/calendar-heatmap.tsx"
         }
       ],
-      "docs": "Calendar heatmap: https://lokendra-builds.github.io/sheenui/charts/calendar-heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CalendarHeatmap, CalendarHeatmapTable } from \"@/components/sheenui/charts/calendar-heatmap\";",
+      "docs": "Calendar heatmap: https://lokendra-builds.github.io/sheenui/charts/calendar-heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CalendarHeatmap, CalendarHeatmapTable } from \"@/components/sheenui/charts/calendar-heatmap\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3827,7 +3827,7 @@
           "target": "@components/sheenui/charts/candlestick-chart/wheel.ts"
         }
       ],
-      "docs": "Candlestick chart: https://lokendra-builds.github.io/sheenui/charts/candlestick\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CandlestickChart, CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart\";\nimport { Crosshair } from \"@/components/sheenui/charts/candlestick-chart/crosshair\";\nimport { CandleReadout } from \"@/components/sheenui/charts/candlestick-chart/readout\";\nimport { CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart/table\";",
+      "docs": "Candlestick chart: https://lokendra-builds.github.io/sheenui/charts/candlestick\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CandlestickChart, CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart\";\nimport { Crosshair } from \"@/components/sheenui/charts/candlestick-chart/crosshair\";\nimport { CandleReadout } from \"@/components/sheenui/charts/candlestick-chart/readout\";\nimport { CandlestickTable } from \"@/components/sheenui/charts/candlestick-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3875,7 +3875,7 @@
           "target": "@components/sheenui/charts/category-bar/parts.tsx"
         }
       ],
-      "docs": "Category bar: https://lokendra-builds.github.io/sheenui/charts/category-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CategoryBar, CategoryBarTable } from \"@/components/sheenui/charts/category-bar\";\nimport { CategoryBarTable } from \"@/components/sheenui/charts/category-bar/parts\";",
+      "docs": "Category bar: https://lokendra-builds.github.io/sheenui/charts/category-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CategoryBar, CategoryBarTable } from \"@/components/sheenui/charts/category-bar\";\nimport { CategoryBarTable } from \"@/components/sheenui/charts/category-bar/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3907,7 +3907,7 @@
           "target": "@components/sheenui/charts/chart-annotations.tsx"
         }
       ],
-      "docs": "Chart annotations: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartAnnotationsLayer } from \"@/components/sheenui/charts/chart-annotations\";",
+      "docs": "Chart annotations: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartAnnotationsLayer } from \"@/components/sheenui/charts/chart-annotations\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3939,7 +3939,7 @@
           "target": "@components/sheenui/charts/chart-brush.tsx"
         }
       ],
-      "docs": "Chart brush: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartBrush } from \"@/components/sheenui/charts/chart-brush\";",
+      "docs": "Chart brush: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartBrush } from \"@/components/sheenui/charts/chart-brush\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3968,7 +3968,7 @@
           "target": "@components/sheenui/charts/chart-export.ts"
         }
       ],
-      "docs": "Chart export: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Chart export: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -3996,7 +3996,7 @@
           "target": "@components/sheenui/charts/chart-figure.tsx"
         }
       ],
-      "docs": "Chart figure: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Chart figure: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4026,7 +4026,7 @@
           "target": "@components/sheenui/charts/chart-fit.tsx"
         }
       ],
-      "docs": "Chart fit: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TableScroll } from \"@/components/sheenui/charts/chart-fit\";",
+      "docs": "Chart fit: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TableScroll } from \"@/components/sheenui/charts/chart-fit\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4054,7 +4054,7 @@
           "target": "@components/sheenui/charts/chart-icons.tsx"
         }
       ],
-      "docs": "Chart icons: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Chart icons: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4118,7 +4118,7 @@
           "target": "@components/sheenui/charts/chart-parts/state.tsx"
         }
       ],
-      "docs": "Chart parts: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartCard, ChartLegend, ChartTable, ChartTooltip, ChartAnnouncer, ChartEmpty, LegendKey } from \"@/components/sheenui/charts/chart-parts\";\nimport { ChartCard } from \"@/components/sheenui/charts/chart-parts/chart-card\";\nimport { ChartEmpty, TableOverflow, ChartTable } from \"@/components/sheenui/charts/chart-parts/empty-table\";\nimport { ChartLegend, LegendKey, NoteMark, ChartTooltip, ChartAnnouncer } from \"@/components/sheenui/charts/chart-parts/legend-tooltip\";\nimport { ChartExportMenu } from \"@/components/sheenui/charts/chart-parts/state\";",
+      "docs": "Chart parts: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartCard, ChartLegend, ChartTable, ChartTooltip, ChartAnnouncer, ChartEmpty, LegendKey } from \"@/components/sheenui/charts/chart-parts\";\nimport { ChartCard } from \"@/components/sheenui/charts/chart-parts/chart-card\";\nimport { ChartEmpty, TableOverflow, ChartTable } from \"@/components/sheenui/charts/chart-parts/empty-table\";\nimport { ChartLegend, LegendKey, NoteMark, ChartTooltip, ChartAnnouncer } from \"@/components/sheenui/charts/chart-parts/legend-tooltip\";\nimport { ChartExportMenu } from \"@/components/sheenui/charts/chart-parts/state\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4146,7 +4146,7 @@
           "target": "@components/sheenui/charts/chart-patterns.tsx"
         }
       ],
-      "docs": "Chart patterns: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Chart patterns: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4174,7 +4174,7 @@
           "target": "@components/sheenui/charts/chart-pointer.tsx"
         }
       ],
-      "docs": "Chart pointer: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Chart pointer: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4202,7 +4202,7 @@
           "target": "@components/sheenui/charts/chart-sync.tsx"
         }
       ],
-      "docs": "Chart sync: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartSyncProvider } from \"@/components/sheenui/charts/chart-sync\";",
+      "docs": "Chart sync: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartSyncProvider } from \"@/components/sheenui/charts/chart-sync\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4234,7 +4234,7 @@
           "target": "@components/sheenui/charts/chart-table-twins.tsx"
         }
       ],
-      "docs": "Chart table twins: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarTable, LineTable, StepLineTable, RadarTable, DonutTable } from \"@/components/sheenui/charts/chart-table-twins\";",
+      "docs": "Chart table twins: https://lokendra-builds.github.io/sheenui/charts/bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BarTable, LineTable, StepLineTable, RadarTable, DonutTable } from \"@/components/sheenui/charts/chart-table-twins\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4267,7 +4267,7 @@
           "target": "@components/sheenui/charts/chart-tip.tsx"
         }
       ],
-      "docs": "Chart tip: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartTip, ChartValueTable } from \"@/components/sheenui/charts/chart-tip\";",
+      "docs": "Chart tip: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartTip, ChartValueTable } from \"@/components/sheenui/charts/chart-tip\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4298,7 +4298,7 @@
           "target": "@components/sheenui/charts/chart-utils.ts"
         }
       ],
-      "docs": "Chart utils: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartWidthHint } from \"@/components/sheenui/charts/chart-utils\";",
+      "docs": "Chart utils: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartWidthHint } from \"@/components/sheenui/charts/chart-utils\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4345,7 +4345,7 @@
           "target": "@components/sheenui/charts/chord-diagram/parts.tsx"
         }
       ],
-      "docs": "Chord diagram: https://lokendra-builds.github.io/sheenui/charts/chord-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChordDiagram, ChordTable } from \"@/components/sheenui/charts/chord-diagram\";\nimport { ChordTable } from \"@/components/sheenui/charts/chord-diagram/parts\";",
+      "docs": "Chord diagram: https://lokendra-builds.github.io/sheenui/charts/chord-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChordDiagram, ChordTable } from \"@/components/sheenui/charts/chord-diagram\";\nimport { ChordTable } from \"@/components/sheenui/charts/chord-diagram/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4388,7 +4388,7 @@
           "target": "@components/sheenui/charts/cohort-chart/table.tsx"
         }
       ],
-      "docs": "Cohort chart: https://lokendra-builds.github.io/sheenui/charts/cohort-retention\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CohortChart, CohortTable } from \"@/components/sheenui/charts/cohort-chart\";\nimport { DockedReadout, CellTip, CohortRowView } from \"@/components/sheenui/charts/cohort-chart/parts\";\nimport { CohortTable } from \"@/components/sheenui/charts/cohort-chart/table\";",
+      "docs": "Cohort chart: https://lokendra-builds.github.io/sheenui/charts/cohort-retention\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { CohortChart, CohortTable } from \"@/components/sheenui/charts/cohort-chart\";\nimport { DockedReadout, CellTip, CohortRowView } from \"@/components/sheenui/charts/cohort-chart/parts\";\nimport { CohortTable } from \"@/components/sheenui/charts/cohort-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4424,7 +4424,7 @@
           "target": "@components/sheenui/charts/combo-chart.tsx"
         }
       ],
-      "docs": "Combo chart: https://lokendra-builds.github.io/sheenui/charts/combo-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ComboChart, ComboTable } from \"@/components/sheenui/charts/combo-chart\";",
+      "docs": "Combo chart: https://lokendra-builds.github.io/sheenui/charts/combo-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ComboChart, ComboTable } from \"@/components/sheenui/charts/combo-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4480,7 +4480,7 @@
           "target": "@components/sheenui/charts/diverging-bar-chart/table.tsx"
         }
       ],
-      "docs": "Diverging bar chart: https://lokendra-builds.github.io/sheenui/charts/diverging-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DivergingBarChart, DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart\";\nimport { DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart/table\";",
+      "docs": "Diverging bar chart: https://lokendra-builds.github.io/sheenui/charts/diverging-bar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DivergingBarChart, DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart\";\nimport { DivergingBarTable } from \"@/components/sheenui/charts/diverging-bar-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4515,7 +4515,7 @@
           "target": "@components/sheenui/charts/donut-chart.tsx"
         }
       ],
-      "docs": "Donut chart: https://lokendra-builds.github.io/sheenui/charts/donut-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DonutChart } from \"@/components/sheenui/charts/donut-chart\";",
+      "docs": "Donut chart: https://lokendra-builds.github.io/sheenui/charts/donut-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DonutChart } from \"@/components/sheenui/charts/donut-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4584,7 +4584,7 @@
           "target": "@components/sheenui/charts/dumbbell-chart/table.tsx"
         }
       ],
-      "docs": "Dumbbell & slope chart: https://lokendra-builds.github.io/sheenui/charts/dumbbell\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DumbbellChart, DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart\";\nimport { ChangeText, SlopeLabels } from \"@/components/sheenui/charts/dumbbell-chart/parts\";\nimport { DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart/table\";",
+      "docs": "Dumbbell & slope chart: https://lokendra-builds.github.io/sheenui/charts/dumbbell\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DumbbellChart, DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart\";\nimport { ChangeText, SlopeLabels } from \"@/components/sheenui/charts/dumbbell-chart/parts\";\nimport { DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4633,7 +4633,7 @@
           "target": "@components/sheenui/charts/error-bar-chart/table.tsx"
         }
       ],
-      "docs": "Error bars: https://lokendra-builds.github.io/sheenui/charts/error-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ErrorBarChart, ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart\";\nimport { ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart/table\";",
+      "docs": "Error bars: https://lokendra-builds.github.io/sheenui/charts/error-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ErrorBarChart, ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart\";\nimport { ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4666,7 +4666,7 @@
           "target": "@components/sheenui/charts/flow-utils.tsx"
         }
       ],
-      "docs": "Flow utils: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Flow utils: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4703,7 +4703,7 @@
           "target": "@components/sheenui/charts/funnel-chart.tsx"
         }
       ],
-      "docs": "Funnel chart: https://lokendra-builds.github.io/sheenui/charts/funnel-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { FunnelChart, FunnelTable } from \"@/components/sheenui/charts/funnel-chart\";",
+      "docs": "Funnel chart: https://lokendra-builds.github.io/sheenui/charts/funnel-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { FunnelChart, FunnelTable } from \"@/components/sheenui/charts/funnel-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4807,7 +4807,7 @@
           "target": "@components/sheenui/charts/gantt/types.ts"
         }
       ],
-      "docs": "Gantt chart: https://lokendra-builds.github.io/sheenui/charts/gantt\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GanttChart, GanttTable } from \"@/components/sheenui/charts/gantt-chart\";\nimport { LabelHighlight, TimelineHighlight, GanttReadout, GanttAnnouncer, GridLayer, HeaderLabels } from \"@/components/sheenui/charts/gantt/layers\";\nimport { DockedReadout, StableTip, GroupDot } from \"@/components/sheenui/charts/gantt/layout\";\nimport { GanttOverlay } from \"@/components/sheenui/charts/gantt/overlay\";\nimport { LabelRow, BarRow, GroupBracket, MilestoneMark, RowLabel, ArrowPath, IdleArrows, HotArrows } from \"@/components/sheenui/charts/gantt/rows\";\nimport { GanttTable } from \"@/components/sheenui/charts/gantt/table\";\nimport { GanttToolbar } from \"@/components/sheenui/charts/gantt/toolbar\";",
+      "docs": "Gantt chart: https://lokendra-builds.github.io/sheenui/charts/gantt\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GanttChart, GanttTable } from \"@/components/sheenui/charts/gantt-chart\";\nimport { LabelHighlight, TimelineHighlight, GanttReadout, GanttAnnouncer, GridLayer, HeaderLabels } from \"@/components/sheenui/charts/gantt/layers\";\nimport { DockedReadout, StableTip, GroupDot } from \"@/components/sheenui/charts/gantt/layout\";\nimport { GanttOverlay } from \"@/components/sheenui/charts/gantt/overlay\";\nimport { LabelRow, BarRow, GroupBracket, MilestoneMark, RowLabel, ArrowPath, IdleArrows, HotArrows } from \"@/components/sheenui/charts/gantt/rows\";\nimport { GanttTable } from \"@/components/sheenui/charts/gantt/table\";\nimport { GanttToolbar } from \"@/components/sheenui/charts/gantt/toolbar\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4855,7 +4855,7 @@
           "target": "@components/sheenui/charts/gauge-chart/parts.tsx"
         }
       ],
-      "docs": "Gauge: https://lokendra-builds.github.io/sheenui/charts/gauge-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GaugeChart, GaugeTable } from \"@/components/sheenui/charts/gauge-chart\";\nimport { LitBand } from \"@/components/sheenui/charts/gauge-chart/model\";\nimport { GaugeNumber, CountUp, GaugeTable } from \"@/components/sheenui/charts/gauge-chart/parts\";",
+      "docs": "Gauge: https://lokendra-builds.github.io/sheenui/charts/gauge-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { GaugeChart, GaugeTable } from \"@/components/sheenui/charts/gauge-chart\";\nimport { LitBand } from \"@/components/sheenui/charts/gauge-chart/model\";\nimport { GaugeNumber, CountUp, GaugeTable } from \"@/components/sheenui/charts/gauge-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4932,7 +4932,7 @@
           "target": "@components/sheenui/charts/geo/world-110m.ts"
         }
       ],
-      "docs": "World map: https://lokendra-builds.github.io/sheenui/charts/world-map\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WorldMap, WorldMapTable } from \"@/components/sheenui/charts/geo-map\";\nimport { HatchPattern, NoDataKey, LegendRow, DivergingLegend, BubbleLegend, DockedReadout, Bubble, CountryLayer } from \"@/components/sheenui/charts/geo-map/parts\";\nimport { M } from \"@/components/sheenui/charts/geo-map/projection\";\nimport { WorldMapTable } from \"@/components/sheenui/charts/geo-map/table\";",
+      "docs": "World map: https://lokendra-builds.github.io/sheenui/charts/world-map\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WorldMap, WorldMapTable } from \"@/components/sheenui/charts/geo-map\";\nimport { HatchPattern, NoDataKey, LegendRow, DivergingLegend, BubbleLegend, DockedReadout, Bubble, CountryLayer } from \"@/components/sheenui/charts/geo-map/parts\";\nimport { M } from \"@/components/sheenui/charts/geo-map/projection\";\nimport { WorldMapTable } from \"@/components/sheenui/charts/geo-map/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -4978,7 +4978,7 @@
           "target": "@components/sheenui/charts/heatmap/table.tsx"
         }
       ],
-      "docs": "Heatmap: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Heatmap, HeatmapTable, SequentialLegend, ChartValueTable, MissingValue, ChartDockHint, ChartTip } from \"@/components/sheenui/charts/heatmap\";\nimport { ChartDockHint, SequentialLegend, MissingValue } from \"@/components/sheenui/charts/heatmap/kit\";\nimport { HeatmapTable } from \"@/components/sheenui/charts/heatmap/table\";",
+      "docs": "Heatmap: https://lokendra-builds.github.io/sheenui/charts/heatmap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Heatmap, HeatmapTable, SequentialLegend, ChartValueTable, MissingValue, ChartDockHint, ChartTip } from \"@/components/sheenui/charts/heatmap\";\nimport { ChartDockHint, SequentialLegend, MissingValue } from \"@/components/sheenui/charts/heatmap/kit\";\nimport { HeatmapTable } from \"@/components/sheenui/charts/heatmap/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5021,7 +5021,7 @@
           "target": "@components/sheenui/charts/histogram/model.ts"
         }
       ],
-      "docs": "Histogram: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Histogram, HistogramTable } from \"@/components/sheenui/charts/histogram\";",
+      "docs": "Histogram: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Histogram, HistogramTable } from \"@/components/sheenui/charts/histogram\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5060,7 +5060,7 @@
           "target": "@components/sheenui/charts/kits/histogram-kit/stats.ts"
         }
       ],
-      "docs": "Histogram kit: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/kits/histogram-kit/. A helper module that the other items import; you rarely import it yourself.",
+      "docs": "Histogram kit: https://lokendra-builds.github.io/sheenui/charts/histogram\n\nInstalled in components/sheenui/charts/kits/histogram-kit/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5099,7 +5099,7 @@
           "target": "@components/sheenui/charts/line-chart.tsx"
         }
       ],
-      "docs": "Line chart: https://lokendra-builds.github.io/sheenui/charts/line-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LineChart, AreaChart } from \"@/components/sheenui/charts/line-chart\";",
+      "docs": "Line chart: https://lokendra-builds.github.io/sheenui/charts/line-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LineChart, AreaChart } from \"@/components/sheenui/charts/line-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5158,7 +5158,7 @@
           "target": "@components/sheenui/charts/lollipop-chart/table.tsx"
         }
       ],
-      "docs": "Lollipop chart: https://lokendra-builds.github.io/sheenui/charts/lollipop\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LollipopChart, LollipopTable } from \"@/components/sheenui/charts/lollipop-chart\";\nimport { LollipopTable } from \"@/components/sheenui/charts/lollipop-chart/table\";",
+      "docs": "Lollipop chart: https://lokendra-builds.github.io/sheenui/charts/lollipop\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { LollipopChart, LollipopTable } from \"@/components/sheenui/charts/lollipop-chart\";\nimport { LollipopTable } from \"@/components/sheenui/charts/lollipop-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5196,7 +5196,7 @@
           "target": "@components/sheenui/charts/marimekko-chart.tsx"
         }
       ],
-      "docs": "Marimekko chart: https://lokendra-builds.github.io/sheenui/charts/marimekko\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { MarimekkoChart, MarimekkoTable } from \"@/components/sheenui/charts/marimekko-chart\";",
+      "docs": "Marimekko chart: https://lokendra-builds.github.io/sheenui/charts/marimekko\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { MarimekkoChart, MarimekkoTable } from \"@/components/sheenui/charts/marimekko-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5308,7 +5308,7 @@
           "target": "@components/sheenui/charts/network-graph/use-view.ts"
         }
       ],
-      "docs": "Network graph: https://lokendra-builds.github.io/sheenui/charts/network-graph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { NetworkGraph, NetworkTable } from \"@/components/sheenui/charts/network-graph\";\nimport { GraphMarks, LitLayers, ZoomToolbar } from \"@/components/sheenui/charts/network-graph/layers\";\nimport { ToolIcon } from \"@/components/sheenui/charts/network-graph/layout\";\nimport { NetworkTable } from \"@/components/sheenui/charts/network-graph/table\";",
+      "docs": "Network graph: https://lokendra-builds.github.io/sheenui/charts/network-graph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { NetworkGraph, NetworkTable } from \"@/components/sheenui/charts/network-graph\";\nimport { GraphMarks, LitLayers, ZoomToolbar } from \"@/components/sheenui/charts/network-graph/layers\";\nimport { ToolIcon } from \"@/components/sheenui/charts/network-graph/layout\";\nimport { NetworkTable } from \"@/components/sheenui/charts/network-graph/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5344,7 +5344,7 @@
           "target": "@components/sheenui/charts/percent-bar-chart.tsx"
         }
       ],
-      "docs": "100% stacked bars: https://lokendra-builds.github.io/sheenui/charts/percent-stacked-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PercentBarChart, PercentBarTable } from \"@/components/sheenui/charts/percent-bar-chart\";",
+      "docs": "100% stacked bars: https://lokendra-builds.github.io/sheenui/charts/percent-stacked-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PercentBarChart, PercentBarTable } from \"@/components/sheenui/charts/percent-bar-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5380,7 +5380,7 @@
           "target": "@components/sheenui/charts/pie-chart.tsx"
         }
       ],
-      "docs": "Pie chart: https://lokendra-builds.github.io/sheenui/charts/pie-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PieChart, PieTable } from \"@/components/sheenui/charts/pie-chart\";",
+      "docs": "Pie chart: https://lokendra-builds.github.io/sheenui/charts/pie-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PieChart, PieTable } from \"@/components/sheenui/charts/pie-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5417,7 +5417,7 @@
           "target": "@components/sheenui/charts/polar-area-chart.tsx"
         }
       ],
-      "docs": "Polar area chart: https://lokendra-builds.github.io/sheenui/charts/polar-area\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PolarAreaChart, PolarAreaTable } from \"@/components/sheenui/charts/polar-area-chart\";",
+      "docs": "Polar area chart: https://lokendra-builds.github.io/sheenui/charts/polar-area\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PolarAreaChart, PolarAreaTable } from \"@/components/sheenui/charts/polar-area-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5466,7 +5466,7 @@
           "target": "@components/sheenui/charts/population-pyramid/table.tsx"
         }
       ],
-      "docs": "Population pyramid: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PopulationPyramid, PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid\";\nimport { PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid/table\";",
+      "docs": "Population pyramid: https://lokendra-builds.github.io/sheenui/charts/population-pyramid\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { PopulationPyramid, PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid\";\nimport { PopulationPyramidTable } from \"@/components/sheenui/charts/population-pyramid/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5502,7 +5502,7 @@
           "target": "@components/sheenui/charts/radar-chart.tsx"
         }
       ],
-      "docs": "Radar chart: https://lokendra-builds.github.io/sheenui/charts/radar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadarChart } from \"@/components/sheenui/charts/radar-chart\";",
+      "docs": "Radar chart: https://lokendra-builds.github.io/sheenui/charts/radar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadarChart } from \"@/components/sheenui/charts/radar-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5538,7 +5538,7 @@
           "target": "@components/sheenui/charts/radial-bar-chart.tsx"
         }
       ],
-      "docs": "Radial bar chart: https://lokendra-builds.github.io/sheenui/charts/radial-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialBarChart, RadialBarTable } from \"@/components/sheenui/charts/radial-bar-chart\";",
+      "docs": "Radial bar chart: https://lokendra-builds.github.io/sheenui/charts/radial-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialBarChart, RadialBarTable } from \"@/components/sheenui/charts/radial-bar-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5570,7 +5570,7 @@
           "target": "@components/sheenui/charts/radial-progress.tsx"
         }
       ],
-      "docs": "Radial progress: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialProgress } from \"@/components/sheenui/charts/radial-progress\";",
+      "docs": "Radial progress: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RadialProgress } from \"@/components/sheenui/charts/radial-progress\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5605,7 +5605,7 @@
           "target": "@components/sheenui/charts/range-area-chart.tsx"
         }
       ],
-      "docs": "Range area chart: https://lokendra-builds.github.io/sheenui/charts/range-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RangeAreaChart, RangeAreaTable } from \"@/components/sheenui/charts/range-area-chart\";",
+      "docs": "Range area chart: https://lokendra-builds.github.io/sheenui/charts/range-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RangeAreaChart, RangeAreaTable } from \"@/components/sheenui/charts/range-area-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5643,7 +5643,7 @@
           "target": "@components/sheenui/charts/ridgeline-chart.tsx"
         }
       ],
-      "docs": "Ridgeline chart: https://lokendra-builds.github.io/sheenui/charts/ridgeline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RidgelineChart, RidgelineTable } from \"@/components/sheenui/charts/ridgeline-chart\";",
+      "docs": "Ridgeline chart: https://lokendra-builds.github.io/sheenui/charts/ridgeline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { RidgelineChart, RidgelineTable } from \"@/components/sheenui/charts/ridgeline-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5721,7 +5721,7 @@
           "target": "@components/sheenui/charts/sankey-chart/use-sankey-paint.ts"
         }
       ],
-      "docs": "Sankey chart: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SankeyChart, SankeyTable } from \"@/components/sheenui/charts/sankey-chart\";\nimport { SankeyTable } from \"@/components/sheenui/charts/sankey-chart/table\";",
+      "docs": "Sankey chart: https://lokendra-builds.github.io/sheenui/charts/sankey-diagram\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SankeyChart, SankeyTable } from \"@/components/sheenui/charts/sankey-chart\";\nimport { SankeyTable } from \"@/components/sheenui/charts/sankey-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5756,7 +5756,7 @@
           "target": "@components/sheenui/charts/scatter-chart.tsx"
         }
       ],
-      "docs": "Scatter chart: https://lokendra-builds.github.io/sheenui/charts/scatter-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ScatterChart, ScatterTable } from \"@/components/sheenui/charts/scatter-chart\";",
+      "docs": "Scatter chart: https://lokendra-builds.github.io/sheenui/charts/scatter-plot\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ScatterChart, ScatterTable } from \"@/components/sheenui/charts/scatter-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5788,7 +5788,7 @@
           "target": "@components/sheenui/charts/sparkbar.tsx"
         }
       ],
-      "docs": "Sparkbar: https://lokendra-builds.github.io/sheenui/charts/sparkbar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkbar } from \"@/components/sheenui/charts/sparkbar\";",
+      "docs": "Sparkbar: https://lokendra-builds.github.io/sheenui/charts/sparkbar\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkbar } from \"@/components/sheenui/charts/sparkbar\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5820,7 +5820,7 @@
           "target": "@components/sheenui/charts/sparkline.tsx"
         }
       ],
-      "docs": "Sparkline: https://lokendra-builds.github.io/sheenui/charts/sparkline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkline } from \"@/components/sheenui/charts/sparkline\";",
+      "docs": "Sparkline: https://lokendra-builds.github.io/sheenui/charts/sparkline\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Sparkline } from \"@/components/sheenui/charts/sparkline\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5857,7 +5857,7 @@
           "target": "@components/sheenui/charts/stacked-area-chart.tsx"
         }
       ],
-      "docs": "Stacked area chart: https://lokendra-builds.github.io/sheenui/charts/stacked-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StackedAreaChart, StackedAreaTable } from \"@/components/sheenui/charts/stacked-area-chart\";",
+      "docs": "Stacked area chart: https://lokendra-builds.github.io/sheenui/charts/stacked-area-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StackedAreaChart, StackedAreaTable } from \"@/components/sheenui/charts/stacked-area-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5893,7 +5893,7 @@
           "target": "@components/sheenui/charts/step-line-chart.tsx"
         }
       ],
-      "docs": "Step line chart: https://lokendra-builds.github.io/sheenui/charts/step-line-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StepLineChart } from \"@/components/sheenui/charts/step-line-chart\";",
+      "docs": "Step line chart: https://lokendra-builds.github.io/sheenui/charts/step-line-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StepLineChart } from \"@/components/sheenui/charts/step-line-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5941,7 +5941,7 @@
           "target": "@components/sheenui/charts/streamgraph/parts.tsx"
         }
       ],
-      "docs": "Streamgraph: https://lokendra-builds.github.io/sheenui/charts/streamgraph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Streamgraph, StreamgraphTable } from \"@/components/sheenui/charts/streamgraph\";\nimport { StreamLayer } from \"@/components/sheenui/charts/streamgraph/model\";\nimport { StreamgraphTable } from \"@/components/sheenui/charts/streamgraph/parts\";",
+      "docs": "Streamgraph: https://lokendra-builds.github.io/sheenui/charts/streamgraph\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Streamgraph, StreamgraphTable } from \"@/components/sheenui/charts/streamgraph\";\nimport { StreamLayer } from \"@/components/sheenui/charts/streamgraph/model\";\nimport { StreamgraphTable } from \"@/components/sheenui/charts/streamgraph/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -5991,7 +5991,7 @@
           "target": "@components/sheenui/charts/streaming-chart/parts.tsx"
         }
       ],
-      "docs": "Streaming chart: https://lokendra-builds.github.io/sheenui/charts/realtime-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StreamingChart, StreamingTable } from \"@/components/sheenui/charts/streaming-chart\";\nimport { RollingValue, Tick } from \"@/components/sheenui/charts/streaming-chart/model\";\nimport { Head, StreamingTable } from \"@/components/sheenui/charts/streaming-chart/parts\";",
+      "docs": "Streaming chart: https://lokendra-builds.github.io/sheenui/charts/realtime-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { StreamingChart, StreamingTable } from \"@/components/sheenui/charts/streaming-chart\";\nimport { RollingValue, Tick } from \"@/components/sheenui/charts/streaming-chart/model\";\nimport { Head, StreamingTable } from \"@/components/sheenui/charts/streaming-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6037,7 +6037,7 @@
           "target": "@components/sheenui/charts/sunburst-chart/parts.tsx"
         }
       ],
-      "docs": "Sunburst chart: https://lokendra-builds.github.io/sheenui/charts/sunburst\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SunburstChart, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart\";\nimport { RollingValue, ArcLabel, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart/parts\";",
+      "docs": "Sunburst chart: https://lokendra-builds.github.io/sheenui/charts/sunburst\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { SunburstChart, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart\";\nimport { RollingValue, ArcLabel, SunburstTable } from \"@/components/sheenui/charts/sunburst-chart/parts\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6072,7 +6072,7 @@
           "target": "@components/sheenui/charts/tracker-chart.tsx"
         }
       ],
-      "docs": "Tracker chart: https://lokendra-builds.github.io/sheenui/charts/uptime-tracker\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TrackerChart, TrackerTable } from \"@/components/sheenui/charts/tracker-chart\";",
+      "docs": "Tracker chart: https://lokendra-builds.github.io/sheenui/charts/uptime-tracker\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { TrackerChart, TrackerTable } from \"@/components/sheenui/charts/tracker-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6109,7 +6109,7 @@
           "target": "@components/sheenui/charts/treemap.tsx"
         }
       ],
-      "docs": "Treemap: https://lokendra-builds.github.io/sheenui/charts/treemap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Treemap, TreemapTable } from \"@/components/sheenui/charts/treemap\";",
+      "docs": "Treemap: https://lokendra-builds.github.io/sheenui/charts/treemap\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { Treemap, TreemapTable } from \"@/components/sheenui/charts/treemap\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6144,7 +6144,7 @@
           "target": "@components/sheenui/charts/waffle-chart.tsx"
         }
       ],
-      "docs": "Waffle chart: https://lokendra-builds.github.io/sheenui/charts/waffle\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaffleChart, WaffleTable } from \"@/components/sheenui/charts/waffle-chart\";",
+      "docs": "Waffle chart: https://lokendra-builds.github.io/sheenui/charts/waffle\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaffleChart, WaffleTable } from \"@/components/sheenui/charts/waffle-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6180,7 +6180,7 @@
           "target": "@components/sheenui/charts/waterfall-chart.tsx"
         }
       ],
-      "docs": "Waterfall chart: https://lokendra-builds.github.io/sheenui/charts/waterfall-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaterfallChart, WaterfallTable } from \"@/components/sheenui/charts/waterfall-chart\";",
+      "docs": "Waterfall chart: https://lokendra-builds.github.io/sheenui/charts/waterfall-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { WaterfallChart, WaterfallTable } from \"@/components/sheenui/charts/waterfall-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "charts"
       ],
@@ -6286,7 +6286,7 @@
           "target": "@components/sheenui/blocks/analytics/demo.ts"
         }
       ],
-      "docs": "Analytics demo helpers: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { seededRandom, hashSeed, createRng, demoSeries, simulateLatency, withLatency } from \"@/components/sheenui/blocks/analytics/demo\";",
+      "docs": "Analytics demo helpers: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { seededRandom, hashSeed, createRng, demoSeries, simulateLatency, withLatency } from \"@/components/sheenui/blocks/analytics/demo\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6319,7 +6319,7 @@
           "target": "@components/sheenui/blocks/analytics/demo-ecommerce.ts"
         }
       ],
-      "docs": "E-commerce demo data: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { ecommerceDemoData, ecommerceDemoLoader, ecommerceLiveStep } from \"@/components/sheenui/blocks/analytics/demo-ecommerce\";",
+      "docs": "E-commerce demo data: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { ecommerceDemoData, ecommerceDemoLoader, ecommerceLiveStep } from \"@/components/sheenui/blocks/analytics/demo-ecommerce\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6352,7 +6352,7 @@
           "target": "@components/sheenui/blocks/analytics/demo-finance.ts"
         }
       ],
-      "docs": "Finance demo data: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { financeDemoData, financeDemoLoader, financeLiveStep } from \"@/components/sheenui/blocks/analytics/demo-finance\";",
+      "docs": "Finance demo data: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { financeDemoData, financeDemoLoader, financeLiveStep } from \"@/components/sheenui/blocks/analytics/demo-finance\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6386,7 +6386,7 @@
           "target": "@components/sheenui/blocks/analytics/demo-product.ts"
         }
       ],
-      "docs": "Product analytics demo data: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { productDemoData, productDemoLoader, productLiveStep } from \"@/components/sheenui/blocks/analytics/demo-product\";",
+      "docs": "Product analytics demo data: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { productDemoData, productDemoLoader, productLiveStep } from \"@/components/sheenui/blocks/analytics/demo-product\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6418,7 +6418,7 @@
           "target": "@components/sheenui/blocks/analytics/demo-saas.ts"
         }
       ],
-      "docs": "SaaS revenue demo data: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { saasRevenueDemoData, saasRevenueDemoLoader, saasLiveStep } from \"@/components/sheenui/blocks/analytics/demo-saas\";",
+      "docs": "SaaS revenue demo data: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { saasRevenueDemoData, saasRevenueDemoLoader, saasLiveStep } from \"@/components/sheenui/blocks/analytics/demo-saas\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6449,7 +6449,7 @@
           "target": "@components/sheenui/blocks/analytics/demo-web.ts"
         }
       ],
-      "docs": "Web analytics demo data: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { webAnalyticsDemoData, webAnalyticsDemoLoader, webLiveStep } from \"@/components/sheenui/blocks/analytics/demo-web\";",
+      "docs": "Web analytics demo data: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { webAnalyticsDemoData, webAnalyticsDemoLoader, webLiveStep } from \"@/components/sheenui/blocks/analytics/demo-web\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6483,7 +6483,7 @@
           "target": "@components/sheenui/blocks/analytics-ecommerce.tsx"
         }
       ],
-      "docs": "E-commerce: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { EcommerceDashboard } from \"@/components/sheenui/blocks/analytics-ecommerce\";",
+      "docs": "E-commerce: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { EcommerceDashboard } from \"@/components/sheenui/blocks/analytics-ecommerce\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6549,7 +6549,7 @@
           "target": "@components/sheenui/blocks/analytics-finance/portfolio-chart.tsx"
         }
       ],
-      "docs": "Crypto dashboard: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { FinanceDashboard } from \"@/components/sheenui/blocks/analytics-finance\";\nimport { PortfolioChart } from \"@/components/sheenui/blocks/analytics-finance/portfolio-chart\";",
+      "docs": "Crypto dashboard: https://lokendra-builds.github.io/sheenui/dashboards/crypto-dashboard\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { FinanceDashboard } from \"@/components/sheenui/blocks/analytics-finance\";\nimport { PortfolioChart } from \"@/components/sheenui/blocks/analytics-finance/portfolio-chart\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6644,7 +6644,7 @@
           "target": "@components/sheenui/blocks/analytics/trend-frame.tsx"
         }
       ],
-      "docs": "Analytics kit: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { BarTrendChart } from \"@/components/sheenui/blocks/analytics/bar-trend-chart\";\nimport { AnalyticsShell, AnalyticsGrid, AnalyticsPanel, AnalyticsState, KpiStrip, RollingNumber, DeltaBadge, LiveDot, PanelSkeleton, DashboardBackdrop, TrendChart, TrendTable, StackedTrendChart, BarTrendChart, Cascade } from \"@/components/sheenui/blocks/analytics-kit\";\nimport { GlassBudgetContext, DashboardBackdrop } from \"@/components/sheenui/blocks/analytics/glass\";\nimport { Cascade } from \"@/components/sheenui/blocks/analytics/hooks\";\nimport { RollingNumber, DeltaBadge, KpiStrip } from \"@/components/sheenui/blocks/analytics/kpi\";\nimport { AnalyticsGrid, AnalyticsPanel, PanelSkeleton, AnalyticsState } from \"@/components/sheenui/blocks/analytics/panel\";\nimport { AnalyticsShell, LiveDot } from \"@/components/sheenui/blocks/analytics/shell\";\nimport { StackedTrendChart } from \"@/components/sheenui/blocks/analytics/stacked-trend-chart\";\nimport { TrendChart, TrendTable } from \"@/components/sheenui/blocks/analytics/trend-chart\";\nimport { FrameAxes, ChartReader, WipeClip } from \"@/components/sheenui/blocks/analytics/trend-frame\";",
+      "docs": "Analytics kit: https://lokendra-builds.github.io/sheenui/dashboards/ecommerce\n\nInstalled in components/sheenui/blocks/analytics/. Import (use your components alias):\nimport { BarTrendChart } from \"@/components/sheenui/blocks/analytics/bar-trend-chart\";\nimport { AnalyticsShell, AnalyticsGrid, AnalyticsPanel, AnalyticsState, KpiStrip, RollingNumber, DeltaBadge, LiveDot, PanelSkeleton, DashboardBackdrop, TrendChart, TrendTable, StackedTrendChart, BarTrendChart, Cascade } from \"@/components/sheenui/blocks/analytics-kit\";\nimport { GlassBudgetContext, DashboardBackdrop } from \"@/components/sheenui/blocks/analytics/glass\";\nimport { Cascade } from \"@/components/sheenui/blocks/analytics/hooks\";\nimport { RollingNumber, DeltaBadge, KpiStrip } from \"@/components/sheenui/blocks/analytics/kpi\";\nimport { AnalyticsGrid, AnalyticsPanel, PanelSkeleton, AnalyticsState } from \"@/components/sheenui/blocks/analytics/panel\";\nimport { AnalyticsShell, LiveDot } from \"@/components/sheenui/blocks/analytics/shell\";\nimport { StackedTrendChart } from \"@/components/sheenui/blocks/analytics/stacked-trend-chart\";\nimport { TrendChart, TrendTable } from \"@/components/sheenui/blocks/analytics/trend-chart\";\nimport { FrameAxes, ChartReader, WipeClip } from \"@/components/sheenui/blocks/analytics/trend-frame\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6678,7 +6678,7 @@
           "target": "@components/sheenui/blocks/analytics-product.tsx"
         }
       ],
-      "docs": "Product analytics: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { ProductDashboard } from \"@/components/sheenui/blocks/analytics-product\";",
+      "docs": "Product analytics: https://lokendra-builds.github.io/sheenui/dashboards/product\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { ProductDashboard } from \"@/components/sheenui/blocks/analytics-product\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6713,7 +6713,7 @@
           "target": "@components/sheenui/blocks/analytics-saas.tsx"
         }
       ],
-      "docs": "SaaS revenue: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { SaasRevenueDashboard } from \"@/components/sheenui/blocks/analytics-saas\";",
+      "docs": "SaaS revenue: https://lokendra-builds.github.io/sheenui/dashboards/saas\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { SaasRevenueDashboard } from \"@/components/sheenui/blocks/analytics-saas\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -6748,7 +6748,7 @@
           "target": "@components/sheenui/blocks/analytics-web.tsx"
         }
       ],
-      "docs": "Web analytics: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { WebAnalyticsDashboard } from \"@/components/sheenui/blocks/analytics-web\";",
+      "docs": "Web analytics: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { WebAnalyticsDashboard } from \"@/components/sheenui/blocks/analytics-web\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
       "categories": [
         "dashboards"
       ],
@@ -7528,6 +7528,306 @@
         "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
         "route": "/blocks/testimonials",
         "docsUrl": "https://lokendra-builds.github.io/sheenui/blocks/testimonials"
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "all",
+      "type": "registry:item",
+      "title": "The whole SheenUI library",
+      "description": "Installs the whole SheenUI library: every component, chart and block, plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (3 bundles).",
+      "author": "lokendra-builds <https://github.com/lokendra-builds>",
+      "registryDependencies": [
+        "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+        "https://lokendra-builds.github.io/sheenui/r/blocks.json",
+        "https://lokendra-builds.github.io/sheenui/r/charts.json",
+        "https://lokendra-builds.github.io/sheenui/r/components.json"
+      ],
+      "files": [],
+      "docs": "The whole SheenUI library: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+      "categories": [
+        "bundles"
+      ],
+      "meta": {
+        "kind": "bundle",
+        "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+        "route": "/docs/installation",
+        "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "blocks",
+      "type": "registry:item",
+      "title": "All blocks",
+      "description": "Installs every SheenUI block, dashboard and block helper, with the components and charts they use, plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (33 items).",
+      "author": "lokendra-builds <https://github.com/lokendra-builds>",
+      "registryDependencies": [
+        "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+        "https://lokendra-builds.github.io/sheenui/r/ai-chat.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo-ecommerce.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo-finance.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo-product.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo-saas.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-demo-web.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-ecommerce.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-finance.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-kit.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-product.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-saas.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-web.json",
+        "https://lokendra-builds.github.io/sheenui/r/announcement-banner.json",
+        "https://lokendra-builds.github.io/sheenui/r/auth-split.json",
+        "https://lokendra-builds.github.io/sheenui/r/bento-grid.json",
+        "https://lokendra-builds.github.io/sheenui/r/block-icons.json",
+        "https://lokendra-builds.github.io/sheenui/r/chat-app.json",
+        "https://lokendra-builds.github.io/sheenui/r/contact-form.json",
+        "https://lokendra-builds.github.io/sheenui/r/dashboard-stats.json",
+        "https://lokendra-builds.github.io/sheenui/r/faq-section.json",
+        "https://lokendra-builds.github.io/sheenui/r/feature-grid.json",
+        "https://lokendra-builds.github.io/sheenui/r/glass-login.json",
+        "https://lokendra-builds.github.io/sheenui/r/hero-section.json",
+        "https://lokendra-builds.github.io/sheenui/r/lamp-login.json",
+        "https://lokendra-builds.github.io/sheenui/r/not-found-page.json",
+        "https://lokendra-builds.github.io/sheenui/r/notification-center.json",
+        "https://lokendra-builds.github.io/sheenui/r/otp-verification.json",
+        "https://lokendra-builds.github.io/sheenui/r/payment-checkout.json",
+        "https://lokendra-builds.github.io/sheenui/r/pricing.json",
+        "https://lokendra-builds.github.io/sheenui/r/settings-page.json",
+        "https://lokendra-builds.github.io/sheenui/r/site-footer.json",
+        "https://lokendra-builds.github.io/sheenui/r/testimonials.json"
+      ],
+      "files": [],
+      "docs": "All blocks: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+      "categories": [
+        "bundles"
+      ],
+      "meta": {
+        "kind": "bundle",
+        "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+        "route": "/docs/installation",
+        "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "charts",
+      "type": "registry:item",
+      "title": "All charts",
+      "description": "Installs every SheenUI chart and its shared chart helpers, plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (64 items).",
+      "author": "lokendra-builds <https://github.com/lokendra-builds>",
+      "registryDependencies": [
+        "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+        "https://lokendra-builds.github.io/sheenui/r/bar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/bar-flip.json",
+        "https://lokendra-builds.github.io/sheenui/r/bar-list.json",
+        "https://lokendra-builds.github.io/sheenui/r/beeswarm.json",
+        "https://lokendra-builds.github.io/sheenui/r/box-plot.json",
+        "https://lokendra-builds.github.io/sheenui/r/bullet-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/bump-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/calendar-heatmap.json",
+        "https://lokendra-builds.github.io/sheenui/r/candlestick-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/category-bar.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-annotations.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-brush.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-export.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-figure.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-fit.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-icons.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-parts.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-patterns.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-pointer.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-sync.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-table-twins.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-tip.json",
+        "https://lokendra-builds.github.io/sheenui/r/chart-utils.json",
+        "https://lokendra-builds.github.io/sheenui/r/chord-diagram.json",
+        "https://lokendra-builds.github.io/sheenui/r/cohort-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/combo-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/diverging-bar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/donut-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/dumbbell-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/error-bar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/flow-utils.json",
+        "https://lokendra-builds.github.io/sheenui/r/funnel-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/gantt-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/gauge-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/geo-map.json",
+        "https://lokendra-builds.github.io/sheenui/r/heatmap.json",
+        "https://lokendra-builds.github.io/sheenui/r/histogram.json",
+        "https://lokendra-builds.github.io/sheenui/r/histogram-kit.json",
+        "https://lokendra-builds.github.io/sheenui/r/line-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/lollipop-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/marimekko-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/network-graph.json",
+        "https://lokendra-builds.github.io/sheenui/r/percent-bar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/pie-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/polar-area-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/population-pyramid.json",
+        "https://lokendra-builds.github.io/sheenui/r/radar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/radial-bar-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/radial-progress.json",
+        "https://lokendra-builds.github.io/sheenui/r/range-area-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/ridgeline-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/sankey-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/scatter-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/sparkbar.json",
+        "https://lokendra-builds.github.io/sheenui/r/sparkline.json",
+        "https://lokendra-builds.github.io/sheenui/r/stacked-area-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/step-line-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/streamgraph.json",
+        "https://lokendra-builds.github.io/sheenui/r/streaming-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/sunburst-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/tracker-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/treemap.json",
+        "https://lokendra-builds.github.io/sheenui/r/waffle-chart.json",
+        "https://lokendra-builds.github.io/sheenui/r/waterfall-chart.json"
+      ],
+      "files": [],
+      "docs": "All charts: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+      "categories": [
+        "bundles"
+      ],
+      "meta": {
+        "kind": "bundle",
+        "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+        "route": "/docs/installation",
+        "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "components",
+      "type": "registry:item",
+      "title": "All components",
+      "description": "Installs every SheenUI component (buttons, forms, overlays, navigation, tables, chat and the rest) plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (85 items).",
+      "author": "lokendra-builds <https://github.com/lokendra-builds>",
+      "registryDependencies": [
+        "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+        "https://lokendra-builds.github.io/sheenui/r/accordion.json",
+        "https://lokendra-builds.github.io/sheenui/r/alert.json",
+        "https://lokendra-builds.github.io/sheenui/r/alert-dialog.json",
+        "https://lokendra-builds.github.io/sheenui/r/animated-beam.json",
+        "https://lokendra-builds.github.io/sheenui/r/aspect-ratio.json",
+        "https://lokendra-builds.github.io/sheenui/r/avatar.json",
+        "https://lokendra-builds.github.io/sheenui/r/backdrop.json",
+        "https://lokendra-builds.github.io/sheenui/r/badge.json",
+        "https://lokendra-builds.github.io/sheenui/r/border-beam.json",
+        "https://lokendra-builds.github.io/sheenui/r/breadcrumb.json",
+        "https://lokendra-builds.github.io/sheenui/r/button.json",
+        "https://lokendra-builds.github.io/sheenui/r/button-group.json",
+        "https://lokendra-builds.github.io/sheenui/r/calendar.json",
+        "https://lokendra-builds.github.io/sheenui/r/carousel.json",
+        "https://lokendra-builds.github.io/sheenui/r/chat.json",
+        "https://lokendra-builds.github.io/sheenui/r/checkbox.json",
+        "https://lokendra-builds.github.io/sheenui/r/code-block.json",
+        "https://lokendra-builds.github.io/sheenui/r/collapsible.json",
+        "https://lokendra-builds.github.io/sheenui/r/color-picker.json",
+        "https://lokendra-builds.github.io/sheenui/r/combobox.json",
+        "https://lokendra-builds.github.io/sheenui/r/command.json",
+        "https://lokendra-builds.github.io/sheenui/r/confetti.json",
+        "https://lokendra-builds.github.io/sheenui/r/context-menu.json",
+        "https://lokendra-builds.github.io/sheenui/r/data-table.json",
+        "https://lokendra-builds.github.io/sheenui/r/date-picker.json",
+        "https://lokendra-builds.github.io/sheenui/r/description-list.json",
+        "https://lokendra-builds.github.io/sheenui/r/dialog.json",
+        "https://lokendra-builds.github.io/sheenui/r/dock.json",
+        "https://lokendra-builds.github.io/sheenui/r/drawer.json",
+        "https://lokendra-builds.github.io/sheenui/r/empty-state.json",
+        "https://lokendra-builds.github.io/sheenui/r/field.json",
+        "https://lokendra-builds.github.io/sheenui/r/file-upload.json",
+        "https://lokendra-builds.github.io/sheenui/r/glass-card.json",
+        "https://lokendra-builds.github.io/sheenui/r/hover-card.json",
+        "https://lokendra-builds.github.io/sheenui/r/input.json",
+        "https://lokendra-builds.github.io/sheenui/r/input-group.json",
+        "https://lokendra-builds.github.io/sheenui/r/kbd.json",
+        "https://lokendra-builds.github.io/sheenui/r/liquid-glass.json",
+        "https://lokendra-builds.github.io/sheenui/r/logo.json",
+        "https://lokendra-builds.github.io/sheenui/r/marquee.json",
+        "https://lokendra-builds.github.io/sheenui/r/menu.json",
+        "https://lokendra-builds.github.io/sheenui/r/menubar.json",
+        "https://lokendra-builds.github.io/sheenui/r/meteors.json",
+        "https://lokendra-builds.github.io/sheenui/r/meter.json",
+        "https://lokendra-builds.github.io/sheenui/r/morphing-dialog.json",
+        "https://lokendra-builds.github.io/sheenui/r/navbar.json",
+        "https://lokendra-builds.github.io/sheenui/r/navigation-menu.json",
+        "https://lokendra-builds.github.io/sheenui/r/number-field.json",
+        "https://lokendra-builds.github.io/sheenui/r/number-ticker.json",
+        "https://lokendra-builds.github.io/sheenui/r/orbiting-circles.json",
+        "https://lokendra-builds.github.io/sheenui/r/otp-input.json",
+        "https://lokendra-builds.github.io/sheenui/r/pagination.json",
+        "https://lokendra-builds.github.io/sheenui/r/particles.json",
+        "https://lokendra-builds.github.io/sheenui/r/popover.json",
+        "https://lokendra-builds.github.io/sheenui/r/progress.json",
+        "https://lokendra-builds.github.io/sheenui/r/radio-group.json",
+        "https://lokendra-builds.github.io/sheenui/r/rating.json",
+        "https://lokendra-builds.github.io/sheenui/r/resizable.json",
+        "https://lokendra-builds.github.io/sheenui/r/scroll-area.json",
+        "https://lokendra-builds.github.io/sheenui/r/scroll-progress.json",
+        "https://lokendra-builds.github.io/sheenui/r/segmented.json",
+        "https://lokendra-builds.github.io/sheenui/r/select.json",
+        "https://lokendra-builds.github.io/sheenui/r/separator.json",
+        "https://lokendra-builds.github.io/sheenui/r/side-drawer.json",
+        "https://lokendra-builds.github.io/sheenui/r/sidebar.json",
+        "https://lokendra-builds.github.io/sheenui/r/skeleton.json",
+        "https://lokendra-builds.github.io/sheenui/r/slider.json",
+        "https://lokendra-builds.github.io/sheenui/r/spinner.json",
+        "https://lokendra-builds.github.io/sheenui/r/spotlight.json",
+        "https://lokendra-builds.github.io/sheenui/r/status-icons.json",
+        "https://lokendra-builds.github.io/sheenui/r/stepper.json",
+        "https://lokendra-builds.github.io/sheenui/r/switch.json",
+        "https://lokendra-builds.github.io/sheenui/r/table.json",
+        "https://lokendra-builds.github.io/sheenui/r/tabs.json",
+        "https://lokendra-builds.github.io/sheenui/r/tags-input.json",
+        "https://lokendra-builds.github.io/sheenui/r/text-effects.json",
+        "https://lokendra-builds.github.io/sheenui/r/text-reveal.json",
+        "https://lokendra-builds.github.io/sheenui/r/textarea.json",
+        "https://lokendra-builds.github.io/sheenui/r/tilt-card.json",
+        "https://lokendra-builds.github.io/sheenui/r/timeline.json",
+        "https://lokendra-builds.github.io/sheenui/r/toast.json",
+        "https://lokendra-builds.github.io/sheenui/r/toggle.json",
+        "https://lokendra-builds.github.io/sheenui/r/toolbar.json",
+        "https://lokendra-builds.github.io/sheenui/r/tooltip.json",
+        "https://lokendra-builds.github.io/sheenui/r/vertical-nav.json"
+      ],
+      "files": [],
+      "docs": "All components: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+      "categories": [
+        "bundles"
+      ],
+      "meta": {
+        "kind": "bundle",
+        "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+        "route": "/docs/installation",
+        "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "dashboards",
+      "type": "registry:item",
+      "title": "All dashboards",
+      "description": "Installs the five SheenUI dashboards with every component, chart and demo-data helper they need, plus the shared theme. A bundle: it has no files of its own and only pulls in the existing items (5 items).",
+      "author": "lokendra-builds <https://github.com/lokendra-builds>",
+      "registryDependencies": [
+        "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-ecommerce.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-finance.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-product.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-saas.json",
+        "https://lokendra-builds.github.io/sheenui/r/analytics-web.json"
+      ],
+      "files": [],
+      "docs": "All dashboards: https://lokendra-builds.github.io/sheenui/docs/installation\n\nSheenUI base layer needs React 19.2 or newer and Tailwind CSS v4; see the sheenui-theme notes printed above.",
+      "categories": [
+        "bundles"
+      ],
+      "meta": {
+        "kind": "bundle",
+        "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+        "route": "/docs/installation",
+        "docsUrl": "https://lokendra-builds.github.io/sheenui/docs/installation"
       }
     }
   ]

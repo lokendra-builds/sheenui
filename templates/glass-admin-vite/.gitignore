@@ -1,0 +1,22 @@
+# dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# secrets and local config: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# logs and OS files
+*.log
+.DS_Store
+._*
+.vite/

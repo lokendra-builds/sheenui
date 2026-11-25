@@ -1,0 +1,71 @@
+/*
+ * More contrast: the OS asks for it (prefers-contrast: more). Imported LAST so it wins over the presets,
+ * which set the same tokens.
+ *
+ *   - text: muted and subtle text become full-strength text
+ *   - edges: borders and control borders turn solid and strong
+ *   - surfaces: glass is opaque, with no blur, no rim light and no wallpaper behind it
+ *   - links and focus keep their own colours (they already meet 7:1 in both themes)
+ */
+/* Windows forced colors has its own rules (glass.css); this layer is for everyone else. */
+@media (prefers-contrast: more) and (forced-colors: none) {
+  :root:root:root,
+  [data-theme][data-theme][data-theme] {
+    --sheen-fg-muted: var(--sheen-fg);
+    --sheen-fg-subtle: var(--sheen-fg);
+    --sheen-border: light-dark(oklch(30% 0.03 285), oklch(92% 0.01 285));
+    --sheen-control-border: light-dark(oklch(30% 0.03 285), oklch(92% 0.01 285));
+    --sheen-glass-border: light-dark(oklch(30% 0.03 285), oklch(92% 0.01 285));
+    --sheen-hover: light-dark(oklch(25% 0.03 285 / 0.12), oklch(100% 0 0 / 0.18));
+  }
+
+  .glass-1,
+  .glass-2,
+  .glass-3,
+  [data-slot="liquid-glass"],
+  [data-slot="glass-card"] {
+    background-color: var(--sheen-surface-solid);
+    background-image: none;
+    border: 1px solid var(--sheen-fg);
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  :is(.glass-1, .glass-2, .glass-3)::after,
+  [data-slot="liquid-glass-tint"],
+  [data-slot="liquid-glass-rim"] {
+    display: none;
+  }
+
+  /* The live wallpaper only tints the page: shapes, orbs and grain go, the flat base stays. */
+  .sheen-sky > :not(.sheen-sky__base),
+  .sheen-backdrop::before,
+  .sheen-backdrop::after,
+  .sheen-stage-backdrop {
+    display: none;
+  }
+
+  /* Accent-filled buttons and badges: a flat, dark accent instead of the gradient, so white text is 7:1+ in both themes. */
+  .sheen-fill,
+  [class~="[background-image:var(--sheen-accent-fill)]"],
+  [class~="bg-(image:--sheen-accent-fill)"],
+  [style*="sheen-accent-fill"] {
+    background-image: none !important;
+    background-color: oklch(36% 0.22 290);
+    color: var(--sheen-accent-fg);
+  }
+
+  /* Gradient text is decoration over a changing colour: use the plain text colour. */
+  [class~="bg-clip-text"] {
+    -webkit-text-fill-color: currentColor;
+    background: none;
+    color: var(--sheen-fg);
+  }
+
+  /* Underline links in running text; the accent alone is not enough. */
+  main a:not([data-slot]):not([role]) {
+    text-decoration-line: underline;
+    text-underline-offset: 0.2em;
+  }
+}

@@ -50,7 +50,7 @@
     "perf": "node scripts/perf.mjs"
   },
   "dependencies": {
-    "@hookform/resolvers": "^7.0.6",
+    "@hookform/resolvers": "^7.0.9",
     "@sheenui/theme": "workspace:*",
     "motion": "^14.14.0",
     "react": "^19.3.1",

@@ -150,7 +150,7 @@ export type UserCellProps = {
  * A table cell for a person: avatar, name and an optional email. Use it inside a DataTable
  * column's `cell`, or on its own.
  *
- * Accessibility: The name sits right next to the avatar, so the avatar is hidden from screen readers (no double reading). Long names and emails wrap inside the column instead of widening it or being clipped.
+ * Accessibility: The name sits right next to the avatar, so the avatar is hidden from screen readers (no double reading). Long names and emails stay on one line and end in an ellipsis instead of widening the column or splitting mid-word; the full value is the hover title and the text stays in the DOM for assistive tech.
  *
  * @example
  * ```tsx
@@ -169,8 +169,14 @@ export function UserCell({ name, email, src, status, highlight = (t) => t, class
         <Avatar name={name} src={src} size="sm" status={status} />
       </span>
       <span className="flex min-w-0 flex-col leading-tight">
-        <span className="font-medium text-sheen-fg [overflow-wrap:anywhere]">{highlight(name)}</span>
-        {email && <span className="text-xs text-sheen-fg-muted [overflow-wrap:anywhere]">{highlight(email)}</span>}
+        <span data-slot="user-cell-name" title={name} className="truncate font-medium text-sheen-fg">
+          {highlight(name)}
+        </span>
+        {email && (
+          <span data-slot="user-cell-email" title={email} className="truncate text-xs text-sheen-fg-muted">
+            {highlight(email)}
+          </span>
+        )}
       </span>
     </span>
   );

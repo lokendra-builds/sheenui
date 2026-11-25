@@ -14,6 +14,7 @@ const EXTRA: Record<string, string[] | undefined> = {
   "/docs/tailwind-v4": ["/foundations", "/docs/dark-mode", "/docs/installation"],
   "/docs/dark-mode": ["/docs/tailwind-v4", "/foundations", "/guides/accessible-glassmorphism"],
   "/docs/rtl": ["/forms/date-picker", "/forms/calendar", "/charts/world-map"],
+  "/docs/performance": ["/guides/backdrop-filter-performance", "/effects/liquid-glass", "/foundations"],
   "/layout/pagination": ["/components/data-table", "/components/skeleton"],
   "/docs/installation": ["/docs/tailwind-v4", "/foundations", "/components/button", "/components/glass-card"],
   "/components/button": ["/effects/border-beam", "/overlays/dropdown-menu"],

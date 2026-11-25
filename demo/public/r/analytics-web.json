@@ -23,7 +23,7 @@
       "target": "@components/sheenui/blocks/analytics-web.tsx"
     }
   ],
-  "docs": "Web analytics: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { WebAnalyticsDashboard } from \"@/components/sheenui/blocks/analytics-web\";",
+  "docs": "Web analytics: https://lokendra-builds.github.io/sheenui/dashboards/web-analytics\n\nInstalled in components/sheenui/blocks/. Import (use your components alias):\nimport { WebAnalyticsDashboard } from \"@/components/sheenui/blocks/analytics-web\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "dashboards"
   ],

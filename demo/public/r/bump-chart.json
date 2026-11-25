@@ -38,7 +38,7 @@
       "target": "@components/sheenui/charts/bump-chart/table.tsx"
     }
   ],
-  "docs": "Bump chart: https://lokendra-builds.github.io/sheenui/charts/bump-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BumpChart, BumpTable } from \"@/components/sheenui/charts/bump-chart\";\nimport { BumpTable } from \"@/components/sheenui/charts/bump-chart/table\";",
+  "docs": "Bump chart: https://lokendra-builds.github.io/sheenui/charts/bump-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { BumpChart, BumpTable } from \"@/components/sheenui/charts/bump-chart\";\nimport { BumpTable } from \"@/components/sheenui/charts/bump-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

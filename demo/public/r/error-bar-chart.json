@@ -39,7 +39,7 @@
       "target": "@components/sheenui/charts/error-bar-chart/table.tsx"
     }
   ],
-  "docs": "Error bars: https://lokendra-builds.github.io/sheenui/charts/error-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ErrorBarChart, ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart\";\nimport { ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart/table\";",
+  "docs": "Error bars: https://lokendra-builds.github.io/sheenui/charts/error-bar-chart\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ErrorBarChart, ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart\";\nimport { ErrorBarTable } from \"@/components/sheenui/charts/error-bar-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

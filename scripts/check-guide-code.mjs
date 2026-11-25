@@ -50,6 +50,7 @@ const COPIED = /(import\s+(?:type\s+)?\{)([^}]*)(\}\s+from\s+")(@\/components\/s
 function resolveCopied(code) {
   const problems = [];
   const out = code.replace(COPIED, (_, a, list, b, path, c) => {
+    let demo = false;
     for (const raw of list.split(",")) {
       const name = raw
         .trim()
@@ -58,10 +59,12 @@ function resolveCopied(code) {
         .trim();
       if (!name) continue;
       const target = installMap.barrel[name] ?? installMap.demoData[name];
+      // Sample data lives in the separate `@sheenui/theme/demo-data` entry, not the barrel.
+      if (!installMap.barrel[name] && installMap.demoData[name]) demo = true;
       if (target !== path)
         problems.push(`${name} is ${target ? `installed at ${target}` : "not exported"}, not ${path}`);
     }
-    return `${a}${list}${b}@sheenui/theme${c}`;
+    return `${a}${list}${b}@sheenui/theme${demo ? "/demo-data" : ""}${c}`;
   });
   return { code: out, problems };
 }

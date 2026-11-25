@@ -63,7 +63,7 @@
       "target": "@components/sheenui/charts/dumbbell-chart/table.tsx"
     }
   ],
-  "docs": "Dumbbell & slope chart: https://lokendra-builds.github.io/sheenui/charts/dumbbell\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DumbbellChart, DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart\";\nimport { ChangeText, SlopeLabels } from \"@/components/sheenui/charts/dumbbell-chart/parts\";\nimport { DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart/table\";",
+  "docs": "Dumbbell & slope chart: https://lokendra-builds.github.io/sheenui/charts/dumbbell\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { DumbbellChart, DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart\";\nimport { ChangeText, SlopeLabels } from \"@/components/sheenui/charts/dumbbell-chart/parts\";\nimport { DumbbellTable } from \"@/components/sheenui/charts/dumbbell-chart/table\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

@@ -14,7 +14,7 @@
 
 import { spawnSync } from "node:child_process";
 import { cpSync, existsSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 
@@ -100,7 +100,11 @@ for (const file of walk(dist)) {
 // (what "@sheenui/theme/styles.css" resolves to) imports it and also tells Tailwind to scan the compiled components, so
 // their utilities are generated without the app pointing an @source at node_modules (Tailwind skips node_modules).
 // Apps that use only a few components can import base.css and add their own @source for those folders.
-cpSync(join(root, "src", "styles"), join(dist, "styles"), { recursive: true });
+// `._*` are macOS AppleDouble metadata that a copied tree can carry; they must never reach dist (and so the tarball).
+cpSync(join(root, "src", "styles"), join(dist, "styles"), {
+  recursive: true,
+  filter: (source) => !basename(source).startsWith("._"),
+});
 const entry = join(dist, "styles", "index.css");
 const base = join(dist, "styles", "base.css");
 const original = readFileSync(entry, "utf8");

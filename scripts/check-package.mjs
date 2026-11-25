@@ -14,7 +14,7 @@ import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } 
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { withoutAppleDouble } from "./lib/fs-filter.mjs";
+import { isAppleDouble } from "./lib/fs-filter.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const theme = join(root, "theme");
@@ -40,11 +40,17 @@ try {
   const pkgDir = join(out, "package");
   const pkg = JSON.parse(readFileSync(join(pkgDir, "package.json"), "utf8"));
 
+  // The raw listing, on purpose: a macOS `._*` AppleDouble file in the tarball is a publish bug, not something to hide.
   const walk = (d) =>
-    withoutAppleDouble(readdirSync(d)).flatMap((n) =>
+    readdirSync(d).flatMap((n) =>
       statSync(join(d, n)).isDirectory() ? walk(join(d, n)).map((f) => `${n}/${f}`) : [n],
     );
   const files = walk(pkgDir);
+  const appleDouble = files.filter((f) => f.split("/").some(isAppleDouble));
+  if (appleDouble.length)
+    problems.push(
+      `the tarball contains ${appleDouble.length} macOS AppleDouble file(s) (\`._*\`), e.g. ${appleDouble.slice(0, 3).join(", ")}`,
+    );
 
   const targets = [];
   const collect = (v) => {

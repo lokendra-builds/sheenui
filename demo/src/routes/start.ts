@@ -3,6 +3,7 @@ import { lazyPage, type Route } from "./shared";
 const hubs = () => import("../pages/HubPages");
 const guideDocs = () => import("../pages/GuideDocsPages");
 const rtlDocs = () => import("../pages/RtlDocsPage");
+const performanceDocs = () => import("../pages/PerformanceDocsPage");
 const aboutDocs = () => import("../pages/AboutPage");
 
 /** The "Start" routes of the docs site, in sidebar order. */
@@ -59,6 +60,12 @@ export const startRoutes: Route[] = [
     title: "Right-to-left and localisation",
     group: "Start",
     ...lazyPage(rtlDocs, (m) => m.RtlDocsPage),
+  },
+  {
+    path: "/docs/performance",
+    title: "Performance",
+    group: "Start",
+    ...lazyPage(performanceDocs, (m) => m.PerformanceDocsPage),
   },
   { path: "/about", title: "About SheenUI", group: "Start", ...lazyPage(aboutDocs, (m) => m.AboutPage) },
 ];

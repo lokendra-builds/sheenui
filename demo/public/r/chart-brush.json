@@ -20,7 +20,7 @@
       "target": "@components/sheenui/charts/chart-brush.tsx"
     }
   ],
-  "docs": "Chart brush: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartBrush } from \"@/components/sheenui/charts/chart-brush\";",
+  "docs": "Chart brush: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. Import (use your components alias):\nimport { ChartBrush } from \"@/components/sheenui/charts/chart-brush\";\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
   "categories": [
     "charts"
   ],

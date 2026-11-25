@@ -7,7 +7,7 @@ Sidebar name: Introduction
 
 Free glassmorphism and Liquid Glass React components with Motion: 86 components (67 UI, 19 effects), 48 charts and 20 blocks for Tailwind v4 and shadcn.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 v0.1 · MIT
 

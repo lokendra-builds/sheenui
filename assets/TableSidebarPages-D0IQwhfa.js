@@ -1,0 +1,1 @@
+import"./rolldown-runtime-WkwZ5CU-.js";import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./vendor-react-D30i__oY.js";import{t as n}from"./preload-helper-BrmCrVM7.js";t();var r=e(()=>n(()=>import(`./SidebarPageBody-D8kjyJJ8.js`).then(e=>e.SidebarPage),[]),{eager:!0,minHeight:`80vh`});export{r as default};

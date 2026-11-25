@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./vendor-react-D30i__oY.js";import{t as n}from"./preload-helper-BrmCrVM7.js";t();var r=e(()=>n(()=>import(`./DropdownMenuPageBody--_vrpmhN.js`).then(e=>e.DropdownMenuPage),[]),{eager:!0,minHeight:`80vh`});export{r as default};

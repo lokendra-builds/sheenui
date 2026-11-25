@@ -1,1 +1,0 @@
-import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n=e(()=>t(()=>import(`./NavbarPageBody-P8PZ7mV7.js`).then(e=>e.NavbarPage),[]),{eager:!0,minHeight:`80vh`});export{n as default};

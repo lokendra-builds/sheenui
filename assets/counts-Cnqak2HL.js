@@ -1,1 +1,0 @@
-import{t as e}from"./routes-Ch6CiLnZ.js";import{d as t}from"./site-B6UYeMYd.js";var n=n=>t(e,n).length,r={ui:n(`/components`),effects:n(`/effects`),components:n(`/components`)+n(`/effects`),charts:n(`/charts`),blocks:n(`/blocks`),dashboards:n(`/dashboards`),guides:n(`/guides`)};export{r as t};

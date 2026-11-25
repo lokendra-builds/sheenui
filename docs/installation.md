@@ -49,6 +49,8 @@ The item installs into components/sheenui/ and pulls in the shared tokens, glass
 
 An example can use more than the page's own component: the dialog example has an Input, so add input too. The Files to copy box on each page lists every item its examples import. A dashboard is the item analytics-demo-saas (dashboard plus sample data; the other four are analytics-demo-web, -ecommerce, -product and -finance) or analytics-saas for the dashboard alone.
 
+The command only adds files. To see a styled page you still need the alias, the two CSS imports below, the SheenMotionProvider and the backdrop, and the preference script. In Vite that script goes into index.html as an inline <script> in the head (its text is sheenPreferenceScript), because a component cannot be imported there. If the CLI fails with a 503 from github.io, run the command again.
+
 
 ## Install everything, or a whole family
 
@@ -71,6 +73,17 @@ npx shadcn@latest add @sheenui/all
 ```
 
 The namespace form was tested with shadcn CLI 4.23; the URL form above is the one that needs no setup. The same short form works for single items, for example @sheenui/button.
+
+
+## Starter template
+
+Want a whole app instead of single components? Glass Admin is a small admin dashboard starter with a glass app shell, an overview with charts, a customers table, a settings page and a sign-in page. It comes for Vite (React Router) and for Next.js (App Router). Copy one with degit, then install and start it:
+
+```bash
+npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app
+```
+
+For Next.js use templates/glass-admin-next in the same command. Both are on GitHub in the [templates folder](https://github.com/lokendra-builds/sheenui/tree/main/templates). Its analytics page is one of the [dashboard templates](https://lokendra-builds.github.io/sheenui/dashboards/).
 
 
 ## Add the two CSS imports

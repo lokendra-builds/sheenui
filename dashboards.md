@@ -85,6 +85,8 @@ The charts come from the [animated React charts gallery](https://lokendra-builds
 
 Each template is one component with a required load prop: a function (sync or async) that receives the date range and the active filters and returns the numbers and rows to draw. The templates ship no data of their own; the demo loaders in @sheenui/theme/demo-data are only for trying them out. Header controls (range, Live, Compare) are props too, so you can control them from your router or a store. Every label is in a labels object and every number goes through Intl, so a dashboard in another language or currency needs props, not edits.
 
+Want a whole admin app around a dashboard? The [Glass Admin starter template](https://lokendra-builds.github.io/sheenui/docs/installation#starter-template) (Vite or Next.js) wires the SaaS revenue dashboard into an app shell with a customers table, settings and sign-in.
+
 ### Frequently asked questions
 
 ### Are these dashboard templates really free?

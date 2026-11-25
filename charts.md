@@ -7,7 +7,7 @@ Sidebar name: Charts
 
 48 animated React chart components in glass, from line and pie to heatmap and Sankey, with tooltips, keyboard reading and table view. MIT.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Charts
 
@@ -62,6 +62,8 @@ import { RadialProgress } from "@/components/sheenui/charts/radial-progress";
 import { Sparkline } from "@/components/sheenui/charts/sparkline";
 import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
 ```
+
+These examples also use button, donut-chart, glass-card, line-chart, radial-progress, sparkline: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/donut-chart.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/line-chart.json https://lokendra-builds.github.io/sheenui/r/radial-progress.json https://lokendra-builds.github.io/sheenui/r/sparkline.json`
 
 Import from the package (after the first npm release, or a packed tarball):
 

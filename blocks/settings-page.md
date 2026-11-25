@@ -38,7 +38,7 @@ Files to copy from `theme/src/`:
 - `blocks/settings-page/`
 - `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
 - `motion/{gate.ts, tokens.ts}`
-- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, heading.ts, initials.ts, motion-props.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, heading.ts, initials.ts, modal-tab-trap.ts, motion-props.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
 - `styles/`
 
 Packages:

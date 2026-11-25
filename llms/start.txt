@@ -167,7 +167,7 @@ Sidebar name: Foundations
 
 Glass design tokens behind SheenUI: blur, tint and rim at three levels, OKLCH colors, motion presets and solid fallbacks for reduced transparency.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Foundations
 
@@ -372,6 +372,12 @@ OKLCH colors that switch between light and dark with light-dark(). Toggle the th
 ### Scenes: a real picture behind the glass
 
 SheenScene is an image layer for the first child of a positioned container, so the blur has something to refract. The dim prop (default 0.5) mixes the page background over it to keep text readable. Serve the files from your own public folder; this page adds the site base path to the same URLs.
+
+The scene example below uses three components. Add them with the shadcn CLI, or copy the files the Files to copy lists on each component page:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/backdrop.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/segmented.json
+```
 
 ### Motion tokens
 
@@ -715,6 +721,8 @@ The item installs into components/sheenui/ and pulls in the shared tokens, glass
 
 An example can use more than the page's own component: the dialog example has an Input, so add input too. The Files to copy box on each page lists every item its examples import. A dashboard is the item analytics-demo-saas (dashboard plus sample data; the other four are analytics-demo-web, -ecommerce, -product and -finance) or analytics-saas for the dashboard alone.
 
+The command only adds files. To see a styled page you still need the alias, the two CSS imports below, the SheenMotionProvider and the backdrop, and the preference script. In Vite that script goes into index.html as an inline <script> in the head (its text is sheenPreferenceScript), because a component cannot be imported there. If the CLI fails with a 503 from github.io, run the command again.
+
 
 ### Install everything, or a whole family
 
@@ -737,6 +745,17 @@ npx shadcn@latest add @sheenui/all
 ```
 
 The namespace form was tested with shadcn CLI 4.23; the URL form above is the one that needs no setup. The same short form works for single items, for example @sheenui/button.
+
+
+### Starter template
+
+Want a whole app instead of single components? Glass Admin is a small admin dashboard starter with a glass app shell, an overview with charts, a customers table, a settings page and a sign-in page. It comes for Vite (React Router) and for Next.js (App Router). Copy one with degit, then install and start it:
+
+```bash
+npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app
+```
+
+For Next.js use templates/glass-admin-next in the same command. Both are on GitHub in the [templates folder](https://github.com/lokendra-builds/sheenui/tree/main/templates). Its analytics page is one of the [dashboard templates](https://lokendra-builds.github.io/sheenui/dashboards/).
 
 
 ### Add the two CSS imports
@@ -836,7 +855,7 @@ Sidebar name: Forms recipe
 
 A React form recipe: react-hook-form and zod with SheenUI Field, validation messages, focus on error, an async submit and every control via Controller.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Forms recipe
 
@@ -894,6 +913,8 @@ import { Slider } from "@/components/sheenui/slider/slider";
 import { Switch } from "@/components/sheenui/switch/switch";
 import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
 ```
+
+These examples also use button, checkbox, field, input, number-field, select: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/checkbox.json https://lokendra-builds.github.io/sheenui/r/field.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/number-field.json https://lokendra-builds.github.io/sheenui/r/select.json`
 
 Import from the package (after the first npm release, or a packed tarball):
 
@@ -1133,6 +1154,12 @@ pnpm add react-hook-form zod @hookform/resolvers
 ```
 
 The controls come from the registry; every item below installs with npx shadcn@latest add and its docs page lists the exact files: [Field](https://lokendra-builds.github.io/sheenui/forms/field), [Input](https://lokendra-builds.github.io/sheenui/components/input), [Select](https://lokendra-builds.github.io/sheenui/components/select), [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox), [NumberField](https://lokendra-builds.github.io/sheenui/forms/number-field), [Button](https://lokendra-builds.github.io/sheenui/components/button), [Alert](https://lokendra-builds.github.io/sheenui/components/alert). Each control page has the single-field version of this pattern; the [Field page](https://lokendra-builds.github.io/sheenui/forms/field) shows it with every control.
+
+The second example (every control) also uses these. One command adds everything both examples import:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/alert.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/checkbox.json https://lokendra-builds.github.io/sheenui/r/color-picker.json https://lokendra-builds.github.io/sheenui/r/combobox.json https://lokendra-builds.github.io/sheenui/r/date-picker.json https://lokendra-builds.github.io/sheenui/r/field.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/number-field.json https://lokendra-builds.github.io/sheenui/r/otp-input.json https://lokendra-builds.github.io/sheenui/r/radio-group.json https://lokendra-builds.github.io/sheenui/r/rating.json https://lokendra-builds.github.io/sheenui/r/segmented.json https://lokendra-builds.github.io/sheenui/r/select.json https://lokendra-builds.github.io/sheenui/r/slider.json https://lokendra-builds.github.io/sheenui/r/switch.json https://lokendra-builds.github.io/sheenui/r/tags-input.json
+```
 
 
 ### Frequently asked questions
@@ -1787,7 +1814,7 @@ These are rules the docs site is built against, and a failing check stops a rele
 
 JavaScript budgets per page class, in KB gzip, with the last pnpm budget run (measured on the 25 Nov 2026 build) as minimum, median and maximum
 
-| Page class | Routes | Initial JS budget | Initial JS measured (min / median / max) | Fetched by load + idle budget | Fetched measured (min / median / max) |
+| Page class | Routes | Initial JS budget (KB gzip) | Initial JS measured (min / median / max) | Load + idle budget (KB gzip) | Fetched measured (min / median / max) |
 | --- | --- | --- | --- | --- | --- |
 | Home | 1 | 135 | 133.0 | 280 | 270.3 |
 | Plain docs, foundations and guides | 22 | 190 | 144.0 / 155.8 / 189.0 | 270 (one page at 465) | 232.6 / 251.4 / 374.3 |
@@ -1802,7 +1829,7 @@ Method. Measured 25 Nov 2026 on the deployed site, the production build users ge
 
 Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB
 
-| Route | LCP s | CLS | TBT ms | Longest task ms, median (worst run) | JS before load KB | JS by load + 5 s KB |
+| Route | LCP (s) | CLS | TBT (ms) | Longest task, ms median (worst) | JS before load (KB) | JS by load + 5 s (KB) |
 | --- | --- | --- | --- | --- | --- | --- |
 | Home | 0.98 | 0.0006 | 5 | 64 (85) | 141 | 319 KB |
 | Button (component) | 0.86 | 0.0008 | 0 | 59 (77) | 200 | 307 KB |
@@ -1816,7 +1843,7 @@ Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking
 
 Lighthouse mobile Performance score and Total Blocking Time per route, median of 3 runs
 
-| Route | Performance score | Total Blocking Time ms |
+| Route | Performance score | Total Blocking Time (ms) |
 | --- | --- | --- |
 | Home | 100 | 9 ms |
 | Button (component) | 100 | 10 ms |
@@ -1830,7 +1857,7 @@ Lighthouse mobile Performance score and Total Blocking Time per route, median of
 
 Interaction latency at 4x CPU: time from the pointer event to the first frame that shows the opened popup, median of 5
 
-| Interaction | Route | Median ms | Range ms |
+| Interaction | Route | Median (ms) | Range (ms) |
 | --- | --- | --- | --- |
 | Open a dropdown menu | /overlays/dropdown-menu | 91 | 87 to 121 |
 | Open a popover | /components/popover | 60 | 59 to 65 |
@@ -1934,7 +1961,7 @@ Known limits, stated plainly: Liquid Glass refraction is Chromium-only (other br
 
 ### How it is built and checked
 
-Each component has a unit test that renders it in light and dark, in both looks, and runs axe-core on every render: 141 test files run in a real Chromium through Vitest browser mode, with coverage gates (90% of lines, functions and statements, 80% of branches). 13 Playwright specs cover the built site: a sweep of every route, visual baselines, accessibility, a pixel-level contrast check and the motion rules (loops pause off-screen, reduced motion is respected).
+Each component has a unit test that renders it in light and dark, in both looks, and runs axe-core on every render: 143 test files run in a real Chromium through Vitest browser mode, with coverage gates (90% of lines, functions and statements, 80% of branches). 15 Playwright specs cover the built site: a sweep of every route, visual baselines, accessibility, a pixel-level contrast check and the motion rules (loops pause off-screen, reduced motion is respected).
 
 Every docs page lists the exact files to copy, computed from the import graph, and a copy test builds each list in an empty Vite app. A build check fails on a missing title, a duplicate description, a broken link or a number on the site that disagrees with the code. The [dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode) and [right-to-left](https://lokendra-builds.github.io/sheenui/docs/rtl) pages describe the two behaviours that touch every component, and the [performance](https://lokendra-builds.github.io/sheenui/docs/performance) page lists the budgets and lab numbers.
 

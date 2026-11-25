@@ -39,7 +39,7 @@ Known limits, stated plainly: Liquid Glass refraction is Chromium-only (other br
 
 ## How it is built and checked
 
-Each component has a unit test that renders it in light and dark, in both looks, and runs axe-core on every render: 141 test files run in a real Chromium through Vitest browser mode, with coverage gates (90% of lines, functions and statements, 80% of branches). 13 Playwright specs cover the built site: a sweep of every route, visual baselines, accessibility, a pixel-level contrast check and the motion rules (loops pause off-screen, reduced motion is respected).
+Each component has a unit test that renders it in light and dark, in both looks, and runs axe-core on every render: 143 test files run in a real Chromium through Vitest browser mode, with coverage gates (90% of lines, functions and statements, 80% of branches). 15 Playwright specs cover the built site: a sweep of every route, visual baselines, accessibility, a pixel-level contrast check and the motion rules (loops pause off-screen, reduced motion is respected).
 
 Every docs page lists the exact files to copy, computed from the import graph, and a copy test builds each list in an empty Vite app. A build check fails on a missing title, a duplicate description, a broken link or a number on the site that disagrees with the code. The [dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode) and [right-to-left](https://lokendra-builds.github.io/sheenui/docs/rtl) pages describe the two behaviours that touch every component, and the [performance](https://lokendra-builds.github.io/sheenui/docs/performance) page lists the budgets and lab numbers.
 

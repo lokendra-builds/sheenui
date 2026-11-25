@@ -9,7 +9,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/foundations</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/foundations.webp</image:loc>
     </image:image>
@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/docs/forms</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/docs-forms.webp</image:loc>
     </image:image>
@@ -93,14 +93,14 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/components/avatar</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/components-avatar.webp</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/components/badge</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/components-badge.webp</image:loc>
     </image:image>
@@ -142,7 +142,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/components/dialog</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/components-dialog.webp</image:loc>
     </image:image>
@@ -177,7 +177,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/components/progress</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/components-progress.webp</image:loc>
     </image:image>
@@ -247,7 +247,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/navigation/sidebar</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/navigation-sidebar.webp</image:loc>
     </image:image>
@@ -261,7 +261,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts.jpg</image:loc>
     </image:image>
@@ -380,7 +380,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/forms/input-group</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/forms-input-group.webp</image:loc>
     </image:image>
@@ -506,7 +506,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/layout/aspect-ratio</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/layout-aspect-ratio.webp</image:loc>
     </image:image>
@@ -534,7 +534,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/layout/resizable</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/layout-resizable.webp</image:loc>
     </image:image>
@@ -604,7 +604,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/components/table</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/components-table.webp</image:loc>
     </image:image>
@@ -646,7 +646,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/bar-list</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-bar-list.webp</image:loc>
     </image:image>

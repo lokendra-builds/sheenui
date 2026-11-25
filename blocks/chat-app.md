@@ -48,7 +48,7 @@ Files to copy from `theme/src/`:
 - `components/tooltip/`
 - `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
 - `motion/{gate.ts, presets.ts, tokens.ts}`
-- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, glide-highlight.tsx, heading.ts, ime.ts, initials.ts, math.ts, modal-flag.ts, motion-props.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, uid.ts, warn-once.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, glide-highlight.tsx, heading.ts, ime.ts, initials.ts, math.ts, modal-flag.ts, modal-tab-trap.ts, motion-props.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, uid.ts, warn-once.ts}`
 - `styles/`
 
 Packages:

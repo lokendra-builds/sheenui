@@ -15,7 +15,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dialog.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Dialog
 
@@ -24,7 +24,7 @@ Files to copy from `theme/src/`:
 - `components/dialog/`
 - `components/drawer/parts/sheet.tsx`
 - `hooks/{use-latest.ts, use-media-query.ts}`
-- `lib/{cn.ts, form.ts, modal-flag.ts, popup-motion.ts, state-light.tsx}`
+- `lib/{cn.ts, form.ts, modal-flag.ts, modal-tab-trap.ts, popup-motion.ts, state-light.tsx}`
 - `styles/`
 
 Packages:

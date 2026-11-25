@@ -9,6 +9,9 @@
 - Size: 86 components (67 UI components and 19 effects), 48 charts, 20 blocks, 5 dashboards and 13 guides; 183 shadcn registry items.
 - Requires: React 19.2+, Tailwind CSS v4, Motion 14.10.1+, @base-ui/react 1.9+.
 - Install: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json`, or copy the files a page lists. The `@sheenui/theme` package is not on npm yet.
+- Install bundles: five registry items install a family in one command: `all`, `components`, `charts`, `blocks` and `dashboards` (`npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json`, or `npx shadcn@latest add @sheenui/all` once the `@sheenui` registry is in components.json; see https://lokendra-builds.github.io/sheenui/docs/installation).
+- Starter template: Glass Admin, a free admin dashboard app for Vite or Next.js (`npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app`, or `templates/glass-admin-next`; https://github.com/lokendra-builds/sheenui/tree/main/templates).
+- Performance: measured load, Lighthouse and interaction numbers, the budgets and their limits are on https://lokendra-builds.github.io/sheenui/docs/performance.
 - Browsers: Liquid Glass refraction runs in Chromium; Safari and Firefox get frosted glass. Reduced motion and reduced transparency are honoured.
 - License: MIT (https://opensource.org/licenses/MIT). Free for personal and commercial use; keep the copyright notice with the copied source.
 - Cite as: "SheenUI. Glassmorphism and Liquid Glass React components. Lokendra Singh Rathore. MIT license. https://lokendra-builds.github.io/sheenui/about". Cite a single fact with the URL of the page it comes from.
@@ -25,7 +28,7 @@
 
 This file is the complete index: every page with its URL, grouped by the section file that holds its full text. The text is split into one file per section, each under 150 KB: fetch only the section you need. The Start and Guides sections hold the setup steps and the long-form articles. Every page has its intro, the files to copy, props tables, examples, keyboard and accessibility notes.
 
-- [Start](https://lokendra-builds.github.io/sheenui/llms/start.txt) (129 KB)
+- [Start](https://lokendra-builds.github.io/sheenui/llms/start.txt) (132 KB)
   - [Glassmorphism & Liquid Glass React Components](https://lokendra-builds.github.io/sheenui/)
   - [Glass Design Tokens: Blur, Tint, Rim & Motion](https://lokendra-builds.github.io/sheenui/foundations)
   - [React Component Showcase with Live Glass Demos](https://lokendra-builds.github.io/sheenui/showcase)
@@ -182,7 +185,7 @@ This file is the complete index: every page with its URL, grouped by the section
   - [React Stepper for Multi-Step Forms](https://lokendra-builds.github.io/sheenui/layout/stepper)
   - [Animated React Timeline & Activity Feed](https://lokendra-builds.github.io/sheenui/layout/timeline)
   - [Accessible React Toolbar with Toggle Groups](https://lokendra-builds.github.io/sheenui/layout/toolbar)
-- [Data display](https://lokendra-builds.github.io/sheenui/llms/data-display.txt) (64 KB)
+- [Data display](https://lokendra-builds.github.io/sheenui/llms/data-display.txt) (65 KB)
   - [React Carousel with Swipe, Loop & Autoplay](https://lokendra-builds.github.io/sheenui/components/carousel)
   - [React Code Block with Copy Button & Highlighting](https://lokendra-builds.github.io/sheenui/components/code-block)
   - [Empty State Component for React & Tailwind](https://lokendra-builds.github.io/sheenui/components/empty-state)
@@ -215,7 +218,7 @@ This file is the complete index: every page with its URL, grouped by the section
   - [Particles Background for React: Canvas Effect](https://lokendra-builds.github.io/sheenui/effects/particles)
   - [Scroll Progress Bar for React: Reading Progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
   - [Text Reveal on Scroll for React: Word by Word](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
-- [Dashboards](https://lokendra-builds.github.io/sheenui/llms/dashboards.txt) (112 KB)
+- [Dashboards](https://lokendra-builds.github.io/sheenui/llms/dashboards.txt) (113 KB)
   - [React Glass Dashboard Template Pack (Free)](https://lokendra-builds.github.io/sheenui/dashboards/)
   - [Web Analytics Dashboard Template for React](https://lokendra-builds.github.io/sheenui/dashboards/web-analytics)
   - [SaaS Revenue Dashboard (MRR & Churn) for React](https://lokendra-builds.github.io/sheenui/dashboards/saas)

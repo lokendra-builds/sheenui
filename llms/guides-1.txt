@@ -460,6 +460,8 @@ Verified: `tsc --noEmit` with `skipLibCheck: false`, `vite build`, `vite preview
 
 #### Option B: copy the files with the shadcn CLI
 
+The add command only copies files. The alias, the CSS import, the `SheenMotionProvider` and backdrop, and the preference script are still your steps below before a dashboard looks styled. In Vite the preference script goes into `index.html` as an inline `<script>` in `<head>` (its text is `sheenPreferenceScript`), because a component cannot be imported there. If the CLI fails with a 503 from `github.io`, run the command again.
+
 `pnpm dlx shadcn@latest init` stops on a fresh Vite app with `Could not find valid path aliases` until the `@/*` alias exists in three files. Add it first, then run `init`. Start from the same app as above and add Tailwind:
 
 ```bash

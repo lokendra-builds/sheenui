@@ -1,1 +1,0 @@
-export{t as Pricing}from"./pricing-DsS_GFTZ.js";

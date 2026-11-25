@@ -1,0 +1,1 @@
+export{t as FullExample}from"./data-table-DicxSwY2.js";

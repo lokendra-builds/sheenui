@@ -1,0 +1,1 @@
+import{t as e}from"./slider-BfRG-_iF.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r({value:t,onChange:r}){return(0,n.jsx)(e,{label:`Storage used`,value:t,onValueChange:e=>r(e),className:`w-full max-w-xs`})}export{r as StorageSlider};

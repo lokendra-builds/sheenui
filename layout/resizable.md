@@ -15,7 +15,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/resizable.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Resizable panels
 

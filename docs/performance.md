@@ -27,7 +27,7 @@ These are rules the docs site is built against, and a failing check stops a rele
 
 JavaScript budgets per page class, in KB gzip, with the last pnpm budget run (measured on the 25 Nov 2026 build) as minimum, median and maximum
 
-| Page class | Routes | Initial JS budget | Initial JS measured (min / median / max) | Fetched by load + idle budget | Fetched measured (min / median / max) |
+| Page class | Routes | Initial JS budget (KB gzip) | Initial JS measured (min / median / max) | Load + idle budget (KB gzip) | Fetched measured (min / median / max) |
 | --- | --- | --- | --- | --- | --- |
 | Home | 1 | 135 | 133.0 | 280 | 270.3 |
 | Plain docs, foundations and guides | 22 | 190 | 144.0 / 155.8 / 189.0 | 270 (one page at 465) | 232.6 / 251.4 / 374.3 |
@@ -42,7 +42,7 @@ Method. Measured 25 Nov 2026 on the deployed site, the production build users ge
 
 Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB
 
-| Route | LCP s | CLS | TBT ms | Longest task ms, median (worst run) | JS before load KB | JS by load + 5 s KB |
+| Route | LCP (s) | CLS | TBT (ms) | Longest task, ms median (worst) | JS before load (KB) | JS by load + 5 s (KB) |
 | --- | --- | --- | --- | --- | --- | --- |
 | Home | 0.98 | 0.0006 | 5 | 64 (85) | 141 | 319 KB |
 | Button (component) | 0.86 | 0.0008 | 0 | 59 (77) | 200 | 307 KB |
@@ -56,7 +56,7 @@ Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking
 
 Lighthouse mobile Performance score and Total Blocking Time per route, median of 3 runs
 
-| Route | Performance score | Total Blocking Time ms |
+| Route | Performance score | Total Blocking Time (ms) |
 | --- | --- | --- |
 | Home | 100 | 9 ms |
 | Button (component) | 100 | 10 ms |
@@ -70,7 +70,7 @@ Lighthouse mobile Performance score and Total Blocking Time per route, median of
 
 Interaction latency at 4x CPU: time from the pointer event to the first frame that shows the opened popup, median of 5
 
-| Interaction | Route | Median ms | Range ms |
+| Interaction | Route | Median (ms) | Range (ms) |
 | --- | --- | --- | --- |
 | Open a dropdown menu | /overlays/dropdown-menu | 91 | 87 to 121 |
 | Open a popover | /components/popover | 60 | 59 to 65 |

@@ -44,6 +44,8 @@ Import (after `shadcn add` or copying the files, use this today):
 import { CodeBlock, CodeBlockTabs } from "@/components/sheenui/code-block/code-block";
 ```
 
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
 Import from the package (after the first npm release, or a packed tarball):
 
 ```tsx

@@ -1,1 +1,0 @@
-import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n=e(()=>t(()=>import(`./data-table-CMLVVwk7.js`).then(e=>e.DataTable),[]),{minHeight:`24rem`,eager:!0}),r=e(()=>t(()=>import(`./data-table-CMLVVwk7.js`).then(e=>e.DataTable),[]),{minHeight:`24rem`});export{r as n,n as t};

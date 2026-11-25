@@ -28,7 +28,7 @@ Files to copy from `theme/src/`:
 - `components/spinner/`
 - `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
 - `motion/{presets.ts, tokens.ts}`
-- `lib/{cn.ts, form.ts, group-segments.ts, ime.ts, modal-flag.ts, page-size.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `lib/{cn.ts, form.ts, group-segments.ts, ime.ts, modal-flag.ts, modal-tab-trap.ts, page-size.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
 - `styles/`
 
 Packages:

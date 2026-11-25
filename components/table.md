@@ -15,7 +15,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/table.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Table
 
@@ -64,7 +64,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 // Package build (after the first npm release, or a packed tarball): import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@sheenui/theme";
 export function Example() {
   return (
-    <Table regionLabel="Plan limits table" tableClassName="min-w-96">
+    <Table regionLabel="Plan limits table" tableClassName="min-w-64">
       <TableCaption>Plan limits</TableCaption>
       <TableHeader>
         <TableRow>

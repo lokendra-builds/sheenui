@@ -45,6 +45,8 @@ import { Carousel } from "@/components/sheenui/carousel/carousel";
 import { CarouselCaption } from "@/components/sheenui/carousel/carousel-caption";
 ```
 
+These examples also use files from `theme/src/` that the page's own list does not name: `components/carousel/carousel-caption.tsx`
+
 Import from the package (after the first npm release, or a packed tarball):
 
 ```tsx

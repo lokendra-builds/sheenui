@@ -24,7 +24,7 @@ Files to copy from `theme/src/`:
 - `components/drawer/drawer.tsx`
 - `components/drawer/parts/{content.tsx, model.ts, parts.tsx}`
 - `hooks/{use-direction.ts, use-latest.ts}`
-- `lib/{cn.ts, form.ts}`
+- `lib/{cn.ts, form.ts, modal-tab-trap.ts}`
 - `styles/`
 
 Packages:

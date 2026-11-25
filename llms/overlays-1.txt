@@ -31,7 +31,7 @@ Files to copy from `theme/src/`:
 - `components/spinner/`
 - `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
 - `motion/{gate.ts, tokens.ts}`
-- `lib/{cn.ts, field-size.ts, form.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, modal-tab-trap.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
 - `styles/`
 
 Packages:
@@ -372,7 +372,7 @@ Files to copy from `theme/src/`:
 - `components/spinner/`
 - `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
 - `motion/{presets.ts, tokens.ts}`
-- `lib/{cn.ts, form.ts, group-segments.ts, ime.ts, modal-flag.ts, page-size.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `lib/{cn.ts, form.ts, group-segments.ts, ime.ts, modal-flag.ts, modal-tab-trap.ts, page-size.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
 - `styles/`
 
 Packages:
@@ -943,7 +943,7 @@ Files to copy from `theme/src/`:
 - `components/drawer/drawer.tsx`
 - `components/drawer/parts/{content.tsx, model.ts, parts.tsx}`
 - `hooks/{use-direction.ts, use-latest.ts}`
-- `lib/{cn.ts, form.ts}`
+- `lib/{cn.ts, form.ts, modal-tab-trap.ts}`
 - `styles/`
 
 Packages:

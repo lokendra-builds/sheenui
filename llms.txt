@@ -9,6 +9,9 @@
 - Size: 86 components (67 UI components and 19 effects), 48 charts, 20 blocks, 5 dashboards and 13 guides; 183 shadcn registry items.
 - Requires: React 19.2+, Tailwind CSS v4, Motion 14.10.1+, @base-ui/react 1.9+.
 - Install: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json`, or copy the files a page lists. The `@sheenui/theme` package is not on npm yet.
+- Install bundles: five registry items install a family in one command: `all`, `components`, `charts`, `blocks` and `dashboards` (`npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json`, or `npx shadcn@latest add @sheenui/all` once the `@sheenui` registry is in components.json; see https://lokendra-builds.github.io/sheenui/docs/installation).
+- Starter template: Glass Admin, a free admin dashboard app for Vite or Next.js (`npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app`, or `templates/glass-admin-next`; https://github.com/lokendra-builds/sheenui/tree/main/templates).
+- Performance: measured load, Lighthouse and interaction numbers, the budgets and their limits are on https://lokendra-builds.github.io/sheenui/docs/performance.
 - Browsers: Liquid Glass refraction runs in Chromium; Safari and Firefox get frosted glass. Reduced motion and reduced transparency are honoured.
 - License: MIT (https://opensource.org/licenses/MIT). Free for personal and commercial use; keep the copyright notice with the copied source.
 - Cite as: "SheenUI. Glassmorphism and Liquid Glass React components. Lokendra Singh Rathore. MIT license. https://lokendra-builds.github.io/sheenui/about". Cite a single fact with the URL of the page it comes from.
@@ -27,6 +30,9 @@ Every docs page below is static HTML with a live demo and, for most, a props tab
 
 - Install with the shadcn CLI: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json` (one registry item per component, chart and block). The registry index is [r/registry.json](https://lokendra-builds.github.io/sheenui/r/registry.json); a copy-paste install needs no package.
 - [Installation](https://lokendra-builds.github.io/sheenui/docs/installation): copy-paste and shadcn steps; every code sample shows the import a copied or shadcn install has (`@/components/sheenui/<folder>/<file>`), with the `@sheenui/theme` package form beside it as a comment: use that one after the first npm release, or from a packed tarball (https://lokendra-builds.github.io/sheenui/docs/installation#import-paths).
+- Bundles: `all`, `components`, `charts`, `blocks` and `dashboards` install a whole family: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json` (or `@sheenui/all` with the registry namespace set in components.json). A bundle has no files of its own; it lists the real items.
+- [Starter template](https://lokendra-builds.github.io/sheenui/docs/installation#starter-template): Glass Admin, an admin dashboard app for Vite or Next.js. `npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app`. Source: https://github.com/lokendra-builds/sheenui/tree/main/templates.
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance): measured LCP, long tasks, Total Blocking Time, Lighthouse and interaction timings on the deployed site, the JavaScript budgets and the known limits.
 - [Framework guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks): tested steps for Next.js and Vite.
 
 ## Quick start

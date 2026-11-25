@@ -7,7 +7,7 @@ Sidebar name: Foundations
 
 Glass design tokens behind SheenUI: blur, tint and rim at three levels, OKLCH colors, motion presets and solid fallbacks for reduced transparency.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Foundations
 
@@ -212,6 +212,12 @@ OKLCH colors that switch between light and dark with light-dark(). Toggle the th
 ## Scenes: a real picture behind the glass
 
 SheenScene is an image layer for the first child of a positioned container, so the blur has something to refract. The dim prop (default 0.5) mixes the page background over it to keep text readable. Serve the files from your own public folder; this page adds the site base path to the same URLs.
+
+The scene example below uses three components. Add them with the shadcn CLI, or copy the files the Files to copy lists on each component page:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/backdrop.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/segmented.json
+```
 
 ## Motion tokens
 

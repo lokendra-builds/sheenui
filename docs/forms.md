@@ -7,7 +7,7 @@ Sidebar name: Forms recipe
 
 A React form recipe: react-hook-form and zod with SheenUI Field, validation messages, focus on error, an async submit and every control via Controller.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Forms recipe
 
@@ -65,6 +65,8 @@ import { Slider } from "@/components/sheenui/slider/slider";
 import { Switch } from "@/components/sheenui/switch/switch";
 import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
 ```
+
+These examples also use button, checkbox, field, input, number-field, select: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/checkbox.json https://lokendra-builds.github.io/sheenui/r/field.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/number-field.json https://lokendra-builds.github.io/sheenui/r/select.json`
 
 Import from the package (after the first npm release, or a packed tarball):
 
@@ -304,6 +306,12 @@ pnpm add react-hook-form zod @hookform/resolvers
 ```
 
 The controls come from the registry; every item below installs with npx shadcn@latest add and its docs page lists the exact files: [Field](https://lokendra-builds.github.io/sheenui/forms/field), [Input](https://lokendra-builds.github.io/sheenui/components/input), [Select](https://lokendra-builds.github.io/sheenui/components/select), [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox), [NumberField](https://lokendra-builds.github.io/sheenui/forms/number-field), [Button](https://lokendra-builds.github.io/sheenui/components/button), [Alert](https://lokendra-builds.github.io/sheenui/components/alert). Each control page has the single-field version of this pattern; the [Field page](https://lokendra-builds.github.io/sheenui/forms/field) shows it with every control.
+
+The second example (every control) also uses these. One command adds everything both examples import:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/alert.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/checkbox.json https://lokendra-builds.github.io/sheenui/r/color-picker.json https://lokendra-builds.github.io/sheenui/r/combobox.json https://lokendra-builds.github.io/sheenui/r/date-picker.json https://lokendra-builds.github.io/sheenui/r/field.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/number-field.json https://lokendra-builds.github.io/sheenui/r/otp-input.json https://lokendra-builds.github.io/sheenui/r/radio-group.json https://lokendra-builds.github.io/sheenui/r/rating.json https://lokendra-builds.github.io/sheenui/r/segmented.json https://lokendra-builds.github.io/sheenui/r/select.json https://lokendra-builds.github.io/sheenui/r/slider.json https://lokendra-builds.github.io/sheenui/r/switch.json https://lokendra-builds.github.io/sheenui/r/tags-input.json
+```
 
 
 ## Frequently asked questions

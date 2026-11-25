@@ -67,9 +67,9 @@ const COPY: Record<SheenStyle, { eyebrow: string; lines: [string, string]; accen
     lede: "SheenUI is a free library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Accessible by default. Copy the source and make it yours.",
   },
   aurora: {
-    eyebrow: "Glassy UI, lit from within.",
-    lines: ["Glassmorphism React", "components, lit from"],
-    accent: "within.",
+    eyebrow: "Glassy UI with a neon glow.",
+    lines: ["Glassmorphism React", "components, built to"],
+    accent: "glow.",
     lede: "SheenUI is a free library of glassmorphism React components in the Aurora Neon style: frosted glass with real light, depth and Motion animation, built on Base UI and Tailwind CSS v4. Copy the source and make it yours.",
   },
 };

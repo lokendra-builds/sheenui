@@ -1121,7 +1121,7 @@
     transform: rotate(0.5deg);
   }
 
-  /* The headline's last word ("light." / "within."): a classic serif italic a size up, the style's spectrum drifting slowly
+  /* The headline's last word ("light." / "glow."): a classic serif italic a size up, the style's spectrum drifting slowly
    through it and a soft glow of the accent around it. Nothing covers the word. The colours are the contrast-checked
    gradients further down (light and dark themes); the serif has a metric-matched fallback face, so its late load moves
    nothing. */

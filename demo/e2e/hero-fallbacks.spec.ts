@@ -1,4 +1,4 @@
-// The home hero's headline word ("light." / "within.") must stay complete and visible in every look and in every
+// The home hero's headline word ("light." / "glow.") must stay complete and visible in every look and in every
 // transparency toggle combination (Reduce transparency, Lite glass, both): the refracting slab may bend it, but in the
 // fallbacks it must sit BEHIND the word as a solid plate. Also guards the revenue odometer at rest: after the roll,
 // one digit row per column is visible (no neighbour digits peeking above or below the figure).
@@ -52,8 +52,8 @@ for (const style of STYLES) {
             ink: getComputedStyle(word).backgroundImage,
           };
         });
-        expect(found.text).toMatch(/\w+ \w+ components,? .+ (light|within)\.$/);
-        expect(found.word).toMatch(/^(light|within)\.$/);
+        expect(found.text).toMatch(/\w+ \w+ components,? .+ (light|glow)\.$/);
+        expect(found.word).toMatch(/^(light|glow)\.$/);
         for (const step of found.chain) {
           expect(step.opacity).toBe(1);
           expect(step.visibility).toBe("visible");

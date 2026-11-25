@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t}from"./vendor-react-D30i__oY.js";var n=e(t(),1),r=n.createContext({disabled:!1});function i(){return n.useContext(r)}export{i as t};

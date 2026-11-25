@@ -1,0 +1,2382 @@
+# SheenUI: Layout
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Animated Accordion for React with Spring Motion
+
+URL: https://lokendra-builds.github.io/sheenui/layout/accordion
+Sidebar name: Accordion
+
+An animated React accordion: height follows a spring on open and a quick ease on close, the chevron turns and content drifts in. Base UI, Tailwind v4.
+
+What it is: An animated React accordion whose sections open on a spring, with every trigger a real button in the tab order. Use it as a React accordion for an FAQ section on a pricing or landing page, where the default glass variant puts all questions in one card and the open item rises as a lighter pane.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/accordion.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Accordion
+
+Files to copy from `theme/src/`:
+
+- `components/accordion/`
+- `lib/{cn.ts, heading.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: accordion. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/sheenui/accordion/accordion";
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+```
+
+These examples also use button, glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger, Button, GlassCard } from "@sheenui/theme";
+```
+
+### Accordion
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| variant | AccordionVariant | "glass" | Surface style: "glass" is one glass card, "separated" gives every item its own card, "plain" has no surface. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+| multiple | boolean | false | Let several items stay open at once. |
+| defaultValue | any[] | optional, no default | Values of the items open at first (uncontrolled). |
+| value / onValueChange | any[] / (value) => void | optional, no default | Control which items are open. |
+| hiddenUntilFound | boolean | false | Closed panels stay in the page so the browser's find-in-page can open them. |
+| disabled | boolean | false | Disables every item of the group. |
+
+### AccordionItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Adds extra classes to the item element. |
+| value | any | auto id | Names the item for defaultValue / value. |
+| disabled | boolean | false | The trigger stays visible but cannot be toggled. |
+| onOpenChange | (open) => void | optional, no default | Called when this item opens or closes. |
+
+### AccordionTrigger
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| icon | ReactNode | optional, no default | Leading icon in a small tile; it picks up the accent while the item is open. Hidden from screen readers. |
+| description | ReactNode | optional, no default | Shows a secondary line under the title. |
+| indicator | "chevron" \| "plus" | "chevron" | "chevron" turns over; "plus" becomes a minus. |
+| headingLevel | HeadingLevelOption | 3 | Heading level of the wrapping header (2 to 6), to fit the page outline, or "none" for a paragraph with no heading role (for an example). |
+| className | string | optional, no default | Extra classes for the trigger button. |
+
+### AccordionPanel
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Extra classes for the panel (height-animated, clips while it moves). |
+| contentClassName | string | optional, no default | Extra classes for the padded content box inside the panel. |
+| keepMounted | boolean | false | Keep closed content in the DOM. |
+
+### Example 1 of 3: FAQ
+
+The default glass variant: one card, and the open item rises as a lighter pane. Leading icons pick up the accent while open.
+
+```tsx
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/sheenui/accordion/accordion";
+// Package build (after the first npm release, or a packed tarball): import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@sheenui/theme";
+import { MessageCircle as MessageIcon, Shield as ShieldIcon, Truck as TruckIcon, Undo2 as UndoIcon } from "lucide-react";
+
+const faqs = [
+  {
+    value: "shipping",
+    icon: <TruckIcon />,
+    title: "How long does shipping take?",
+    description: "Orders and delivery",
+    body: "Orders placed before 2 pm ship the same day. Standard delivery takes three to five business days; express arrives the next business day in most cities.",
+  },
+  {
+    value: "returns",
+    icon: <UndoIcon />,
+    title: "Can I return an item?",
+    description: "Free within 30 days",
+    body: "Yes. Start a return from your order page within 30 days and drop the parcel at any pickup point. Refunds land on your original payment method within five days.",
+  },
+  {
+    value: "warranty",
+    icon: <ShieldIcon />,
+    title: "What does the warranty cover?",
+    description: "Two years, parts and labour",
+    body: "Every device carries a two-year warranty against manufacturing defects. Accidental damage is covered only with SheenCare.",
+  },
+  {
+    value: "support",
+    icon: <MessageIcon />,
+    title: "How do I reach support?",
+    description: "Chat, email or phone",
+    body: "Chat with us from any page, or email help@sheen.example. Phone support runs 8 am to 8 pm on weekdays.",
+  },
+];
+
+export function Example() {
+  return (
+    <Accordion defaultValue={["shipping"]}>
+      {faqs.map((faq) => (
+        <AccordionItem key={faq.value} value={faq.value}>
+          <AccordionTrigger icon={faq.icon} description={faq.description}>
+            {faq.title}
+          </AccordionTrigger>
+          <AccordionPanel>{faq.body}</AccordionPanel>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+}
+```
+
+### Example 2 of 3: Separated, several open
+
+Each item is its own glass card. multiple lets any number stay open; the plus folds into a minus.
+
+```tsx
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/sheenui/accordion/accordion";
+// Package build (after the first npm release, or a packed tarball): import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Accordion variant="separated" multiple defaultValue={["plans", "billing"]}>
+      <AccordionItem value="plans">
+        <AccordionTrigger indicator="plus">Can I switch plans later?</AccordionTrigger>
+        <AccordionPanel>Any time. Upgrades apply at once…</AccordionPanel>
+      </AccordionItem>
+      <AccordionItem value="billing">
+        <AccordionTrigger indicator="plus">When am I billed?</AccordionTrigger>
+        <AccordionPanel>On the same day each month…</AccordionPanel>
+      </AccordionItem>
+      <AccordionItem value="team">
+        <AccordionTrigger indicator="plus">Do you offer team discounts?</AccordionTrigger>
+        <AccordionPanel>Teams of ten or more get 20% off…</AccordionPanel>
+      </AccordionItem>
+    </Accordion>
+  );
+}
+```
+
+### Example 3 of 3: Plain, controlled, inside a card
+
+variant="plain" has no surface of its own, for settings inside an existing card. value / onValueChange control which sections are open; a disabled item stays visible.
+
+```tsx
+import { useState } from "react";
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from "@/components/sheenui/accordion/accordion";
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger, Button, GlassCard } from "@sheenui/theme";
+import { CreditCard as CardIcon, User as UserIcon } from "lucide-react";
+
+export function Example() {
+  const [open, setOpen] = useState<string[]>(["profile"]);
+  // Every item that can open: the disabled one stays closed.
+  const all = ["profile", "notifications", "security"];
+
+  return (
+    <>
+      <Button size="sm" variant="glass" onClick={() => setOpen(all)}>Expand all</Button>
+      <Button size="sm" variant="ghost" onClick={() => setOpen([])}>Collapse all</Button>
+
+      <GlassCard className="p-2">
+        <Accordion variant="plain" multiple value={open} onValueChange={(value) => setOpen(value as string[])}>
+          <AccordionItem value="profile">
+            <AccordionTrigger icon={<UserIcon />}>Profile</AccordionTrigger>
+            <AccordionPanel>Name, photo and email.</AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="notifications">
+            <AccordionTrigger>Notifications</AccordionTrigger>
+            <AccordionPanel>Choose what we email you about.</AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="security">
+            <AccordionTrigger>Security</AccordionTrigger>
+            <AccordionPanel>Password and two-step sign-in.</AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="billing" disabled>
+            <AccordionTrigger icon={<CardIcon />} description="Ask an owner to unlock">Billing</AccordionTrigger>
+            <AccordionPanel>Plans and invoices.</AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </GlassCard>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move between triggers (disabled items are skipped). |
+| Enter / Space | Open or close the focused item. |
+
+### Accessibility
+
+- Each trigger is a native button inside a heading (headingLevel sets the level) with aria-expanded and aria-controls.
+- Closed panels are hidden from the accessibility tree, so their links are not tabbable; hiddenUntilFound lets find-in-page open matching panels.
+- A disabled item is announced as dimmed; the chevron and icon tile are aria-hidden.
+
+### When to use Accordion
+
+- Use it for an FAQ below a pricing table, or a settings screen with long sections, where only the answer you open takes space and every trigger stays a real button in the tab order.
+- Use the separated variant with multiple for a settings or filter panel, where each group is its own glass card and several can stay open while someone compares them.
+- Use the plain variant inside an existing card, such as a checkout summary or a sidebar, when the accordion should not add a surface of its own.
+- Skip it when a section is independent and should not close its neighbors; Collapsible is a single show and hide region, and Tabs is better when users compare parallel views.
+- Pair it with Badge in a trigger description, Field and Input for settings groups inside panels, and the Kbd component to show shortcuts in help content.
+
+
+### Frequently asked questions
+
+#### How do I build an accordion?
+
+Wrap AccordionItem elements in Accordion, each with an AccordionTrigger and an AccordionPanel. The panel height eases open in 220 ms and closes in a quicker 150 ms, and the chevron turns with it. The component is built on Base UI and the file starts with "use client".
+
+#### How do I let several sections stay open?
+
+Set multiple on Accordion. Control which items are open with value and onValueChange, which take arrays of item values, or seed them with defaultValue. Give items stable value props instead of the auto id, so the state survives reordering. A disabled item stays visible but cannot be toggled.
+
+#### Does it work with the keyboard and Ctrl+F?
+
+Each trigger is a native button inside a heading, with aria-expanded, and closed panels are removed from the page. Set hiddenUntilFound so the browser's find-in-page can open a matching panel, and use headingLevel, 3 by default, to fit your page outline.
+
+#### Can I add icons, descriptions or a plus indicator?
+
+AccordionTrigger takes icon for a leading tile that picks up the accent while open, description for a muted second line, and indicator set to chevron or plus, where the plus folds into a minus. Use contentClassName on AccordionPanel to adjust padding of the content box.
+
+
+### Related pages
+
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable)
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Aspect Ratio Box for Images & Video
+
+URL: https://lokendra-builds.github.io/sheenui/layout/aspect-ratio
+Sidebar name: Aspect ratio
+
+A React aspect ratio component: a box that keeps its width-to-height ratio so images and video reserve space and the page never jumps. Tailwind v4, MIT.
+
+What it is: A React aspect ratio box that keeps images, video and maps at a fixed width-to-height ratio, preventing layout shift. Use AspectRatio to reserve the space of an image, a video poster or a map before it loads, so the page does not jump when the content arrives.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/aspect-ratio.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Aspect ratio
+
+Files to copy from `theme/src/`:
+
+- `components/aspect-ratio/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: aspect-ratio. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { AspectRatio } from "@/components/sheenui/aspect-ratio/aspect-ratio";
+import { Button } from "@/components/sheenui/button/button";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AspectRatio, Button } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| ratio | number | 1 | Width divided by height: 16 / 9, 4 / 3, 1 (default) for a square. |
+
+### Example 1 of 2: Screenshots, a video poster and a profile card
+
+ratio is width divided by height. Images fill the box (size-full object-cover); overlays are positioned inside it. Every tile keeps its ratio at any width, so nothing jumps while images load.
+
+```tsx
+import { AspectRatio } from "@/components/sheenui/aspect-ratio/aspect-ratio";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { AspectRatio, Button } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="grid w-full gap-4 sm:grid-cols-3">
+      <figure className="m-0 flex flex-col gap-2">
+        <AspectRatio ratio={16 / 9} className="rounded-sheen-xl border border-sheen-border">
+          <img src="/img/glassmorphism-dashboard-react-aurora-dark-768.webp" alt="A dark analytics dashboard in glass" className="size-full object-cover" />
+        </AspectRatio>
+        <figcaption className="text-sm font-medium">Analytics dashboard</figcaption>
+      </figure>
+      <figure className="m-0 flex flex-col gap-2">
+        <AspectRatio ratio={4 / 3} className="rounded-sheen-xl border border-sheen-border">
+          <img src="/img/glassmorphism-login-form-react-liquid-light-768.webp" alt="A light glass login form" className="size-full object-cover" />
+        </AspectRatio>
+        <figcaption className="text-sm font-medium">Login form</figcaption>
+      </figure>
+      <figure className="m-0 flex flex-col gap-2">
+        <AspectRatio ratio={21 / 9} className="rounded-sheen-xl border border-sheen-border bg-sheen-accent-soft">
+          <div className="absolute inset-0 grid place-items-center">
+            <Button size="icon" variant="glass" aria-label="Play the product tour">▶</Button>
+          </div>
+        </AspectRatio>
+        <figcaption className="text-sm font-medium">Product tour</figcaption>
+      </figure>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: A figure with a caption
+
+Reserve the space first, then fill it. Put the AspectRatio inside a figure so the caption belongs to it; the box keeps its ratio whatever the width of the figure.
+
+```tsx
+import { AspectRatio } from "@/components/sheenui/aspect-ratio/aspect-ratio";
+// Package build (after the first npm release, or a packed tarball): import { AspectRatio } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <figure className="flex w-64 flex-col gap-2">
+      <AspectRatio ratio={4 / 3} render={<div />} className="rounded-sheen-lg bg-gradient-to-br from-violet-400 to-teal-300" />
+      <figcaption className="text-sm text-sheen-fg-muted">A 4:3 placeholder: the space is reserved before the image loads.</figcaption>
+    </figure>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: it is a plain container. Anything focusable inside it keeps its own tab stop. |
+
+### Accessibility
+
+- No role of its own. Give the media inside it text: alt on an image, a title or caption on a video or map.
+- It reserves space, which prevents layout shift (CLS) while content loads.
+- Pass render to use another element, such as a figure. className and ref go on the box.
+
+### When to use the aspect ratio
+
+- Use AspectRatio for a 16:9 video poster, a square product photo or a map tile in a card grid, so every cell keeps its shape and nothing moves while the images load.
+- Pass ratio as width divided by height: 16 / 9 for video, 4 / 3 for photos, 1 for avatars and product tiles. The box keeps that ratio at any width.
+- Fill the box with size-full object-cover on the image, and give the box rounded corners: it clips its children.
+- Skip it for content whose height should follow its text. A card with copy should size itself, not hold a ratio.
+- Pair it with Skeleton as the loading state, with Carousel slides that must share one height, and with figure and figcaption through the render prop.
+
+
+### Frequently asked questions
+
+#### How do I keep an image from shifting the layout while it loads?
+
+Wrap it in AspectRatio with the image's width-to-height ratio. The box takes its height from the ratio right away, so nothing below it moves when the image arrives.
+
+#### How do I use another element, such as a figure?
+
+Pass render with the element you want, for example render={<figure />}. The ratio, className and ref still go on that element.
+
+#### Does AspectRatio add any accessibility semantics?
+
+No. It is a plain container with no role. Give the media inside it text: alt on an image, a title on a video or map.
+
+#### What is the default ratio?
+
+1, a square. Pass 16 / 9, 4 / 3 or any number you need.
+
+
+### Related pages
+
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Breadcrumb that Collapses When Narrow
+
+URL: https://lokendra-builds.github.io/sheenui/layout/breadcrumb
+Sidebar name: Breadcrumb
+
+A responsive React breadcrumb: when the trail runs out of room the middle folds into a menu, measured before paint so it never flickers. Tailwind v4, MIT.
+
+What it is: A responsive React breadcrumb whose middle items fold into a menu when space runs out, and unfold again when there is room.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/breadcrumb.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Breadcrumb
+
+Files to copy from `theme/src/`:
+
+- `components/breadcrumb/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: breadcrumb. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Breadcrumb, type BreadcrumbItem } from "@/components/sheenui/breadcrumb/breadcrumb";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Breadcrumb, type BreadcrumbItem } from "@sheenui/theme";
+```
+
+### Breadcrumb
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| items | BreadcrumbItem[] | required | The trail, root first. The last item is the current page. |
+| separator | ReactNode | "chevron" | Between items: the presets "chevron", "slash" or "dot", or any node (rendered decoratively). |
+| collapse | "auto" \| "never" | "auto" | "auto" folds middle items into a menu when the trail does not fit; "never" wraps instead. |
+| maxItems | number | no limit | Always collapse when there are more items than this. |
+| itemsBefore | number | 1 | Items always shown before the "…" menu. |
+| itemsAfter | number | 1 | Items kept after the "…" when maxItems collapses (width-driven collapse keeps at least 1). |
+| renderLink | ((item: BreadcrumbItem) => ReactElement) | optional, no default | Render every link as your router's link: (item) => <Link to={item.href!} />. |
+| variant | "glass" \| "plain" | "plain" | Picks a "plain" text trail or a "glass" pill. |
+| size | "sm" \| "md" | "md" | Sets the text and row size. |
+| labels | Partial<BreadcrumbLabels> | defaultBreadcrumbLabels | Any UI string (i18n): nav and more. Give each breadcrumb on a page its own nav. Every other string, for translation: labels={{ nav: "…" }}; omitted keys keep the English of defaultBreadcrumbLabels. All 2 keys of BreadcrumbLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the <nav>. |
+
+### BreadcrumbItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| label | ReactNode | optional, no default | Sets the text shown for the item. |
+| href | string | optional, no default | Link target. Without one (and for the last item) it is plain text. |
+| icon | ReactNode | optional, no default | Shows an icon before the label. |
+| iconOnly | boolean | false | Show only the icon; the label stays for screen readers. |
+| textValue | string | optional, no default | Plain text for menu typeahead when the label is not a string. |
+| render | ReactElement | optional, no default | Element for this one link (overrides renderLink). |
+| id | string | optional, no default | Stable key that identifies the item between renders. |
+
+### Example 1 of 3: Collapses to fit
+
+Drag the slider: middle items fold into the “…” menu (arrow keys, typeahead and Escape work inside it) and come back as the row widens. The last item is the current page, with aria-current="page".
+
+```tsx
+import { Breadcrumb } from "@/components/sheenui/breadcrumb/breadcrumb";
+// Package build (after the first npm release, or a packed tarball): import { Breadcrumb } from "@sheenui/theme";
+import { House as HomeIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Breadcrumb
+      items={[
+        { label: "Home", href: "/", icon: <HomeIcon />, iconOnly: true },
+        { label: "Acme workspace", href: "/acme" },
+        { label: "Engineering", href: "/acme/engineering" },
+        { label: "Platform team", href: "/acme/engineering/platform" },
+        { label: "Projects", href: "/acme/engineering/platform/projects" },
+        { label: "Q3 roadmap", href: "/acme/engineering/platform/projects/q3" },
+        { label: "Launch checklist" }, // the current page
+      ]}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Styles
+
+A glass pill, slash and dot separators, a small size, and maxItems to always collapse long trails.
+
+```tsx
+import { Breadcrumb, type BreadcrumbItem } from "@/components/sheenui/breadcrumb/breadcrumb";
+// Package build (after the first npm release, or a packed tarball): import { Breadcrumb, type BreadcrumbItem } from "@sheenui/theme";
+
+const items: BreadcrumbItem[] = [
+  { label: "Home", href: "#" },
+  { label: "Projects", href: "#projects" },
+  { label: "SheenUI" },
+];
+
+const trail: BreadcrumbItem[] = [
+  { label: "Home", href: "#" },
+  { label: "Acme", href: "#acme" },
+  { label: "Engineering", href: "#engineering" },
+  { label: "Platform", href: "#platform" },
+  { label: "Billing service" },
+];
+
+export function Example() {
+  // Several breadcrumbs on one page: give each nav its own name.
+  return (
+    <>
+      <Breadcrumb variant="glass" items={items} labels={{ nav: "Breadcrumb (glass)" }} />
+      <Breadcrumb separator="slash" items={items} labels={{ nav: "Breadcrumb (slash)" }} />
+      <Breadcrumb separator="dot" size="sm" items={items} labels={{ nav: "Breadcrumb (dot)" }} />
+      {/* maxItems always keeps the first item, a "…" menu and the last items */}
+      <Breadcrumb maxItems={3} items={trail} labels={{ nav: "Breadcrumb (collapsed)" }} />
+    </>
+  );
+}
+```
+
+### Example 3 of 3: Router links and translations
+
+renderLink renders every link through your router, including the links inside the collapse menu. Every string the component adds is a prop.
+
+```tsx
+import { Breadcrumb, type BreadcrumbItem } from "@/components/sheenui/breadcrumb/breadcrumb";
+// Package build (after the first npm release, or a packed tarball): import { Breadcrumb, type BreadcrumbItem } from "@sheenui/theme";
+import { Link } from "react-router";
+
+const items: BreadcrumbItem[] = [
+  { label: "Accueil", href: "/" },
+  { label: "Projets", href: "/projets" },
+  { label: "SheenUI" },
+];
+
+export function Example() {
+  // Every link (inline and inside the "…" menu) renders as your router's Link.
+
+  return (
+    <Breadcrumb
+      items={items}
+      renderLink={(item) => <Link to={item.href!} />}
+      labels={{ nav: "Fil d'Ariane", more: (n) => `Afficher ${n} pages masquées` }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move through the links and the "…" button. |
+| Enter | Follow a link, or open the collapsed-items menu. |
+| Arrow keys, typeahead, Escape | Work inside the menu as in any menu. |
+
+### Accessibility
+
+- A <nav aria-label="Breadcrumb"> with an ordered list; the last item has aria-current="page". Give a second breadcrumb on the page its own labels.nav.
+- Separators are hidden from assistive tech. An icon-only item keeps its label for screen readers.
+- The "…" menu lists the hidden pages as real links.
+
+### All exports on this page
+
+- Breadcrumb — Where the current page sits in the hierarchy.
+- defaultBreadcrumbLabels — The English strings of Breadcrumb ("Breadcrumb" for the landmark, "Show N hidden pages" for the "…" button).
+
+
+### When to use Breadcrumb
+
+- Use it as a collapsible breadcrumb on a documentation or e-commerce page that sits several levels deep, such as Home, Products, Shoes, Running, so people can jump back to any ancestor without using the browser's Back button.
+- Use maxItems with itemsBefore and itemsAfter for deeply nested file or category trees, where you always want the root and the current page visible and the middle folded into a menu.
+- The collapse is measured before paint, so it suits responsive layouts where the same trail must fit a phone header and a wide desktop header without a flash of overflow.
+- Skip it for linear multi-step flows such as checkout; Stepper shows progress and state there, and breadcrumbs describe site hierarchy rather than the order of tasks.
+- Pair it with Navbar or Vertical nav for primary navigation, with Menu behavior already built in for the folded items, and with a page heading and Button actions below the trail.
+
+
+### Frequently asked questions
+
+#### How do I build a react breadcrumb with SheenUI?
+
+Pass an items array, root first, to Breadcrumb. Each item has a label and an optional href, and the last item is treated as the current page with aria-current="page" and no link. Choose separator chevron, slash or dot, or supply your own node.
+
+#### What happens when the trail is too long for the screen?
+
+With collapse set to auto, the default, the middle items fold into a menu button, and they come back when the row widens. The hidden pages are listed as real links, and arrow keys, typeahead and Escape work in it. Set collapse to never to let the trail wrap instead.
+
+#### How do I use my router's Link and translate the labels?
+
+Pass renderLink, for example (item) => <Link to={item.href!} />, and it is used for every link, including those in the collapse menu. A single item can override it with render. The labels prop holds the accessible names, nav and more(count), so you can translate them.
+
+#### Can I show an icon-only item such as a home icon?
+
+Yes. Give an item in the items array an icon and set iconOnly, and only the icon is drawn while the label stays available to screen readers. When the label is not a plain string, add textValue so typeahead in the collapse menu has text to match.
+
+
+### Related pages
+
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable)
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator)
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Collapsible with Animated Height
+
+URL: https://lokendra-builds.github.io/sheenui/layout/collapsible
+Sidebar name: Collapsible
+
+A React collapsible section with an animated height, a turning chevron and closed content kept out of the tab order. Base UI, Tailwind CSS v4, MIT.
+
+What it is: A React collapsible section that animates its height and keeps closed content out of the page and the tab order. Use it as an expandable section for an Advanced options link at the bottom of a form, so retry limits, timeouts and proxy settings stay out of the way until someone needs them.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/collapsible.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Collapsible
+
+Files to copy from `theme/src/`:
+
+- `components/collapsible/`
+- `components/status-icons/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: collapsible. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/sheenui/collapsible/collapsible";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@sheenui/theme";
+```
+
+### Collapsible props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| open / defaultOpen | boolean | false | Controlled / uncontrolled open state. |
+| onOpenChange | (open: boolean) => void | optional, no default | Called when it opens or closes. |
+| disabled | boolean | false | Locks the section so it cannot be toggled. |
+| className | string | optional, no default | Adds extra classes to the root. |
+
+### CollapsibleTrigger and CollapsiblePanel
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| hideIcon | boolean | false | Hide the chevron (for a custom indicator; read data-panel-open on the trigger). |
+| contentClassName | string | optional, no default | Extra classes for the padded box inside the panel. |
+| render (Trigger) | ReactElement | optional, no default | Replaces the button with another element. |
+| keepMounted (Panel) | boolean | false | Keep closed content in the DOM, hidden. |
+| hiddenUntilFound (Panel) | boolean | false | Use hidden=until-found so find-in-page opens it. |
+
+### Example 1 of 2: Basic
+
+Use Accordion when opening one section should close another.
+
+```tsx
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/sheenui/collapsible/collapsible";
+// Package build (after the first npm release, or a packed tarball): import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Collapsible className="glass-2 max-w-md rounded-sheen-xl p-2">
+      <CollapsibleTrigger>Advanced options</CollapsibleTrigger>
+      <CollapsiblePanel>
+        Retry limit, request timeout and proxy settings live here. The panel animates its height and keeps
+        closed content out of the page.
+      </CollapsiblePanel>
+    </Collapsible>
+  );
+}
+```
+
+### Example 2 of 2: Controlled
+
+open and onOpenChange drive it from outside. keepMounted holds the content in the DOM (hidden) so form fields inside keep their values.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/sheenui/collapsible/collapsible";
+// Package build (after the first npm release, or a packed tarball): import { Button, Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@sheenui/theme";
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      <Button variant="glass" size="sm" className="self-start" onClick={() => setOpen((o) => !o)}>
+        {open ? "Collapse" : "Expand"} from outside
+      </Button>
+      <Collapsible open={open} onOpenChange={setOpen} className="glass-2 rounded-sheen-xl p-2">
+        <CollapsibleTrigger>12 more files</CollapsibleTrigger>
+        <CollapsiblePanel keepMounted>
+          <ul className="list-disc ps-5">
+            <li>report-q1.pdf</li>
+            <li>report-q2.pdf</li>
+            <li>report-q3.pdf</li>
+          </ul>
+        </CollapsiblePanel>
+      </Collapsible>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focuses the trigger. |
+| Enter / Space | Opens or closes the panel. |
+
+### Accessibility
+
+- The trigger is a real <button> with aria-expanded and aria-controls (Base UI Collapsible).
+- Closed content is removed from the page, so its links and fields are neither tabbable nor read. keepMounted keeps it in the DOM but hidden; hiddenUntilFound lets find-in-page open it.
+- The chevron is decorative. Triggers are 44px tall on touch screens and show a focus ring.
+- Under reduced motion the panel jumps to its open or closed height with no travel.
+
+### When to use Collapsible
+
+- Use it for rarely needed settings at the end of a form, such as retry limits, timeouts and proxy fields behind an Advanced options toggle, so the common path stays short.
+- Use it for a Show more list in a file panel or a changelog, where twelve extra rows hide behind one trigger and the section can also be opened from a button elsewhere.
+- Use keepMounted when fields inside the section must keep their values while closed, or hiddenUntilFound when the hidden text should still be reachable with the browser's find-in-page.
+- Skip it when opening one section should close the others; Accordion manages that for a group, and Dialog or Popover is better when the content should not push the page down.
+- Pair it with Button to open it from outside using open and onOpenChange, with Switch and Field for the options inside the panel, and Badge to show a count in the trigger.
+
+
+### Frequently asked questions
+
+#### How do I make a react collapsible section with animated height?
+
+Compose Collapsible, CollapsibleTrigger and CollapsiblePanel. The panel animates its height, the chevron turns, and closed content leaves the tab order. Use defaultOpen for an uncontrolled start, or open with onOpenChange to control it from state. The primitive underneath is Base UI Collapsible.
+
+#### Are closed fields still submitted or focusable?
+
+By default closed content is removed from the page, so its links and fields are not tabbable or read by screen readers. Set keepMounted on CollapsiblePanel to keep it in the DOM, hidden, so form fields inside retain their values and still take part in the form.
+
+#### How do I use my own indicator instead of the chevron?
+
+Set hideIcon on CollapsibleTrigger and style your indicator from the data-panel-open attribute that the trigger exposes. To change the trigger element, pass render with another element. The trigger is a real button with aria-expanded and aria-controls, 44px tall on touch screens, with a visible focus ring.
+
+#### What does it do under prefers-reduced-motion?
+
+The panel jumps straight to its open or closed height with no travel. Nothing else changes: the same keys apply, with Tab focusing the trigger and Enter or Space toggling the panel. The disabled prop locks the section while keeping it visible.
+
+
+### Related pages
+
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable)
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Pagination Component with Ellipses
+
+URL: https://lokendra-builds.github.io/sheenui/layout/pagination
+Sidebar name: Pagination
+
+A glass React pagination component with ellipses, first and last buttons, crawlable page links and translatable labels. Accessible, Tailwind v4, MIT.
+
+What it is: A React pagination component with page numbers, ellipses and first, previous, next and last buttons in a labeled navigation landmark.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/pagination.json
+```
+
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Pagination
+
+Files to copy from `theme/src/`:
+
+- `components/pagination/`
+- `hooks/{use-controllable.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: pagination. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Pagination } from "@/components/sheenui/pagination/pagination";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Pagination } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| page | number | optional, no default | Sets the current page, 1-based, when controlled. |
+| defaultPage | number | 1 | Sets the starting page when uncontrolled. |
+| onPageChange | ((page: number) => void) | optional, no default | Called with the new 1-based page. |
+| pageCount | number | required | Total number of pages. 0 is treated as 1. |
+| siblingCount | number | 1 | Pages shown on each side of the current one. |
+| boundaryCount | number | 1 | Pages always shown at the start and the end. |
+| showFirstLast | boolean | true | Shows the first-page and last-page buttons. |
+| showPrevNext | boolean | true | Shows the previous and next buttons. |
+| size | "sm" \| "md" | "md" | Button size: "sm" (32px) or "md" (40px, default). |
+| disabled | boolean | false | Disables every button of the pagination. |
+| getPageHref | ((page: number) => string) | optional, no default | Render page links instead of buttons (crawlable, open in new tab). With onPageChange as well, clicks are handled in-app (the browser's own navigation is prevented). |
+| labels | Partial<PaginationLabels> | defaultPaginationLabels | Every other string, for translation: labels={{ nav: "…" }}; omitted keys keep the English of defaultPaginationLabels. All 8 keys of PaginationLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds a class name to the <nav> element. |
+| id | string | optional, no default | Sets the id attribute of the <nav> element. |
+| aria-label | string | optional, no default | Overrides labels.nav. Give each pagination on a page its own name. |
+
+### Example: Controlled pagination
+
+Page numbers with ellipses; first, previous, next and last buttons.
+
+```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/sheenui/pagination/pagination";
+// Package build (after the first npm release, or a packed tarball): import { Pagination } from "@sheenui/theme";
+
+export function Example() {
+  const [page, setPage] = useState(6);
+  return <Pagination page={page} onPageChange={setPage} pageCount={32} />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move between the first, previous, page, next and last controls. |
+| Enter / Space | Go to the focused page (a button). With getPageHref the items are links: Enter follows the link. |
+| Edge arrows | Previous on page 1 and Next on the last page stay focusable but do nothing (aria-disabled), so focus never drops to the page body. |
+
+### Accessibility
+
+- The control is a <nav> landmark named “Pagination”; give each pagination on a page its own aria-label.
+- The current page has aria-current="page"; every page button is named “Page 3”, and ellipses read “More pages”.
+- While disabled, nothing can be activated; on touch the targets are 44px; every string is in labels.
+
+### When to use pagination
+
+Use pagination under a long list or table when people need to know where they are and jump to a position: search results, an orders table, an admin list. The data table already uses it in its footer. Prefer infinite scroll or a load-more button only when position does not matter, and prefer a [combobox with search](https://lokendra-builds.github.io/sheenui/components/combobox) when the goal is finding one item.
+
+Keep the page size predictable: a bar with seven slots (first and last page, the current one with a neighbor on each side, and two ellipses) fits a phone, and on small screens the control switches to the compact "Page 3 of 32" text. Disable it while a request is in flight so a second click cannot start a second request, and reset to page 1 whenever a filter changes.
+
+Pair it with the [React data table](https://lokendra-builds.github.io/sheenui/components/data-table) for server-side paging, with [skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton) rows while a page loads, and with [breadcrumbs](https://lokendra-builds.github.io/sheenui/layout/breadcrumb) for orientation.
+
+
+### Frequently asked questions
+
+#### How do I make the page links crawlable?
+
+Pass getPageHref. The control then renders anchors instead of buttons, so search engines and open-in-new-tab work; add onPageChange as well and clicks are handled in the app with the default navigation prevented.
+
+#### Does the control keep its width as the page changes?
+
+Yes. getPageItems always returns the same number of slots for a given page count, using ellipses for the gap, so the bar does not jump while someone clicks through.
+
+#### How do I translate the labels?
+
+Pass a partial labels prop. Every accessible name and screen-reader string, including Page 3 and the ellipsis text, is in PaginationLabels; spread defaultPaginationLabels and override single keys.
+
+#### Can I show two paginations on one page?
+
+Yes, but give each its own aria-label so the navigation landmarks are distinguishable to screen reader users.
+
+
+### All exports on this page
+
+- Pagination — Pagination: page numbers with ellipses, first / previous / next / last, in a labelled <nav> landmark.
+- defaultPaginationLabels — Default English strings of PaginationLabels; spread it and override single keys to reword.
+- getPageItems — The page slots to show (1-based).
+
+
+### Related pages
+
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable)
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator)
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Resizable Panels with Keyboard Handles
+
+URL: https://lokendra-builds.github.io/sheenui/layout/resizable
+Sidebar name: Resizable panels
+
+Resizable panels for React with draggable, keyboard-accessible handles, min and max sizes and nesting. ARIA window splitter, Tailwind CSS v4, MIT.
+
+What it is: Resizable panels for React split a layout into regions with draggable, keyboard-resizable handles, size limits and nested groups. Use Resizable panels for workspaces where people choose how much room each area gets: a file tree beside an editor, a list beside a detail pane, a console under a canvas.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/resizable.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Resizable panels
+
+Files to copy from `theme/src/`:
+
+- `components/resizable/`
+- `hooks/{use-direction.ts, use-latest.ts}`
+- `lib/{cn.ts, form.ts, math.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: resizable. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Progress } from "@/components/sheenui/progress/progress";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/sheenui/resizable/resizable";
+```
+
+These examples also use button, progress: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/progress.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Progress, ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@sheenui/theme";
+```
+
+### ResizablePanelGroup props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | ResizablePanels with a ResizableHandle between each pair (they may sit inside your own components). |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Direction the panels sit in: "horizontal" (side by side, default) or "vertical" (stacked). |
+| layout | number[] | optional, no default | Panel sizes as percentages that add up to 100 (controlled). Pair with onLayoutChange. |
+| defaultLayout | number[] | each panel's defaultSize | Starting sizes when uncontrolled: each panel's defaultSize, else an equal share of what is left. |
+| onLayoutChange | ((layout: number[]) => void) | optional, no default | Called with the new sizes while a handle is dragged or moved with the keyboard. |
+| keyboardStep | number | 5 | Percent a handle moves per arrow key (Shift moves five times as much). |
+| disabled | boolean | false | Locks every handle so no panel can be resized. |
+| labels | Partial<ResizableLabels> | defaultResizableLabels | Every other string, for translation: labels={{ resize: "…" }}; omitted keys keep the English of defaultResizableLabels. All 3 keys of ResizableLabels are listed in the key table under the props table. |
+
+### ResizablePanel props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| defaultSize | number | optional, no default | Starting size in percent. Panels without one share what is left equally. |
+| minSize | number | 10 | Sets the smallest size in percent. |
+| maxSize | number | 90 | Sets the largest size in percent. |
+
+### ResizableHandle props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| withGrip | boolean | false | Draw a small grip in the middle of the line. |
+
+### Example 1 of 2: Editor, preview and console
+
+Drag a handle, or focus it and use the arrow keys. The middle pane holds a vertical group; every panel respects its minimum size.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Progress } from "@/components/sheenui/progress/progress";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/sheenui/resizable/resizable";
+// Package build (after the first npm release, or a packed tarball): import { Button, Progress, ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <ResizablePanelGroup className="glass-1 h-[22rem] w-full rounded-sheen-xl text-xs">
+      <ResizablePanel defaultSize={22} minSize={14}>
+        <p className="p-3 font-semibold">Explorer</p>
+        <ul className="m-0 list-none p-1.5">
+          <li className="rounded-sheen-sm bg-sheen-hover px-2 py-1.5">App.tsx</li>
+          <li className="px-2 py-1.5">Deploy.tsx</li>
+          <li className="px-2 py-1.5">theme.css</li>
+        </ul>
+      </ResizablePanel>
+      <ResizableHandle withGrip />
+      <ResizablePanel defaultSize={50}>
+        <ResizablePanelGroup orientation="vertical">
+          <ResizablePanel defaultSize={62} minSize={25}>
+            <pre className="m-0 p-3 leading-5">{"export function Deploy() {\n  return <Button>Deploy</Button>;\n}"}</pre>
+          </ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel minSize={15}>
+            <ul className="m-0 list-none p-3 leading-5">
+              <li>✓ compiled in 142 ms</li>
+              <li>ready on http://localhost:5173</li>
+            </ul>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </ResizablePanel>
+      <ResizableHandle withGrip />
+      <ResizablePanel minSize={18}>
+        <div className="m-3 flex flex-col gap-4 rounded-sheen-lg bg-sheen-hover p-4">
+          <Progress value={72} label="Build" />
+          <Button variant="glass" size="sm" className="self-start">Deploy</Button>
+        </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+
+### Example 2 of 2: Controlled and remembered
+
+Pass layout and onLayoutChange to own the sizes, for example to save them in localStorage and restore them on the next visit. The sizes are percentages that add up to 100.
+
+```tsx
+import { useEffect, useState } from "react";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/sheenui/resizable/resizable";
+// Package build (after the first npm release, or a packed tarball): import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@sheenui/theme";
+
+const KEY = "my-app:layout";
+
+export function Example() {
+  const [layout, setLayout] = useState<number[]>(() => {
+    try {
+      const saved = localStorage.getItem(KEY);
+      return saved ? (JSON.parse(saved) as number[]) : [30, 70];
+    } catch {
+      return [30, 70];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(layout));
+    } catch {
+      /* private mode: the layout just resets next visit */
+    }
+  }, [layout]);
+
+  return (
+    <ResizablePanelGroup layout={layout} onLayoutChange={setLayout} className="h-48 rounded-sheen-lg border border-sheen-border">
+      <ResizablePanel minSize={15} maxSize={60}>
+        <p className="p-4 text-sm">Sidebar: {Math.round(layout[0] ?? 0)}%</p>
+      </ResizablePanel>
+      <ResizableHandle withGrip />
+      <ResizablePanel>
+        <p className="p-4 text-sm">Content: {Math.round(layout[1] ?? 0)}%</p>
+      </ResizablePanel>
+    </ResizablePanelGroup>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focuses a handle. |
+| ← / → | Move the focused handle (↑ / ↓ in a vertical group) by keyboardStep percent. |
+| Shift + arrow | Move it five times as far. |
+| Home / End | Send the handle to the limit of its range. |
+| Step buttons | Two buttons on the handle make the panel before it larger or smaller with a single press (the non-drag alternative); always visible on touch screens, shown on keyboard focus elsewhere. |
+| Double click / double tap | Puts the divider back where it started. |
+
+### Accessibility
+
+- Each handle is a role="separator" (the ARIA window splitter pattern) with aria-orientation, aria-valuenow (percent of the panel before it), aria-valuemin, aria-valuemax and aria-controls, named by labels.resize.
+- Every drag has a keyboard equivalent; the grab area is 44px on touch screens and works with mouse, touch and pen.
+- Panels never shrink below minSize or grow past maxSize, so content is not lost. In right-to-left pages the arrow keys and the drag follow the reading direction.
+- Resizing follows the pointer directly; there is no animation, so reduced motion changes nothing.
+
+### All exports on this page
+
+- ResizableHandle — The draggable divider between two panels of a ResizablePanelGroup.
+- ResizablePanel — One panel of a ResizablePanelGroup.
+- ResizablePanelGroup — Panels with draggable, keyboard-resizable handles between them: a file tree next to an editor, a list next to a detail pane, a console under a canvas.
+- defaultResizableLabels — The English ResizableLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the resizable panels
+
+- Use Resizable for an IDE-style workspace, an email client or a log viewer, where people drag a handle (or press the arrow keys) to choose how much room each area gets.
+- Put ResizablePanel children in a ResizablePanelGroup with a ResizableHandle between each pair. Set minSize and maxSize so a panel never collapses past usefulness.
+- Own the sizes with layout and onLayoutChange when you want to save them in localStorage or a user setting and restore them later.
+- Skip it for a fixed two-column layout. CSS grid is lighter when nobody needs to resize.
+- Pair it with ScrollArea inside each panel, with a vertical group nested in a horizontal one for editor layouts, and with Drawer for the phone version.
+
+
+### Frequently asked questions
+
+#### How do I build a resizable split pane in React?
+
+Render ResizablePanelGroup with a ResizableHandle between each pair of ResizablePanels. Panels register themselves, so they may sit inside your own components. Sizes are percentages that add up to 100; defaultLayout sets the start and onLayoutChange reports every move.
+
+#### Can the handles be moved with the keyboard or without dragging?
+
+Yes. Each handle is a role=separator: focus it and use the arrow keys (Shift for bigger steps) and Home or End to jump to the limit of its range. Two step buttons on the handle make the panel before it larger or smaller with a single pointer press (the non-drag alternative), and a double click or double tap puts the divider back where it started.
+
+#### How do I save the layout?
+
+Pass layout and onLayoutChange, store the array in localStorage in the handler, and read it back as the initial state. The page's second example shows it.
+
+#### Does it work in right-to-left pages?
+
+Yes. The arrow keys and the drag follow the reading direction.
+
+
+### Related pages
+
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area)
+- [Sidebar](https://lokendra-builds.github.io/sheenui/navigation/sidebar)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator)
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper)
+- [Timeline](https://lokendra-builds.github.io/sheenui/layout/timeline)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Custom Scrollbar for React: Glass Scroll Area
+
+URL: https://lokendra-builds.github.io/sheenui/layout/scroll-area
+Sidebar name: Scroll area
+
+A React scroll area with custom glass scrollbars and fading edges that keeps native wheel, touch, keyboard and find-in-page scrolling. Base UI, MIT.
+
+What it is: A React scroll area that keeps native scrolling but adds slim custom scrollbars in glass, with edges that fade only where there is more to see.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/scroll-area.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Scroll area
+
+Files to copy from `theme/src/`:
+
+- `components/scroll-area/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: scroll-area. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ScrollArea } from "@/components/sheenui/scroll-area/scroll-area";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, ScrollArea } from "@sheenui/theme";
+```
+
+### ScrollArea
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| overflowEdgeThreshold | number \| Partial<{ xStart: number; xEnd: number; yStart: number; yEnd: number; }> | 1 | The threshold in pixels that must be passed before the overflow edge attributes are applied. Accepts a single number for all edges or an object to configure them individually. |
+| children | ReactNode | optional, no default | Holds the content that scrolls. |
+| style | CSSProperties | optional, no default | Sets the inline styles for the root element. |
+| className | string | optional, no default | Root element: give it a height (vertical) or width (horizontal). |
+| orientation | "horizontal" \| "vertical" \| "both" | "vertical" | Which way the content scrolls. |
+| fade | "mask" \| "none" \| "shadow" | "mask" | How the edges show there is more content. |
+| fadeSize | number | 32 | Length of the edge fade, in px. |
+| scrollbars | "always" \| "hover" | "hover" | "hover" (default): scrollbars appear on hover / scroll / focus. "always": always shown. |
+| label | string | optional, no default | Accessible name for the scrollable region (adds role="region"). |
+| viewportClassName | string | optional, no default | Adds classes to the scrolling element (Base UI Viewport). |
+| contentClassName | string | optional, no default | Adds classes to the content wrapper inside the viewport. |
+| viewportRef | Ref<HTMLDivElement> | optional, no default | Ref to the scrolling element, e.g. to scroll programmatically. |
+
+### Example 1 of 3: Vertical
+
+The top edge stays crisp until you scroll; the bottom fades while there is more. Tab to the list and use the arrow keys.
+
+```tsx
+import { ScrollArea } from "@/components/sheenui/scroll-area/scroll-area";
+// Package build (after the first npm release, or a packed tarball): import { ScrollArea } from "@sheenui/theme";
+
+const releases = [
+  { version: "2.14.0", notes: "Stepper and Timeline." },
+  { version: "2.13.0", notes: "Data table density." },
+  { version: "2.12.0", notes: "Side drawer." },
+];
+
+export function Example() {
+  // Round it like its card: the keyboard focus ring follows the radius.
+
+  return (
+    <ScrollArea className="h-72 rounded-b-sheen-lg" label="Release notes">
+      <ul>{releases.map((r) => <li key={r.version}>
+            <b>{r.version}</b> {r.notes}
+          </li>)}</ul>
+    </ScrollArea>
+  );
+}
+```
+
+### Example 2 of 3: Horizontal, with glass inside
+
+Scroll shadows instead of a mask, so the cards keep their blur.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ScrollArea } from "@/components/sheenui/scroll-area/scroll-area";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, ScrollArea } from "@sheenui/theme";
+
+const themes = ["Aurora", "Liquid", "Midnight", "Paper", "Sunset", "Mono"];
+
+export function Example() {
+  // Glass cards inside: use the "shadow" fade (a mask would stop their blur), and level 1 for a long
+  // strip of small tiles (it has no blur of its own, so six tiles in view stay inside the glass budget).
+
+  return (
+    <ScrollArea orientation="horizontal" fade="shadow" label="Recently viewed">
+      <ul className="flex w-max gap-3">
+        {themes.map((t) => <li key={t}><GlassCard level={1} className="w-44 p-4">
+              {t}
+            </GlassCard></li>)}
+      </ul>
+    </ScrollArea>
+  );
+}
+```
+
+### Example 3 of 3: Both directions
+
+A wide table in a fixed box. scrollbars="always" keeps the bars visible.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ScrollArea } from "@/components/sheenui/scroll-area/scroll-area";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, ScrollArea } from "@sheenui/theme";
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const regions = [
+  "Amsterdam", "Bengaluru", "Cape Town", "Dublin", "Frankfurt", "Jakarta", "London", "Montréal", "Mumbai", "Oregon",
+  "Osaka", "Paris", "São Paulo", "Seoul", "Singapore", "Stockholm", "Sydney", "Tokyo", "Virginia", "Zürich",
+];
+
+export function Example() {
+  return (
+    <GlassCard className="w-full max-w-2xl overflow-hidden p-0">
+      <ScrollArea orientation="both" className="h-80 rounded-sheen-lg" scrollbars="always" label="Usage by region">
+        <table className="w-max text-start [:where(&)_th]:text-start text-sm">
+          <thead className="text-xs text-sheen-fg-muted">
+            <tr>
+              <th scope="col" className="px-4 py-3 font-medium">
+                Region
+              </th>
+              {months.map((m) => (
+                <th key={m} scope="col" className="px-4 py-3 text-end font-medium">
+                  {m}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {regions.map((region, r) => (
+              <tr key={region} className="border-t border-sheen-border">
+                <th scope="row" className="px-4 py-2.5 font-medium whitespace-nowrap">
+                  {region}
+                </th>
+                {months.map((m, c) => (
+                  <td key={m} className="px-4 py-2.5 text-end text-sheen-fg-muted tabular-nums">
+                    {(((r + 3) * (c + 7) * 37) % 900) + 100}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollArea>
+    </GlassCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys, Page Up / Page Down, Home / End, Space | Scroll the focused area natively. |
+| Tab | The viewport is focusable only while it can scroll, so keyboard users can reach it. |
+
+### Accessibility
+
+- Scrolling stays native (wheel, touch, keys, find-in-page); the viewport gets a name from label and role="region".
+- Scrollbars appear on hover, while scrolling and while the viewport has keyboard focus; the focus ring is drawn inside the edge.
+- The edge fades are decorative. Use fade="shadow" when glass cards sit inside, so their blur is not masked.
+
+### When to use the scroll area
+
+- Use it as a React scroll area for a fixed-height list inside a card, such as a notification list or a long set of options, where you want slim glass scrollbars instead of the browser's chunky default. It draws a glass scrollbar in CSS that matches the theme, instead of the browser default.
+- Use orientation="horizontal" for a row of cards or chips that scrolls sideways, with fade="shadow" so the glass cards inside keep their backdrop blur.
+- Use orientation="both" for a wide table in a fixed box with scrollbars="always", when users must see at a glance that the content continues in both directions.
+- Skip it when the whole page scrolls; let the browser handle it. For a long list of thousands of rows, the windowed Chat list, which renders only the visible rows, or a paginated Data table is a better fit than scrolling a plain container.
+- Pair it with GlassCard as the container, Separator between sections of the scrolled content, and Skeleton to hold the layout while the content loads.
+
+
+### Frequently asked questions
+
+#### How do I add a custom scrollbar in React without breaking native scrolling?
+
+Wrap the content in ScrollArea and give the root a height for vertical scrolling or a width for horizontal. Scrolling stays native, so wheel, touch, keyboard and find-in-page all work. Only the scrollbars are drawn by the component, and they show on hover, while scrolling and on focus.
+
+#### How does the keyboard reach a scroll area?
+
+The viewport becomes focusable only while it can actually scroll, so Tab reaches it. Then the arrow keys, Page Up, Page Down, Home, End and Space scroll natively. Pass label to name the region for screen readers; the viewport gets role="region" and a focus ring inside its edge.
+
+#### What are the edge fades, and when should I turn them off?
+
+The fade prop shows there is more to see: mask, the default, fades the content at the edges only where it can scroll, shadow draws scroll shadows, and none removes it. Use shadow when glass cards sit inside, because a mask would stop their blur. fadeSize defaults to 32px.
+
+#### How do I scroll to an item programmatically?
+
+Pass a ref to viewportRef, which points at the scrolling element, and call scrollTo or scrollIntoView on it or on a child. Use viewportClassName and contentClassName to style the scroller and its content wrapper, and set the root's border radius so the keyboard focus ring matches.
+
+
+### Related pages
+
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator)
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper)
+- [Timeline](https://lokendra-builds.github.io/sheenui/layout/timeline)
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Separator & Divider with Label
+
+URL: https://lokendra-builds.github.io/sheenui/layout/separator
+Sidebar name: Separator
+
+A React separator for horizontal or vertical dividers, solid, fading or dashed, with an optional label. Built from borders, so High Contrast mode keeps it.
+
+What it is: A React separator for hairline dividers, horizontal or vertical, solid, fading or dashed, with an optional label. Use it as a React divider between groups in a settings page, such as Account and Notifications, where a fading or solid hairline gives the page rhythm without adding another card.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/separator.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Separator
+
+Files to copy from `theme/src/`:
+
+- `components/separator/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: separator. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Separator } from "@/components/sheenui/separator/separator";
+```
+
+These examples also use button, input: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/input.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Input, Separator } from "@sheenui/theme";
+```
+
+### Separator
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Direction of the line. Vertical separators stretch to the height of their row. |
+| variant | "line" \| "fade" \| "dashed" | "line" | "line" hairline (default), "fade" softens toward the ends, "dashed" for looser groupings. |
+| label | ReactNode | optional, no default | Text or node in the middle of the line, e.g. "or", "Today". |
+| labelAlign | "center" \| "end" \| "start" | "center" | Where the label sits along the line. |
+| labelVariant | "text" \| "pill" | "text" | "text" (default) or "pill": the label sits in a small glass chip. |
+| decorative | boolean | false | Purely visual: hidden from assistive tech (no role="separator"). |
+| className | string | optional, no default | Extra classes for the outer element, merged after the built-in ones so they can override its spacing or color. |
+| labelClassName | string | optional, no default | Adds a class name to the label element. |
+
+### Example 1 of 2: Variants and orientation
+
+Vertical separators stretch to the height of their row.
+
+```tsx
+import { Separator } from "@/components/sheenui/separator/separator";
+// Package build (after the first npm release, or a packed tarball): import { Separator } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      {/* "line" is a hairline, "fade" fades out at both ends */}
+      {(["line", "fade", "dashed"] as const).map((variant) => (
+        <div key={variant} className="flex flex-col gap-2">
+          <span className="text-xs">variant="{variant}"</span>
+          <Separator variant={variant} />
+        </div>
+      ))}
+
+      <div className="flex h-5 items-center gap-3">
+        <a href={"/docs"}>Docs</a>
+        <Separator orientation="vertical" />
+        <a href={"/blog"}>Blog</a>
+        <Separator orientation="vertical" variant="fade" />
+        <a href={"/changelog"}>Changelog</a>
+      </div>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Labeled
+
+A label in the middle (“or”), in a glass pill, or at the start of the line. Screen readers hear the label as the separator's name.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Separator } from "@/components/sheenui/separator/separator";
+// Package build (after the first npm release, or a packed tarball): import { Button, Input, Separator } from "@sheenui/theme";
+import { Code as GithubIcon, Globe as GoogleIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <Button variant="glass" fullWidth leading={<GoogleIcon />}>Continue with Google</Button>
+      <Button variant="glass" fullWidth leading={<GithubIcon />}>Continue with GitHub</Button>
+      <Separator label="or" variant="fade" />
+      <Input label="Email" type="email" />
+
+      <Separator label="Today" labelVariant="pill" />
+      <Separator label="Advanced" labelAlign="start" />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a separator is not interactive. |
+
+### Accessibility
+
+- role="separator" with the matching orientation; a separator with a label keeps its text readable and its children are presentational to assistive tech.
+- Use a decorative separator only to group visually; it does not replace headings or landmarks.
+
+### When to use Separator
+
+- Use it to split a toolbar into clusters with a vertical hairline, or to divide Account from Notifications settings with a fading rule and a centered label, instead of nesting another card.
+- Use a labeled separator with the word or between a password form and social sign-in buttons, with labelVariant="pill" when the label should sit in a small glass chip.
+- Use orientation="vertical" between items in a row, such as a toolbar of stats or a footer's links, where the line stretches to the height of its row.
+- Skip it when the break is structural and a screen reader user should find it; use a real heading or landmark, because a decorative separator does not replace either.
+- Pair it with GlassCard to divide its sections, Toolbar, which has its own ToolbarSeparator for control groups, and Menu for dividing action groups in a dropdown.
+
+
+### Frequently asked questions
+
+#### How do I add a react separator with text in the middle?
+
+Pass label to Separator, for example "or". Choose where it sits with labelAlign, start, center or end, and its look with labelVariant, text or pill. The label also names the separator for screen readers, and labelClassName styles it. A line segment runs on each side of the label, and with labelAlign start or end the segment before or after it shrinks to a short lead-in.
+
+#### Is a separator announced by screen readers?
+
+By default it has role="separator" with the matching orientation, and a labeled one keeps its text readable. If the line is purely visual, set decorative and it is hidden from assistive technology. It is not focusable, so Tab skips it either way.
+
+#### What line styles are available?
+
+The variant prop takes line, a plain hairline, fade, which fades toward the ends, or dashed. Orientation is horizontal or vertical. Line and dashed are drawn with borders, and the fade gradient falls back to a real border in forced colors, so the line survives Windows High Contrast mode, which would otherwise drop backgrounds.
+
+#### Why is my vertical separator not showing?
+
+A vertical separator stretches to the height of its row with self-stretch, which only works inside a flex or grid container. On its own it falls back to a minimum height of 16px, or 4rem with a label. Put it in a flex row that has a height, such as h-6 items-center, and it fills that height.
+
+
+### Related pages
+
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper)
+- [Timeline](https://lokendra-builds.github.io/sheenui/layout/timeline)
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Stepper for Multi-Step Forms
+
+URL: https://lokendra-builds.github.io/sheenui/layout/stepper
+Sidebar name: Stepper
+
+An animated React stepper for multi-step flows: lines fill as you advance, steps can be revisited or flag errors, and phones get a compact bar.
+
+What it is: An animated React stepper for multi-step forms and checkouts that collapses to “Step 2 of 4” on phones.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/stepper.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Stepper
+
+Files to copy from `theme/src/`:
+
+- `components/stepper/`
+- `components/status-icons/`
+- `hooks/use-latest.ts`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: stepper. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Stepper, type StepperStep } from "@/components/sheenui/stepper/stepper";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use button, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Stepper, type StepperStep, Switch } from "@sheenui/theme";
+```
+
+### Stepper
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| steps | StepperStep[] | required | The steps to show, in order. |
+| current | number | required | Index of the current step (0-based). steps.length = all complete. |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Direction the steps are laid out in. |
+| labelPlacement | "end" \| "bottom" | "bottom" | Horizontal only: labels under the dots ("bottom", default) or beside them ("end"). |
+| onStepClick | ((index: number) => void) | optional, no default | Makes steps clickable buttons. |
+| clickable | "all" \| "completed" | "completed" | Which steps onStepClick applies to: "completed" (default) or "all". |
+| collapse | "auto" \| "never" \| "always" | "auto" | Horizontal only: "auto" (default) collapses to "Step x of y" when there is not enough room. |
+| minStepWidth | number | 136 | Room (px) each step needs before "auto" collapses. |
+| size | "sm" \| "md" | "md" | Sets the dot and text size. |
+| labels | Partial<StepperLabels> | defaultStepperLabels | Override the strings (i18n). Give each stepper on a page its own nav. Every other string, for translation: labels={{ nav: "…" }}; omitted keys keep the English of defaultStepperLabels. All 10 keys of StepperLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Extra classes for the <nav> that wraps the steps (set its width or spacing here). |
+
+### Example 1 of 3: Checkout
+
+Click a completed step to go back to it. Toggle the error to see a step flag itself; screen readers hear each step's state.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Stepper } from "@/components/sheenui/stepper/stepper";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Button, Stepper, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [current, setCurrent] = useState(1);
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <>
+      <Switch label="Payment fails" checked={failed} onCheckedChange={setFailed} />
+      <Stepper
+        current={current}
+        onStepClick={setCurrent}            // completed steps become buttons
+        labels={{ nav: "Checkout progress" }}
+        steps={[
+          { title: "Cart", description: "3 items" },
+          { title: "Shipping", description: "Address and speed" },
+          { title: "Payment", description: "Card or wallet", status: failed ? "error" : undefined },
+          { title: "Review", description: "Confirm and pay" },
+        ]}
+      />
+      <Button variant="ghost" onClick={() => setCurrent((c) => c - 1)}>Back</Button>
+      <Button onClick={() => setCurrent((c) => c + 1)}>Continue</Button>
+    </>
+  );
+}
+```
+
+### Example 2 of 3: Vertical, with content
+
+The current step reveals its own content. Optional steps say so.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Stepper } from "@/components/sheenui/stepper/stepper";
+// Package build (after the first npm release, or a packed tarball): import { Button, Stepper } from "@sheenui/theme";
+
+export function Example() {
+  const [current, setCurrent] = useState(0);
+
+  // "Continue" inside a step's content unmounts with it: focus moves to the next step for you.
+
+  return (
+    <Stepper
+      orientation="vertical"
+      current={current}
+      onStepClick={setCurrent}
+      labels={{ nav: "Workspace setup" }}
+      steps={[
+        { title: "Create a workspace", description: "Name it and pick a region", content: <p>Workspace name and region go here.</p> },
+        { title: "Invite your team", optional: true, content: <p>Email addresses go here.</p> },
+        { title: "Connect a repository", description: "Import repositories", content: <Button variant="glass">Connect a repository</Button> },
+        { title: "Ship it", description: "Your first deploy" },
+      ]}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Labels beside, compact, translated
+
+labelPlacement="end" puts titles next to the dots. The compact view is what phones get automatically. Every string, punctuation included, comes from labels.
+
+```tsx
+import { Stepper, type StepperStep } from "@/components/sheenui/stepper/stepper";
+// Package build (after the first npm release, or a packed tarball): import { Stepper, type StepperStep } from "@sheenui/theme";
+
+const steps: StepperStep[] = [
+  { title: "Cart", description: "3 items" },
+  { title: "Shipping" },
+  { title: "Payment" },
+  { title: "Review" },
+];
+
+export function Example() {
+  return (
+    <>
+      {/* Labels beside the dots, small size */}
+      <Stepper labelPlacement="end" size="sm" current={1} steps={steps.map(({ title }) => ({ title }))} />
+
+      {/* Phones: "auto" (the default) collapses to "Step 2 of 4" when steps get narrower than minStepWidth; "always" forces the compact view. */}
+      <Stepper collapse="always" current={1} steps={steps} />
+
+      {/* Every string is a label, punctuation included (French shown): */}
+      <div lang="fr">
+        <Stepper
+          collapse="always"
+          current={1}
+          steps={[{ title: "Panier", description: "3 articles" }, { title: "Livraison" }, { title: "Paiement" }]}
+          labels={{
+            nav: "Progression",
+            stepOf: (step, total) => `Étape ${step} sur ${total}`,
+            complete: "terminée",
+            current: "étape en cours",
+            upcoming: "à venir",
+            error: "à corriger",
+            status: (words) => ` : ${words.join(", ")}`,
+            next: (title) => <>Suivante : <strong>{title}</strong></>,
+          }}
+        />
+      </div>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Clickable steps are normal tab stops; non-clickable steps are not focusable. |
+| Enter / Space | Go to the focused step. |
+
+### Accessibility
+
+- An ordered list (<ol>) in a <nav>; the current step has aria-current="step" and every state (complete, current, upcoming, error) is also spoken.
+- When current changes, keyboard focus stays in the stepper (it moves to the next step if its button disappeared).
+- The compact "Step 2 of 4" view keeps the same information; every string is translatable through labels.
+
+### All exports on this page
+
+- Stepper — Stepper: progress through a multi-step flow (checkout, onboarding, setup wizards).
+- defaultStepperLabels — Default English strings of StepperLabels; spread it and override single keys to reword.
+
+
+### When to use Stepper
+
+- Use it as the progress steps of a multi-step form, such as a checkout with Cart, Shipping, Payment and Review, where completed steps can be revisited and a failed payment step can flag itself with an error state.
+- Use orientation="vertical" with per-step content for an onboarding or setup wizard, where the current step reveals its own form and optional steps are labeled as such.
+- Use it for a long application form on phones, where the automatic compact view shows Step 2 of 4 with a segmented bar instead of cramped titles.
+- Skip it when the user can move between views freely with no order; Tabs is the right pattern for parallel views, and Breadcrumb shows where a page sits in the site hierarchy.
+- Pair it with Button for Back and Next, Field and Input for each step's form, and Progress when you also want a continuous completion value.
+
+
+### Frequently asked questions
+
+#### How do I build a react stepper for a multi-step form?
+
+Pass steps, an array of objects with title and optional description, status, optional, icon, disabled and content, plus current, the zero-based index of the current step. Setting current to steps.length marks everything complete. Keep current in your own state and advance it from your Next button.
+
+#### How do I let users go back to earlier steps?
+
+Pass onStepClick, which turns steps into buttons. By default clickable is completed, so only finished steps respond; set it to all to allow jumping anywhere. Clickable steps are real buttons and normal tab stops, and Enter or Space goes to the focused step. The current step is a button too but does nothing when pressed, and non-clickable steps are not focusable.
+
+#### How is the stepper announced to screen readers?
+
+It renders an ordered list inside a nav, the current step has aria-current="step", and each state, complete, current, upcoming or error, is also spoken. Give several steppers on one page their own nav label through the labels prop, which also translates every string.
+
+#### When does it switch to the compact view?
+
+With collapse set to auto, the horizontal stepper collapses to Step 2 of 4 with a segmented bar when each step has less than minStepWidth, 136px by default. Use always or never to force it. The vertical orientation does not collapse; it lists steps in a column.
+
+
+### Related pages
+
+- [Timeline](https://lokendra-builds.github.io/sheenui/layout/timeline)
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated React Timeline & Activity Feed
+
+URL: https://lokendra-builds.github.io/sheenui/layout/timeline
+Sidebar name: Timeline
+
+An animated vertical timeline for React: markers pop in and lines draw down as events scroll into view. For audit logs, order tracking and changelogs. MIT.
+
+What it is: An animated React timeline for activity feeds, audit logs, order tracking and changelogs that draws itself as you scroll. Use it as an activity feed or audit log with avatars, action badges and a Today group heading, where new events should slide in at the top and push the rest down smoothly.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/timeline.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Timeline
+
+Files to copy from `theme/src/`:
+
+- `components/timeline/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, no-script-reveal.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: timeline. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Timeline, TimelineHeading, TimelineItem } from "@/components/sheenui/timeline/timeline";
+```
+
+These examples also use avatar, badge: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/badge.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Badge, Timeline, TimelineHeading, TimelineItem } from "@sheenui/theme";
+```
+
+### Timeline
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| layout | "start" \| "alternate" | "start" | "start" (default): markers on the inline start. "alternate": zig-zag around a centred rail on wide containers. |
+| size | "sm" \| "md" | "md" | Sets the marker and text size. |
+| animate | boolean | true | Animate items as they scroll into view. Always off under reduced motion. |
+| className | string | optional, no default | Extra classes for the <ol> that holds the items (set its spacing or width here). |
+| aria-label | string | optional, no default | Sets the name of the list, e.g. “Activity”. |
+
+### TimelineItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | required | What happened. Rich content is fine: "<b>Ada</b> merged <a>#42</a>". |
+| time | ReactNode | optional, no default | Sets when it happened, as shown ("2h ago", "Oct 30, 09:12"). |
+| dateTime | string \| Date | optional, no default | Machine-readable date for the <time> element (and its hover title). |
+| locale | string | optional, no default | Locale for the full date in the hover title. |
+| description | ReactNode | optional, no default | Shows supporting text under the title. |
+| icon | ReactNode | optional, no default | Icon in a tinted disc. With avatar, a small badge on the avatar instead. |
+| avatar | ReactNode | optional, no default | An avatar as the marker, e.g. <Avatar name="Ada Lovelace" size="sm" />. |
+| tone | TimelineTone | "neutral" | Colour of the marker: "neutral" (default), "accent", "success", "warning" or "danger". |
+| current | boolean | false | The live step (order tracking): a soft pulse and aria-current="step". |
+| connector | "accent" \| "solid" \| "dashed" | "solid" | Line from this item to the next: "solid" (default), "dashed" for not-yet-happened, "accent" for a completed path. |
+| children | ReactNode | optional, no default | Extra content under the text: a comment, attachments, a diff. Moves in, never fades (safe for glass). |
+| className | string | optional, no default | Extra classes for the <li> of this entry (set its spacing or tone here). |
+| contentClassName | string | optional, no default | Adds a class name to the content column. |
+
+### TimelineHeading
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Extra classes for the <li> of this entry (set its spacing or tone here). |
+
+### Example 1 of 3: Activity feed
+
+Avatars with action badges, rich titles, a comment, group headings and a plain dot for minor events. Press “Simulate activity”: the new event slides in at the top and the rest make room.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Timeline, TimelineHeading, TimelineItem } from "@/components/sheenui/timeline/timeline";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Timeline, TimelineHeading, TimelineItem } from "@sheenui/theme";
+import { GitMerge as MergeIcon, MessageSquare as CommentIcon, Rocket as RocketIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Timeline aria-label="Activity">
+      <TimelineHeading>Today</TimelineHeading>
+      <TimelineItem
+        avatar={<Avatar name="Ada Lovelace" size="sm" />}
+        icon={<MergeIcon />} // a badge on the avatar
+        tone="accent"
+        title={<><b>Ada</b> merged <a href={"/pr/482"}>#482</a> into main</>}
+        time="12 min ago"
+        dateTime="2026-10-30T10:48"
+      />
+      <TimelineItem
+        avatar={<Avatar name="Grace Hopper" size="sm" />}
+        icon={<CommentIcon />}
+        title={<><b>Grace</b> commented on #482</>}
+        time="40 min ago"
+      >
+        <div className="glass-1 rounded-sheen-md px-3.5 py-2.5 text-sm">Lovely. Ship it!</div>
+      </TimelineItem>
+      <TimelineItem icon={<RocketIcon />} tone="success" title="Production deploy finished" description="v2.14.0 · 48 s" time="1 h ago" />
+      {/* No icon: a dot */}
+      <TimelineItem title="Linus viewed the release notes" time="2 h ago" />
+      <TimelineHeading>Yesterday</TimelineHeading>
+      <TimelineItem title="Release 2.13.0 published" time="Yesterday" />
+    </Timeline>
+  );
+}
+```
+
+### Example 2 of 3: Order tracking
+
+connector="accent" for the path already travelled, current for the live step (a soft pulse and aria-current), dashed for what has not happened yet.
+
+```tsx
+import { Timeline, TimelineItem } from "@/components/sheenui/timeline/timeline";
+// Package build (after the first npm release, or a packed tarball): import { Timeline, TimelineItem } from "@sheenui/theme";
+import { Package as BoxIcon, Check as CheckIcon, House as HomeIcon, Map as MapIcon, Truck as TruckIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Timeline aria-label="Order status" size="sm">
+      <TimelineItem icon={<CheckIcon />} tone="success" connector="accent" title="Order placed" time="Oct 27, 09:12" />
+      <TimelineItem icon={<BoxIcon />} tone="success" connector="accent" title="Packed" time="Oct 27, 15:40" />
+      <TimelineItem icon={<TruckIcon />} tone="success" connector="accent" title="Shipped" description="Parcel SH-48213" time="Oct 28, 08:05" />
+      <TimelineItem icon={<MapIcon />} tone="accent" current connector="dashed" title="Out for delivery" description="Arriving by 6 pm" time="Today, 07:30" />
+      <TimelineItem icon={<HomeIcon />} title="Delivered" description="Expected today" />
+    </Timeline>
+  );
+}
+```
+
+### Example 3 of 3: Alternate (changelog)
+
+Wide containers zig-zag around a centered rail with dates on the opposite side; narrow ones fall back to a list.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Timeline, TimelineItem } from "@/components/sheenui/timeline/timeline";
+// Package build (after the first npm release, or a packed tarball): import { Badge, Timeline, TimelineItem } from "@sheenui/theme";
+import { Sparkles as SparkleIcon, Tag as TagIcon } from "lucide-react";
+
+export function Example() {
+  // Zig-zag around a centered rail when the timeline is at least 42rem wide;
+  // a normal list below that (a container query, so it adapts to its own width).
+
+  return (
+    <Timeline layout="alternate" aria-label="Changelog">
+      <TimelineItem icon={<SparkleIcon />} tone="accent" title={<>v2.14 <Badge tone="accent">Latest</Badge></>} time="Oct 2026" description="…" />
+      <TimelineItem icon={<TagIcon />} title="v2.13" time="Sep 2026" description="…" />
+      <TimelineItem icon={<TagIcon />} title="v2.12" time="Aug 2026" description="…" />
+    </Timeline>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the list is not focusable. Links and buttons inside items are normal tab stops. |
+
+### Accessibility
+
+- An ordered list (<ol>): pass aria-label. Timestamps are <time dateTime> when you give dateTime.
+- The live step has aria-current="step"; markers and connector lines are decorative, so state is also written in words.
+- Marker pop and line draw do not run under reduced motion.
+
+### When to use Timeline
+
+- Use it for a project activity feed or an audit log where each entry has an avatar, a time and an action badge, grouped under headings such as Today, and a new entry slides in at the top. Use it as a vertical timeline in Tailwind for an order history or release notes.
+- Use it for order tracking, with connector="accent" on completed steps, a current step that pulses softly, and a dashed line to what has not happened yet.
+- Use layout="alternate" for a changelog or company history, where a wide container zig-zags around a centered rail with dates opposite, and narrow ones fall back to a plain list.
+- Skip it when the user must act on each stage in sequence; Stepper handles progress through a flow, and Data table is better for dense, sortable records of the same kind.
+- Pair it with Avatar for people markers, Badge for statuses in an item's content, and Skeleton while older events load.
+
+
+### Frequently asked questions
+
+#### How do I make a react timeline for an activity feed?
+
+Render Timeline with TimelineItem children, each with title, time, description, icon or avatar, and tone. Use TimelineHeading for group labels such as Today. Pass aria-label to name the list. Items reveal as they scroll into view, and new items push the feed down smoothly.
+
+#### How do I mark the current step in order tracking?
+
+Set current on the live TimelineItem for a soft pulse and aria-current="step", and use connector to style the line to the next item: solid, dashed or accent. Because markers and lines are decorative, also describe state in words, for example in the title or description.
+
+#### How should I format dates on timeline items?
+
+Give time as the text you want shown and dateTime as a string or Date, so the item renders a real time element with a machine-readable value and a full date on hover. The locale prop sets the language of that full date and defaults to the browser's.
+
+#### Does it animate for users who prefer reduced motion?
+
+The marker pop and line draw do not run under reduced motion, and animate is always off in that case. You can also set animate to false yourself. The list is an ordered list, it is not focusable, and links or buttons inside items remain normal tab stops.
+
+
+### Related pages
+
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar)
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Accessible React Toolbar with Toggle Groups
+
+URL: https://lokendra-builds.github.io/sheenui/layout/toolbar
+Sidebar name: Toolbar
+
+A glass React toolbar with one tab stop and arrow-key navigation across buttons, toggles, menus and links, with a sliding pill for single-choice groups.
+
+What it is: A glass React toolbar that groups related controls behind a single tab stop, moved through with the arrow keys.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toolbar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Toolbar
+
+Files to copy from `theme/src/`:
+
+- `components/toolbar/`
+- `components/kbd/`
+- `components/tooltip/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: toolbar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/sheenui/menu/menu";
+import { Toolbar, ToolbarButton, ToolbarGroup, ToolbarInput, ToolbarLink, ToolbarSeparator, ToolbarSpacer, ToolbarToggle, ToolbarToggleGroup } from "@/components/sheenui/toolbar/toolbar";
+```
+
+These examples also use menu: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/menu.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger, Toolbar, ToolbarButton, ToolbarGroup, ToolbarInput, ToolbarLink, ToolbarSeparator, ToolbarSpacer, ToolbarToggle, ToolbarToggleGroup } from "@sheenui/theme";
+```
+
+### Toolbar
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Sets the layout direction of the toolbar and its arrow-key navigation. |
+| variant | "glass" \| "plain" \| "floating" | "glass" | "glass" panel (default), "floating" pill for selection / canvas toolbars, or "plain" (no surface). |
+| size | ToolbarSize | "md" | Control height: "sm" (32px) or "md" (36px, default). |
+| overflow | "wrap" \| "scroll" | "wrap" | Horizontal toolbars on narrow screens: wrap onto more rows (default), or scroll sideways in one row. |
+| className | string | optional, no default | Adds a class name to the toolbar element. |
+| contentClassName | string | optional, no default | overflow="scroll" only: the scrolling row inside the toolbar. |
+| loopFocus | boolean | true | Arrow keys wrap from the last control to the first. |
+| disabled | boolean | false | Disables every control in the toolbar. |
+| aria-label | string | optional, no default | Name of the toolbar (required when there is more than one). |
+
+### ToolbarButton / ToolbarToggle
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tooltip | ReactNode | optional, no default | Tooltip text. For an icon-only control it also becomes the accessible name (unless aria-label is set). |
+| shortcut | string | optional, no default | Keyboard shortcut shown in the tooltip, e.g. "mod+b". Also set as aria-keyshortcuts. |
+| tooltipSide | "top" \| "bottom" \| "left" \| "right" | "top" ("right" in a vertical toolbar) | Which side the tooltip opens on. |
+| iconOnly | boolean | optional, no default | Square button for a lone icon. Detected automatically for a single element child. |
+| className | string | optional, no default | Adds extra classes to the button. |
+| disabled | boolean | false | Dimmed but still focusable. |
+| render | ReactElement | optional, no default | ToolbarButton: render as a popup trigger, e.g. <MenuTrigger />. |
+| value | string | optional, no default | Names the ToolbarToggle inside a ToolbarToggleGroup. |
+| pressed / defaultPressed / onPressedChange | boolean / boolean / (pressed) => void | optional, no default | ToolbarToggle on its own. |
+
+### ToolbarToggleGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| multiple | boolean | false | When false only one item in the group can be pressed. If any item in the group becomes pressed, the others will become unpressed. When true multiple items can be pressed. |
+| required | boolean | false | Single choice: one option always stays pressed (pressing the pressed one again does nothing), e.g. text alignment or the active tool. |
+| className | string | optional, no default | Extra classes for the group. |
+| value / defaultValue | string[] | optional, no default | Values of the buttons that are pressed (controlled or initial). |
+| onValueChange | (value: string[]) => void | optional, no default | Called with the new pressed values. |
+| aria-label | string | optional, no default | Name of the group, e.g. “Alignment”. |
+
+### ToolbarGroup, ToolbarSeparator, ToolbarSpacer, ToolbarLink, ToolbarInput
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| ToolbarGroup | aria-label, disabled | optional, no default | A labeled cluster of controls. |
+| ToolbarSeparator | className | optional, no default | Draws a hairline between clusters, perpendicular to the toolbar. |
+| ToolbarSpacer | className | optional, no default | Pushes what follows to the far end. |
+| ToolbarLink | href, render | optional, no default | A link in the arrow-key order (render your router's Link). |
+| ToolbarInput | input props | optional, no default | A text field; at most one, as the last control. 16px text on touch screens. |
+
+### Example 1 of 4: Text editor
+
+Tab into the toolbar once, then use the arrow keys (Home and End jump). The disabled Redo stays focusable so it can be discovered. Try the formatting on the paragraph below.
+
+```tsx
+import { useState } from "react";
+import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "@/components/sheenui/menu/menu";
+import { Toolbar, ToolbarButton, ToolbarGroup, ToolbarLink, ToolbarSeparator, ToolbarSpacer, ToolbarToggle, ToolbarToggleGroup } from "@/components/sheenui/toolbar/toolbar";
+// Package build (after the first npm release, or a packed tarball): import { Menu, MenuContent, MenuRadioGroup, MenuRadioItem, MenuTrigger, Toolbar, ToolbarButton, ToolbarGroup, ToolbarLink, ToolbarSeparator, ToolbarSpacer, ToolbarToggle, ToolbarToggleGroup } from "@sheenui/theme";
+import { AlignCenter as AlignCenterIcon, AlignLeft as AlignLeftIcon, AlignRight as AlignRightIcon, Bold as BoldIcon, ChevronDown as ChevronIcon, Italic as ItalicIcon, Link as LinkIcon, Redo2 as RedoIcon, Underline as UnderlineIcon, Undo2 as UndoIcon } from "lucide-react";
+
+type Block = "paragraph" | "h1";
+const blockLabels: Record<Block, string> = { paragraph: "Paragraph", h1: "Heading 1" };
+
+export function Example() {
+  const [marks, setMarks] = useState<string[]>(["bold"]);
+  const [align, setAlign] = useState<string[]>(["left"]);
+  const [block, setBlock] = useState<Block>("paragraph");
+
+  return (
+    <Toolbar aria-label="Formatting">
+      <ToolbarGroup aria-label="History">
+        <ToolbarButton tooltip="Undo" shortcut="mod+z"><UndoIcon /></ToolbarButton>
+        <ToolbarButton tooltip="Redo" shortcut="shift+mod+z" disabled><RedoIcon /></ToolbarButton>
+      </ToolbarGroup>
+      <ToolbarSeparator />
+      <Menu>
+        <ToolbarButton render={<MenuTrigger />}>{blockLabels[block]} <ChevronIcon /></ToolbarButton>
+        <MenuContent>
+          <MenuRadioGroup value={block} onValueChange={setBlock}>
+            <MenuRadioItem value="paragraph">Paragraph</MenuRadioItem>
+            <MenuRadioItem value="h1">Heading 1</MenuRadioItem>
+          </MenuRadioGroup>
+        </MenuContent>
+      </Menu>
+      <ToolbarSeparator />
+      <ToolbarToggleGroup multiple value={marks} onValueChange={setMarks} aria-label="Text style">
+        <ToolbarToggle value="bold" tooltip="Bold" shortcut="mod+b"><BoldIcon /></ToolbarToggle>
+        <ToolbarToggle value="italic" tooltip="Italic" shortcut="mod+i"><ItalicIcon /></ToolbarToggle>
+        <ToolbarToggle value="underline" tooltip="Underline" shortcut="mod+u"><UnderlineIcon /></ToolbarToggle>
+      </ToolbarToggleGroup>
+      <ToolbarSeparator />
+      {/* Single choice: one accent pill glides between the options; required keeps one pressed. */}
+      <ToolbarToggleGroup required value={align} onValueChange={setAlign} aria-label="Alignment">
+        <ToolbarToggle value="left" tooltip="Align left"><AlignLeftIcon /></ToolbarToggle>
+        <ToolbarToggle value="center" tooltip="Align center"><AlignCenterIcon /></ToolbarToggle>
+        <ToolbarToggle value="right" tooltip="Align right"><AlignRightIcon /></ToolbarToggle>
+      </ToolbarToggleGroup>
+      <ToolbarSeparator />
+      <ToolbarButton tooltip="Insert link" shortcut="mod+k"><LinkIcon /></ToolbarButton>
+      <ToolbarSpacer />
+      <ToolbarLink href={"/history"}>Edited 2m ago</ToolbarLink>
+    </Toolbar>
+  );
+}
+```
+
+### Example 2 of 4: Floating selection toolbar
+
+variant="floating" is a glass pill for selection menus and canvases.
+
+```tsx
+import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarToggle, ToolbarToggleGroup } from "@/components/sheenui/toolbar/toolbar";
+// Package build (after the first npm release, or a packed tarball): import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarToggle, ToolbarToggleGroup } from "@sheenui/theme";
+import { Bold as BoldIcon, MessageSquare as CommentIcon, Italic as ItalicIcon, Link as LinkIcon, Sparkles as SparkleIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Toolbar variant="floating" size="sm" aria-label="Selection">
+      <ToolbarToggleGroup multiple aria-label="Text style">
+        <ToolbarToggle value="bold" tooltip="Bold" shortcut="mod+b"><BoldIcon /></ToolbarToggle>
+        <ToolbarToggle value="italic" tooltip="Italic" shortcut="mod+i"><ItalicIcon /></ToolbarToggle>
+      </ToolbarToggleGroup>
+      <ToolbarButton tooltip="Link" shortcut="mod+k"><LinkIcon /></ToolbarButton>
+      <ToolbarButton tooltip="Comment"><CommentIcon /></ToolbarButton>
+      <ToolbarSeparator />
+      <ToolbarButton><SparkleIcon /> Ask AI</ToolbarButton>
+    </Toolbar>
+  );
+}
+```
+
+### Example 3 of 4: Vertical tool palette
+
+Up and Down move between tools; the tooltips open to the side.
+
+```tsx
+import { useState } from "react";
+import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarToggle, ToolbarToggleGroup } from "@/components/sheenui/toolbar/toolbar";
+// Package build (after the first npm release, or a packed tarball): import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarToggle, ToolbarToggleGroup } from "@sheenui/theme";
+import { Hand as HandIcon, Minus as MinusIcon, Pen as PenIcon, Plus as PlusIcon, MousePointer2 as PointerIcon, Square as SquareIcon, Type as TypeIcon } from "lucide-react";
+
+export function Example() {
+  const [tool, setTool] = useState<string[]>(["select"]);
+
+  return (
+    <Toolbar orientation="vertical" aria-label="Tools">
+      <ToolbarToggleGroup required value={tool} onValueChange={setTool} aria-label="Tool">
+        <ToolbarToggle value="select" tooltip="Select" shortcut="v"><PointerIcon /></ToolbarToggle>
+        <ToolbarToggle value="hand" tooltip="Hand" shortcut="h"><HandIcon /></ToolbarToggle>
+        <ToolbarToggle value="pen" tooltip="Pen" shortcut="p"><PenIcon /></ToolbarToggle>
+        <ToolbarToggle value="shape" tooltip="Rectangle" shortcut="r"><SquareIcon /></ToolbarToggle>
+        <ToolbarToggle value="text" tooltip="Text" shortcut="t"><TypeIcon /></ToolbarToggle>
+      </ToolbarToggleGroup>
+      <ToolbarSeparator />
+      <ToolbarButton tooltip="Zoom in" shortcut="mod+="><PlusIcon /></ToolbarButton>
+      <ToolbarButton tooltip="Zoom out" shortcut="mod+-"><MinusIcon /></ToolbarButton>
+    </Toolbar>
+  );
+}
+```
+
+### Example 4 of 4: Narrow screens
+
+overflow="scroll" keeps one row that scrolls sideways inside the toolbar; the default wraps onto more rows. Both stay inside their container at 320px.
+
+```tsx
+import { Toolbar, ToolbarButton, ToolbarInput } from "@/components/sheenui/toolbar/toolbar";
+// Package build (after the first npm release, or a packed tarball): import { Toolbar, ToolbarButton, ToolbarInput } from "@sheenui/theme";
+
+export function Example() {
+  // One row that scrolls sideways on narrow screens, with fades on the edges that have more.
+
+  return (
+    <>
+      <Toolbar overflow="scroll" aria-label="Formatting">
+        <ToolbarButton>Bold</ToolbarButton>
+        <ToolbarButton>Italic</ToolbarButton>
+        <ToolbarButton>Underline</ToolbarButton>
+      </Toolbar>
+
+      {/* A search field: at most one, and last (arrow keys move its caret). */}
+      <ToolbarInput aria-label="Search in document" placeholder="Search" />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Enter or leave the toolbar once (one tab stop). |
+| Arrow Left / Arrow Right (Up / Down when vertical) | Move between controls. |
+| Home / End | Jump to the first / last control (also from a disabled control; in a text field the keys move the caret). |
+| Enter / Space | Press a button or toggle. |
+
+### Accessibility
+
+- role="toolbar" with roving focus (Base UI): name it with aria-label and set orientation to match.
+- Toggles use aria-pressed; a toolbar toggle group is role="group" and needs its own aria-label.
+- tooltip and shortcut add a tooltip and aria-keyshortcuts; an icon-only button needs a tooltip or aria-label.
+
+### All exports on this page
+
+- Toolbar — Toolbar: a row (or column) of related controls with ONE tab stop (Base UI Toolbar).
+- ToolbarButton — A button in the toolbar's arrow-key order.
+- ToolbarGroup — A labelled cluster of controls (aria-label it, e.g.
+- ToolbarInput — A text field in the toolbar (e.g.
+- ToolbarLink — A link in the toolbar's arrow-key order, e.g.
+- ToolbarSeparator — A hairline between clusters; vertical in a horizontal toolbar and vice versa.
+- ToolbarSpacer — Pushes what follows to the far end of the toolbar (a flexible, empty gap).
+- ToolbarToggle — A pressable toggle (aria-pressed).
+- ToolbarToggleGroup — A set of toggles inside a toolbar.
+
+
+### When to use Toolbar
+
+- Use it as an editor toolbar for a rich-text editor's formatting row, where Tab enters once and arrow keys move between Bold, Italic, alignment and menu buttons instead of tabbing through twenty controls. It is an accessible toolbar with roving tabindex: Tab enters it once and the arrow keys move between the controls.
+- Use variant="floating" for a selection toolbar over text or a canvas, a glass pill that appears next to the thing being edited.
+- Use orientation="vertical" for a tool palette in a design or whiteboard app, where Up and Down move between tools and tooltips open to the side.
+- Skip it for a handful of unrelated buttons in a page header; plain Buttons are simpler there, and Menubar fits an application's File and Edit menus with dropdowns.
+- Pair it with Menu through ToolbarButton's render prop, Tooltip text already built in through the tooltip prop, and Kbd to show a shortcut such as mod+b.
+
+
+### Frequently asked questions
+
+#### How do I build a react toolbar with arrow key navigation?
+
+Wrap controls in Toolbar and use ToolbarButton, ToolbarToggle, ToolbarLink and ToolbarInput. The toolbar is a single tab stop: arrow keys move focus, Home and End jump to the ends, and loopFocus, on by default, wraps from last to first. Give it an aria-label.
+
+#### How do toggle groups differ for single and multiple choice?
+
+ToolbarToggleGroup is single choice by default, with one accent pill gliding between options; add required to keep one pressed, as with alignment. With multiple, toggles are independent, such as bold, italic and underline, and each blooms its own tint. value takes an array of strings.
+
+#### How do icon-only buttons get an accessible name and a shortcut?
+
+Set tooltip on ToolbarButton or ToolbarToggle. It shows the tooltip and, for an icon-only control, becomes the accessible name. Add shortcut, such as "mod+b", to show it in the tooltip and expose it as aria-keyshortcuts. A disabled control stays focusable so it can be discovered.
+
+#### What happens on narrow screens?
+
+The default overflow="wrap" flows controls onto more rows. Set overflow="scroll" to keep one row that scrolls sideways inside the toolbar, styled through contentClassName. The scrolling row fades at the edges that hide more controls and scrolls a focused control into view, and controls grow to at least 44px on touch screens regardless of size.
+
+
+### Related pages
+
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio)
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb)
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible)
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination)
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

@@ -1,0 +1,1 @@
+var e=[`borderTopLeftRadius`,`borderTopRightRadius`,`borderBottomRightRadius`,`borderBottomLeftRadius`];export{e as t};

@@ -1,0 +1,1 @@
+import{t as e}from"./funnel-chart-zT-JSARP.js";import{t}from"./vendor-react-D30i__oY.js";var n=t(),r=[{label:`Visited`,value:12e3},{label:`Signed up`,value:3400},{label:`Subscribed`,value:820}];function i(){return(0,n.jsx)(e,{patterns:!0,data:r,"aria-label":`Conversion from visit to subscription, hatched`})}export{i as FunnelPatternsDemo};

@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({dropped:!0}),e(`working`),await n(2900),e(`success`)};export{e as default};

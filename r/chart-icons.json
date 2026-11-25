@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-icons",
+  "type": "registry:ui",
+  "title": "Chart icons",
+  "description": "A tray with a down arrow, for the export menu trigger.",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json"
+  ],
+  "files": [
+    {
+      "path": "theme/src/components/charts/chart-icons.tsx",
+      "content": "/**\n * Small icons shared by the chart chrome (zoom/reset toolbars, the live-chart pause button and the\n * export menu). Each is decorative (`aria-hidden`): the button that holds it carries the accessible name.\n */\n\n/**\n * A magnifier with a plus (or a minus with `minus`), for zoom buttons.\n *\n * Props: `minus` swaps the plus for a minus. Decorative: the button around it needs an accessible name.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { ZoomIcon } from \"./chart-icons\";\n *\n * export function Example() {\n *   return (\n *     <button aria-label=\"Zoom in\"><ZoomIcon /></button>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport const ZoomIcon = ({ minus }: { minus?: boolean }) => (\n  <svg\n    aria-hidden\n    width={16}\n    height={16}\n    viewBox=\"0 0 16 16\"\n    fill=\"none\"\n    stroke=\"currentColor\"\n    strokeWidth={1.6}\n    strokeLinecap=\"round\"\n  >\n    <circle cx={7} cy={7} r={4.75} />\n    <path d={minus ? \"M5 7h4M10.6 10.6L14 14\" : \"M5 7h4M7 5v4M10.6 10.6L14 14\"} />\n  </svg>\n);\n\n/**\n * Four corner arrows, for \"reset view\" buttons.\n *\n * Decorative: the button around it needs an accessible name.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { ResetIcon } from \"./chart-icons\";\n *\n * export function Example() {\n *   return (\n *     <button aria-label=\"Reset view\"><ResetIcon /></button>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport const ResetIcon = () => (\n  <svg\n    aria-hidden\n    width={16}\n    height={16}\n    viewBox=\"0 0 16 16\"\n    fill=\"none\"\n    stroke=\"currentColor\"\n    strokeWidth={1.6}\n    strokeLinecap=\"round\"\n    strokeLinejoin=\"round\"\n  >\n    <path d=\"M2.5 6V2.5H6M2.5 2.5L6 6M13.5 10v3.5H10M13.5 13.5L10 10M10 2.5h3.5V6M13.5 2.5L10 6M6 13.5H2.5V10M2.5 13.5L6 10\" />\n  </svg>\n);\n\n/**\n * Two bars, for pause buttons.\n *\n * Decorative: the button around it needs an accessible name.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { PauseIcon } from \"./chart-icons\";\n *\n * export function Example() {\n *   return (\n *     <button aria-label=\"Pause\"><PauseIcon /></button>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport const PauseIcon = () => (\n  <svg aria-hidden width={14} height={14} viewBox=\"0 0 16 16\" fill=\"currentColor\">\n    <rect x={3.5} y={2.5} width={3} height={11} rx={1} />\n    <rect x={9.5} y={2.5} width={3} height={11} rx={1} />\n  </svg>\n);\n\n/**\n * A right-pointing triangle, for play/resume buttons.\n *\n * Decorative: the button around it needs an accessible name.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { PlayIcon } from \"./chart-icons\";\n *\n * export function Example() {\n *   return (\n *     <button aria-label=\"Resume\"><PlayIcon /></button>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport const PlayIcon = () => (\n  <svg aria-hidden width={14} height={14} viewBox=\"0 0 16 16\" fill=\"currentColor\">\n    <path d=\"M4.5 2.8v10.4a.8.8 0 0 0 1.2.7l8.3-5.2a.8.8 0 0 0 0-1.4L5.7 2.1a.8.8 0 0 0-1.2.7z\" />\n  </svg>\n);\n\n/**\n * A tray with a down arrow, for the export menu trigger.\n *\n * Decorative: the button around it needs an accessible name.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { DownloadIcon } from \"./chart-icons\";\n *\n * export function Example() {\n *   return (\n *     <button aria-label=\"Export\"><DownloadIcon /></button>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport function DownloadIcon() {\n  return (\n    <svg\n      aria-hidden\n      viewBox=\"0 0 24 24\"\n      className=\"size-4\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth={2}\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n    >\n      <path d=\"M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14\" />\n    </svg>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "@components/sheenui/charts/chart-icons.tsx"
+    }
+  ],
+  "docs": "Chart icons: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.\n\nNext.js: this item takes function props (formatters, seriesLegend(), a dashboard's load), and a Server Component cannot pass functions to a Client Component. Use it from a file that starts with \"use client\".",
+  "categories": [
+    "charts"
+  ],
+  "meta": {
+    "kind": "chart",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/charts",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/charts"
+  }
+}

@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t}from"./vendor-react-D30i__oY.js";import{o as n}from"./beat-DR4e3v9a.js";var r=e(t(),1);function i(e,t){let i=(0,r.useRef)(0);return n((t,n)=>{i.current+=n*1e3,e(i.current)},t),i}export{i as t};

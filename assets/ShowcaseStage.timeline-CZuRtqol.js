@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(800),e(`working`);for(let e of[2,3,4])t({count:e}),await n(1e3);e(`idle`),await n(800)};export{e as default};

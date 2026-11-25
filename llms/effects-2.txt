@@ -1,0 +1,1354 @@
+# SheenUI: Effects (part 2 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Rotating Text Animation for React (Word Rotate)
+
+URL: https://lokendra-builds.github.io/sheenui/effects/word-rotate
+Sidebar name: Word rotate
+
+Rotating text for React headlines: each word slides through a clipped slot sized to the longest, so the sentence never reflows. Pauses off-screen. MIT.
+
+What it is: A rotating text animation for React: one slot in a sentence cycles through words, each sliding up through a clipped window.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/text-effects.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Word rotate
+
+Files to copy from `theme/src/`:
+
+- `components/text-effects/{text-utils.ts, word-rotate.tsx}`
+- `hooks/{use-controllable.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: text-effects. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Switch } from "@/components/sheenui/switch/switch";
+import { WordRotate } from "@/components/sheenui/text-effects/word-rotate";
+```
+
+These examples also use switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Switch, WordRotate } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| words | readonly string[] | required | The words to cycle through, in order. |
+| interval | number | 2.6 | Seconds each word stays. |
+| direction | "up" \| "down" | "up" | Which way words travel: "up" (in from below, default) or "down" (in from above). |
+| align | "center" \| "end" \| "start" | "start" | Where a shorter word sits in the slot (the slot is as wide as the longest word). |
+| paused | boolean | false | Stop cycling (e.g. from a pause button). |
+| pauseOnHover | boolean | true | Pause while a mouse or pen rests on the words. |
+| index | number | optional, no default | Controlled index of the word shown. |
+| defaultIndex | number | 0 | Sets the index shown first when uncontrolled. |
+| onIndexChange | ((index: number) => void) | optional, no default | Called with the index of each new word. |
+| label | string | optional, no default | What screen readers hear instead of the list of words. |
+| locales | Intl.LocalesArgument | optional, no default | Locale(s) for the default list label (Intl.ListFormat). |
+| wordClassName | string | optional, no default | Classes for each word (padding, gradient text). Put a highlight's padding here. |
+| highlightClassName | string | optional, no default | Classes for a highlight behind the current word (e.g. "rounded-sheen-md bg-sheen-accent-soft"). It morphs to fit each word. |
+
+### Example 1 of 2: In a headline
+
+highlightClassName draws a pill behind the current word: watch it morph between short and long words (transforms only, corners stay round). Padding goes in wordClassName so the pill and the word line up. Rest the pointer on it, or use the switch, to pause.
+
+```tsx
+import { useState } from "react";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { WordRotate } from "@/components/sheenui/text-effects/word-rotate";
+// Package build (after the first npm release, or a packed tarball): import { Switch, WordRotate } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause" checked={paused} onCheckedChange={setPaused} />
+      <p className="text-center text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl">
+        Built for{" "}
+        <WordRotate
+          words={["designers", "developers", "founders", "everyone"]}
+          paused={paused}
+          className="text-sheen-accent"
+          wordClassName="px-3"
+          highlightClassName="rounded-sheen-md bg-sheen-accent-soft"
+        />
+      </p>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Inside running text
+
+direction="down" brings words in from above; align="center" centers shorter words in the slot. A custom label gives screen readers a better sentence than the plain list.
+
+```tsx
+import { WordRotate } from "@/components/sheenui/text-effects/word-rotate";
+// Package build (after the first npm release, or a packed tarball): import { WordRotate } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <p className="max-w-md text-center text-xl text-pretty sm:text-2xl">
+      Your dashboard,{" "}
+      <WordRotate
+        words={["faster", "clearer", "calmer"]}
+        direction="down"
+        align="center"
+        interval={2}
+        label="faster, clearer and calmer"
+        className="font-semibold text-sheen-accent"
+      />{" "}
+      than ever.
+    </p>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: this is text. |
+
+### Accessibility
+
+- Screen readers get the words once, as plain text (override it with label); the rotating word is not re-announced every few seconds.
+- Under reduced motion it stays on the current word.
+
+### When to use the word rotate effect
+
+- Use it as a word rotate animation for one changing word in a headline, such as Design for designers, developers and everyone, where each word slides in from below as the last slides out the top. Use it as a text loop in React that cycles through a few phrases inside one headline.
+- Use it for a feature tagline in a product page that lists audiences or use cases, with highlightClassName adding a pill behind the current word that morphs to fit each one. It is a quiet way to flip words in a headline without moving the layout under the text.
+- Use controlled index with onIndexChange when other UI, like tabs or an illustration, should follow the word that is currently shown.
+- Skip it when you need whole phrases typed out: Typewriter fits that, and a static sentence fits better when the words are important content, since users may not wait for every one.
+- Pair it with BlurIn for the rest of the headline, Button for the action, and a Switch or your own button that sets paused so people can stop the cycling.
+
+
+### Frequently asked questions
+
+#### How do I make rotating text in React with WordRotate?
+
+Put WordRotate inside your heading and pass words in order. interval is seconds per word (default 2.6), direction is up or down, and align places a shorter word in the slot. Use defaultIndex to choose the first word when uncontrolled.
+
+#### Will the sentence reflow as the words change?
+
+No. The slot is as wide as the longest word from the first paint, so the text around it never reflows or jumps while a word is in flight. The clipped window uses clip-path as well as overflow, so words in flight are clipped too.
+
+#### How do screen readers and keyboard users experience it?
+
+Screen readers hear every word once as a list, such as designers, developers, and everyone, not a stream of changes. Override that with label, and set the list language with locales. It has no keyboard interaction, because it is text.
+
+#### Can visitors pause it, and what about reduced motion?
+
+It pauses while off screen, while the tab is hidden and while a mouse or pen rests on it, with pauseOnHover turning the last one off. paused stops it from outside, for WCAG 2.2.2. With reduced motion it stays on the current word, static.
+
+
+### Related pages
+
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam)
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Animated Beam: Light Along a Path for React
+
+URL: https://lokendra-builds.github.io/sheenui/effects/animated-beam
+Sidebar name: Animated beam
+
+An animated beam for React: a light travels along an SVG path between two elements, for integration diagrams. Transform only, rests off-screen. MIT.
+
+What it is: AnimatedBeam is a React effect that sends a light along an SVG path between two elements, measured from refs. Use it for integration diagrams and data-flow maps; it moves by transform only and rests off-screen.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/animated-beam.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Animated beam
+
+Files to copy from `theme/src/`:
+
+- `components/animated-beam/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{beat-animations.ts, beat.ts, gate.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: animated-beam. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { AnimatedBeam } from "@/components/sheenui/animated-beam/animated-beam";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use glass-card, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AnimatedBeam, GlassCard, Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| containerRef | RefObject<HTMLElement \| null> | required | The positioned element that holds both ends (the beam fills it). Pass the same ref you put on that element. |
+| fromRef | RefObject<HTMLElement \| null> | required | Element the beam leaves from. Must be inside containerRef's element. |
+| toRef | RefObject<HTMLElement \| null> | required | Element the beam arrives at. Must be inside containerRef's element. |
+| curvature | number | 0 | Bend of the path in px, measured sideways from the straight line between the two elements. Positive bends to the left of the direction of travel; 0 draws a straight line. |
+| reverse | boolean | false | Run from toRef to fromRef instead. |
+| duration | number | 2.4 | Seconds one pass of the beam takes from one end to the other. |
+| interval | number | 1.2 | Seconds the path rests, empty, between two passes. |
+| delay | number | 0 | Seconds before the first pass (lets several beams in one diagram run out of step). |
+| length | number | 96 | Length of the travelling light in px, measured along the path. |
+| thickness | number | 2.5 | Thickness of the light and of the track in px. |
+| gap | number | 6 | Gap in px kept between the path and the edge of each element. |
+| colorFrom | string | "var(--sheen-accent)" | Colour at the tail of the light, any CSS colour. |
+| colorTo | string | "var(--sheen-accent-2)" | Colour at the bright head of the light, any CSS colour. |
+| track | boolean | true | Draw the faint static track under the light, so the connection reads even between passes. |
+| fromOffset | BeamOffset | optional, no default | Nudges where the beam leaves fromRef, in px from its centre. |
+| toOffset | BeamOffset | optional, no default | Nudges where the beam arrives at toRef, in px from its centre. |
+| paused | boolean | false | Hold the light where it is (it carries on from there when unpaused). |
+| className | string | optional, no default | Adds extra classes to the overlay. |
+| style | CSSProperties | optional, no default | Applies an inline style to the overlay. |
+
+### Example 1 of 2: Integration diagram
+
+Three sources feed one hub. Each beam is staggered with delay and bent with curvature, so the network reads as alive without any one beam competing. The beam is decorative (aria-hidden), so say what is connected in the labels.
+
+```tsx
+import { useRef, useState } from "react";
+import { AnimatedBeam } from "@/components/sheenui/animated-beam/animated-beam";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { AnimatedBeam, GlassCard, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+  const container = useRef<HTMLDivElement>(null);
+  const a = useRef<HTMLDivElement>(null);
+  const b = useRef<HTMLDivElement>(null);
+  const c = useRef<HTMLDivElement>(null);
+  const hub = useRef<HTMLDivElement>(null);
+
+  return (
+    <>
+      <Switch label="Pause beams" checked={paused} onCheckedChange={setPaused} />
+      <div ref={container} className="relative flex w-full max-w-md items-center justify-between py-6">
+        <div className="flex flex-col gap-8">
+          <GlassCard ref={a} className="grid size-16 place-items-center text-sm font-semibold">Billing</GlassCard>
+          <GlassCard ref={b} className="grid size-16 place-items-center text-sm font-semibold">Chat</GlassCard>
+          <GlassCard ref={c} className="grid size-16 place-items-center text-sm font-semibold">Docs</GlassCard>
+        </div>
+        <GlassCard ref={hub} tint className="grid size-24 place-items-center font-semibold">Your app</GlassCard>
+        <AnimatedBeam containerRef={container} fromRef={a} toRef={hub} curvature={-40} paused={paused} />
+        <AnimatedBeam containerRef={container} fromRef={b} toRef={hub} delay={0.8} paused={paused} />
+        <AnimatedBeam containerRef={container} fromRef={c} toRef={hub} curvature={40} delay={1.6} paused={paused} />
+      </div>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: One connection, your colours
+
+colorFrom and colorTo take any CSS colour (the defaults are the accent tokens), length and thickness shape the comet, and reverse sends it the other way, for a reply travelling back.
+
+```tsx
+import { useRef } from "react";
+import { AnimatedBeam } from "@/components/sheenui/animated-beam/animated-beam";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { AnimatedBeam, GlassCard } from "@sheenui/theme";
+
+export function Example() {
+  const container = useRef<HTMLDivElement>(null);
+  const from = useRef<HTMLDivElement>(null);
+  const to = useRef<HTMLDivElement>(null);
+
+  return (
+    <div ref={container} className="relative flex w-full max-w-md items-center justify-between py-6">
+      <GlassCard ref={from} className="grid size-16 place-items-center text-sm font-semibold">API</GlassCard>
+      <GlassCard ref={to} className="grid size-16 place-items-center text-sm font-semibold">Client</GlassCard>
+      <AnimatedBeam
+        containerRef={container}
+        fromRef={from}
+        toRef={to}
+        reverse
+        length={96}
+        thickness={3}
+        colorFrom="var(--sheen-accent-2)"
+        colorTo="var(--sheen-accent)"
+      />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the beam never takes focus or pointer events, so the elements it connects stay usable. |
+
+### Accessibility
+
+- Decorative: the overlay is aria-hidden. The connection must also be in text (a label, a heading or a sentence), because the picture is invisible to assistive technology.
+- paused holds the light where it is, so a page can offer a stop control (WCAG 2.2.2). It also rests off-screen and in hidden tabs.
+- Under reduced motion there is no light, only the faint still track between the elements.
+- The light is one element moved by transform and faded by opacity along positions sampled from the real path; nothing blurs, masks or filters the glass nodes.
+
+### When to use the animated beam effect
+
+- Use it in an integration diagram: a source card, your product in the middle and a destination, with a light running along the connection to show data flowing.
+- Use it in a "connected to" section or an architecture map, with several beams staggered by delay so the network feels alive without any of them competing.
+- Bend a path with curvature to route around a centre node, or reverse it for a response going back; the beam leaves from the edge of each element, not its centre.
+- Skip it when the relationship is the point of the content and nothing else says so; the beam is aria-hidden, so name the connection in text as well.
+- Pair it with GlassCard nodes, Badge labels on the nodes, and a Switch wired to the paused prop for a stop control.
+
+
+### Frequently asked questions
+
+#### How do I draw an animated beam between two elements in React?
+
+Put the elements and the AnimatedBeam in one relative container, then pass containerRef, fromRef and toRef. It measures them, draws a track from edge to edge and sends a comet of light along it; curvature bends the path and reverse flips the direction.
+
+#### Is it expensive to animate?
+
+No. The light is one element moved by transform along positions sampled from the real path, and it fades by opacity, so nothing repaints per frame. It pauses off-screen and in hidden tabs.
+
+#### How is it made accessible?
+
+It is decorative and aria-hidden, and never takes pointer events. Describe the connection in text too. The paused prop holds the light so a page can offer a stop control, and reduced motion leaves only the still track.
+
+#### Does the beam keep running off-screen?
+
+No. It pauses when it scrolls out of view and in hidden tabs, so several beams on a long page cost nothing while unseen. Use delay to stagger the ones in view.
+
+
+### Related pages
+
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Confetti for React: useConfetti Success Burst
+
+URL: https://lokendra-builds.github.io/sheenui/effects/confetti
+Sidebar name: Confetti
+
+A confetti effect for React: fire a one-shot burst with useConfetti().fire(). Capped canvas, idle at zero cost, a still badge for reduced motion. MIT.
+
+What it is: Confetti is a React effect that fires a one-shot burst of paper on demand with useConfetti().fire(), for success moments. It idles at zero cost and shows a still badge instead under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/confetti.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Confetti
+
+Files to copy from `theme/src/`:
+
+- `components/confetti/`
+- `lib/{canvas-effects.ts, cn.ts}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: confetti. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Confetti, useConfetti } from "@/components/sheenui/confetti/confetti";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Confetti, useConfetti } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| count | number | 120 | Sets how many pieces each burst draws. |
+| maxCount | number | 200 | The most pieces a single burst ever draws, whatever count asks for. Halved on weak devices. |
+| spread | number | 75 | Sets the width of the fan in degrees. |
+| angle | number | 90 | Direction of the centre of the fan in degrees, counter-clockwise from pointing right. |
+| velocity | number | 720 | Sets the launch speed in px per second. |
+| colors | string[] | the accent, second accent, success, warning and danger tokens | Sets the colours of the pieces, any CSS colours. |
+| badge | ReactNode | optional, no default | Shown instead of a burst when reduced motion is on, in a polite live region, so the moment is still marked (and announced). Without it a reduced-motion fire() does nothing. |
+| badgeDuration | number | 2.6 | Seconds the badge stays up. |
+| className | string | optional, no default | Adds extra classes to the badge wrapper (a fixed, centred strip near the top). |
+
+### Example: Fire from a button
+
+origin takes an element (the burst starts at its centre) or a point of the viewport. Never let confetti be the only sign of success: the text below changes too. With reduced motion the badge appears at the top of the screen instead.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Confetti, useConfetti } from "@/components/sheenui/confetti/confetti";
+// Package build (after the first npm release, or a packed tarball): import { Button, Confetti, useConfetti } from "@sheenui/theme";
+
+export function Example() {
+  const { ref, fire } = useConfetti();
+  const [done, setDone] = useState(0);
+
+  return (
+    <>
+      <Button
+        onClick={(event) => {
+          setDone((n) => n + 1);
+          fire({ origin: event.currentTarget, count: 140, spread: 100 });
+        }}
+      >
+        Place order
+      </Button>
+      <p className="text-sm text-sheen-fg-muted">{done === 0 ? "Nothing placed yet." : "Orders placed: " + done}</p>
+      <Confetti ref={ref} badge="Order placed" />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the canvas never takes pointer events, so the page stays usable during a burst. |
+
+### Accessibility
+
+- The canvas is decorative and aria-hidden. Always show text or a toast too; confetti is never the only sign of success.
+- Reduced motion: fire() draws nothing. With the badge prop, a still message appears for badgeDuration seconds in a polite live region (role=status), so the moment is marked and announced.
+- Nothing runs while idle. The loop exists only while pieces are in flight, then the canvas hides itself; a hidden tab ends the burst. Count is capped at 220 and halved on devices with little memory, few cores or Save-Data.
+- The canvas lives in a portal on body, never inside a glass surface, so it cannot flatten any glass.
+
+### When to use the confetti effect
+
+- Use it for success moments: an order placed, a goal reached, an upload finished, fired from the handler that knows it worked.
+- Fire from a button with origin set to that element so the burst starts where the user acted, or from a point of the viewport.
+- Always show text or a toast as well; confetti is decoration and never the only sign of success.
+- Skip it for routine actions, errors and anything repeated often; it should feel like an occasion.
+- Pair it with Button, Toast and the badge prop, which shows a still message instead under reduced motion.
+
+
+### Frequently asked questions
+
+#### How do I fire confetti in React?
+
+Call useConfetti(), render <Confetti ref={confetti.ref} /> once, and call confetti.fire({ origin }) from an event handler. Options set count, spread, angle, velocity and colors.
+
+#### Does it cost anything while idle?
+
+No. Nothing runs until fire() is called; the loop exists only while pieces are in flight, the canvas then hides itself, and a hidden tab ends the burst. The piece count is capped at 220 and halved on weak devices.
+
+#### What happens with reduced motion?
+
+fire() draws nothing. If you pass badge, it appears for badgeDuration seconds in a polite live region so the moment is still marked and announced.
+
+#### Can I change where it starts, how many pieces fall and which colors?
+
+Yes. origin is an element (the burst starts at its centre) or a point of the viewport such as { x: 0.5, y: 0.5 }. count defaults to 120 and is capped by maxCount (200, halved on weak devices), and spread, angle, velocity and colors take any CSS colors. Options passed to fire() override the props for that one burst.
+
+#### How do I stop a burst early?
+
+Call confetti.clear(), for example when the route changes. It removes every piece at once.
+
+
+### Related pages
+
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Meteors Effect for React: Light Streaks on Cards
+
+URL: https://lokendra-builds.github.io/sheenui/effects/meteors
+Sidebar name: Meteors
+
+A meteors effect for React: occasional streaks of light cross a card background, moved by transform only. Pauses off-screen and stops for reduced motion.
+
+What it is: Meteors is a React effect that sends occasional streaks of light across a card or section background. Use it for quiet depth; each streak moves by transform and opacity only and stays still under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/meteors.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Meteors
+
+Files to copy from `theme/src/`:
+
+- `components/meteors/`
+- `lib/{canvas-effects.ts, cn.ts}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{beat-animations.ts, beat.ts, gate.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: meteors. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Meteors } from "@/components/sheenui/meteors/meteors";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use badge, glass-card, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Badge, GlassCard, Meteors, Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| count | number | 12 | How many meteors share the field. Each one flies, then rests for a few seconds, so only a couple are ever in view at once. Capped at 24. |
+| angle | number | 125 | Direction of travel in degrees, clockwise from pointing right: 90 flies straight down, 125 down and to the left, 45 down and to the right. |
+| length | number | 140 | Length of a streak in px; each one varies a little around it. |
+| duration | number | 1.6 | Seconds one flight takes, on average. |
+| interval | number | 3.2 | Seconds a meteor rests between flights, on average; this is what keeps them occasional. |
+| color | string | "var(--sheen-accent-2)" | Colour of the bright head, any CSS colour. |
+| paused | boolean | false | Hold every streak where it is (they carry on from there when unpaused). |
+| seed | number | 3 | Seed for the layout and timing, so the same card looks the same on the server and in the browser. |
+| className | string | optional, no default | Adds extra classes to the overlay. It fills its relative parent and takes the parent's corner radius. |
+| style | CSSProperties | optional, no default | Applies an inline style to the overlay. |
+
+### Example 1 of 2: On a glass card
+
+Meteors fills its relative parent, takes the parent's corner radius and clips to it. Put it before the content so the text sits above the streaks, and keep count low: a long interval is what keeps it occasional.
+
+```tsx
+import { useState } from "react";
+import { Badge } from "@/components/sheenui/badge/badge";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Meteors } from "@/components/sheenui/meteors/meteors";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Badge, GlassCard, Meteors, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause" checked={paused} onCheckedChange={setPaused} />
+      <GlassCard className="relative w-full max-w-sm overflow-hidden p-8">
+        <Meteors count={8} paused={paused} />
+        <Badge className="relative">Launch week</Badge>
+        <h2 className="relative mt-3 text-xl font-semibold">Ship the quiet details</h2>
+        <p className="relative mt-1 text-sm text-sheen-fg-muted">A streak crosses now and then, never twice at once.</p>
+      </GlassCard>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Angle, length and rhythm
+
+angle is the direction of travel in degrees clockwise from pointing right (90 is straight down). A shorter interval and more meteors make a shower; keep that for a one-off hero.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Meteors } from "@/components/sheenui/meteors/meteors";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Meteors } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard className="relative w-full max-w-sm overflow-hidden p-8">
+      <Meteors count={14} angle={70} length={150} duration={1.2} interval={2.5} />
+      <p className="relative text-sm">A faster shower at 70 degrees.</p>
+    </GlassCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the layer is click-through and never takes focus. |
+
+### Accessibility
+
+- Decorative: the layer is aria-hidden. Streaks are thin and fade quickly; use paused where a card sits next to long text (WCAG 2.2.2).
+- Reduced motion: nothing flies. Up to four faint still streaks stay as texture.
+- Each streak is one element moved by transform and faded by opacity on the compositor, with no blur, mask or filter. They pause off-screen and in hidden tabs.
+- The layout is seeded (seed), so the server and the browser render the same streaks and there is no hydration mismatch or layout shift.
+
+### When to use the meteors effect
+
+- Use it on a feature card or a section background to add a quiet sense of space, with a streak crossing now and then.
+- Tune count, interval and angle: a long interval keeps it occasional, which is what makes it feel premium rather than busy.
+- Put it behind glass content so the glass blurs the streaks, or above flat content; it clips to the parent's corner radius.
+- Skip it on cards with a lot of text, or use paused; moving light near reading is distracting.
+- Pair it with GlassCard, BorderBeam on the same card for a stronger moment, and Badge for a launch label.
+
+
+### Frequently asked questions
+
+#### How do I add a meteor effect to a card in React?
+
+Put Meteors inside a relative card. It fills the card, clips to its radius and sends up to 24 streaks across it, each flying for about a second and a half, then resting for a few seconds.
+
+#### Is it GPU friendly?
+
+Each streak is one element moved by transform and faded by opacity on the compositor. Nothing blurs or filters, and it pauses off-screen and in hidden tabs.
+
+#### What does reduced motion do?
+
+Nothing flies. A few faint still streaks stay as texture, and the layer is aria-hidden.
+
+#### How do I make the meteors rarer or change their direction?
+
+Tune count, interval and angle: a longer interval keeps the streaks occasional, a lower count thins them out, and angle sets the direction they cross at. A quiet field reads as premium; a busy one competes with the text.
+
+
+### Related pages
+
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Orbiting Circles for React: Icons on Rings
+
+URL: https://lokendra-builds.github.io/sheenui/effects/orbiting-circles
+Sidebar name: Orbiting circles
+
+Orbiting circles for React: icons or avatars circle a centre on rings with transform only. Holds still on hover and focus, static for reduced motion.
+
+What it is: OrbitingCircles is a React effect that spins icons or avatars around a centre on rings, using transform only. Use it for integration sections; it holds still on hover and focus and is static under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/orbiting-circles.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Orbiting circles
+
+Files to copy from `theme/src/`:
+
+- `components/orbiting-circles/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/gate.ts`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: orbiting-circles. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { OrbitingCircles } from "@/components/sheenui/orbiting-circles/orbiting-circles";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use glass-card, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, OrbitingCircles, Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | The orbiting items (icons, logos, avatars): each child sits on the ring, evenly spaced. |
+| radius | number | 120 | Radius of the ring in px, from the centre of the parent. |
+| duration | number | 28 | Seconds one full turn takes. Slow reads as calm: 20 to 40 suits a hero. |
+| reverse | boolean | false | Turn anticlockwise instead of clockwise. |
+| startAngle | number | 0 | Angle of the first item in degrees, clockwise from the top. The others follow evenly; use it to offset one ring from another. |
+| path | boolean | true | Draw the faint ring the items sit on. |
+| pauseOnHover | boolean | true | Hold the ring still while the pointer or keyboard focus is on one of its items, so an item is never a moving target. |
+| label | string | optional, no default | Accessible name for the group. Set it when the items mean something (integrations, team) and the ring is exposed as a labelled list; without it the whole ring is decorative and hidden from assistive technology. |
+| paused | boolean | false | Hold the ring where it is (it carries on from there when unpaused). |
+| className | string | optional, no default | Adds extra classes to the overlay. It fills a relative parent; the ring is centred in it. |
+| itemClassName | string | optional, no default | Classes for every item's box (sizing, glass, rounding). |
+| style | CSSProperties | optional, no default | Applies an inline style to the overlay. |
+
+### Example: Two rings
+
+Stack rings with different radius, duration, reverse and startAngle around a central card. Give the ring a label when the items mean something: it then becomes a labelled list. Glass items use level-2 glass; keep a handful in view.
+
+```tsx
+import { useState } from "react";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { OrbitingCircles } from "@/components/sheenui/orbiting-circles/orbiting-circles";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, OrbitingCircles, Switch } from "@sheenui/theme";
+
+const GLYPHS = ["A", "B", "C", "D", "E", "F"];
+
+function Glyph({ children }: { children: string }) {
+  return <span className="glass-2 grid size-10 place-items-center rounded-full text-sm font-semibold">{children}</span>;
+}
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause" checked={paused} onCheckedChange={setPaused} />
+      <div className="relative grid size-[22rem] place-items-center">
+        <GlassCard tint className="relative grid size-20 place-items-center text-sm font-semibold">Core</GlassCard>
+        <OrbitingCircles label="Inner integrations" radius={96} duration={24} paused={paused}>
+          {GLYPHS.slice(0, 3).map((g) => (
+            <Glyph key={g}>{g}</Glyph>
+          ))}
+        </OrbitingCircles>
+        <OrbitingCircles label="Outer integrations" radius={160} duration={36} reverse startAngle={30} paused={paused}>
+          {GLYPHS.slice(3).map((g) => (
+            <Glyph key={g}>{g}</Glyph>
+          ))}
+        </OrbitingCircles>
+      </div>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves through any links or buttons inside the items, in their order. The ring itself is not focusable. |
+| Focus on an item | Holds the ring still (pauseOnHover) so nobody chases a moving control. |
+
+### Accessibility
+
+- Without label the ring is decorative and aria-hidden; never put interactive items in a hidden ring. With label it is a labelled list with one item per child, in order.
+- pauseOnHover holds the ring while the pointer or focus is on an item; paused gives a page a stop control (WCAG 2.2.2). It also rests off-screen and in hidden tabs.
+- Reduced motion: the items rest on the ring, still, in the same places.
+- Two transform rotations per item on the compositor (the ring turns, the item turns back); nothing blurs, masks or filters the items.
+
+### When to use the orbiting circles effect
+
+- Use it in a works-with or integrations section: logos circling your product mark on one or two rings.
+- Stack rings with different radius, duration, reverse and startAngle for a system of orbits around a central glass card.
+- Pass label when the items mean something so the ring becomes a labelled list; without it the ring is decorative and hidden.
+- Skip it when people must click items quickly; it holds still on hover and focus, but a static grid is easier to use.
+- Pair it with GlassCard in the centre, Avatar for team members and itemClassName for glass items.
+
+
+### Frequently asked questions
+
+#### How do I make items orbit in React?
+
+Put OrbitingCircles in a sized relative parent and pass each item as a child. They are spaced evenly on a ring of the given radius and turn once per duration seconds, staying upright.
+
+#### Is it transform only?
+
+Yes. The ring rotates and each item rotates back by the same amount, two transforms per item on the compositor. It pauses off-screen, in hidden tabs and while an item is hovered or focused.
+
+#### What about accessibility and reduced motion?
+
+Without label it is aria-hidden; with label it is a labelled list in order. Reduced motion leaves the items resting on the ring.
+
+#### Does it keep running off-screen?
+
+No. The orbit pauses off-screen, in hidden tabs and while an item is hovered or focused, so a long integrations page pays nothing for rings nobody sees.
+
+
+### Related pages
+
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Particles Background for React: Canvas Effect
+
+URL: https://lokendra-builds.github.io/sheenui/effects/particles
+Sidebar name: Particles
+
+A particles background for React: a capped canvas field of drifting lights that lean away from the pointer. Pauses off-screen, still for reduced motion.
+
+What it is: Particles is a React canvas effect: a capped field of small drifting lights that lean softly away from the pointer. Use it behind a hero or glass card; it draws one still frame under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/particles.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Particles
+
+Files to copy from `theme/src/`:
+
+- `components/particles/`
+- `lib/{canvas-effects.ts, cn.ts}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{beat.ts, gate.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: particles. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Particles } from "@/components/sheenui/particles/particles";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use glass-card, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, Particles, Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| density | number | 1.4 | How many particles per 10,000 px² of the field (a 1000 x 600 field at 1 draws 60). The count is always capped by maxCount, and halved on devices with little memory, few cores or Save-Data. |
+| maxCount | number | 120 | The most particles ever drawn, whatever the density and the size of the field. |
+| radius | number | 2 | Radius of a particle in px; each one varies a little around it. |
+| speed | number | 10 | Sets the drift speed in px per second. |
+| pointer | ParticlesPointer | "repel" | What a nearby pointer does: push particles away softly, draw them in, or nothing. Only mouse and trackpad react; touch screens and reduced motion never do. |
+| pointerRadius | number | 120 | Distance in px within which the pointer moves particles. |
+| color | string | "var(--sheen-accent)" | Sets the colour of most particles, any CSS colour. |
+| colorTo | string | "var(--sheen-accent-2)" | Colour of the rest (about a third), any CSS colour. |
+| paused | boolean | false | Hold the particles where they are (they carry on from there when unpaused). |
+| seed | number | 1 | Seed for the starting positions, so a field looks the same on every visit and on the server. |
+| className | string | optional, no default | Adds extra classes to the overlay. Size it with inset-0 inside a relative parent, or give it its own size. |
+| style | CSSProperties | optional, no default | Applies an inline style to the overlay. |
+
+### Example 1 of 2: Behind glass
+
+The particles are what the glass blurs, which makes the frosted card read as real. Move the mouse over it: nearby particles ease away (or towards the pointer), then settle back. Touch screens and reduced motion never react to the pointer.
+
+```tsx
+import { useState } from "react";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Particles } from "@/components/sheenui/particles/particles";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Particles, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause" checked={paused} onCheckedChange={setPaused} />
+      <div className="relative grid min-h-80 w-full place-items-center overflow-hidden rounded-sheen-xl">
+        <Particles density={1.4} pointer="repel" paused={paused} />
+        <GlassCard className="relative max-w-xs p-6 text-center">
+          <h2 className="text-lg font-semibold">Build something calm</h2>
+          <p className="mt-1 text-sm text-sheen-fg-muted">A soft field of light behind frosted glass.</p>
+        </GlassCard>
+      </div>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Dense and capped
+
+density is particles per 10,000 px². Raise it as far as you like: maxCount is the hard ceiling (120 by default, 400 at most), and devices with little memory, few cores or Save-Data draw half.
+
+```tsx
+import { Particles } from "@/components/sheenui/particles/particles";
+// Package build (after the first npm release, or a packed tarball): import { Particles } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="relative min-h-56 w-full overflow-hidden rounded-sheen-xl">
+      <Particles density={6} maxCount={90} radius={1.2} speed={6} pointer="none" />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the canvas is click-through and never takes focus. |
+
+### Accessibility
+
+- Decorative: the layer is aria-hidden and carries no information. Particles are small and low in contrast so text above stays readable.
+- Offer paused as a control where the field sits behind long reading (WCAG 2.2.2). It also rests off-screen and in hidden tabs.
+- Reduced motion draws one still frame, with no loop and no pointer reaction. Colours are the accent tokens read from the page, redrawn when the theme or style preset changes.
+- Cost: one canvas on the shared ambient beat (about 30 Hz, fewer while scrolling), device pixel ratio capped at 2, count capped and halved on weak devices.
+
+### When to use the particles effect
+
+- Use it behind a hero or a glass card for depth: the particles are what the glass blurs, which makes frosted panels look real without a photo.
+- Use it on a landing section that needs a calm, living background; keep density low and let the text carry the page.
+- Set pointer to attract or none to change how it answers the cursor; only a mouse or trackpad reacts, never touch.
+- Skip it behind long reading or dense tables; a moving field competes with text, so use paused or leave it out.
+- Pair it with GlassCard, Backdrop and ShimmerText for a hero that feels layered.
+
+
+### Frequently asked questions
+
+#### How many particles does it draw?
+
+Density is particles per 10,000 square pixels, always capped by maxCount (400 at most) and halved on devices with little memory, few cores or Save-Data, so a large hero stays cheap.
+
+#### Does it hurt performance?
+
+It is one canvas drawn on the shared ambient beat, about 30 Hz and slower while scrolling, and only while the field is on screen and the tab is visible.
+
+#### What happens with reduced motion?
+
+It draws one still frame, with no loop and no pointer reaction. The canvas is aria-hidden and click-through either way.
+
+#### How do I tune the count, speed and pointer reaction?
+
+density is particles per 10,000 px² (default 1.4) and maxCount caps the total (default 120, never more than 400). radius and speed set the size and the drift in px per second. pointer is repel, attract or none, within pointerRadius (default 120); only a mouse or trackpad reacts, never touch or reduced motion.
+
+#### Can the field look the same on every visit?
+
+Yes. seed (default 1) fixes the starting positions, so the field looks the same on the server and on every visit. color and colorTo set the two particle colors; by default they are the accent and second-accent tokens, so a theme or style switch recolors them.
+
+#### Can readers pause it?
+
+Yes: paused holds the particles where they are and they carry on from there when unpaused. Offer it as a control where the field sits behind long reading, which is what WCAG 2.2.2 asks for.
+
+
+### Related pages
+
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress)
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Scroll Progress Bar for React: Reading Progress
+
+URL: https://lokendra-builds.github.io/sheenui/effects/scroll-progress
+Sidebar name: Scroll progress
+
+A scroll progress bar for React: a thin scaleX bar tied to page or container scroll. Decorative by default, a named progressbar with a label. MIT.
+
+What it is: ScrollProgress is a React effect: a thin bar that fills with page or container scroll through a scaleX transform. It is decorative by default and becomes a named progressbar only when you pass a label.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/scroll-progress.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Scroll progress
+
+Files to copy from `theme/src/`:
+
+- `components/scroll-progress/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: scroll-progress. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ScrollProgress } from "@/components/sheenui/scroll-progress/scroll-progress";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, ScrollProgress } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| placement | ScrollProgressPlacement | "top" | Fixed to the top or bottom edge of the viewport, or "inline" to sit in the flow (for example inside a card header or a sticky bar of your own). |
+| container | RefObject<HTMLElement \| null> | the page | The scrollable element to follow. |
+| thickness | number | 4 | Sets the height of the bar in px. |
+| smooth | boolean | true | Ease the bar after the scroll with the scroll spring, so it glides instead of stepping. Ignored under reduced motion, where it follows the scroll exactly. |
+| colorFrom | string | "var(--sheen-accent)" | Colour at the start of the bar, any CSS colour. |
+| colorTo | string | "var(--sheen-accent-2)" | Colour at the leading end of the bar, any CSS colour. |
+| label | string | optional, no default | Accessible name. Leave it out (the default) when the bar only decorates a page that already has a scrollbar: the bar is then hidden from assistive technology. Set it ("Reading progress") when the position matters, and the bar becomes a progressbar whose value updates in 5 % steps. |
+
+### Example 1 of 2: Following a panel
+
+container follows a scrollable element and placement="inline" keeps the bar in the flow, here above the content inside a glass card. With label the bar is exposed as a progressbar that updates in 5 % steps.
+
+```tsx
+import { useRef } from "react";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ScrollProgress } from "@/components/sheenui/scroll-progress/scroll-progress";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, ScrollProgress } from "@sheenui/theme";
+
+export function Example() {
+  const scroller = useRef<HTMLDivElement>(null);
+
+  return (
+    <GlassCard className="w-full max-w-md overflow-hidden">
+      <ScrollProgress placement="inline" container={scroller} label="Reading progress" />
+      <div ref={scroller} className="h-72 overflow-y-auto p-6">
+        <h2 className="text-lg font-semibold">A long read</h2>
+        <p className="mt-2 h-[48rem] text-sm text-sheen-fg-muted">Scroll this panel and watch the bar fill.</p>
+      </div>
+    </GlassCard>
+  );
+}
+```
+
+### Example 2 of 2: Fixed to the page
+
+The default placement is the top edge of the viewport and follows the page scroll. This site shows it as a thin strip while you read; colours default to the accent tokens and can be overridden with colorFrom and colorTo.
+
+```tsx
+import { ScrollProgress } from "@/components/sheenui/scroll-progress/scroll-progress";
+// Package build (after the first npm release, or a packed tarball): import { ScrollProgress } from "@sheenui/theme";
+
+export function Example() {
+  return <ScrollProgress thickness={4} />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable and never takes pointer events. |
+
+### Accessibility
+
+- Decision: decorative by default and aria-hidden, because browsers already show and announce scroll position and a role that changes on every scroll would be noise.
+- Pass label only where the position carries meaning (a course, a long form): the bar becomes a progressbar with that name and a value that updates in 5 % steps, never on every pixel.
+- Reduced motion: the bar still tracks the scroll exactly (a direct mapping, not an animation) but without the spring. In forced colors it uses the system highlight colour.
+- The fill is a scaleX transform driven by the scroll position: no layout, no paint, no loop, so there is nothing to pause. It grows from the inline start in right-to-left pages.
+
+### When to use the scroll progress effect
+
+- Use it on long articles, docs and guides to show how far through the reader is, fixed to the top edge.
+- Pass a container ref to follow a scrollable panel, or placement="inline" to put the bar inside your own header.
+- Pass label only where position matters (a course or long form); the bar then becomes a progressbar updating in 5 % steps.
+- Skip the label on ordinary pages; browsers already convey scroll position and a changing role would be noise.
+- Pair it with TextReveal, a sticky header and Breadcrumb.
+
+
+### Frequently asked questions
+
+#### How do I add a scroll progress bar in React?
+
+Render ScrollProgress anywhere; it fixes itself to the top and fills with the page scroll through a scaleX transform. Use container for a scrollable panel and placement for bottom or inline.
+
+#### Is a scroll progress bar accessible?
+
+By default it is decorative and aria-hidden. With label it is a named progressbar whose value changes in 5 % steps, so screen readers are not flooded. In forced colors it uses the system highlight.
+
+#### Does it follow reduced motion?
+
+The bar still tracks the scroll exactly, since that is a direct mapping, but without the easing spring.
+
+#### How do I follow a panel instead of the whole page?
+
+Pass the scrollable element as container, a ref such as useRef<HTMLDivElement>(null). placement can be top, bottom or inline: the first two fix the bar to the viewport edge, inline keeps it in the flow, for example in a card header. thickness sets the height in px (default 4).
+
+#### When should the bar have an accessible name?
+
+Only when the position carries meaning, such as a reading-progress bar in a course or a long form. Pass label and it becomes a progressbar whose value updates in 5% steps. Without label the bar is aria-hidden, because browsers already show and announce scroll position.
+
+
+### Related pages
+
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal)
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Text Reveal on Scroll for React: Word by Word
+
+URL: https://lokendra-builds.github.io/sheenui/effects/text-reveal
+Sidebar name: Text reveal
+
+A scroll text reveal for React: words light up one by one with scroll progress. Real text, readable without JS, no layout shift, static for reduced motion.
+
+What it is: TextReveal is a React effect that lights up the words of a statement one by one as you scroll. The text stays real, readable without JavaScript, never shifts layout and is fully visible under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/text-reveal.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Text reveal
+
+Files to copy from `theme/src/`:
+
+- `components/text-reveal/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `lib/{canvas-effects.ts, cn.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: text-reveal. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { TextReveal } from "@/components/sheenui/text-reveal/text-reveal";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { TextReveal } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | string | required | The text to reveal, as one plain string. Words are split on whitespace. |
+| as | TextRevealTag | "p" | The element to render: a paragraph for running text, a heading for a statement. |
+| dim | number | 0.28 | How dim a word is before the scroll reaches it, from 0 (invisible) to 1 (no effect). Keep it at 0.25 or above so the unread words stay legible. |
+| offset | ScrollOffset | ["start 0.9", "end 0.5"] | Which part of the scroll drives the reveal, in Motion's offset format: ["start 0.9", "end 0.5"] starts when the top of the text reaches 90 % of the viewport height and finishes when its bottom reaches the middle. |
+| container | RefObject<HTMLElement \| null> | the page | The scrollable element that drives the reveal. |
+
+### Example 1 of 2: Scroll inside the panel
+
+Pass container to follow a scrollable panel instead of the page. offset sets where the reveal starts and ends; here it begins as the text enters the panel and finishes at the middle. Scroll back and the words dim again.
+
+```tsx
+import { useRef } from "react";
+import { TextReveal } from "@/components/sheenui/text-reveal/text-reveal";
+// Package build (after the first npm release, or a packed tarball): import { TextReveal } from "@sheenui/theme";
+
+export function Example() {
+  const scroller = useRef<HTMLDivElement>(null);
+
+  return (
+    <div ref={scroller} role="region" aria-label="Manifesto" tabIndex={0} className="h-96 w-full overflow-y-auto p-8 focus-visible:outline-2 focus-visible:outline-sheen-focus">
+      <div className="h-40" />
+      <TextReveal
+        as="h2"
+        container={scroller}
+        offset={["start 0.9", "end 0.5"]}
+        className="text-3xl font-semibold tracking-tight text-balance"
+      >
+        We build interfaces that feel like light passing through glass: calm, precise and never in the way of the thing you came to do.
+      </TextReveal>
+      <div className="h-96" />
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: On the page, as a paragraph
+
+Without container it follows the page scroll. Raise dim towards 1 for a subtler reveal; keep it at 0.25 or above so unread words stay legible.
+
+```tsx
+import { TextReveal } from "@/components/sheenui/text-reveal/text-reveal";
+// Package build (after the first npm release, or a packed tarball): import { TextReveal } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <TextReveal dim={0.4} className="max-w-xl text-lg text-pretty">
+      Each word arrives as you reach it, left to right, like a progress bar made of language.
+    </TextReveal>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the text is plain content in the normal reading order. |
+
+### Accessibility
+
+- The words are real text with normal spaces, in order: selectable, searchable and read by screen readers whatever their opacity. Before hydration (or without JavaScript) every word is fully visible.
+- Dimmed words are lower contrast until revealed: keep dim at 0.25 or above, and avoid the effect on text that must be read at once (instructions, legal copy).
+- Use as="h2" only for a heading that belongs in the outline.
+- Only opacity changes, driven by the scroll position through MotionValues: no layout shift, no React renders while scrolling, no loop to pause. Reduced motion shows every word at full opacity.
+
+### When to use the text reveal effect
+
+- Use it for a manifesto, mission line or long hero statement where the scroll sets the pace of reading.
+- Use as="h2" for a heading statement, or leave it a paragraph; tune offset to start and finish the reveal where you want.
+- Keep dim at 0.25 or above so unrevealed words stay legible.
+- Skip it for instructions, legal copy or anything that must be read at once.
+- Pair it with ScrollProgress for a reading cue and a calm background.
+
+
+### Frequently asked questions
+
+#### How do I reveal text on scroll in React?
+
+Pass one string to TextReveal. Each word goes from dim to full opacity across its own slice of the scroll range, left to right, driven by the scroll position.
+
+#### Is it readable without JavaScript?
+
+Yes. The words are real text in the HTML and every word is fully visible until the page hydrates. Opacity is the only thing that changes, so the layout never shifts.
+
+#### What does reduced motion do?
+
+Every word is fully visible and nothing is scroll-linked.
+
+#### Which props control how fast the words appear?
+
+dim sets how faint a word is before the scroll reaches it (default 0.28; keep it at 0.25 or above so unread words stay legible). offset says which part of the scroll drives the reveal, in Motion's offset format, and defaults to ["start 0.9", "end 0.5"]: it starts when the top of the text reaches 90% of the viewport and ends when its bottom reaches the middle. container follows a scrollable panel instead of the page.
+
+#### Should I use it for body copy?
+
+No. Dimmed words have lower contrast until the reader reaches them, so keep it for a manifesto, a mission line or a long hero sentence. Avoid it on instructions and legal copy that must be read at once, and use as="h2" only for a heading that belongs in the outline.
+
+
+### Related pages
+
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in)
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+

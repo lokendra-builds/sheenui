@@ -1,0 +1,2357 @@
+# SheenUI: Components (part 1 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Glass UI Components for React & Tailwind (Free)
+
+URL: https://lokendra-builds.github.io/sheenui/components/
+Sidebar name: All components
+
+Free glass UI components for React: buttons, inputs, menus, dialogs, tables and more on Base UI and Tailwind CSS v4, animated with Motion. Copy the source.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > All components
+
+Glass UI components for React: buttons, forms, dialogs, menus and tables, ready to copy.
+
+### Components (21)
+
+The everyday parts: buttons, cards, inputs, dialogs, tabs, toasts and the data table.
+
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert): A glass React alert component for inline messages, with four tones, an optional action and a dismiss button, announced by screen readers.
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar): A glass React avatar component that shows an image, falls back to gradient initials, and can show an online status dot.
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge): A React badge is a small glass label for status and counts that stays readable on any background and never relies on color alone.
+- [Button](https://lokendra-builds.github.io/sheenui/components/button): A glass button for React is a button that lifts on hover and presses down on tap, with a sweep of light across the filled variants, animated with Motion and kept still under reduced motion.
+- [Button group](https://lokendra-builds.github.io/sheenui/components/button-group): A React button group that joins related buttons into one control, with attached corners and arrow-key roving focus.
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox): An animated checkbox for React whose check pops in, with an indeterminate state for “select all”, built on Base UI's accessible checkbox.
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox): A React combobox with search in the style of Select2: type to filter, pick one or many as animated chips, group or create options, or search a server as you type.
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table): A typed, accessible React data table on TanStack Table v9 with search, faceted filters, multi-sort, pagination, selection and CSV export, all in glass.
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog): A strong-glass React modal dialog that springs in with Motion, with focus trapping, Escape to close and focus return handled by Base UI.
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card): The glassmorphism card is SheenUI's basic frosted-glass surface for React: pick one of three blur levels, and a soft highlight follows the pointer.
+- [Input](https://lokendra-builds.github.io/sheenui/components/input): A glass text input for React with its label, description and error message wired up for screen readers, and a soft accent glow on focus.
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input): A React OTP input with one slot per digit, paste and SMS autofill, and Motion feedback: digits pop in, errors shake and success ripples.
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover): A glass React popover anchored to its trigger, for small forms and details; Escape or a click outside closes it.
+- [Progress](https://lokendra-builds.github.io/sheenui/components/progress): A glass React progress bar with an accent fill and a sweep of light, plus an indeterminate mode for loading states.
+- [Select](https://lokendra-builds.github.io/sheenui/components/select): A glass React select dropdown for picking one option, with type-to-jump and items that drift in; for search or multi-select, use the Combobox.
+- [Slider](https://lokendra-builds.github.io/sheenui/components/slider): A glass React slider that picks a single value or a range by dragging, clicking the track or pressing the arrow keys.
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch): An animated React toggle switch, an iOS switch in Tailwind, whose thumb springs across a glass track with Motion and fills with the accent color when on.
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner): A React loading spinner for work with no known length, announced politely and held still as a static arc under reduced motion.
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs): Animated tabs for React are a Base UI tab list where a glass pill slides to the active tab, driven by the indicator variables, with full arrow-key support.
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast): A React toast is a glass notification that stacks, fans out on hover and can be swiped away, announced automatically to screen readers.
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip): A glass React tooltip that appears on hover and keyboard focus; inside a provider, moving between tooltips is instant.
+
+
+### Forms (13)
+
+Pickers, uploads, number fields, ratings and tags, with labels and errors wired for screen readers.
+
+- [Calendar](https://lokendra-builds.github.io/sheenui/forms/calendar): A glass React calendar built on Intl, so the week starts and the month names read the way the user's locale expects.
+- [Color picker](https://lokendra-builds.github.io/sheenui/forms/color-picker): A glass React color picker with a saturation area, hue and opacity sliders, typed hex, RGB and HSL values, swatches and the screen eyedropper.
+- [Date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker): A glass React date picker that opens a calendar in a popover, or in a bottom sheet on phones, for single dates and ranges.
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field): A composable React form field that wires a label, a description and an error message to any control, ready for react-hook-form.
+- [File upload](https://lokendra-builds.github.io/sheenui/forms/file-upload): A glass drag-and-drop file upload for React that validates files on drop and lists each one with a thumbnail, progress bar, cancel and retry.
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group): A React input group that attaches text, icons or buttons to a field and shares one focus ring.
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field): A glass React number input with steppers you can hold, a scrub label you can drag, and Intl formatting for currency, percentages and units.
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group): A React radio group in two styles: glass dots whose pip springs out, or rich option cards where the selection glides from card to card.
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating): An animated React star rating with hover preview and half steps, built as a radio group so arrow keys and screen readers just work.
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control): An iOS-style segmented control for React where a glass pill slides to the chosen segment and the arrow keys move between segments.
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input): A glass React tags input that turns typed text into chips, adds a pasted list at once and lets you walk and remove chips from the keyboard.
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea): A glass React textarea that auto-resizes to fit its content and can show a character counter whose ring fills as you type.
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle): A React toggle button that stays pressed and is announced as “pressed”, and can be grouped in a glass toolbar.
+
+
+### Overlays (9)
+
+Menus, context menus, drawers, hover cards and the command palette.
+
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog): A glass React alert dialog that asks before destructive actions, focuses the safe choice first and stays open with the error if the action fails.
+- [Command palette (⌘K)](https://lokendra-builds.github.io/sheenui/overlays/command-palette): A glass React command palette that opens with ⌘K or Ctrl+K, with fuzzy search, recent picks first and nested pages.
+- [Context menu](https://lokendra-builds.github.io/sheenui/overlays/context-menu): A glass React context menu that opens on right-click, on long-press on touch screens, or with Shift+F10, right where you pressed.
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer): A glass React drawer that slides in from any edge, with bottom sheets you can drag, snap and swipe away.
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu): A glass React dropdown menu with icons, shortcuts, groups, checkbox and radio items and submenus, whose highlight glides from item to item.
+- [Hover card](https://lokendra-builds.github.io/sheenui/overlays/hover-card): A glass React hover card that previews what is behind a link, opening on hover or keyboard focus after a short delay.
+- [Kbd](https://lokendra-builds.github.io/sheenui/overlays/kbd): The Kbd component renders keyboard shortcuts as glass key caps in React, showing ⌘K on a Mac and Ctrl+K on Windows and Linux from one definition.
+- [Menubar](https://lokendra-builds.github.io/sheenui/overlays/menubar): A glass desktop-style React menubar with File, Edit and View menus, reached with one Tab stop and walked with the arrow keys.
+- [Side drawer](https://lokendra-builds.github.io/sheenui/overlays/side-drawer): A glass React slide-over panel, or side drawer, that slides in to edit a record or show its details, with an edit form that guards unsaved changes.
+
+
+### Navigation (4)
+
+A horizontal navbar and a vertical sidebar.
+
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar): A glassmorphism navbar for React comes in two forms: a floating Apple-style pill whose highlight morphs between items, and a full-width top bar with a sliding underline.
+- [Navigation menu](https://lokendra-builds.github.io/sheenui/navigation/navigation-menu): A glass React navigation menu whose items open rich dropdown panels, with hover intent, a panel that morphs between items, and full keyboard support.
+- [Sidebar](https://lokendra-builds.github.io/sheenui/navigation/sidebar): A glass React sidebar for app shells with collapsible groups, badges and a collapsed icon rail.
+- [Vertical nav](https://lokendra-builds.github.io/sheenui/navigation/vertical-nav): A glass sidebar navigation for React with grouped items, icons and counts that collapses into an icon rail with tooltips.
+
+
+### Layout (11)
+
+Accordion, breadcrumb, stepper, timeline, toolbar and scroll area.
+
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion): An animated React accordion whose sections open on a spring, with every trigger a real button in the tab order.
+- [Aspect ratio](https://lokendra-builds.github.io/sheenui/layout/aspect-ratio): A React aspect ratio box that keeps images, video and maps at a fixed width-to-height ratio, preventing layout shift.
+- [Breadcrumb](https://lokendra-builds.github.io/sheenui/layout/breadcrumb): A responsive React breadcrumb whose middle items fold into a menu when space runs out, and unfold again when there is room.
+- [Collapsible](https://lokendra-builds.github.io/sheenui/layout/collapsible): A React collapsible section that animates its height and keeps closed content out of the page and the tab order.
+- [Pagination](https://lokendra-builds.github.io/sheenui/layout/pagination): A React pagination component with page numbers, ellipses and first, previous, next and last buttons in a labeled navigation landmark.
+- [Resizable panels](https://lokendra-builds.github.io/sheenui/layout/resizable): Resizable panels for React split a layout into regions with draggable, keyboard-resizable handles, size limits and nested groups.
+- [Scroll area](https://lokendra-builds.github.io/sheenui/layout/scroll-area): A React scroll area that keeps native scrolling but adds slim custom scrollbars in glass, with edges that fade only where there is more to see.
+- [Separator](https://lokendra-builds.github.io/sheenui/layout/separator): A React separator for hairline dividers, horizontal or vertical, solid, fading or dashed, with an optional label.
+- [Stepper](https://lokendra-builds.github.io/sheenui/layout/stepper): An animated React stepper for multi-step forms and checkouts that collapses to “Step 2 of 4” on phones.
+- [Timeline](https://lokendra-builds.github.io/sheenui/layout/timeline): An animated React timeline for activity feeds, audit logs, order tracking and changelogs that draws itself as you scroll.
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar): A glass React toolbar that groups related controls behind a single tab stop, moved through with the arrow keys.
+
+
+### Data display (6)
+
+Carousel, code block, empty state, meter and skeleton.
+
+- [Carousel](https://lokendra-builds.github.io/sheenui/components/carousel): A glass React carousel you can swipe, drag or flick, with an endless loop, responsive slides per view and autoplay that pauses on hover and focus.
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block): A glass React code block with a small built-in syntax highlighter, line numbers, highlighted and diff lines, a file tab and a copy button.
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state): An animated React empty state component that shows one clear next step when a page, list or search has nothing in it yet.
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter): A glass React meter for a level inside a known range, such as storage, battery or password strength, that is spoken as well as colored.
+- [Table](https://lokendra-builds.github.io/sheenui/components/table): The React table component is a set of plain, styled table primitives for small static tables, in a glass region that scrolls sideways on narrow screens.
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton): A glass React skeleton loader that holds the exact layout while content loads, so nothing jumps when it arrives.
+
+
+### Chat (3)
+
+A chat list, a conversation view and a support widget.
+
+- [Chat list](https://lokendra-builds.github.io/sheenui/chat/list): A React chat list UI for a messaging app, with search, filters with counts, pinned chats, presence and unread badges.
+- [Chat view](https://lokendra-builds.github.io/sheenui/chat/thread): A React chat UI for one conversation: bubbles grouped by sender, sticky day labels, replies, reactions, photos and typing.
+- [Popover chat](https://lokendra-builds.github.io/sheenui/chat/widget): A React chat widget for support: a launcher in the corner of the page springs open a glass panel with a greeting and recent conversations.
+
+
+### About components
+
+#### Overview
+
+Pick a glassy part and copy it. Every one of the 67 pages below is a glass React component with a live demo, the props, the keyboard model and the exact files to copy, so you can take a single button or a whole form kit without installing a package. The set grows from the same foundation: three glass levels, a handful of [glass design tokens](https://lokendra-builds.github.io/sheenui/foundations), and shared motion presets.
+
+The components are grouped the way you build screens. Components are the everyday parts, such as the [glass button](https://lokendra-builds.github.io/sheenui/components/button), [glassmorphism card](https://lokendra-builds.github.io/sheenui/components/glass-card), [modal dialog](https://lokendra-builds.github.io/sheenui/components/dialog) and [data table](https://lokendra-builds.github.io/sheenui/components/data-table). Forms cover inputs, pickers and uploads, Overlays hold menus, drawers and command palettes, and Navigation and Layout give you the frame around them.
+
+Looking for motion? The [animated React components](https://lokendra-builds.github.io/sheenui/effects/) page lists the effects built with Motion. Need whole screens? See the [React Tailwind blocks](https://lokendra-builds.github.io/sheenui/blocks/) and the [glassmorphism dashboard templates](https://lokendra-builds.github.io/sheenui/dashboards/). Charts live on [their own gallery](https://lokendra-builds.github.io/sheenui/charts/), and the [installation guide](https://lokendra-builds.github.io/sheenui/docs/installation) shows how to add any of these with the shadcn CLI; the [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) covers the two CSS imports.
+
+Everything is free and MIT licensed, built on Base UI and Tailwind CSS v4, and checked in light and dark, in both style presets and with reduced motion on. New to glass UI? Start with the [glassmorphism React tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial).
+
+#### Frequently asked questions
+
+#### What are glass UI components?
+
+Glass UI components are interface parts such as buttons, cards, dialogs and menus drawn as frosted glass: a translucent tint, a backdrop blur and a lit border over a colorful background. SheenUI adds Liquid Glass refraction on top, and a solid fallback for people who turn transparency off.
+
+#### Which library are the components built on?
+
+Behavior, focus handling and ARIA come from Base UI's headless primitives, the styling is Tailwind CSS v4, and the animation is Motion. You copy the source into your own project.
+
+#### Are the components accessible?
+
+Each page lists its keyboard model and accessibility notes. Every component is tested with axe and a keyboard, and glass turns into solid surfaces with reduced transparency, more contrast or Windows High Contrast.
+
+
+### All exports on this page
+
+- classNameWith — Base UI's className is a string OR a function of the part's state.
+- cn — Merge class names, letting later Tailwind classes override earlier ones.
+- useLatest — A ref that always holds the latest value, for stable callbacks that must read current props or state without becoming dependencies.
+- useSyncRef — Keeps an existing ref in step with value: the same layout-effect update as useLatest.
+
+
+## React Alert Component: Info, Success, Warning
+
+URL: https://lokendra-builds.github.io/sheenui/components/alert
+Sidebar name: Alert
+
+A glass React alert component with info, success, warning and danger tones, an action and a dismiss button. Live-region roles, Tailwind CSS v4, MIT.
+
+What it is: A glass React alert component for inline messages, with four tones, an optional action and a dismiss button, announced by screen readers.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/alert.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Alert
+
+Files to copy from `theme/src/`:
+
+- `components/alert/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, motion-props.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: alert. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Alert } from "@/components/sheenui/alert/alert";
+import { Button } from "@/components/sheenui/button/button";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Alert, Button } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tone | "success" \| "warning" \| "danger" \| "info" | "info" | Sets the colour role and the default icon of the alert. |
+| title | ReactNode | optional, no default | A bold first line shown above the message. |
+| icon | ReactNode | optional, no default | Replaces the tone's icon; false hides it. |
+| action | ReactNode | optional, no default | A button or link at the end, such as "Undo" or "Upgrade". Keep it a real control. |
+| dismissible | boolean | false | Show a close button. The alert hides itself when it is pressed. |
+| open | boolean | optional, no default | Whether the alert is shown (controlled). Pair with onOpenChange. |
+| defaultOpen | boolean | true | Whether the alert starts shown when uncontrolled. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called with false when the dismiss button is pressed. |
+| labels | Partial<AlertLabels> | defaultAlertLabels | Every other string, for translation: labels={{ dismiss: "…" }}; omitted keys keep the English of defaultAlertLabels. Its only key is listed in the key table under the props table. |
+| role | "alert" \| "status" \| "none" \| … | alert for warning and danger, otherwise status | Sets the live-region role that announces the alert. |
+
+### Example 1 of 2: Four tones
+
+Each tone has its own icon and tint. The words always say what happened.
+
+```tsx
+import { Alert } from "@/components/sheenui/alert/alert";
+// Package build (after the first npm release, or a packed tarball): import { Alert } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-xl flex-col gap-3">
+      <Alert tone="info" title="A new version is available">Reload the page to get the latest features.</Alert>
+      <Alert tone="success" title="Changes saved">Your profile is up to date.</Alert>
+      <Alert tone="warning" title="Storage almost full">You have used 92% of your plan.</Alert>
+      <Alert tone="danger" title="Payment failed">Your card was declined. Update it to keep your plan.</Alert>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: Action and dismiss
+
+Put a real button or link in action. dismissible adds a close button; open and onOpenChange let you control it.
+
+```tsx
+import { useState } from "react";
+import { Alert } from "@/components/sheenui/alert/alert";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Alert, Button } from "@sheenui/theme";
+
+export function Example() {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div className="flex w-full max-w-xl flex-col gap-3">
+      <Alert
+        tone="warning"
+        title="Your trial ends in 3 days"
+        action={<Button size="sm" variant="glass">Upgrade</Button>}
+        dismissible
+        open={open}
+        onOpenChange={setOpen}
+      >
+        Add a payment method to keep your projects.
+      </Alert>
+      {!open && (
+        <Button size="sm" variant="ghost" className="self-start" onClick={() => setOpen(true)}>
+          Show the alert again
+        </Button>
+      )}
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves to the action and the dismiss button; the alert itself is not a tab stop. |
+| Enter / Space | Activates the focused action or the dismiss button. |
+
+### Accessibility
+
+- Warning and danger use role="alert" (announced at once); info and success use role="status" (announced politely). Pass role="none" for a message that is already on screen at page load: the live demos on this page do, so navigating here does not read out five alerts (the code samples show normal use).
+- The tone icon is decorative. The title and message carry the meaning, color is only a hint.
+- The dismiss button is named by labels.dismiss, is 44px on touch screens, and has a visible focus ring.
+- Text sits on a near-opaque tinted surface, so it keeps 4.5:1 over glass, photos and blobs in light and dark. Forced colors draw a CanvasText border.
+
+### When to use Alert
+
+- Use Alert as an inline message in React for a form-level error above a checkout form, such as a declined card, where the message must stay on screen next to the fields the person has to fix.
+- Use it for a plan-limit banner at the top of a settings page, with an action button like Upgrade placed at the end of the row and a close button for people who have seen it.
+- Use the success tone for a saved confirmation that should remain readable until the next navigation, instead of vanishing the way a toast does after a few seconds.
+- Skip it when the message should disappear by itself after a short moment or must block the page until answered. Use Toast for the first case and Dialog or AlertDialog for the second.
+- Pair it with Button for the action slot, Field or Input for the form it explains, and Toast for the lighter follow-up feedback once the problem is fixed.
+
+
+### Frequently asked questions
+
+#### How do I make a dismissible alert in React with SheenUI?
+
+Set the dismissible prop and the alert shows a close button and hides itself when pressed. For control, pass open and onOpenChange, which receives false on dismiss, or use defaultOpen when uncontrolled. The close button is named by labels.dismiss, so translate that string for other languages.
+
+#### Which ARIA role does the alert component use?
+
+The role depends on the tone. Danger and warning default to role alert, which screen readers announce immediately. Info and success default to role status, announced politely. You can override it, and role none suits a message already on screen at page load so nothing is announced twice.
+
+#### Can I replace the icon or add a button to the alert?
+
+Yes. The icon prop replaces the tone icon with your own node, and icon={false} hides it. The action prop takes a button or link rendered at the end of the alert. Keep it a real control, since the alert itself is not focusable and the action is a normal tab stop.
+
+#### Does the alert still animate when the user prefers reduced motion?
+
+It simplifies. Normally the alert moves 6px into place while fading in and leaves with a shorter fade. When reduced motion is on, through the OS setting or the in-app toggle, it only fades with no vertical movement. The tinted surface is near opaque, so text keeps contrast on photos too.
+
+
+### Related pages
+
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field)
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar)
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Avatar Component with Status & Initials
+
+URL: https://lokendra-builds.github.io/sheenui/components/avatar
+Sidebar name: Avatar
+
+A glass React avatar component with an image, a gradient-initials fallback and an online status dot. Accessible, Tailwind CSS v4, copy-paste source. MIT.
+
+What it is: A glass React avatar component that shows an image, falls back to gradient initials, and can show an online status dot.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Avatar
+
+Files to copy from `theme/src/`:
+
+- `components/avatar/`
+- `lib/{cn.ts, initials.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: avatar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar, AvatarGroup } from "@/components/sheenui/avatar/avatar";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, AvatarGroup, useToast } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| name | string | required | Full name: used for alt text and the initials fallback. |
+| src | string | optional, no default | Image URL. While it loads (or if it fails) the initials show instead. |
+| size | "sm" \| "md" \| "lg" | "md" | Sets the diameter: "sm" 32px, "md" 40px, "lg" 56px. |
+| status | "online" \| "away" \| "offline" | optional, no default | Presence dot at the bottom-right corner: online, away or offline (a hollow ring). Hidden when omitted. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Sizes, status and groups
+
+```tsx
+import { Avatar, AvatarGroup } from "@/components/sheenui/avatar/avatar";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, AvatarGroup } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Avatar name="Ada Lovelace" size="lg" status="online" />
+      <Avatar name="Asha Verma" status="away" />
+      <AvatarGroup>
+        <Avatar name="Ravi Kumar" size="sm" />
+        <Avatar name="Meera Iyer" size="sm" />
+        <Avatar name="John Doe" size="sm" />
+      </AvatarGroup>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Clickable and labeled
+
+An avatar is not interactive: wrap it in a button with a name, and label a group so people know who it shows.
+
+```tsx
+import { Avatar, AvatarGroup } from "@/components/sheenui/avatar/avatar";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, AvatarGroup, useToast } from "@sheenui/theme";
+
+export function Example() {
+  const toast = useToast();
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-label="AL, open Ada Lovelace's profile"
+        onClick={() => toast.success("Opening profile")}
+        className="sheen-hit rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sheen-focus"
+      >
+        <Avatar name="Ada Lovelace" status="online" />
+      </button>
+
+      <Avatar name="Grace Hopper" size="lg" status="away" />
+
+      <AvatarGroup aria-label="Design team: Ravi, Meera and John">
+        <Avatar name="Ravi Kumar" size="sm" />
+        <Avatar name="Meera Iyer" size="sm" />
+        <Avatar name="John Doe" size="sm" />
+      </AvatarGroup>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: an Avatar is not interactive. Wrap it in a button or link when it should be clickable. |
+
+### Accessibility
+
+- An image avatar uses the person's name as its alt text. The initials fallback is role="img" with the full name as its label.
+- The presence dot is its own labeled image (online, away, offline). Offline is a hollow ring, so states differ by shape, not only by color.
+- In AvatarGroup, pass an aria-label that says who the people are; each avatar keeps its own name.
+- Forced colors use system colors with an edge, so the status dot stays visible.
+
+### When to use Avatar
+
+- Use Avatar with an initials fallback beside each author in a comment thread or activity feed, where a profile picture gives people a quick visual anchor and initials cover users who never uploaded one.
+- Use the status prop for an avatar with status in a team directory or chat sidebar that shows who is online, away or offline, with the hollow ring marking offline so color is not the only cue.
+- Use AvatarGroup for a stack of project members on a card header, labeled with an aria-label that says who the people are, such as Project members.
+- Skip it when the picture itself must be clicked or must act as a control. Avatar takes no focus, so wrap it in a Button or a link, or use a Badge for non-person labels.
+- Pair it with Tooltip to reveal a full name on hover, DataTable for a user column with a picture, and Badge for a role label placed under the name.
+
+
+### Frequently asked questions
+
+#### What does the React avatar component show when the image fails to load?
+
+It shows initials built from the name prop, taking the first letters of up to the first two words, uppercased. With an image, the initials appear after a short 400ms delay if it is still loading, and stay if it fails. Under the hood it uses Base UI Avatar, so the fallback swaps in without extra state in your code.
+
+#### How do I make an avatar accessible?
+
+Pass the full name. It becomes the alt text of the image, and the initials fallback is exposed as role img with the name as its label. The presence dot is its own labeled image reading online, away or offline. The avatar itself is not interactive and takes no focus.
+
+#### What sizes does the SheenUI Avatar support?
+
+Three sizes through the size prop: sm at 32px, md at 40px, which is the default, and lg at 56px. The pixel width and height are also written on the img element, so the browser reserves the box before the image arrives and the layout does not shift.
+
+#### How do I make an avatar clickable?
+
+Avatar is deliberately not interactive, so wrap it in a Button (for example the ghost variant) or a link with its own accessible name. That keeps focus and keyboard activation on a real control, and the avatar inside stays a plain image with its label.
+
+
+### Related pages
+
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Button group](https://lokendra-builds.github.io/sheenui/components/button-group)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Badge Component: Status & Count Badges
+
+URL: https://lokendra-builds.github.io/sheenui/components/badge
+Sidebar name: Badge
+
+Glass status and count badges for React and Tailwind CSS v4. Every status carries words, never color alone. Accessible, MIT, copy the source.
+
+What it is: A React badge is a small glass label for status and counts that stays readable on any background and never relies on color alone. Use Badge as a status badge next to a table row or card title, such as Paid, Draft or Beta, where one short word explains the state at a glance.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Badge
+
+Files to copy from `theme/src/`:
+
+- `components/badge/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: badge. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Badge, Button } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tone | "neutral" \| "accent" \| "success" \| "warning" \| "danger" \| "solid" | "neutral" | Colour role: "neutral" (glass), "accent", "success", "warning", "danger" or "solid" (filled accent). |
+| dot | boolean | false | Small dot before the text, e.g. for statuses. |
+| pulse | boolean | false | Pulsing dot for live states. Pings a few times, then rests; still with reduced motion. |
+
+### Example 1 of 2: Tones
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+// Package build (after the first npm release, or a packed tarball): import { Badge } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Badge>Draft</Badge>
+      <Badge tone="accent">New</Badge>
+      <Badge tone="success" dot>Active</Badge>
+      <Badge tone="warning" dot>Pending</Badge>
+      <Badge tone="danger" dot>Failed</Badge>
+      <Badge tone="solid">Pro</Badge>
+      <Badge tone="success" pulse>Live</Badge>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Counts and inline status
+
+Badges sit beside the thing they describe: a count on a button, a status next to a name.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Badge, Button } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Button variant="glass">
+        Inbox <Badge tone="accent">12</Badge>
+      </Button>
+      <p className="flex items-center gap-2 text-sm">
+        Production deploy <Badge tone="success" dot>Passing</Badge>
+      </p>
+      <p className="flex items-center gap-2 text-sm">
+        Billing <Badge tone="warning" dot>Past due</Badge>
+      </p>
+      <Badge tone="danger">3 failed</Badge>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a Badge is not interactive. Put it inside a button or link if it should be. |
+
+### Accessibility
+
+- A badge always carries words, so color is never the only signal; the dot is aria-hidden.
+- The tint sits on a near-opaque surface, so text keeps 4.5:1 contrast over glass or photos.
+- The pulse stops after four pings (WCAG 2.2.2) and is off under reduced motion.
+
+### When to use Badge
+
+- Use Badge on an invoice list or a project card to label an item Paid, Draft or Beta in one short word, with a dot or an icon beside it so the state never rests on color alone.
+- Use it for a count beside a navigation item, for example 3 new beside Inbox, and choose the accent or solid tone to separate it from neutral labels.
+- Use the dot and pulse props for a live state like a running deploy or an active stream; the ping runs a few times then rests, and stays still under reduced motion.
+- Skip it when the label must be clicked, toggled or removed. A Badge takes no focus, so use Button for an action or Toggle for a pressed state instead.
+- Pair it with Avatar for a role under a name, DataTable cells for status columns, and Progress when a state needs a number and not only a word.
+
+
+### Frequently asked questions
+
+#### Which tones does the react badge component offer?
+
+The tone prop takes neutral, accent, success, warning, danger or solid, with neutral as the default. Neutral is a glass surface, the colored tones are flat tints over a near-opaque base, and solid is a filled accent. Every badge carries words so color is never the only signal.
+
+#### Does the pulsing dot loop forever?
+
+No. The pulse prop pings the dot a few times, four according to the source comments, and then rests with a solid dot, which keeps it within WCAG 2.2.2 on endless motion. Under reduced motion the ping is skipped and only the static dot remains.
+
+#### Can I use Badge as a button?
+
+Not directly. Badge renders a span with the normal span attributes and is not interactive or focusable. For something clickable, use a Button, for example the ghost or glass variant at the sm size, so keyboard users get a real tab stop and Enter or Space activation.
+
+#### Will badge text stay readable over images?
+
+Yes for the colored tones. The tint is layered over a near-opaque surface, so the tone text color keeps a 4.5:1 contrast ratio over glass, photos or blobs. The neutral tone uses a single glass surface, and the status dot is aria-hidden so screen readers only read the words.
+
+
+### Related pages
+
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Button group](https://lokendra-builds.github.io/sheenui/components/button-group)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Glass Button for React: Animated & Accessible
+
+URL: https://lokendra-builds.github.io/sheenui/components/button
+Sidebar name: Button
+
+Glassy React buttons with Motion: they lift on hover, press on tap, and filled ones catch a sweep of light. Base UI, Tailwind CSS v4, reduced-motion safe.
+
+What it is: A glass button for React is a button that lifts on hover and presses down on tap, with a sweep of light across the filled variants, animated with Motion and kept still under reduced motion.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Button
+
+Files to copy from `theme/src/`:
+
+- `components/button/`
+- `components/spinner/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: button. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| variant | "link" \| "danger" \| "primary" \| "glass" \| "outline" \| "ghost" | "primary" | Look: "primary" (accent fill), "glass" (frosted), "outline" (edge only), "ghost" (text only), "link" (inline link look) or "danger" (destructive). |
+| size | "sm" \| "md" \| "lg" \| "icon" | "md" | Height and padding, the same scale as every form field: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), or "icon" for a square as tall as "md". |
+| loading | boolean | false | Shows a spinner, ignores clicks and sets aria-busy. Focus stays on the button. |
+| leading | ReactNode | optional, no default | Renders an icon before the children. |
+| trailing | ReactNode | optional, no default | Renders an icon after the children. |
+| fullWidth | boolean | false | Stretch to the full width of the container. |
+| stateLight | boolean | false | Lights the button by state: loading glows in the accent colour (data-state="working"), and a data-state of "success", "warning" or "error" flashes its own glow once (an aura, a light pool and a lit edge, drawn on the button's own layer). The state is never conveyed by light alone: keep the label or icon that says it. Off with reduced transparency and forced colours; instant with reduced motion. |
+| nativeButton | boolean | true; false when render is a non-button element | Whether the rendered element is a native <button>. Defaults to true, or to false when render is something else (e.g. a link): then type/disabled are not added and the disabled state is announced with aria-disabled instead. |
+| render | ReactElement | optional, no default | Render as another element with the button's look, e.g. a router link: render={<Link to="/" />}. |
+
+### Example 1 of 3: Variants
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Button } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Button>Primary</Button>
+      <Button variant="glass">Glass</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
+      <Button variant="danger">Delete</Button>
+    </>
+  );
+}
+```
+
+### Example 2 of 3: Sizes and icons
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Button } from "@sheenui/theme";
+import { ArrowRight as Arrow } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <Button size="sm">Small</Button>
+      <Button size="md" trailing={<Arrow />}>Continue</Button>
+      <Button size="lg">Large</Button>
+      <Button size="icon" variant="glass" aria-label="Next"><Arrow /></Button>
+    </>
+  );
+}
+```
+
+### Example 3 of 3: Loading and disabled
+
+Loading shows a spinner, disables the button and sets aria-busy.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Button } from "@sheenui/theme";
+
+export function Example() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <>
+      <Button loading={loading} onClick={() => { setLoading(true); setTimeout(() => setLoading(false), 1500); }}>
+        Save changes
+      </Button>
+      <Button disabled>Disabled</Button>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move focus to or from the button (visible focus ring). |
+| Enter / Space | Activate it. When render is a link, Enter follows the link like any link. |
+
+### Accessibility
+
+- A native <button type="button"> by default; with render it becomes a link or your router's Link with the same look.
+- While loading, the button stays focusable (aria-disabled, aria-busy) and ignores clicks, so focus is never lost.
+- An icon-only button (size="icon") needs an aria-label.
+- Touch targets are at least 44 x 44 px; forced colors keep a ButtonText border.
+
+### When to use Button
+
+- Use Button as a glassy, animated button in React for the main call to action on a landing page, with the primary variant for the one action you want taken and glass or ghost for secondary choices beside it.
+- Use the loading prop on a Save or Pay button so the click is ignored while a request runs, the spinner shows, and focus stays on the button.
+- Use the render prop to make a router link look and behave like a button, for example a See pricing link, without nesting an anchor inside a button element.
+- Skip it when the control chooses a value or a view, not an action. Use Toggle for a pressed state, SegmentedControl for one of a few options, and Tabs for switching panels.
+- Pair it with Dialog and Popover triggers through the render prop, Spinner or BorderBeam as children, and Tooltip to name an icon-only button with the icon size.
+
+
+### Frequently asked questions
+
+#### How do I build a glass button in React with SheenUI?
+
+Set variant to glass. It renders one frosted glass-1 surface with a light ripple from the press point. The other variants are primary, outline, ghost, link and danger. Sizes are sm, md and lg, plus icon for a 40px square, and fullWidth stretches it across its container.
+
+#### What happens to a button while loading is true?
+
+It shows a spinner, ignores clicks and sets aria-busy. It uses aria-disabled instead of the disabled attribute, so keyboard focus is never lost mid-action. A click handler is skipped, and preventDefault also cancels a form submit or a link navigation while the work runs.
+
+#### Can the button render as a link or a Base UI trigger?
+
+Yes, through the render prop: Button render={<Link to="/pricing" />}. Link semantics are kept, and type and disabled are not added; a disabled state is announced with aria-disabled. It also works as the render target of Base UI triggers such as DialogTrigger.
+
+#### How do I recolor the danger button?
+
+The danger fill is a gradient background-image over a solid color of the same red. To recolor, override both, for example className bg-orange-700 with the arbitrary class [background-image:none], or set the --sheen-danger-fill variable. Overriding only the background color leaves the gradient visible.
+
+
+### Related pages
+
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [Dropdown menu](https://lokendra-builds.github.io/sheenui/overlays/dropdown-menu)
+- [Button group](https://lokendra-builds.github.io/sheenui/components/button-group)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+
+#### Guides that cover it
+
+- [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks)
+- [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial)
+- [Apple Liquid Glass in CSS and React](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react)
+- [Accessible Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+- [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass)
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+- [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+- [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Button Group with Roving Focus
+
+URL: https://lokendra-builds.github.io/sheenui/components/button-group
+Sidebar name: Button group
+
+A React button group: buttons joined into one control with squared inner corners, one tab stop and arrow-key navigation. Tailwind CSS v4, MIT.
+
+What it is: A React button group that joins related buttons into one control, with attached corners and arrow-key roving focus. Use ButtonGroup to join related buttons into one control: a Day, Week, Month switch, a split action, or an editor toolbar with Cut, Copy and Paste.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button-group.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Button group
+
+Files to copy from `theme/src/`:
+
+- `components/button-group/`
+- `hooks/{use-direction.ts, use-latest.ts}`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: button-group. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ButtonGroup } from "@/components/sheenui/button-group/button-group";
+import { Button } from "@/components/sheenui/button/button";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, ButtonGroup } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-label | string | optional, no default | Accessible name of the group, e.g. "Text alignment". Give one when the buttons only make sense together. |
+| orientation | "horizontal" \| "vertical" | "horizontal" | Direction of the row and of the arrow keys. |
+
+### Example: Horizontal and vertical
+
+Any Button variant works inside; keep one size in a group.
+
+```tsx
+import { ButtonGroup } from "@/components/sheenui/button-group/button-group";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { Button, ButtonGroup } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-start gap-5">
+      <ButtonGroup aria-label="View">
+        <Button variant="glass">Day</Button>
+        <Button variant="glass">Week</Button>
+        <Button variant="glass">Month</Button>
+      </ButtonGroup>
+      <ButtonGroup aria-label="Actions" orientation="vertical">
+        <Button variant="outline" size="sm">Copy</Button>
+        <Button variant="outline" size="sm">Paste</Button>
+        <Button variant="outline" size="sm" disabled>Cut</Button>
+      </ButtonGroup>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focuses the group once, on the button that was last focused (the first at first). |
+| ← / → | Move to the previous or next button (↑ / ↓ when vertical). It wraps. |
+| Home / End | Jump to the first or last button. |
+| Enter / Space | Press the focused button. |
+
+### Accessibility
+
+- The group is role="group"; name it with aria-label when the buttons only make sense together ("View", "Text alignment").
+- Each button keeps its own name and state: use aria-pressed on toggle buttons. Disabled buttons are skipped by the arrow keys.
+- Roving focus keeps a long toolbar to one tab stop. Targets stay 44px on touch screens.
+- In right-to-left pages the arrow keys follow the reading direction.
+
+### When to use the button group
+
+- Use ButtonGroup for a Day, Week, Month switch above a chart, a split action with a dropdown caret, or the Cut, Copy and Paste buttons of an editor toolbar.
+- Use orientation="vertical" for a stacked group, for example next to a sidebar; the arrow keys follow the direction.
+- Give the group an aria-label so the role="group" has a name, and give toggle buttons aria-pressed so their state is announced.
+- Skip it when the choice is exclusive and belongs to a form. Use SegmentedControl for one of a few values and Toggle or ToggleGroup for pressed states.
+- Pair it with Tooltip on icon-only buttons and DropdownMenu for a split button's menu.
+
+
+### Button group, toggle group or segmented control?
+
+The three look alike and answer different questions. ButtonGroup joins buttons that each run their own action (Copy, Paste, Cut). ToggleGroup keeps a pressed state for each button, for formatting such as bold and italic. SegmentedControl holds exactly one selected value and belongs in a form. Pick by what the control remembers: nothing, a set of pressed buttons, or one value.
+
+
+### Frequently asked questions
+
+#### How do I group buttons in React with SheenUI?
+
+Wrap Button elements in ButtonGroup. It adds no surface of its own: the buttons keep their variant, hover and press motion, and the group only joins their edges and handles the keys.
+
+#### How does keyboard navigation work?
+
+Tab focuses the group once. The arrow keys move between the buttons, Home and End jump to the ends, and Enter or Space presses the focused one. Disabled buttons are skipped.
+
+#### Can I mix links and buttons?
+
+Yes. Any Button, including one rendered as a link through the render prop, can sit in the group.
+
+#### Is ButtonGroup the same as SegmentedControl?
+
+No. ButtonGroup arranges independent actions. SegmentedControl is a form control that holds one selected value.
+
+#### Why does the group have one tab stop?
+
+The group uses roving focus: Tab lands on one button and the arrow keys move between the rest. A toolbar of ten buttons then costs a keyboard user one Tab press instead of ten, and focus returns to the button that was last used.
+
+#### What do I pass for a vertical group, and does it work right to left?
+
+Pass orientation="vertical". The arrow keys then move with up and down. On a right-to-left page the left and right arrows follow the reading direction.
+
+
+### Related pages
+
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Toolbar](https://lokendra-builds.github.io/sheenui/layout/toolbar)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated Checkbox for React (Indeterminate Too)
+
+URL: https://lokendra-builds.github.io/sheenui/components/checkbox
+Sidebar name: Checkbox
+
+An animated glass React checkbox whose check pops in with Motion, with an indeterminate state for select-all. Built on Base UI, styled with Tailwind v4.
+
+What it is: An animated checkbox for React whose check pops in, with an indeterminate state for “select all”, built on Base UI's accessible checkbox.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/checkbox.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Checkbox
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/checkbox/`
+- `hooks/use-latest.ts`
+- `lib/{cn.ts, field-control-shell.tsx, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: checkbox. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Checkbox } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Classes for the outer element: the <label> (or the wrapper holding an error); the control itself when there is neither. |
+| controlClassName | string \| ((state: CheckboxRootState) => string \| undefined) | optional, no default | Classes for the checkbox box itself. Base UI's state function form works here. |
+| label | ReactNode | optional, no default | Text next to the box. Clicking it toggles the checkbox. Without a label, give the checkbox an aria-label. |
+| description | ReactNode | optional, no default | Secondary line under the label. It sits inside the same <label>, so screen readers read it with the label. |
+| error | ReactNode | optional, no default | Error message under the control. Marks it invalid (aria-invalid, danger border) and is announced; linked with aria-describedby. |
+| checked / defaultChecked | boolean | false | Controlled or uncontrolled state. |
+| indeterminate | boolean | false | Shows a dash: some, but not all, children are checked. |
+| onCheckedChange | (checked) => void | optional, no default | Called with the new checked state when the control is toggled. |
+| disabled | boolean | false | Makes the control non-interactive. |
+
+### Example 1 of 2: Select all (indeterminate)
+
+```tsx
+import { useState } from "react";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+// Package build (after the first npm release, or a packed tarball): import { Checkbox } from "@sheenui/theme";
+
+export function Example() {
+  const [items, setItems] = useState({ design: true, code: false, ship: false });
+  const all = Object.values(items).every(Boolean);
+  const some = Object.values(items).some(Boolean);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <Checkbox
+        label="All tasks"
+        checked={all}
+        indeterminate={some && !all}
+        onCheckedChange={(v) => setItems({ design: v, code: v, ship: v })}
+      />
+      <div className="ms-8 flex flex-col gap-3">
+        {(["design", "code", "ship"] as const).map((key) => (
+          <Checkbox
+            key={key}
+            label={key.charAt(0).toUpperCase() + key.slice(1)}
+            checked={items[key]}
+            onCheckedChange={(v) => setItems({ ...items, [key]: v })}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: In a form
+
+Checkboxes submit with the form through name. Here the button stays disabled until the terms are accepted.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+// Package build (after the first npm release, or a packed tarball): import { Button, Checkbox } from "@sheenui/theme";
+
+export function Example() {
+  const [terms, setTerms] = useState(false);
+
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        console.log(Object.fromEntries(new FormData(event.currentTarget)));
+      }}
+      className="flex flex-col items-start gap-4"
+    >
+      <Checkbox name="updates" label="Send me product updates" description="One email a month. Unsubscribe any time." defaultChecked />
+      <Checkbox name="terms" label="I accept the terms" checked={terms} onCheckedChange={setTerms} />
+      <Checkbox disabled label="Single sign-on" description="Managed by your administrator." />
+      <Button type="submit" disabled={!terms}>Create account</Button>
+    </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move focus to or from the checkbox. |
+| Space | Toggle it (Enter does not, as with a native checkbox). |
+
+### Accessibility
+
+- A real checkbox role; indeterminate sets aria-checked="mixed".
+- The label and description share one <label>, so clicking either toggles it.
+- The unchecked border keeps 3:1 contrast; forced colors fill the box with Highlight. The touch hit area is 44 x 44 px.
+
+### When to use Checkbox
+
+- Use Checkbox as a React checkbox component for independent yes or no options in a settings form, such as email me about product updates, where each choice can be on or off without affecting the others.
+- Use the indeterminate prop for a select all row above a list, so the parent shows a mixed state when only some of the child checkboxes are checked.
+- Use label and description for a terms and conditions line, with the explanation under the label sharing one label element so clicking either toggles the box.
+- Skip it when the setting applies immediately with no submit step. Use Switch for that, and RadioGroup when exactly one option out of several must be picked.
+- Pair it with Field or a form library for validation, Button for the submit action, and DataTable, which uses checkbox cells for row selection and bulk actions.
+
+
+### Frequently asked questions
+
+#### How do I build an animated checkbox in React with SheenUI?
+
+Use the Checkbox component. The accent fill fades in on its own layer and the check mark draws itself using SVG pathLength; both leave faster than they arrive. Under reduced motion the mark simply fades, with no drawing or scaling. You get that without writing any animation code.
+
+#### How do I show an error on a checkbox?
+
+Pass the error prop. It marks the control invalid with aria-invalid and a danger border, shows the message under the control and links it through aria-describedby so it is announced. Any aria-describedby you pass yourself is kept alongside it.
+
+#### Which keys toggle the checkbox?
+
+Tab focuses it and Space toggles it. It is a real checkbox role, so indeterminate is exposed as aria-checked mixed. Clicking the label or description also toggles it, because they share a label element. Without a visible label, give the checkbox an aria-label.
+
+#### What props does the checkbox accept?
+
+Everything Base UI Checkbox.Root takes, including checked, defaultChecked, onCheckedChange, indeterminate, disabled, readOnly, required, name and value. On top of that it adds label, description and error. The checked state works controlled with useState or uncontrolled with defaultChecked.
+
+
+### Related pages
+
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Combobox: Searchable Multi-Select (Select2)
+
+URL: https://lokendra-builds.github.io/sheenui/components/combobox
+Sidebar name: Combobox (Select2)
+
+A Select2-style React combobox: type to filter, multi-select animated chips, groups, created options and async search. Built on Base UI + Tailwind CSS v4.
+
+What it is: A React combobox with search in the style of Select2: type to filter, pick one or many as animated chips, group or create options, or search a server as you type.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/combobox.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Combobox (Select2)
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/combobox/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-direction.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, field-size.ts, glide-highlight.tsx, group-segments.ts, popup-a11y.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: combobox. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Combobox, type ComboboxOption } from "@/components/sheenui/combobox/combobox";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Combobox, type ComboboxOption } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| options | ComboboxOption[] | [] | All options. With loadOptions, these are shown before the user types. |
+| label | ReactNode | optional, no default | Visible label above the field. Without one, pass aria-label or aria-labelledby. |
+| description | ReactNode | optional, no default | Helper text under the field; replaced by error when there is one. |
+| error | ReactNode | optional, no default | Shows an error message under the field. Marks the field invalid and is announced. |
+| placeholder | string | "Search…" | Sets the placeholder of the text input. |
+| onCreate | ((label: string) => ComboboxOption \| Promise<ComboboxOption>) | optional, no default | Let users add an option that isn't in the list. Return the new option (or a promise of it). |
+| loadOptions | ((query: string) => Promise<ComboboxOption[]>) | optional, no default | Fetch options from a server as the user types (debounced). Errors are caught and shown in the popup. |
+| debounceMs | number | 250 | Sets the debounce for loadOptions, in ms. |
+| onError | ((error: unknown) => void) | optional, no default | Called when loadOptions or onCreate throws, for logging. The UI already shows the error. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called with the new state when the popup opens or closes. |
+| clearOnEscape | boolean | on for single, off for multiple | Escape on a closed popup clears the selection (ARIA combobox pattern). In a multiple Combobox it is off unless you set it, so one key press can't wipe every chip. |
+| onFocus | FocusEventHandler<HTMLInputElement> | optional, no default | Runs when the text input gains focus. |
+| onBlur | FocusEventHandler<HTMLInputElement> | optional, no default | Blur handler of the text input. |
+| id | string | generated | Id of the text input; a generated one is used when omitted. |
+| name | string | optional, no default | Submits the selected value(s) with a form. |
+| required | boolean | required | Mark the field as required. |
+| disabled | boolean | optional, no default | Disable the whole field. |
+| readOnly | boolean | optional, no default | Show the value but do not let it change. |
+| autoFocus | boolean | optional, no default | Focus the input on mount. |
+| aria-label | string | optional, no default | Accessible name when there is no visible label. |
+| aria-labelledby | string | optional, no default | Id of an element that names the field. |
+| aria-describedby | string | optional, no default | Id of extra descriptive text (the helper text is linked automatically). |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Force the invalid state (also set by error). |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| className | string | optional, no default | Class for the outer wrapper (label + field + helper text), same as Input and Select. |
+| inputClassName | string | optional, no default | Class for the text <input> inside the field. |
+| virtualized | boolean \| "auto" | "auto" | Windows the option list so only the options near the viewport are in the DOM: true always, false never, "auto" only above 200 options (VIRTUALIZE_THRESHOLD). Keyboard navigation, aria-activedescendant, filtering and aria-setsize / aria-posinset work across every option, and the scroll height does not change. Windowed rows are a fixed height (one line; a description is cut to fit); options are listed group by group and group headings are visual only. |
+| emptyState | ReactNode | "No results found." | What shows when nothing matches (a string or any node). |
+| labels | Partial<ComboboxLabels> | defaultComboboxLabels | Every other string, for translation: labels={{ clear: "Effacer" }}. A partial object is merged over defaultComboboxLabels. Every other string, for translation: labels={{ otherGroup: "…" }}; omitted keys keep the English of defaultComboboxLabels. All 15 keys of ComboboxLabels are listed in the key table under the props table. |
+| multiple (= false) | false | false | Lets the person pick only one option. |
+| multiple (= true) | true | required | Select2-style tags: pick many, shown as removable chips. |
+| value (multiple = false) | string \| null | optional, no default | The selected option's value (controlled). null is no selection. |
+| value (multiple = true) | string[] | optional, no default | Sets the selected values when controlled. |
+| defaultValue (multiple = false) | string \| null | optional, no default | The selected option's value on mount (uncontrolled). |
+| defaultValue (multiple = true) | string[] | optional, no default | The selected values on mount (uncontrolled). |
+| onValueChange (multiple = false) | (value: string \| null) => void | optional, no default | Called with the new value, or null when cleared. |
+| onValueChange (multiple = true) | (value: string[]) => void | optional, no default | Called with the new list of values. |
+| maxSelected (multiple = true) | number | optional, no default | Stop adding chips after this many. |
+
+### Example 1 of 5: Searchable, single
+
+Type to filter. Arrow keys move, Enter picks, Escape closes.
+
+```tsx
+import { useState } from "react";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+// Package build (after the first npm release, or a packed tarball): import { Combobox } from "@sheenui/theme";
+
+export function Example() {
+  const [country, setCountry] = useState<string | null>("in");
+
+  return (
+    <Combobox
+      label="Country"
+      placeholder="Search countries…"
+      options={[
+        { value: "in", label: "India", icon: "🇮🇳", description: "+91" },
+        { value: "us", label: "United States", icon: "🇺🇸", description: "+1" },
+        { value: "gb", label: "United Kingdom", icon: "🇬🇧", description: "+44" },
+        { value: "de", label: "Germany", icon: "🇩🇪", description: "+49" },
+      ]}
+      value={country}
+      onValueChange={setCountry}
+    />
+  );
+}
+```
+
+### Example 2 of 5: Multiple with chips, groups and a limit
+
+Chips pop in and out. Backspace removes the last one; Left Arrow moves into the chips.
+
+```tsx
+import { useState } from "react";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+// Package build (after the first npm release, or a packed tarball): import { Combobox } from "@sheenui/theme";
+
+export function Example() {
+  const [picked, setPicked] = useState<string[]>(["py", "django", "react"]);
+
+  return (
+    <Combobox
+      multiple
+      maxSelected={5}
+      label="Skills"
+      options={[
+        { value: "py", label: "Python", group: "Languages" },
+        { value: "django", label: "Django", group: "Frameworks" },
+        { value: "temporal", label: "Temporal", group: "Infrastructure" },
+        { value: "react", label: "React", group: "Frameworks" },
+        { value: "postgres", label: "PostgreSQL", group: "Infrastructure" },
+      ]}
+      value={picked}
+      onValueChange={setPicked}
+    />
+  );
+}
+```
+
+### Example 3 of 5: Creatable tags
+
+Type something new and choose “Create …” to add it.
+
+```tsx
+import { Combobox, type ComboboxOption } from "@/components/sheenui/combobox/combobox";
+// Package build (after the first npm release, or a packed tarball): import { Combobox, type ComboboxOption } from "@sheenui/theme";
+
+const tags: ComboboxOption[] = [
+  { value: "design", label: "design" },
+  { value: "frontend", label: "frontend" },
+  { value: "bug", label: "bug" },
+  { value: "urgent", label: "urgent" },
+];
+
+export function Example() {
+  return (
+    <Combobox
+      multiple
+      label="Labels"
+      options={tags}
+      defaultValue={["design"]}
+      onCreate={(label) => ({ value: label.toLowerCase(), label })}
+    />
+  );
+}
+```
+
+### Example 4 of 5: Async search
+
+Results come from a (pretend) server as you type, with a loading state. Try “ra” or “sh”.
+
+```tsx
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+// Package build (after the first npm release, or a packed tarball): import { Combobox } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Combobox
+      multiple
+      label="Invite people"
+      placeholder="Search by name…"
+      loadOptions={async (query) => {
+        const res = await fetch(`/api/people?q=${encodeURIComponent(query)}`);
+        return res.json(); // [{ value, label, description?, icon? }]
+      }}
+    />
+  );
+}
+```
+
+### Example 5 of 5: Thousands of options
+
+Windowed above 200 options (virtualized defaults to auto): filtering runs over all 5,000, only the visible rows are in the DOM, the arrow keys and aria-activedescendant follow the active option, and group headings stay in order. Type 'Item 4999' or arrow down.
+
+```tsx
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+// Package build (after the first npm release, or a packed tarball): import { Combobox } from "@sheenui/theme";
+
+const options = Array.from({ length: 5000 }, (_, i) => ({
+  value: String(i + 1),
+  label: `Item ${String(i + 1).padStart(4, "0")}`,
+  group: i < 2500 ? "First half" : "Second half",
+}));
+
+export function Example() {
+  return <Combobox label="Item" options={options} virtualized />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Type | Filter the options. |
+| Arrow Down / Arrow Up | Move through the options; Arrow Down opens the list. |
+| Enter | Pick the highlighted option (or create one, with onCreate). |
+| Escape | Close the list; on a closed list it clears a single selection. |
+| Backspace | Multiple: remove the last chip when the input is empty. |
+| Arrow Left / Arrow Right | Multiple: move between the chips from the start of the input. |
+
+### Accessibility
+
+- The ARIA combobox pattern: an input with aria-expanded and aria-controls plus a listbox of options.
+- Result counts, loading, errors and the "create" option are announced politely; focus never leaves the input.
+- error marks the field invalid and is linked to it; chips have remove buttons with names.
+- Without a visible label, pass aria-label or aria-labelledby. Every string is translatable through the label props.
+
+### All exports on this page
+
+- Combobox — Searchable select (Select2-style): single or multiple selection with chips, groups, icons, a "create" option and async search.
+- defaultComboboxLabels — The English ComboboxLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use Combobox
+
+- Use Combobox as a Select2-style searchable select for a country or timezone picker, where the list has dozens of entries and people would rather type a few letters than scroll a long menu. Use it as an autocomplete for React and Tailwind projects when a plain select is too long to scan and people need to type to narrow the options.
+- Use multiple with chips for choosing tags or assignees, with maxSelected to cap the count and Backspace to remove the last chip from the keyboard.
+- Use loadOptions for a user search backed by an API; requests are debounced by debounceMs, and loading, empty and failed states with a Try again option are shown in the popup.
+- Skip it when there are only a handful of fixed options. Use Select for a short list, RadioGroup for two or three visible choices, or Command for an app-wide action search.
+- Pair it with Field or react-hook-form through name, ref and onBlur, Badge or Avatar as option icons, and Button for the submit step of the form around it.
+
+
+### Looking for Select2 in React?
+
+Select2 is a jQuery plugin for searchable selects, tags and remote data. SheenUI's Combobox gives the same features in React without jQuery: type to filter, multiple selection as removable chips, grouped options, created options through onCreate and async search through loadOptions, built on Base UI's Combobox so the ARIA pattern is correct.
+
+
+### Frequently asked questions
+
+#### How do I build a React combobox with search and multi-select?
+
+Pass options with value and label, then set multiple and manage value as a string array with onValueChange. Selected items appear as removable chips. Add maxSelected to stop adding after a limit. It is built on Base UI Combobox, so the ARIA combobox pattern comes with it.
+
+#### How does async search work?
+
+Provide loadOptions, a function that takes the query and returns a promise of options. Calls are debounced, 250ms by default, tunable with debounceMs. The popup shows searching, a start typing hint, and an error with a retry option; onError receives the thrown error for logging.
+
+#### Can users create an option that is not in the list?
+
+Yes. Pass onCreate, which receives the typed label and returns the new option or a promise of it. A Create option then appears in the list. If it throws, a message shows under the field and onError is called. All of these strings can be translated through labels.
+
+#### Which keyboard shortcuts does the combobox support?
+
+Type to filter, Down or Up to move through options, Enter to pick and Escape to close. On a closed single-select list Escape clears the value, controlled by clearOnEscape. In multiple mode Backspace removes the last chip and Left or Right move across the chips.
+
+
+### Related pages
+
+- [Select](https://lokendra-builds.github.io/sheenui/components/select)
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+- [Data table](https://lokendra-builds.github.io/sheenui/components/data-table)
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Data Table on TanStack Table v9 + Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/components/data-table
+Sidebar name: Data table
+
+A glass React data table on TanStack Table v9: search, filters, multi-sort, pagination, row selection, CSV export and server mode. Accessible, free, MIT.
+
+What it is: A typed, accessible React data table on TanStack Table v9 with search, faceted filters, multi-sort, pagination, selection and CSV export, all in glass.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/data-table.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Data table
+
+Files to copy from `theme/src/`:
+
+- `components/data-table/`
+- `components/pagination/`
+- `components/alert/`
+- `components/avatar/`
+- `components/badge/`
+- `components/button/`
+- `components/checkbox/`
+- `components/drawer/parts/sheet.tsx`
+- `components/input/`
+- `components/progress/`
+- `components/select/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/{gate.ts, reorder.tsx, tokens.ts}`
+- `lib/{cn.ts, csv.ts, field-control-shell.tsx, field-size.ts, form.ts, glide-highlight.tsx, group-segments.ts, initials.ts, motion-props.ts, page-size.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react @tanstack/react-table clsx motion tailwind-merge
+```
+
+Registry item: data-table. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { CurrencyCell, formatCurrency, ProgressCell, RelativeDateCell, StatusCell, UserCell } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn, type DataTableColumnFilters, type DataTableFilterOption, type DataTableSorting } from "@/components/sheenui/data-table/types";
+import { AnimatedList, AnimatedListItem } from "@/components/sheenui/motion/reorder";
+import { Pagination } from "@/components/sheenui/pagination/pagination";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AnimatedList, AnimatedListItem, CurrencyCell, DataTable, type DataTableColumn, type DataTableColumnFilters, type DataTableFilterOption, type DataTableSorting, formatCurrency, Pagination, ProgressCell, RelativeDateCell, StatusCell, UserCell } from "@sheenui/theme";
+```
+
+### DataTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | TData[] | required | The rows. With server-side mode, only the current page. |
+| columns | DataTableColumn<TData>[] | required | Column definitions; see DataTableColumn. |
+| getRowId | ((row: TData, index: number) => string) | row.id when present, otherwise the index | Returns a stable id for a row; it is the row's React key and keys the selection and expansion state. |
+| getRowLabel | ((row: TData) => string) | the first column's value | Short name for a row, used in labels ("Select row Ravi Kumar"). |
+| caption | string | required | Table caption: names the table for screen readers. |
+| showCaption | boolean | false | Show the caption visually (it is visually hidden by default). |
+| id | string | optional, no default | Sets the id of the table element. |
+| aria-label | string | labels.scrollRegion(caption) | Accessible name of the scroll region (a landmark only while the table overflows). |
+| className | string | optional, no default | Class for the outer wrapper (toolbar + table + footer). |
+| tableClassName | string | optional, no default | Class for the glass panel around the table. |
+| enableSearch | boolean | true | Shows a search box that filters every column. |
+| searchDebounceMs | number | 200 | Delay in ms before typing in the search box filters the rows. |
+| enableSelection | boolean | false | Checkbox column, select-all and the bulk-actions bar. |
+| enableViewOptions | boolean | true | Adds column visibility and density options to a View menu. |
+| enableExport | boolean | true | Shows a button that exports the rows as CSV. |
+| exportFilename | string | "data" | File name of the CSV download (".csv" is added). |
+| onExport | ((rows: TData[], scope: "filtered" \| "selected") => void) | optional, no default | Replace the built-in CSV download. Receives the rows being exported, in table order. With manual pagination the table only holds the current page, so the toolbar Export is shown only when this is set: fetch the full export from your server here. |
+| enableSorting | boolean | true | Lets people sort by clicking a column header; set false to turn sorting off for the whole table. |
+| enableMultiSort | boolean | true | Shift-click headers to sort by more than one column. |
+| stickyFirstColumn | boolean | true | Pin the first data column (and the checkbox / expand columns) while scrolling sideways. Under 640px the pinned columns are capped at about 45% of the screen. |
+| animateRows | boolean | true | Slide rows to their new place when sorting, filtering or paging reorders them (Motion layout, transform only, spring.smooth; rows are measured once per change). Instant with reduced motion. |
+| virtualize | boolean \| "auto" | "auto" | Render only the rows in view (plus a few more) with spacers for the rest, so a long page (100 rows) sorts and scrolls without a long task. "auto" windows a page of 50 rows or more when maxHeight is set and the layout is the table (not cards). Rows are measured as they render, expanded panels included. Rows outside the window are not in the DOM, so Tab skips them and a focused row that scrolls out loses focus: set false for tables people tab through row by row. |
+| maxHeight | string | optional, no default | Max height of the scroll area; the header sticks to its top. |
+| pageSizeOptions | number[] | [10, 20, 50, 100] | Page sizes offered in the footer. |
+| defaultPageSize | number | 10 | Sets the starting page size when uncontrolled. |
+| hidePagination | boolean | false | Hide the footer (pagination). |
+| rowActions | DataTableRowAction<TData>[] \| ((row: TData) => DataTableRowAction<TData>[]) | optional, no default | Items of the ⋯ menu at the end of each row: a list, or a function that returns one for a row. |
+| renderExpanded | ((row: TData) => ReactNode) | optional, no default | Detail panel shown under an expanded row. Enables the chevron column. |
+| bulkActions | DataTableBulkAction<TData>[] | [] | Shows the buttons in the floating selection bar. |
+| toolbarLeft | ReactNode | optional, no default | Extra controls at the start / end of the toolbar. |
+| toolbarRight | ReactNode | optional, no default | Extra controls at the end of the toolbar. |
+| mobileLayout | "scroll" \| "cards" | "scroll" | "cards": rows become glass cards under 640px. |
+| loading | boolean | false | First load (skeleton) or, when rows are present, a refetch (rows stay, dimmed). |
+| error | ReactNode | optional, no default | Shows an error message (or true for the default). |
+| onRetry | (() => void) | optional, no default | Called by the error state's Retry button. Without it the button is hidden. |
+| emptyState | ReactNode | optional, no default | Custom empty state (replaces the default). |
+| density | DataTableDensity | optional, no default | Row height, controlled: "comfortable" or "compact". Pair with onDensityChange; the View menu changes it. |
+| defaultDensity | DataTableDensity | "comfortable" | Sets the starting density when uncontrolled. |
+| onDensityChange | ((density: DataTableDensity) => void) | optional, no default | Called with the new density from the View menu. |
+| sorting | DataTableSorting | optional, no default | Current sort order, as an array of column id and direction; pass it with onSortingChange to control sorting. |
+| defaultSorting | DataTableSorting | optional, no default | Sets the starting sorting when uncontrolled. |
+| onSortingChange | ((sorting: DataTableSorting) => void) | optional, no default | Called with the next sorting. |
+| pagination | DataTablePagination | optional, no default | Sets the page index and size when controlled. |
+| onPaginationChange | ((pagination: DataTablePagination) => void) | optional, no default | Called with the next page index and size. |
+| globalFilter | string | optional, no default | Current search text; pass it with onGlobalFilterChange to control the search box. |
+| defaultGlobalFilter | string | optional, no default | Initial search text when uncontrolled (a pre-filled search box). |
+| onGlobalFilterChange | ((value: string) => void) | optional, no default | Called with the applied (debounced) search text. |
+| columnFilters | DataTableColumnFilters | optional, no default | Currently applied faceted filters; pass it with onColumnFiltersChange to control them. |
+| defaultColumnFilters | DataTableColumnFilters | optional, no default | Sets the starting faceted filters when uncontrolled. |
+| onColumnFiltersChange | ((filters: DataTableColumnFilters) => void) | optional, no default | Called with the next faceted filters. |
+| rowSelection | DataTableRowSelection | optional, no default | Selected row ids (controlled). |
+| defaultRowSelection | DataTableRowSelection | optional, no default | Sets the row ids selected at first when uncontrolled ({ [rowId]: true }). |
+| onRowSelectionChange | ((selection: DataTableRowSelection) => void) | optional, no default | Called with the next selection. |
+| columnVisibility | DataTableColumnVisibility | optional, no default | Which columns are shown, keyed by column id; pass it with onColumnVisibilityChange to control it. |
+| onColumnVisibilityChange | ((visibility: DataTableColumnVisibility) => void) | optional, no default | Called with the next visibility map. |
+| manual | boolean | false | Works as shorthand for manualPagination + manualSorting + manualFiltering. |
+| manualPagination | boolean | optional, no default | data is already the current page; use rowCount for the total. |
+| manualSorting | boolean | optional, no default | data is already sorted. |
+| manualFiltering | boolean | optional, no default | data is already searched and filtered. |
+| rowCount | number | optional, no default | Sets the total rows on the server (manual pagination). |
+| labels | Partial<DataTableLabels> | defaultDataTableLabels | Every other string, for translation: labels={{ searchLabel: "…" }}; omitted keys keep the English of defaultDataTableLabels. All 60 keys of DataTableLabels are listed in the key table under the props table. |
+
+### Column options
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | string | optional, no default | Unique; also the accessor key unless accessorKey / accessorFn is set. |
+| header | string | optional, no default | Header text; reused for the View menu, CSV, cards and announcements. |
+| accessorKey / accessorFn | keyof TData / (row) => unknown | id | Sets where the value comes from. |
+| cell | (ctx) => ReactNode | text | Custom cell. ctx has row, value, highlight(), query, density. |
+| align / numeric | "left" \| "center" \| "right" / boolean | "left" | numeric right-aligns with tabular figures and sorts numerically. |
+| width / minWidth | number \| string | optional, no default | Preferred and minimum width. For wrap columns, width is also the minimum. |
+| enableSorting / enableHiding | boolean | true | Switches that turn sorting and hiding on or off for one column. |
+| defaultHidden | boolean | false | Starts hidden (show it from the View menu). |
+| searchable / searchValue | boolean / (row) => string | true | Whether, and on what text, the global search matches. Hidden columns are never searched. |
+| filter / filterOptions | "faceted" / DataTableFilterOption[] | optional, no default | Multi-select filter with counts. Options are derived from the data when omitted. |
+| sortFn | "alphanumeric" \| "text" \| "basic" \| "datetime" \| (a, b) => number | by column type | Picks how the column sorts: a built-in sort or your own comparison function. |
+| exportValue / enableExport | (row) => value / boolean | value / true | Controls what the CSV export writes for this column: the cell value, and whether it is included. |
+| wrap / hideInCards | boolean | false | Let text wrap / leave out of the card layout. |
+
+### Cell helpers
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| UserCell | { name, email?, src?, highlight? } | optional, no default | Shows an avatar, name and email. |
+| StatusCell | { value, tones?, label? } | optional, no default | Shows a badge with a tone per value. |
+| ProgressCell | { value, label } | optional, no default | Shows a thin progress bar with a percentage. |
+| CurrencyCell / formatCurrency | { value, currency?, locale? } | "USD" | Formats the value as currency with tabular figures. |
+| RelativeDateCell / formatRelativeDate | { value, now?, locale? } | optional, no default | “3 days ago”, full date in the title and for screen readers. |
+| highlightText / Highlight | (text, query) | optional, no default | Wrap search matches in <mark>. |
+| toCsv / exportCsv | (headers, rows) / (filename, headers, rows) | optional, no default | RFC 4180 CSV with formula-injection guard and a UTF-8 BOM. |
+
+### CurrencyCell props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | number | required | The amount, in major units (12.5 is 12.50). |
+| currency | string | "USD" | Sets the ISO 4217 currency code, for example "USD". |
+| locale | string | the runtime's locale | BCP 47 locale used to format the amount; defaults to the runtime's locale. |
+| highlight | Highlighter | (t) => t | Highlights the part of the formatted amount that matches the table's search text. |
+
+### Highlight props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| text | string \| number \| null \| undefined | required | The text to show. A number is shown as is; null or undefined renders nothing. |
+| query | string | required | The search text to mark inside text, matched case-insensitively. An empty string marks nothing. |
+
+### ProgressCell props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | number | required | 0–100. Values outside the range are clamped. |
+| label | string | required | Accessible name of the bar, e.g. "Usage". |
+| className | string | optional, no default | Adds extra classes to the cell. |
+
+### RelativeDateCell props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | string \| number \| Date | required | The moment to describe: a Date, an ISO string or a timestamp in ms. |
+| now | number \| Date | optional, no default | The reference time for "3 hours ago". Pass a fixed value on a prerendered page so the server and browser agree. |
+| locale | string | the runtime's locale | BCP 47 locale for the relative phrase; defaults to the runtime's locale. |
+
+### StatusCell props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | string | required | The status text from your data, e.g. "active". |
+| tones | Record<string, StatusTone> | optional, no default | Tone per value, e.g. { active: "success", churned: "danger" }. Unknown values are neutral. |
+| label | ReactNode | the value | Display text (defaults to the value). |
+| className | string | optional, no default | Adds extra classes to the badge. |
+
+### UserCell props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| name | string | required | The person's full name; also the avatar's initials. |
+| email | string | optional, no default | Shows the secondary line under the name. |
+| src | string | optional, no default | Avatar image URL; initials show without it. |
+| status | "online" \| "away" \| "offline" | optional, no default | Shows the presence dot on the avatar. |
+| highlight | Highlighter | (t) => t | The highlight function from the cell context, so search matches stay marked. |
+| className | string | optional, no default | Adds extra classes to the cell. |
+
+### Example 1 of 7: Full-featured (client-side)
+
+312 generated users. Search highlights matches, filters show counts, shift-click headers to sort by several columns, shift-click checkboxes to select a range. Selection survives paging. Under 640px the rows become cards.
+
+```tsx
+import { CurrencyCell, ProgressCell, RelativeDateCell, StatusCell, UserCell } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn, type DataTableFilterOption } from "@/components/sheenui/data-table/types";
+// Package build (after the first npm release, or a packed tarball): import { CurrencyCell, DataTable, type DataTableColumn, ProgressCell, RelativeDateCell, StatusCell, UserCell, type DataTableFilterOption } from "@sheenui/theme";
+import { Pencil as EditIcon, Eye as EyeIcon, Trash2 as TrashIcon } from "lucide-react";
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "Owner" | "Admin" | "Editor" | "Viewer" | "Billing";
+  status: "active" | "trial" | "past_due" | "churned" | "invited";
+  mrr: number;
+  signedUp: string; // ISO date
+  usage: number; // 0 to 100
+  country: string;
+};
+
+// Your data: rows from an API or a store (a few inline here so the example runs as pasted).
+const users: User[] = [
+  { id: "u1", name: "Ravi Kumar", email: "ravi@example.com", role: "Owner", status: "active", mrr: 240, signedUp: "2025-01-14", usage: 82, country: "IN" },
+  { id: "u2", name: "Asha Patel", email: "asha@example.com", role: "Admin", status: "trial", mrr: 0, signedUp: "2025-06-02", usage: 35, country: "GB" },
+  { id: "u3", name: "Meera Shah", email: "meera@example.com", role: "Editor", status: "past_due", mrr: 90, signedUp: "2024-11-23", usage: 58, country: "US" },
+  { id: "u4", name: "Kabir Rao", email: "kabir@example.com", role: "Viewer", status: "invited", mrr: 0, signedUp: "2025-08-30", usage: 4, country: "DE" },
+];
+
+const roleOptions: DataTableFilterOption[] = ["Owner", "Admin", "Editor", "Viewer", "Billing"].map((role) => ({ value: role, label: role }));
+const statusOptions: DataTableFilterOption[] = ["active", "trial", "past_due", "churned", "invited"].map((status) => ({ value: status, label: status }));
+
+export function Example() {
+  const columns: DataTableColumn<User>[] = [
+    {
+      id: "name", header: "User", minWidth: 240,
+      searchValue: (u) => `${u.name} ${u.email}`,
+      cell: ({ row, highlight }) => <UserCell name={row.name} email={row.email} highlight={highlight} />,
+    },
+    { id: "role", header: "Role", filter: "faceted", filterOptions: roleOptions },
+    {
+      id: "status", header: "Status", filter: "faceted", filterOptions: statusOptions,
+      cell: ({ row }) => <StatusCell value={row.status} tones={{ active: "success", churned: "danger" }} />,
+    },
+    { id: "mrr", header: "MRR", numeric: true, cell: ({ row }) => <CurrencyCell value={row.mrr} locale="en-US" /> },
+    { id: "signedUp", header: "Signed up", sortFn: "datetime", cell: ({ row }) => <RelativeDateCell value={row.signedUp} now={Date.now()} locale="en-US" /> },
+    { id: "usage", header: "Usage", numeric: true, cell: ({ row }) => <ProgressCell value={row.usage} label="Usage" /> },
+    { id: "country", header: "Country", defaultHidden: true },
+  ];
+
+  return (
+    <DataTable
+      caption="Workspace members"
+      data={users}
+      columns={columns}
+      enableSelection
+      mobileLayout="cards"
+      maxHeight="36rem"
+      rowActions={[
+        { label: "View", icon: <EyeIcon />, onSelect: (u) => console.log("view", u.id) },
+        { label: "Edit", icon: <EditIcon />, onSelect: (u) => console.log("edit", u.id) },
+        { label: "Delete", icon: <TrashIcon />, tone: "danger", separatorBefore: true, onSelect: (u) => console.log("delete", u.id) },
+      ]}
+      bulkActions={[
+        { label: "Delete", tone: "danger", icon: <TrashIcon />, onSelect: (rows, clear) => {
+            console.log("delete", rows.length, "users");
+            clear();
+          } },
+      ]}
+      renderExpanded={(u) => (
+        <p className="p-4 text-sm">
+          {u.name} · {u.country} · {u.email}
+        </p>
+      )}
+    />
+  );
+}
+```
+
+### Example 2 of 7: Server-side
+
+manual + rowCount: the table only renders. Sorting, search (debounced), filters and paging go to a fake API that answers after 600ms. While it loads, the previous rows stay in place under a veil, so nothing jumps.
+
+```tsx
+import { useState } from "react";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn, type DataTableColumnFilters, type DataTableSorting } from "@/components/sheenui/data-table/types";
+// Package build (after the first npm release, or a packed tarball): import { DataTable, type DataTableColumn, type DataTableColumnFilters, type DataTableSorting } from "@sheenui/theme";
+
+type Customer = { id: string; name: string; plan: string; mrr: number };
+
+const columns: DataTableColumn<Customer>[] = [
+  { id: "name", header: "Customer" },
+  { id: "plan", header: "Plan" },
+  { id: "mrr", header: "MRR", numeric: true },
+];
+
+// Sketch (the hook is yours to write, so this is not runnable as pasted): sends sorting, pagination, search and filters to the server (TanStack Query, SWR or your own).
+declare function useUsers(query: {
+  sorting: DataTableSorting;
+  pagination: { pageIndex: number; pageSize: number };
+  search: string;
+  filters: DataTableColumnFilters;
+}): { data: Customer[]; total: number; isFetching: boolean; error?: Error; refetch: () => void };
+
+export function Example() {
+  const [sorting, setSorting] = useState<DataTableSorting>([]);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<DataTableColumnFilters>([]);
+  const { data, total, isFetching, error, refetch } = useUsers({ sorting, pagination, search, filters });
+
+  return (
+    <DataTable
+      caption="Customers (server)"
+      manual
+      rowCount={total}
+      data={data}
+      columns={columns}
+      loading={isFetching}
+      error={error?.message}
+      onRetry={refetch}
+      sorting={sorting} onSortingChange={setSorting}
+      pagination={pagination} onPaginationChange={setPagination}
+      globalFilter={search} onGlobalFilterChange={setSearch}
+      columnFilters={filters} onColumnFiltersChange={setFilters}
+    />
+  );
+}
+```
+
+### Example 3 of 7: Minimal
+
+Just data, columns and a caption. Search, sorting, export and the View menu come with sensible defaults; turn any of them off with a prop.
+
+```tsx
+import { formatCurrency } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+// Package build (after the first npm release, or a packed tarball): import { DataTable, type DataTableColumn, formatCurrency } from "@sheenui/theme";
+
+type Invoice = { id: string; customer: string; due: string; amount: number };
+
+const invoices: Invoice[] = [
+  { id: "INV-1001", customer: "Acme Corp", due: "Nov 30", amount: 1280 },
+  { id: "INV-1002", customer: "Globex", due: "Dec 04", amount: 640.5 },
+  { id: "INV-1003", customer: "Initech", due: "Dec 12", amount: 2210 },
+];
+
+export function Example() {
+  const columns: DataTableColumn<Invoice>[] = [
+    { id: "id", header: "Invoice" },
+    { id: "customer", header: "Customer" },
+    { id: "due", header: "Due" },
+    { id: "amount", header: "Amount", numeric: true, cell: ({ row }) => formatCurrency(row.amount, "USD", "en-US", 2) },
+  ];
+
+  return (
+    <DataTable caption="Recent invoices" data={invoices} columns={columns} hidePagination />
+  );
+}
+```
+
+### Example 4 of 7: Animated sort
+
+Click a column header: rows slide to their new place (transform only, spring.smooth) instead of swapping. It is on by default (animateRows) and instant with reduced motion. For any other list, AnimatedList and AnimatedListItem do the same on insert, remove and reorder.
+
+```tsx
+import { useState } from "react";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+import { AnimatedList, AnimatedListItem } from "@/components/sheenui/motion/reorder";
+// Package build (after the first npm release, or a packed tarball): import { AnimatedList, AnimatedListItem, DataTable, type DataTableColumn } from "@sheenui/theme";
+
+type Invoice = { id: string; customer: string; amount: number };
+
+const invoices: Invoice[] = [
+  { id: "INV-1001", customer: "Acme Corp", amount: 1280 },
+  { id: "INV-1002", customer: "Globex", amount: 640 },
+  { id: "INV-1003", customer: "Initech", amount: 2210 },
+];
+
+const columns: DataTableColumn<Invoice>[] = [
+  { id: "id", header: "Invoice" },
+  { id: "customer", header: "Customer" },
+  { id: "amount", header: "Amount", numeric: true },
+];
+
+export function Example() {
+  const [names, setNames] = useState(invoices.map((invoice) => invoice.customer));
+  return (
+    <>
+      <DataTable caption="Invoices" data={invoices} columns={columns} animateRows hidePagination />
+      <button type="button" onClick={() => setNames((list) => [...list].reverse())}>
+        Reverse
+      </button>
+      <AnimatedList>
+        {names.map((name) => (
+          <AnimatedListItem key={name}>{name}</AnimatedListItem>
+        ))}
+      </AnimatedList>
+    </>
+  );
+}
+```
+
+### Example 5 of 7: Loading and error states
+
+While the first request runs the table shows skeleton rows with a sweep of light and a progress bar under the header. When it fails, an inline alert with a Retry button replaces the body (rows that were already on screen stay under a veil, with the alert below them).
+
+```tsx
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+// Package build (after the first npm release, or a packed tarball): import { DataTable, type DataTableColumn } from "@sheenui/theme";
+
+type Invoice = { id: string; customer: string; due: string };
+
+const columns: DataTableColumn<Invoice>[] = [
+  { id: "id", header: "Invoice" },
+  { id: "customer", header: "Customer" },
+  { id: "due", header: "Due" },
+];
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-6">
+      <DataTable caption="Loading invoices" data={[]} columns={columns} loading hidePagination enableSearch={false} />
+      <DataTable
+        caption="Invoices that failed to load"
+        data={[]}
+        columns={columns}
+        error="The billing service timed out. Check your connection and try again."
+        onRetry={() => undefined}
+        hidePagination
+        enableSearch={false}
+      />
+    </div>
+  );
+}
+```
+
+### Example 6 of 7: Ten thousand rows
+
+With maxHeight set, a page of 50 rows or more renders only the rows in view plus a few more (virtualize defaults to auto; pass virtualize to force it). Scroll to the end: the count below stays small, yet the scrollbar spans all 10,000. Rows outside the window are not in the DOM, so Tab skips them: set virtualize={false} for a table people tab through row by row.
+
+```tsx
+import { useEffect, useState } from "react";
+import { formatCurrency } from "@/components/sheenui/data-table/cells";
+import { DataTable } from "@/components/sheenui/data-table/data-table";
+import { type DataTableColumn } from "@/components/sheenui/data-table/types";
+// Package build (after the first npm release, or a packed tarball): import { DataTable, formatCurrency, type DataTableColumn } from "@sheenui/theme";
+
+type Order = { id: string; customer: string; status: string; total: number };
+
+const statuses = ["Paid", "Pending", "Shipped", "Refunded"];
+const orders: Order[] = Array.from({ length: 10_000 }, (_, i) => ({
+  id: `ORD-${String(i + 1).padStart(5, "0")}`,
+  customer: `Customer ${String(((i * 37) % 900) + 100)}`,
+  status: statuses[i % statuses.length] ?? "Paid",
+  total: 20 + ((i * 7919) % 48000) / 100,
+}));
+
+const columns: DataTableColumn<Order>[] = [
+  { id: "id", header: "Order", minWidth: 120 },
+  { id: "customer", header: "Customer", minWidth: 150 },
+  { id: "status", header: "Status", minWidth: 110 },
+  {
+    id: "total",
+    header: "Total",
+    numeric: true,
+    minWidth: 110,
+    cell: ({ row }) => formatCurrency(row.total, "USD", "en-US", 2),
+  },
+];
+
+export function Example() {
+  const [wrapper, setWrapper] = useState<HTMLDivElement | null>(null);
+  const [inDom, setInDom] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!wrapper) return;
+    const count = () => setInDom(wrapper.querySelectorAll("tbody tr[data-row-id]").length);
+    count();
+    const observer = new MutationObserver(count);
+    observer.observe(wrapper, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [wrapper]);
+
+  return (
+    <div ref={setWrapper} className="flex w-full flex-col gap-3">
+      <p className="text-sm text-sheen-fg-muted">Rows in the DOM: {inDom} of 10,000</p>
+      <DataTable
+        caption="Orders"
+        data={orders}
+        columns={columns}
+        maxHeight="22rem"
+        virtualize
+        hidePagination
+        defaultPageSize={10_000}
+      />
+    </div>
+  );
+}
+```
+
+### Example 7 of 7: Pagination on its own
+
+A nav landmark with aria-current on the current page. The number of slots stays the same as you page, so buttons never jump under the pointer; on phones it collapses to “Page x of y”.
+
+```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/sheenui/pagination/pagination";
+// Package build (after the first npm release, or a packed tarball): import { Pagination } from "@sheenui/theme";
+
+export function Example() {
+  const [page, setPage] = useState(6);
+
+  return (
+    <>
+      <Pagination page={page} pageCount={24} onPageChange={setPage} aria-label="Search results pages" />
+      <Pagination page={page} pageCount={24} onPageChange={setPage} size="sm" showFirstLast={false} siblingCount={2} />
+      <Pagination defaultPage={2} pageCount={5} getPageHref={(p) => `?page=${p}`} />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move through the toolbar, sortable headers, row checkboxes, row menus and the pager. A table that overflows becomes a focusable, scrollable region. |
+| Enter / Space | On a sortable header: sort by that column. On a checkbox or button: press it. |
+| Shift + Enter (or Shift-click) | On a sortable header: add the column to a multi-sort. |
+| Shift-click | On a row checkbox: select the range from the last one. |
+| Escape | In the search box: clear the search. |
+| Arrow keys, Home / End, typeahead | In the row, view and filter menus: move between items. Enter runs one; Escape closes the menu. |
+
+### Accessibility
+
+- Semantic table: a caption, column headers with scope, aria-sort on the primary sorted column. Secondary sorts are read out on their header buttons.
+- Sortable headers are buttons; Shift + Enter (or Shift-click) adds a column to the sort. A plain click on a column of a multi-sort makes it the only sort. Escape clears the search box.
+- Checkboxes are named after their row (“Select row Ravi Kumar”); Shift-click selects a range.
+- One polite live region announces result counts, sorting, page and page-size changes, and selection.
+- Search ignores case and accents (“cafe” finds “Café”) and only looks at visible columns, so every match is marked.
+- Focus never drops to the page: clearing the search, removing a filter chip, clearing the selection or deleting rows moves it to the next sensible control. Focused cells are kept clear of the sticky header, the pinned columns and the selection bar.
+- The scroll area is focusable (and a named region) when it overflows, so it can be scrolled with arrow keys. Focus outlines are solid; touch targets are 44px; forced-colors mode is supported.
+
+### Pagination props
+
+The pager under the table is the [Pagination component](https://lokendra-builds.github.io/sheenui/layout/pagination). Its props (page, onPageChange, pageCount, siblingCount and the rest) are listed on its page.
+
+
+### All exports on this page
+
+- CurrencyCell — A money amount, right-aligned digits (tabular figures) formatted with Intl for the locale.
+- DataTable — A full data table: global search with highlighted matches, multi-column sorting, faceted filters, row selection with bulk actions.
+- Highlight — Highlight as a component: wraps every match of query in a <mark>, ignoring case and accents (the same matching as the table search).
+- ProgressCell — A small progress bar with the percentage beside it, for usage or completion columns.
+- RelativeDateCell — A date as relative text ("3 days ago", "in 2 hours") inside a <time>.
+- StatusCell — A status as a dotted Badge.
+- UserCell — A table cell for a person: avatar, name and an optional email.
+- defaultDataTableLabels — Default English strings of DataTableLabels; spread it and override single keys to reword.
+- foldText — Text as the search compares it: lower case, accents removed, ß → ss, … so "cafe" finds "Café".
+- formatCurrency — value as money in currency (default "USD") for locale (default: the browser's), with maximumFractionDigits decimals (default 0).
+- formatRelativeDate — "3 days ago", "in 2 hours".
+- highlightText — Wrap every match of query in a <mark>.
+
+
+### When to use the data table
+
+- Use DataTable as a React table with filters and pagination for an admin list of users or orders where people need search with highlighted matches, multi-column sorting and a faceted Status filter with counts. If you are looking for a shadcn data table alternative, this one comes with sorting, paging, selection and a caption in a single component.
+- Use enableSelection with bulkActions for a list where people pick rows across several pages and then export, archive or delete them from the floating selection bar.
+- Use manual with rowCount and the controlled sorting, pagination and filter props when the dataset lives on a server and only the current page is in memory.
+- Skip it when you only need a few static rows or a key value layout. A plain table, DescriptionList or a stack of GlassCard items is lighter and easier to scan.
+- Pair it with the Pagination component it already uses in its footer, Badge, Avatar and Progress through the StatusCell, UserCell and ProgressCell helpers, and Toast to confirm a bulk action or a finished CSV export.
+
+
+### SheenUI DataTable or the shadcn data table recipe?
+
+The shadcn/ui data table is a recipe: you assemble columns, filters and pagination around TanStack Table yourself. SheenUI's DataTable is a finished component on TanStack Table v9: you pass data, columns and a caption and get search, faceted filters, multi-sort, pagination, row selection with bulk actions and a server mode through manual. Choose the recipe for full control of every cell; choose this one to skip the wiring.
+
+
+### Frequently asked questions
+
+#### How do I build a React data table with sorting and search?
+
+Pass data, columns and a caption, the three required props. Each column needs only an id and a header; the id is also the accessor key unless you set accessorKey or accessorFn. Search, sorting, faceted filters, paging and CSV export all run client-side by default. It uses TanStack Table v9 headless underneath, so you do not wire that library yourself.
+
+#### How does server-side mode work?
+
+Set manual and pass rowCount, plus controlled state props for sorting, pagination, search and filters. The data prop then holds only the current page. The toolbar Export button appears only when you provide an export handler, because the table cannot export rows it does not have.
+
+#### Is the data table accessible?
+
+It renders a real table with a caption, scoped headers and aria-sort on sorted columns. Sorting, paging, selection and result counts are announced through one polite live region, and checkboxes carry row-specific names. Sortable headers work with Enter or Space, and Shift-click or Shift+Enter adds a sort column.
+
+#### What happens on small screens?
+
+By default the table scrolls sideways, with the first data column pinned unless you turn off stickyFirstColumn. Set mobileLayout to cards and rows become glass cards under 640px. A column can opt out of the card with hideInCards. The scroll region is keyboard reachable.
+
+
+### Related pages
+
+- [SaaS revenue](https://lokendra-builds.github.io/sheenui/dashboards/saas)
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover)
+
+#### Guides that cover it
+
+- [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated React Modal Dialog with Glass Effect
+
+URL: https://lokendra-builds.github.io/sheenui/components/dialog
+Sidebar name: Dialog
+
+A glassmorphism React modal dialog that springs in with Motion. Focus trap, Escape to close and focus return come from Base UI. Tailwind CSS v4, MIT.
+
+What it is: A strong-glass React modal dialog that springs in with Motion, with focus trapping, Escape to close and focus return handled by Base UI.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dialog.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Dialog
+
+Files to copy from `theme/src/`:
+
+- `components/dialog/`
+- `components/drawer/parts/sheet.tsx`
+- `hooks/{use-latest.ts, use-media-query.ts}`
+- `lib/{cn.ts, form.ts, modal-flag.ts, popup-motion.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: dialog. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/sheenui/dialog/dialog";
+import { Input } from "@/components/sheenui/input/input";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use button, input, toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, useToast } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| mobile | MobilePresentation | "popup" | How the window opens on a phone-width screen (max-width: 640px): "popup" is the usual centred window; "sheet" is a bottom sheet with a drag handle, swipe-down to dismiss, a scrollable body capped at 85 dvh and home-indicator padding. Focus is trapped and returned and Escape closes in both. |
+| Dialog open / defaultOpen | boolean | false | Controlled or uncontrolled open state. |
+| Dialog onOpenChange | (open) => void | optional, no default | Called when the dialog opens or closes. |
+| DialogTrigger / DialogClose render | ReactElement | optional, no default | Render as your own element, e.g. render={<Button />}. |
+| DialogContent initialFocus / finalFocus | ref \| function \| boolean | first control / trigger | Where focus goes when the dialog opens and closes (Base UI). |
+
+### DialogContent props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The dialog body: usually DialogHeader, your content and DialogFooter. |
+| showClose | boolean | true | Show the × button in the top-right corner. |
+| labels | Partial<DialogLabels> | defaultDialogLabels | Translate the × button: { close: "Schließen" }. Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultDialogLabels. Its only key is listed in the key table under the props table. |
+| stateLight | boolean | false | Lights the open window with a soft accent glow: a lit edge and a light pool on the glass's own layer (data-state="on"; set data-state to "working", "success", "warning" or "error" to change it). Off with reduced transparency and forced colours. The window scrolls, so its outer aura is clipped: the glow reads inside the edge. |
+| container | HTMLElement \| ShadowRoot \| RefObject<HTMLElement \| ShadowRoot \| null> \| null | the end of document.body | Where the window is portalled. Pass an element to keep it inside a region (a stage, a preview) instead of the end of the body. |
+| backdrop | boolean | true | Render the dimmed scrim behind the window. Turn it off for a non-modal dialog (modal={false} on Dialog), where the page stays usable. |
+
+### Example 1 of 3: Edit profile
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/sheenui/dialog/dialog";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button />}>Edit profile</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit profile</DialogTitle>
+          <DialogDescription>Changes are saved to your account.</DialogDescription>
+        </DialogHeader>
+        <Input label="Name" defaultValue="Ada Lovelace" />
+        <DialogFooter>
+          <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+          <DialogClose render={<Button />}>Save</DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+### Example 2 of 3: Controlled, with a form
+
+Open state lives in your component, so any button (or code) can open it and a successful submit can close it.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/sheenui/dialog/dialog";
+import { Input } from "@/components/sheenui/input/input";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Input, useToast } from "@sheenui/theme";
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+  const toast = useToast();
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Invite a teammate</Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Invite a teammate</DialogTitle>
+            <DialogDescription>They get an email with a link to join the workspace.</DialogDescription>
+          </DialogHeader>
+          <form
+            id="invite-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              setOpen(false);
+              toast.success("Invitation sent");
+            }}
+          >
+            <Input label="Email" type="email" required placeholder="name@example.com" />
+          </form>
+          <DialogFooter>
+            <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
+            <Button type="submit" form="invite-form">Send invite</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+```
+
+### Example 3 of 3: Bottom sheet on phones
+
+mobile='sheet' presents the dialog as a bottom sheet under 640px wide: full width, a drag handle you can swipe down, content scrolling inside a 85dvh cap, safe-area padding. Escape, the close button and focus return work as before. The default, 'popup', keeps the centred window. Press “Preview on a phone” to try it on a desktop screen (or narrow the window).
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/sheenui/dialog/dialog";
+// Package build (after the first npm release, or a packed tarball): import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Dialog mobile="sheet">
+      <DialogTrigger render={<Button>Share</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Share this file</DialogTitle>
+          <DialogDescription>Anyone with the link can view it.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="ghost" />}>Done</DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open it from the trigger; focus moves inside. |
+| Tab / Shift + Tab | Cycle through the controls inside; focus cannot leave while it is open. |
+| Escape | Close it and return focus to the trigger. |
+
+### Accessibility
+
+- Built on Base UI's Dialog: role="dialog", named by DialogTitle and described by DialogDescription; the page behind is inert while it is open.
+- Focus is trapped, starts on the first control (or initialFocus) and returns to the trigger on close.
+- Always render a DialogTitle; showClose adds a labeled close button. Under reduced motion the dialog only fades.
+
+### All exports on this page
+
+- Dialog — Glass dialog: a modal window that blocks the page until the person answers or dismisses it.
+- DialogClose — A button inside the dialog that closes it (a "Cancel" or "Done" action in DialogFooter).
+- DialogContent — The glass window of a Dialog, portalled to the end of the body with a dimmed scrim behind it.
+- DialogDescription — Muted helper text under the title.
+- DialogFooter — Layout wrapper for the dialog's actions: a column on phones (primary action last in the DOM, so it is first on screen) and a right-aligned row from sm up.
+- DialogHeader — Layout wrapper for DialogTitle and DialogDescription.
+- DialogTitle — The dialog's heading.
+- DialogTrigger — The element that opens a Dialog.
+- defaultDialogLabels — English defaults of DialogLabels.
+
+
+### When to use Dialog
+
+- Use Dialog as a glass modal for a short form that blocks the page, such as renaming a project or inviting a teammate, where the person finishes or cancels before going back to the page. Use it as an animated modal in React whenever the content needs the person's full attention.
+- Use it for a details view opened from a table row or a card, with DialogTitle and DialogDescription naming and describing it for screen readers.
+- Use DialogFooter with DialogClose for Cancel and Save actions, and keep the corner close button on with showClose unless the footer already offers a clear exit.
+- Skip it when the person must answer a destructive question, where AlertDialog fits better, or when the content is a side panel you want next to the page, where Drawer fits better.
+- Pair it with Button through the render prop on DialogTrigger, Input and Field for the form inside, and Toast to confirm the result after the dialog closes.
+
+
+### Frequently asked questions
+
+#### How do I build a React modal dialog with SheenUI?
+
+Compose Dialog with DialogTrigger and DialogContent, then DialogHeader, DialogTitle, DialogDescription and DialogFooter inside. Dialog holds open, defaultOpen and onOpenChange and renders no element. It wraps Base UI Dialog, so the portal, focus handling and scroll lock are already done.
+
+#### How does the dialog handle keyboard focus?
+
+Enter or Space on the trigger opens it and focus moves to the first control inside. Tab and Shift+Tab stay in the dialog, Escape or a click on the scrim closes it, and focus returns to the trigger. The page behind is inert and its scroll is locked.
+
+#### Do I have to include a title?
+
+Yes, always render one. DialogTitle is an h2 and the dialog's accessible name, with aria-labelledby wired for you; DialogDescription gives aria-describedby. If the design has no visible heading, add className sr-only to the title so it stays available to assistive technology.
+
+#### How do I change the size or hide the close button?
+
+DialogContent is centered, at most 28rem wide and never taller than the viewport; it scrolls inside. Override width with className. Set showClose to false to remove the corner button, and use labels to translate its aria-label, which is Close by default.
+
+
+### Related pages
+
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Drawer / Sheet](https://lokendra-builds.github.io/sheenui/overlays/drawer)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+
+#### Guides that cover it
+
+- [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks)
+- [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+- [Best Glassmorphism React Libraries (2026)](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries)
+- [shadcn Alternatives with Animation: Nine Libraries Compared (2026)](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives)
+- [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

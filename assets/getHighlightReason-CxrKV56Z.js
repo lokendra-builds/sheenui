@@ -1,0 +1,1 @@
+import{Gt as e,Ht as t,qt as n}from"./vendor-docs-DXAayRHf.js";function r(r){return r==null?e:r.type.startsWith(`key`)?t:r.type.startsWith(`mouse`)||r.type.startsWith(`pointer`)?n:e}export{r as t};

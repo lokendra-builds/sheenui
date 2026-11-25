@@ -1,0 +1,1 @@
+export{t as Faq}from"./Faq-eJ3aqPna.js";

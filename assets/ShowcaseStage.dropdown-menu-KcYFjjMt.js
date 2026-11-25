@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),t({open:!0}),await n(800),t({hot:0}),await n(500),t({hot:1}),await n(700),t({open:!1,hot:null,picked:`Billing`}),e(`idle`),await n(1500),e(`idle`)};export{e as default};

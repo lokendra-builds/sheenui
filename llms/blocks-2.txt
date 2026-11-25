@@ -1,0 +1,1916 @@
+# SheenUI: Blocks (part 2 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## React Pricing Table with Monthly/Yearly Toggle
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/pricing
+Sidebar name: Pricing
+
+A glass React pricing section: monthly/yearly toggle, odometer prices, a border beam on the popular plan and a full comparison table. Tailwind v4 + Motion.
+
+What it is: A glass React pricing table with a monthly/yearly toggle, prices that roll like an odometer and a full comparison table. Use Pricing as a pricing section with a monthly and yearly toggle for a SaaS product, with several tiers, billing that defaults to yearly, and a highlighted popular plan.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/pricing.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Pricing
+
+Files to copy from `theme/src/`:
+
+- `blocks/{pricing.tsx, icons.tsx}`
+- `components/badge/`
+- `components/button/`
+- `components/glass-card/`
+- `components/spinner/`
+- `components/status-icons/`
+- `blocks/pricing/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, presets.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: pricing. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Pricing } from "@/components/sheenui/blocks/pricing";
+import { type PricingBilling, type PricingFeature, type PricingTier } from "@/components/sheenui/blocks/pricing/model";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Pricing, type PricingBilling, type PricingFeature, type PricingTier } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| tiers | PricingTier[] | defaultTiers (The default plan tiers) | The plans (PricingTier[], default: three sample tiers). The default is sample content for demos and prototypes: pass your own in production. |
+| features | PricingFeature[] | defaultFeatures (The default feature rows of the comparison table) | Rows of the comparison table (PricingFeature[], default: sample features). The default is sample content for demos and prototypes: pass your own in production. |
+| title | ReactNode | optional, no default | Heading above the block. Leave out to render without a heading. |
+| description | ReactNode | optional, no default | Shows text under the heading (ReactNode). |
+| headingLevel | HeadingLevelOption | 2 | Heading level of title, to fit the page outline. Tier names are one level below (2 \| 3, default 2). "none" renders both as paragraphs with no heading role, for a block shown as an example. |
+| billing | PricingBilling | optional, no default | The billing period shown (controlled): "monthly" or "yearly". |
+| defaultBilling | PricingBilling | "yearly" | The billing period at first when billing is not controlled (PricingBilling, default "yearly"). |
+| onBillingChange | ((billing: PricingBilling) => void) | optional, no default | Called when the billing switch is flipped. |
+| currency | string | "USD" | Sets the ISO 4217 currency code (string, default "USD"). |
+| locale | string | "en-US" | BCP 47 locale for prices and the savings percentage (string, default "en-US"). |
+| onSelect | ((tier: PricingTier, billing: PricingBilling) => void) | optional, no default | Called when a tier's button is pressed (tiers with href navigate as well). |
+| compareOpen | boolean | optional, no default | Whether the comparison table is open (controlled). Pair with onCompareOpenChange. |
+| defaultCompareOpen | boolean | false | Start with the comparison table open (boolean, default false). |
+| onCompareOpenChange | ((open: boolean) => void) | optional, no default | Called when the comparison table opens or closes. |
+| footnote | ReactNode | optional, no default | Small print under the cards, e.g. "Prices in USD. Taxes may apply." |
+| labels | Partial<PricingLabels> | defaultPricingLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultPricingLabels. All 21 keys of PricingLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer <section>. |
+
+### Example 1 of 2: Four tiers
+
+Switch between monthly and yearly: every digit rolls to its new value. Hover or focus the popular tier to keep its beam circling, then open the comparison table.
+
+```tsx
+import { Pricing } from "@/components/sheenui/blocks/pricing";
+import { type PricingBilling } from "@/components/sheenui/blocks/pricing/model";
+// Package build (after the first npm release, or a packed tarball): import { Pricing, type PricingBilling } from "@sheenui/theme";
+
+// Your call: create a checkout session, then send the person to it
+async function startCheckout(tierId: string, billing: PricingBilling) {
+  const res = await fetch("/api/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ tier: tierId, billing }),
+  });
+  const { url } = (await res.json()) as { url: string };
+  window.location.assign(url);
+}
+
+export function Example() {
+  return (
+    <Pricing
+      title="Simple pricing, no surprises"
+      description="Start free, upgrade when your team grows. Cancel any time."
+      footnote="Prices in USD, excluding taxes."
+      onSelect={(tier, billing) => startCheckout(tier.id, billing)}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Your own tiers, currency and language
+
+Three tiers in euros with German labels. Prices, the savings badge and the yearly total are formatted with Intl for the locale, and the comparison table starts open.
+
+```tsx
+import { Pricing } from "@/components/sheenui/blocks/pricing";
+import { type PricingTier, type PricingFeature } from "@/components/sheenui/blocks/pricing/model";
+// Package build (after the first npm release, or a packed tarball): import { Pricing, type PricingTier, type PricingFeature } from "@sheenui/theme";
+
+const tiers: PricingTier[] = [
+  { id: "basis", name: "Basis", price: { monthly: 9, yearly: 7.5 }, cta: "Jetzt starten" },
+  { id: "studio", name: "Studio", price: { monthly: 29, yearly: 24 }, cta: "14 Tage testen", popular: true },
+  { id: "konzern", name: "Konzern", cta: "Vertrieb kontaktieren" }, // no price: "Individuell"
+];
+
+const features: PricingFeature[] = [
+  { label: "Projekte", values: { basis: "5", studio: "Unbegrenzt", konzern: "Unbegrenzt" } },
+  { label: "Eigene Themes", values: { basis: false, studio: true, konzern: true } },
+  // true = included, false = not included, a string = included with a detail
+];
+
+<Pricing
+  tiers={tiers}
+  features={features}
+  currency="EUR"
+  locale="de-DE"
+  defaultBilling="monthly"
+  defaultCompareOpen
+  labels={{ region: "Preispläne", monthly: "Monatlich", yearly: "Jährlich", save: (p) => `${p} sparen`, perMonth: "/Monat" /* … */ }}
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The billing switch, each plan's button, then the “Compare plans” disclosure. |
+| Space on the billing switch | Toggle monthly / yearly. |
+| Enter / Space on Compare plans | Open the comparison table, which scrolls horizontally on small screens. |
+
+### Accessibility
+
+- A labeled <section>; tier names are headings one level below the title.
+- The price is real text with its period, and the billing switch announces the saving.
+- The comparison table has column and row headers.
+
+### All exports on this page
+
+- Pricing — Props (see PricingProps): tiers, features, title, description, headingLevel (2).
+- defaultPricingLabels — The English strings of the pricing block; pass labels to override any of them.
+
+
+### When to use the pricing section
+
+- Use Pricing on the plans page of a subscription product to let visitors compare three tiers side by side, switch between monthly and yearly billing and see the popular plan stand out above a full feature table.
+- Use it when buyers compare plans, since the Compare all features disclosure opens a feature table with column and row headers that scrolls horizontally on small screens.
+- Use it for regional storefronts, setting currency and locale so prices such as euros or rupees are formatted correctly, with onSelect(tier, billing) sending the choice to checkout.
+- Skip it when plans are priced per seat or by usage with a calculator; a form with a Slider and a live total communicates that better than fixed tier cards.
+- Pair it with PaymentCheckout for the step after a plan is chosen, Badge for plan labels, and AuthSplit if the visitor must create an account first.
+
+
+### Frequently asked questions
+
+#### How do I make a React pricing table with a billing toggle?
+
+Render Pricing with tiers and optionally features, then handle onSelect(tier, billing). The billing prop is controlled, defaultBilling starts at yearly, and onBillingChange reports the switch. The billing switch announces the saving. Set title, description and footnote for the surrounding copy.
+
+#### Are the animated prices accessible?
+
+Yes in practice: the price is real text with its period, so screen readers read it normally. Visually, prices roll like an odometer when they appear and when billing changes. With reduced motion there is no movement and the numbers switch immediately.
+
+#### Does the highlighted plan's light beam loop forever?
+
+No. The popular plan's light beam circles twice when it scrolls into view and then rests, which respects WCAG 2.2.2 on moving content. It keeps circling only while that card is hovered or has focus. Reduced motion removes the movement altogether.
+
+#### How do I control the compare table and heading levels?
+
+compareOpen, defaultCompareOpen (default false) and onCompareOpenChange control the disclosure. Tier names are headings one level below the title, and headingLevel defaults to 2, so adjust it to fit your page outline. The block renders as a labeled section.
+
+
+### Related pages
+
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+- [Settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page)
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Feature grid](https://lokendra-builds.github.io/sheenui/blocks/feature-grid)
+- [Testimonials](https://lokendra-builds.github.io/sheenui/blocks/testimonials)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## Settings Page Template for React & Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/settings-page
+Sidebar name: Settings page
+
+A complete React account-settings page: sticky scroll-spy nav, profile photo upload, notification switches, a danger zone and a glass save bar. Free, MIT.
+
+What it is: A complete React settings page with a scroll-spy side nav, profile upload, notification switches and a glass save bar. Use SettingsPage as an account settings UI with Profile, Notifications, Appearance and Danger sections, where a sticky side nav jumps to each card and focuses its heading.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/settings-page.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Settings page
+
+Files to copy from `theme/src/`:
+
+- `blocks/settings-page.tsx`
+- `components/alert-dialog/`
+- `components/badge/`
+- `components/button/`
+- `components/drawer/parts/sheet.tsx`
+- `components/input/`
+- `components/kbd/`
+- `components/navbar/`
+- `components/popover/`
+- `components/segmented/`
+- `components/spinner/`
+- `components/switch/`
+- `components/textarea/`
+- `components/vertical-nav/`
+- `blocks/settings-page/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, heading.ts, initials.ts, motion-props.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: settings-page. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { SettingsPage } from "@/components/sheenui/blocks/settings-page";
+import { type SettingsValues } from "@/components/sheenui/blocks/settings-page/model";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { SettingsPage, type SettingsValues } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| defaultValues | Partial<SettingsValues> | optional, no default | Saved values to start from (and to compare against for the unsaved count). |
+| notificationOptions | SettingsNotificationOption[] | defaultSettingsNotificationOptions | Rows of the notifications section (SettingsNotificationOption[], default defaultSettingsNotificationOptions). |
+| onSave | ((values: SettingsValues, changed: string[]) => void \| Promise<void>) | optional, no default | Called with all values and the keys that changed. Return a promise for the saving state; throw to show an error. |
+| onDeleteAccount | (() => void \| Promise<void>) | optional, no default | Called after the type-to-confirm dialog. Return a promise for its loading state; throw to show the error in the dialog. |
+| onExportData | (() => void \| Promise<void>) | optional, no default | Shows the "Export data" row. Return a promise for a loading state. |
+| onAvatarChange | ((file: File \| null) => void) | optional, no default | Called with the picked photo file (null when removed). Upload it and put the URL in avatar on save. |
+| maxAvatarMb | number | 5 | Sets the largest photo accepted, in MB (number, default 5). |
+| sections | SettingsSection[] | ["profile", "notifications", "appearance", "danger"] | Which sections to show, in order (SettingsSection[], default all four: profile, notifications, appearance, danger). |
+| usernamePrefix | string | "example.com/" | Text before the username field, e.g. your domain (string, default "example.com/"). |
+| stickyTop | string | "1rem" | Distance from the top of the scroller for the sticky navigation (any CSS length, default "1rem"), e.g. under your app bar. |
+| warnOnLeave | boolean | true | Ask before leaving the page with unsaved changes (boolean, default true). |
+| headingLevel | HeadingLevelOption | 1 | Level of the page title; sections are one level below (1 \| 2 \| 3, default 1). "none" renders every heading as a paragraph with no heading role, for a page shown as an example. |
+| title | ReactNode | optional, no default | Page title. Pass null to leave it out. |
+| description | ReactNode | optional, no default | Shows text under the page title (ReactNode). |
+| labels | Partial<SettingsPageLabels> | defaultSettingsPageLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultSettingsPageLabels. All 64 keys of SettingsPageLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element (string). |
+
+### Example 1 of 2: Account settings
+
+Edit anything: the save bar rises and counts your changes, and the nav shows where they are. Save (or press ⌘S / Ctrl+S), or Discard. The Appearance switches are the real SheenUI preferences and apply at once. Delete account asks you to type the username.
+
+```tsx
+import { SettingsPage } from "@/components/sheenui/blocks/settings-page";
+import { type SettingsValues } from "@/components/sheenui/blocks/settings-page/model";
+// Package build (after the first npm release, or a packed tarball): import { SettingsPage, type SettingsValues } from "@sheenui/theme";
+
+// Your API; each call throws on failure so the page can show the error
+async function call(path: string, method: string, body?: unknown) {
+  const res = await fetch("/api/" + path, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Request failed");
+}
+
+const api = {
+  updateProfile: (values: SettingsValues) => call("profile", "PUT", values),
+  exportData: () => call("export", "POST"),
+  deleteAccount: () => call("account", "DELETE"),
+};
+
+export function Example() {
+  return (
+    <SettingsPage
+      defaultValues={{
+        name: "Ada Lovelace",
+        username: "ada",
+        email: "ada@example.com",
+        bio: "Writing the first program, one punch card at a time.",
+        notifications: { mentions: true, comments: true, digest: true },
+      }}
+      onSave={async (values) => {
+        // A second argument lists the changed fields: ["name", "notifications.digest", …]
+        await api.updateProfile(values);
+      }}
+      onExportData={() => api.exportData()}
+      onDeleteAccount={() => api.deleteAccount()}
+      stickyTop="5rem" // below your app bar
+    />
+  );
+}
+```
+
+### Example 2 of 2: Your sections, your switches
+
+Pick the sections and pass your own notification options (locked ones stay on). In a narrow column the sidebar turns into a sticky strip of pills: this one is capped at 28rem to show it on any screen.
+
+```tsx
+import { SettingsPage } from "@/components/sheenui/blocks/settings-page";
+import { type SettingsValues } from "@/components/sheenui/blocks/settings-page/model";
+// Package build (after the first npm release, or a packed tarball): import { SettingsPage, type SettingsValues } from "@sheenui/theme";
+
+async function save(values: SettingsValues) {
+  const res = await fetch("/api/alerts", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(values),
+  });
+  if (!res.ok) throw new Error("Could not save");
+}
+
+export function Example() {
+  return (
+    <SettingsPage
+      title="Team alerts"
+      description="Where Acme tells your team about things."
+      sections={["notifications", "appearance"]}
+      notificationOptions={[
+        { id: "deploys", group: "Chat", label: "Deploys", description: "Post to #releases when production updates." },
+        { id: "incidents", group: "Chat", label: "Incidents", locked: true },
+        { id: "billing", group: "Email", label: "Billing receipts" },
+      ]}
+      defaultValues={{ notifications: { deploys: true } }}
+      onSave={save}
+      className="max-w-md"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The sticky section links, then the fields. |
+| Enter on a section link | Glide to the section and focus its heading. |
+| Ctrl / Cmd + S | Save, once something has changed (a bar with Save and Discard appears). |
+| Escape | Cancel the delete-account dialog (it traps focus while open). |
+
+### Accessibility
+
+- The current section link has aria-current.
+- Saving, errors and “unsaved changes” are announced in a polite status region.
+- The browser asks before leaving with unsaved changes.
+
+### All exports on this page
+
+- SettingsPage — Props (see SettingsPageProps): defaultValues, notificationOptions, onSave(values, changed), onDeleteAccount, onExportData.
+- defaultSettingsLabels — The former name of defaultSettingsPageLabels, kept as an alias for one release.
+- defaultSettingsNotificationOptions — The sample Push and Email notification switches shown when notificationOptions is omitted; replace them with your own.
+- defaultSettingsPageLabels — The English SettingsPageLabels used when labels is omitted; a partial labels prop is merged over them.
+
+
+### When to use the settings page
+
+- Use SettingsPage for the account area of a SaaS app, where someone updates a profile photo, flips notification switches, picks a theme and finds the risky actions in a Danger card at the bottom. The side nav follows the scroll and moves focus to the card you jump to, so keyboard users land in the right place. Use it as a settings layout template with grouped preference rows.
+- Use it when edits should be explicit, since a save bar with Save and Discard appears only after something changes and Ctrl or Cmd plus S saves from the keyboard.
+- Use it for apps that let people export data, upload an avatar up to maxAvatarMb (default 5), or delete their account behind a confirmation dialog.
+- Skip it when a single setting should apply the moment it is toggled, such as a theme switch in a header; a lone Switch or SegmentedControl is enough without a save flow.
+- Pair it with VerticalNav and ConfirmDialog, which it builds on, and with useTheme and useMotionPreference if your own app needs to read the preferences it exposes.
+
+
+### Frequently asked questions
+
+#### How do I build a settings page in React with SettingsPage?
+
+Pass defaultValues and an onSave(values, changed) handler; throw inside it to show an error in the save bar. Add onDeleteAccount, onExportData and onAvatarChange(file) to enable those actions. The sections prop picks which sections to show, and the default is all four.
+
+#### What happens if someone leaves with unsaved changes?
+
+With warnOnLeave (default true), the browser asks before the page unloads while changes are pending. Unsaved changes, saving and errors are announced in a polite status region. The save bar offers Save and Discard, and Ctrl or Cmd plus S saves too.
+
+#### How does the sticky section navigation behave for keyboard users?
+
+Tab walks the section links, and Enter glides to the section and focuses its heading. The current link carries aria-current. Position it with stickyTop, which defaults to 1rem, and use headingLevel (default 1) to match your page structure.
+
+#### How does the delete-account confirmation work?
+
+Delete opens a type-to-confirm ConfirmDialog, so focus is trapped inside and Escape cancels it. You supply onDeleteAccount to perform the action, and labels lets you translate the dialog text. The save bar springs up and leaves faster without overshoot, and reduced motion removes the movement.
+
+
+### Related pages
+
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Feature grid](https://lokendra-builds.github.io/sheenui/blocks/feature-grid)
+- [Testimonials](https://lokendra-builds.github.io/sheenui/blocks/testimonials)
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Hero Section: Glass Landing Page Block
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/hero-section
+Sidebar name: Hero section
+
+A React hero section block with a display headline, calls to action, a lit glass media frame and a logo strip over your own scene. Tailwind v4, MIT.
+
+What it is: HeroSection is a React hero section block that sets a display headline, a lede and calls to action over any backdrop, with a lit glass frame for a product shot and a logo strip. Use it as the first block of a landing page.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/hero-section.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Hero section
+
+Files to copy from `theme/src/`:
+
+- `blocks/hero-section.tsx`
+- `components/button/`
+- `components/spinner/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: hero-section. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { SheenScene } from "@/components/sheenui/backdrop/scene";
+import { HeroSection } from "@/components/sheenui/blocks/hero-section";
+```
+
+These examples also use backdrop: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/backdrop.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { HeroSection, SheenScene } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| eyebrow | ReactNode | optional, no default | Small pill above the headline (ReactNode), for a release note or a category. |
+| title | ReactNode | required | The headline (ReactNode). Wrap a phrase in <em> to light it with the accent. |
+| description | ReactNode | optional, no default | Sets the lede that sits under the headline (ReactNode). |
+| primaryAction | HeroAction | optional, no default | The main call to action (HeroAction). |
+| secondaryAction | HeroAction | optional, no default | The quieter call to action next to it (HeroAction). |
+| media | ReactNode | optional, no default | A product shot, video or live demo shown in a glass frame (ReactNode). Below the copy when centered, beside it when align="start". |
+| mediaClassName | string | optional, no default | Classes for the media frame (string), e.g. an aspect ratio. |
+| background | ReactNode | optional, no default | What sits behind the copy (ReactNode): pass a SheenScene, an image or your own art. Omit it for the built-in aurora of token colours; pass null for none. It is decorative and hidden from assistive technology. |
+| logos | HeroLogo[] | optional, no default | The logo strip under the hero (HeroLogo[]). It is a labelled list. |
+| align | "center" \| "start" | "center" | Alignment of the copy: "center" stacks everything on the middle line, "start" aligns it to the start edge and puts media beside it. |
+| headingLevel | HeadingLevelOption | 2 | Level of the headline (1 to 6); "none" renders a paragraph with no heading role (for an example). A landing page's hero is usually its h1: pass headingLevel={1}. |
+| labels | Partial<HeroSectionLabels> | defaultHeroSectionLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultHeroSectionLabels. All 2 keys of HeroSectionLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the section (string). |
+
+### Example 1 of 2: Centered, over a scene
+
+The background slot takes a SheenScene (or any image). The product shot sits in a glass frame with a pool of light under it. Wrap a phrase of the headline in <em> to light it with the accent.
+
+```tsx
+import { SheenScene } from "@/components/sheenui/backdrop/scene";
+import { HeroSection } from "@/components/sheenui/blocks/hero-section";
+// Package build (after the first npm release, or a packed tarball): import { HeroSection, SheenScene } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <HeroSection
+      headingLevel={1}
+      eyebrow="New: every block, light and dark"
+      title={<>Interfaces that <em>catch the light</em></>}
+      description="A glass component library for React, built on Base UI, Tailwind v4 and Motion. Copy the source and make it yours."
+      primaryAction={{ label: "Get started", href: "/docs/installation" }}
+      secondaryAction={{ label: "Browse components", href: "/components" }}
+      background={
+        <SheenScene
+          src="/scenes/studio-v2.webp"
+          avifSrc="/scenes/studio-v2.avif"
+          dim={0.75}
+          priority
+        />
+      }
+      media={
+        <div className="grid aspect-[16/9] grid-cols-[28%_1fr] gap-3 p-3">
+          <div className="rounded-sheen-lg bg-sheen-hover" />
+          <div className="grid grid-rows-[auto_1fr] gap-3">
+            <div className="h-10 rounded-sheen-lg bg-sheen-hover" />
+            <div className="rounded-sheen-lg bg-sheen-hover" />
+          </div>
+        </div>
+      }
+      logos={[{ name: "Alder" }, { name: "Brightloom" }, { name: "Cobalt" }, { name: "Driftwood" }, { name: "Evergreen" }]}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Start-aligned, with the built-in aurora
+
+align='start' puts the copy at the start edge and the media beside it. Leave background out for the aurora; the actions can be buttons (onClick) as well as links.
+
+```tsx
+import { HeroSection } from "@/components/sheenui/blocks/hero-section";
+// Package build (after the first npm release, or a packed tarball): import { HeroSection } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <HeroSection
+      align="start"
+      title="Ship the dashboard, not the plumbing"
+      description="Charts, tables and forms that already agree on spacing, focus and motion."
+      primaryAction={{ label: "Start a project", onClick: () => console.log("start") }}
+      secondaryAction={{ label: "Read the docs", href: "/docs/installation" }}
+      media={
+        <div className="grid aspect-[4/3] place-items-center p-6 text-sheen-fg-muted">Your product shot</div>
+      }
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The calls to action in order, then whatever your media contains. |
+| Enter | Follow a link action or press a button action. |
+
+### Accessibility
+
+- A <section> named by its headline (labels.region when headingLevel is 'none'). A landing page's hero is usually its h1: pass headingLevel={1}.
+- The background (aurora or SheenScene) is aria-hidden; the logo strip is a list labelled by labels.logosTitle and every logo has a text name.
+- Text and buttons rise by transform only; the frame fades in on itself. Reduced motion removes the movement.
+- Keep the headline over a calm part of your scene and raise dim until the lede reads at 4.5:1 in both themes.
+
+### All exports on this page
+
+- HeroSection — A landing-page hero: a display headline, a lede, one or two calls to action, an optional product shot in a lit glass frame and a logo strip.
+- defaultHeroSectionLabels — The English HeroSectionLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the hero section
+
+- Use HeroSection above the fold of a product launch or open-source landing page, over a gradient or photo backdrop, with a headline, one sentence of lede, a primary and a secondary action, and a product shot in a lit glass frame underneath.
+- Use the background slot for a SheenScene or your own image when the page has a strong photographic mood, or leave it out for the built-in aurora drawn from the theme's token colours.
+- Use align="start" to put the copy at the start edge and the media beside it on a wide block, which suits a product page with a real screenshot or a live demo.
+- Skip it for a compact page header inside an app; a plain heading and a Button group are enough there, and the glass frame would compete with the content.
+- Pair it with FeatureGrid and Testimonials below it, SiteFooter at the end, and AnnouncementBanner above it, which together make a complete marketing page.
+
+
+### Frequently asked questions
+
+#### How do I build a hero section in React with HeroSection?
+
+Import HeroSection from @sheenui/theme and pass a title, an optional description, and primaryAction and secondaryAction as { label, href } or { label, onClick }. Add media for a product shot, background for a scene, and logos for the strip. Pass headingLevel={1} when it is the page's main heading.
+
+#### How do I put an image or a SheenScene behind the hero?
+
+Pass it as the background prop: a SheenScene with src, avifSrc and dim, or any element. It is decorative and hidden from assistive technology. Raise dim until the lede keeps 4.5:1 contrast in both themes. Pass background={null} for no backdrop at all.
+
+#### Does the hero animate, and does it respect reduced motion?
+
+The eyebrow, headline, lede and buttons rise a few pixels on a spring, using transform only so nothing glass is faded behind a wrapper, and the media frame fades in on itself. Under the OS setting or html[data-motion="reduced"] the movement is removed and nothing loops.
+
+#### How is the logo strip made accessible?
+
+It is a list labelled by labels.logosTitle. Each logo is a name plus optional artwork: the artwork is aria-hidden and the name is read, so a screen reader hears "Alder, Brightloom" and not unlabelled images. Without artwork the name is shown as a text wordmark.
+
+
+### Related pages
+
+- [Feature grid](https://lokendra-builds.github.io/sheenui/blocks/feature-grid)
+- [Testimonials](https://lokendra-builds.github.io/sheenui/blocks/testimonials)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section)
+- [Contact form](https://lokendra-builds.github.io/sheenui/blocks/contact-form)
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Feature Grid: Glass Cards in 2 to 4 Columns
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/feature-grid
+Sidebar name: Feature grid
+
+A React feature grid block with icon, title and text on glass cards in two to four columns, plus a highlight card. Container queries, accessible, MIT.
+
+What it is: FeatureGrid is a React feature grid block of glass cards, each with an icon, a title and a line of text, in two to four columns that follow its own width. One optional highlight card spans two columns and is lit from a corner.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/feature-grid.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Feature grid
+
+Files to copy from `theme/src/`:
+
+- `blocks/feature-grid.tsx`
+- `components/glass-card/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, heading.ts, no-script-reveal.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: feature-grid. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { FeatureGrid, type FeatureGridItem } from "@/components/sheenui/blocks/feature-grid";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { FeatureGrid, type FeatureGridItem } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| features | FeatureGridItem[] | required | Lists the cards, which render in reading order (FeatureGridItem[]). |
+| eyebrow | ReactNode | optional, no default | Shows a small label above the title (ReactNode). |
+| title | ReactNode | optional, no default | Sets the section heading (ReactNode). |
+| description | ReactNode | optional, no default | Sets the line under the heading (ReactNode). |
+| columns | 2 \| 3 \| 4 | 3 | Columns on a wide block (2 \| 3 \| 4). The grid follows the block's own width, so it steps down to two and then one column. |
+| headingLevel | HeadingLevelOption | 2 | Level of the section heading (1 to 6); the card headings sit one level below. "none" renders plain text, no headings. |
+| labels | Partial<FeatureGridLabels> | defaultFeatureGridLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultFeatureGridLabels. All 2 keys of FeatureGridLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the section (string). |
+
+### Example 1 of 2: Three columns with a highlight
+
+highlight marks the card that matters most. A card with an href becomes one link with a single tab stop and a whole-card click target.
+
+```tsx
+import { FeatureGrid, type FeatureGridItem } from "@/components/sheenui/blocks/feature-grid";
+// Package build (after the first npm release, or a packed tarball): import { FeatureGrid, type FeatureGridItem } from "@sheenui/theme";
+
+const glyph = (d: string) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+
+const features: FeatureGridItem[] = [
+  { id: "tokens", title: "Design tokens", description: "Colour, blur and motion live in CSS variables.", icon: glyph("M12 3 3 8l9 5 9-5-9-5ZM3 13l9 5 9-5") },
+  { id: "a11y", title: "Accessible by default", description: "Real keyboard support, roles and focus management.", icon: glyph("m5 12 4 4 10-10"), highlight: true },
+  { id: "motion", title: "Springs, not tweens", description: "Interruptible motion with reduced-motion paths.", icon: glyph("M13 2 4 14h7l-1 8 9-12h-7l1-8Z") },
+];
+
+export function Example() {
+  return (
+    <FeatureGrid
+      eyebrow="Why SheenUI"
+      title="Everything a glass UI needs"
+      description="One system for surfaces, motion and accessibility."
+      features={features
+        .slice(0, 3)
+        .map((f) => (f.highlight ? { ...f, href: "/guides/accessible-glassmorphism" } : f))}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Four columns
+
+columns={4} gives a four-up row on a wide block and steps down to three, two and one as the block narrows (container queries, so it works in a sidebar layout too).
+
+```tsx
+import { FeatureGrid } from "@/components/sheenui/blocks/feature-grid";
+// Package build (after the first npm release, or a packed tarball): import { FeatureGrid } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <FeatureGrid
+      columns={4}
+      title="Small parts, big range"
+      features={[
+        { id: "a", title: "Inputs", description: "Fields that share one height scale." },
+        { id: "b", title: "Overlays", description: "Dialogs, drawers and menus." },
+        { id: "c", title: "Charts", description: "Every chart has a table twin." },
+        { id: "d", title: "Blocks", description: "Pages assembled from the parts." },
+      ]}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Cards without an href are not stops. A card with an href has one link. |
+| Enter | Follow the focused card's link. |
+
+### Accessibility
+
+- A <section> named by its heading (labels.region when there is no title); card titles are headings one level below it.
+- A card's link is named by 'Learn more' plus the card's title, so a list of links is not a list of identical names.
+- Icons are aria-hidden. The highlight card is also larger and first in its row, so nothing relies on colour.
+- Cards rise on a spring when scrolled into view; reduced motion keeps a short fade.
+
+### All exports on this page
+
+- FeatureGrid — A grid of feature cards: an icon in a lit tile, a title and a line of text each, two to four columns by the block's own width.
+- defaultFeatureGridLabels — The English FeatureGridLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the feature grid
+
+- Use FeatureGrid under a hero to say what the product does in six or eight short cards, each with an icon in a lit tile, a title and one sentence.
+- Use highlight on the one card that matters most; it is tinted with the accent, lit from a corner and spans two columns, so it is also larger and never relies on colour alone.
+- Use href on a card to make it one link with a single tab stop and a whole-card click target, named by 'Learn more' plus the card's title.
+- Skip it when the cards should hold live demos or charts; BentoGrid is built for that, while FeatureGrid is for plain copy and icons.
+- Pair it with HeroSection above and Testimonials or Pricing below, and keep it to eight cards or fewer in view so the glass blur budget holds.
+
+
+### Frequently asked questions
+
+#### How do I make a feature grid in React with FeatureGrid?
+
+Pass features as { id, title, description, icon?, href?, highlight? } objects, and optionally eyebrow, title and description for the section heading. Set columns to 2, 3 or 4. The grid follows the block's own width with container queries, so it also works in a sidebar layout.
+
+#### How do the columns behave on small screens?
+
+The columns step down by the block's own width, not the viewport: four becomes three, then two, then one. A highlight card spans two columns where there are at least two, and one column when the grid is single.
+
+#### How do I link a card without a nested-link mess?
+
+Give the feature an href. The card renders one anchor whose ::after covers the whole card, so there is a single tab stop and the whole surface is clickable. Its accessible name is the 'Learn more' label plus the card title, so a list of cards does not read as identical links.
+
+#### What are the heading levels?
+
+headingLevel (default 2) sets the section heading and the card titles sit one level below. Pass "none" to render plain text with no heading roles, for an example or an embed inside another widget.
+
+
+### Related pages
+
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Testimonials](https://lokendra-builds.github.io/sheenui/blocks/testimonials)
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section)
+- [Contact form](https://lokendra-builds.github.io/sheenui/blocks/contact-form)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Testimonials: Glass Quote Cards and Marquee
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/testimonials
+Sidebar name: Testimonials
+
+A React testimonials block with glass quote cards as a grid or a two-row marquee that pauses on hover, focus, off-screen and with a button. Free, MIT.
+
+What it is: Testimonials is a React testimonials block that shows customer quotes on glass cards, as a grid or a marquee in one or two rows. The marquee rests on hover, focus, off-screen and has a Pause button.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/testimonials.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Testimonials
+
+Files to copy from `theme/src/`:
+
+- `blocks/testimonials.tsx`
+- `components/button/`
+- `components/glass-card/`
+- `components/marquee/`
+- `components/spinner/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, initials.ts, no-script-reveal.tsx, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: testimonials. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { type Testimonial, Testimonials } from "@/components/sheenui/blocks/testimonials";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { type Testimonial, Testimonials } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| testimonials | Testimonial[] | required | Lists the quotes the section shows (Testimonial[]). |
+| eyebrow | ReactNode | optional, no default | Shows a small label above the title (ReactNode). |
+| title | ReactNode | optional, no default | Sets the section heading (ReactNode). |
+| description | ReactNode | optional, no default | Sets the line under the heading (ReactNode). |
+| layout | "grid" \| "marquee" | "grid" | "grid" lays the quotes out in columns; "marquee" scrolls them in one or two rows that rest when the block is off-screen, hovered or focused, with a Pause button. |
+| columns | 2 \| 3 | 3 | Columns of the grid on a wide block (2 \| 3; it steps down by the block's own width). |
+| rows | 2 \| 1 | 1 | Rows of the marquee (1 \| 2); the second row runs the other way. Needs at least four quotes. |
+| speed | number | 32 | Sets the marquee speed in pixels per second (number). |
+| paused | boolean | optional, no default | Controls whether the marquee is paused (boolean). Use with onPausedChange. |
+| defaultPaused | boolean | false | Whether the marquee starts paused when uncontrolled (boolean). |
+| onPausedChange | ((paused: boolean) => void) | optional, no default | Called when the Pause / Play button is pressed ((paused: boolean) => void). |
+| headingLevel | HeadingLevelOption | 2 | Level of the section heading (1 to 6); "none" renders plain text. |
+| labels | Partial<TestimonialsLabels> | defaultTestimonialsLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultTestimonialsLabels. All 4 keys of TestimonialsLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the section (string). |
+
+### Example 1 of 2: Grid
+
+Each quote is a figure with a blockquote and a caption. Ratings are announced as text through labels.rating.
+
+```tsx
+import { Testimonials, type Testimonial } from "@/components/sheenui/blocks/testimonials";
+// Package build (after the first npm release, or a packed tarball): import { Testimonials, type Testimonial } from "@sheenui/theme";
+
+const quotes: Testimonial[] = [
+  { id: "1", quote: "We shipped the dashboard in a week.", name: "Sam Rivera", role: "Engineering lead", rating: 5 },
+  { id: "2", quote: "The focus states are the best I have seen.", name: "Jo Lindqvist", role: "Product designer", rating: 5 },
+  { id: "3", quote: "Reduced motion actually works.", name: "Priya Nair", role: "Accessibility specialist", rating: 5 },
+];
+
+export function Example() {
+  return <Testimonials eyebrow="Kind words" title="Loved by small teams" testimonials={quotes} />;
+}
+```
+
+### Example 2 of 2: Marquee, two rows
+
+The second row runs the other way. One Pause button drives both rows (controlled with paused and onPausedChange). Hover or focus rests the strip; it also rests off-screen and in a background tab, and stands still under reduced motion.
+
+```tsx
+import { useState } from "react";
+import { Testimonials, type Testimonial } from "@/components/sheenui/blocks/testimonials";
+// Package build (after the first npm release, or a packed tarball): import { Testimonials, type Testimonial } from "@sheenui/theme";
+
+declare const quotes: Testimonial[]; // at least four quotes for two rows
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+  return (
+    <Testimonials
+      title="Loved by small teams"
+      layout="marquee"
+      rows={2}
+      speed={28}
+      paused={paused}
+      onPausedChange={setPaused}
+      testimonials={quotes}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The grid has no stops. In the marquee, the Pause / Play button comes first. |
+| Enter / Space | Pause or resume the marquee. |
+| Focus inside the strip | Rests the marquee while focus is there. |
+
+### Accessibility
+
+- Each quote is a <figure> with a <blockquote> and a <figcaption>; the list of quotes is named by labels.list.
+- The marquee has a Pause button (WCAG 2.2.2) and rests while hovered, focused, off-screen or in a hidden tab. Reduced motion stops it.
+- Avatars and the quote mark are decorative; a star rating is a text alternative ('Rated 5 out of 5').
+- Each card is one glass surface; the marquee fades each card's own edge, never a wrapper of glass.
+
+### All exports on this page
+
+- Testimonials — A wall of customer quotes in glass cards, as a grid or as a marquee.
+- defaultAuthSplitTestimonials — Sample testimonials shown when testimonials is omitted; replace them with real customer quotes.
+- defaultTestimonialsLabels — The English TestimonialsLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the testimonials section
+
+- Use Testimonials in grid layout for three to six longer quotes under the features or the pricing, where each quote is read and the cards rise on a spring as they scroll into view.
+- Use layout="marquee" for many short quotes; rows={2} runs the second row the other way, and one controlled Pause button can drive both rows.
+- Use rating on a quote to show stars; they are announced as text through labels.rating ('Rated 5 out of 5'), so the rating never lives in colour or shape alone.
+- Skip the marquee when each quote is long or when your audience reads slowly; a paused strip or the grid is easier, and WCAG 2.2.2 expects a way to stop moving content.
+- Pair it with HeroSection's logo strip, FaqSection and Pricing, and use real quotes with permission rather than invented ones on a live site.
+
+
+### Frequently asked questions
+
+#### How do I show testimonials as a marquee in React?
+
+Pass layout="marquee" with your testimonials. Add rows={2} for two rows and speed for pixels per second. The strip eases to a stop on hover and when focus is inside it, rests while off-screen or in a background tab, and a Pause button (labels.marquee) comes first in the tab order.
+
+#### Can one button pause both marquee rows?
+
+Yes. Control it with paused and onPausedChange and keep the state in your component. Only the first row renders the Pause button; both rows follow the same paused value, so one control drives them together.
+
+#### How is a quote marked up for screen readers?
+
+Each quote is a figure with a blockquote and a figcaption, inside a list named by labels.list. The avatar and the quote mark are decorative, and the star rating is a role="img" with a text alternative from labels.rating.
+
+#### What happens with reduced motion?
+
+The grid cards only fade in with no movement, and the marquee does not scroll at all. The glass cards stay readable, and the Pause button still works for anyone who has not set the preference.
+
+
+### Related pages
+
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+- [Contact form](https://lokendra-builds.github.io/sheenui/blocks/contact-form)
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer)
+- [404 page](https://lokendra-builds.github.io/sheenui/blocks/not-found-page)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React FAQ Section with FAQPage JSON-LD Helper
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/faq-section
+Sidebar name: FAQ section
+
+A React FAQ section: accordion questions on glass with find-in-page, plus faqPageJsonLd that returns schema.org FAQPage data. Accessible, free, MIT.
+
+What it is: FaqSection is a React FAQ section block: a heading and an accordion of questions on glass whose closed answers open on find-in-page. faqPageJsonLd(items) returns the schema.org FAQPage object for the same questions.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/faq-section.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > FAQ section
+
+Files to copy from `theme/src/`:
+
+- `blocks/faq-section.tsx`
+- `components/accordion/`
+- `lib/{cn.ts, heading.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: faq-section. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { type FaqItem, faqPageJsonLd, FaqSection } from "@/components/sheenui/blocks/faq-section";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { type FaqItem, faqPageJsonLd, FaqSection } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| items | FaqItem[] | required | Lists the questions, which render in the order given (FaqItem[]). |
+| eyebrow | ReactNode | optional, no default | Shows a small label above the title (ReactNode). |
+| title | ReactNode | optional, no default | Sets the section heading (ReactNode). |
+| description | ReactNode | optional, no default | Sets the line under the heading (ReactNode). |
+| footer | ReactNode | optional, no default | Content under the heading or under the list, for a "still stuck?" line and a link (ReactNode). |
+| layout | "split" \| "stacked" | "stacked" | "stacked" centers the heading above the list; "split" puts the heading and the footer beside the list on a wide block. |
+| variant | "glass" \| "separated" | "glass" | Surface of the list: "glass" is one glass card, "separated" gives each question its own card. |
+| multiple | boolean | false | Let several answers be open at once (boolean). |
+| value | string[] | optional, no default | Controls which items are open (string[] of item ids). Use with onValueChange. |
+| defaultValue | string[] | optional, no default | The items open at first when uncontrolled (string[]). |
+| onValueChange | ((value: string[]) => void) | optional, no default | Called with the open item ids whenever one opens or closes ((value: string[]) => void). |
+| headingLevel | HeadingLevelOption | 2 | Level of the section heading (1 to 6); the questions sit one level below. "none" renders plain text, no headings. |
+| labels | Partial<FaqSectionLabels> | defaultFaqSectionLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultFaqSectionLabels. Its only key is listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the section (string). |
+
+### Example 1 of 2: Stacked
+
+Press Ctrl or Cmd + F and search for 'Base UI': the closed answer opens. defaultValue opens an item at first; multiple lets several stay open.
+
+```tsx
+import { FaqSection, type FaqItem } from "@/components/sheenui/blocks/faq-section";
+// Package build (after the first npm release, or a packed tarball): import { FaqSection, type FaqItem } from "@sheenui/theme";
+
+const items: FaqItem[] = [
+  { id: "license", question: "What licence is SheenUI under?", answer: "MIT. Copy the source and change whatever you need." },
+  { id: "react", question: "Which React versions work?", answer: "React 19." },
+  { id: "theme", question: "Can I change the colours?", answer: "Yes. Everything reads --sheen-* tokens." },
+];
+
+export function Example() {
+  return <FaqSection title="Questions, answered" items={items} defaultValue={["license"]} />;
+}
+```
+
+### Example 2 of 2: Split layout and structured data
+
+layout='split' keeps the heading and a footer beside the list. faqPageJsonLd(items) returns the FAQPage object: render it into a script tag yourself (it never touches the document), and keep its text equal to what the page shows.
+
+```tsx
+import { FaqSection, faqPageJsonLd, type FaqItem } from "@/components/sheenui/blocks/faq-section";
+// Package build (after the first npm release, or a packed tarball): import { FaqSection, faqPageJsonLd, type FaqItem } from "@sheenui/theme";
+
+const items: FaqItem[] = [
+  { id: "license", question: "What licence is SheenUI under?", answer: "MIT." },
+  {
+    id: "a11y",
+    question: "How accessible is it?",
+    answer: <p>Keyboard support, visible focus and a reduced-motion path.</p>,
+    answerText: "Keyboard support, visible focus and a reduced-motion path.",
+  },
+];
+
+export function Example() {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd(items)) }} />
+      <FaqSection
+        layout="split"
+        variant="separated"
+        title="Still curious?"
+        description="The short answers."
+        footer={<a href="https://example.com/contact">Ask us something else</a>}
+        items={items}
+      />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Move between the questions. |
+| Enter / Space | Open or close the focused question. |
+| Arrow Down / Arrow Up | Move to the next or previous question. |
+| Home / End | First or last question. |
+
+### Accessibility
+
+- A <section> named by its heading; each question is a button inside a heading one level below it, with aria-expanded and aria-controls.
+- Closed answers use hidden='until-found', so the browser's find-in-page opens the matching one.
+- faqPageJsonLd only returns an object. Items whose answer is not a string and that have no answerText are left out, because JSON-LD answers are plain text.
+- The list is one glass card ('glass') or one card per question ('separated'); the open height animates in about 220 ms and is skipped under reduced motion.
+
+### All exports on this page
+
+- FaqSection — A frequently-asked-questions section: a heading and an accordion of questions in glass, with find-in-page that opens the matching answer.
+- defaultFaqSectionLabels — The English FaqSectionLabels used when labels is omitted; a partial labels prop is merged over it.
+- faqPageJsonLd — Builds the schema.org FAQPage JSON-LD object for a list of FAQ items, so search engines can read the same questions the page shows.
+
+
+### When to use the FAQ section
+
+- Use FaqSection near the pricing or the footer to answer objections in one place, with the first question open by default through defaultValue.
+- Use layout="split" on a wide page to keep the heading and a 'still stuck?' footer beside a long list, and variant="separated" when each question should be its own card.
+- Use faqPageJsonLd(items) to build the structured data for the same items, then render it into a script tag yourself; the helper only returns data and never touches the document.
+- Skip structured data for questions that are not visible on the page; search engines expect the JSON-LD text to match what the page shows.
+- Pair it with Pricing and ContactForm, and keep each answer short with a link to the docs for the long version.
+
+
+### Frequently asked questions
+
+#### How do I build an FAQ section in React with FaqSection?
+
+Pass items as { id, question, answer } objects, plus an optional title, description and footer. Use defaultValue for the items open at first, multiple to let several stay open, and value with onValueChange to control it. Each question is a button inside a heading one level below the section.
+
+#### How do I add FAQPage JSON-LD?
+
+Call faqPageJsonLd(items) and serialise the result into a script tag of type application/ld+json in your head or a server component. Items whose answer is not a string need an answerText, because JSON-LD answers are plain text; items without text are left out.
+
+#### Does find-in-page open closed answers?
+
+Yes. The accordion uses hidden="until-found", so a browser's find-in-page search opens the matching answer and scrolls to it. That makes a long FAQ searchable without a custom search box.
+
+#### How accessible is the accordion?
+
+It is built on Base UI: every trigger is a native button in a heading with aria-expanded and aria-controls, Enter and Space toggle it, and Arrow keys, Home and End move between questions. The open height animation is skipped under reduced motion.
+
+
+### Related pages
+
+- [Accordion](https://lokendra-builds.github.io/sheenui/layout/accordion)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+- [Contact form](https://lokendra-builds.github.io/sheenui/blocks/contact-form)
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer)
+- [404 page](https://lokendra-builds.github.io/sheenui/blocks/not-found-page)
+- [Announcement banner](https://lokendra-builds.github.io/sheenui/blocks/announcement-banner)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Contact Form with Validation
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/contact-form
+Sidebar name: Contact form
+
+A React contact form on glass: name, email and message with validation, a loading button and a success seal. Plain onSubmit or react-hook-form. MIT.
+
+What it is: ContactForm is a React contact form block with name, email and message fields on glass, inline validation, a button that glows while sending and a success seal. It works with a plain onSubmit or react-hook-form.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/contact-form.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Contact form
+
+Files to copy from `theme/src/`:
+
+- `blocks/{contact-form.tsx, icons.tsx}`
+- `components/button/`
+- `components/glass-card/`
+- `components/input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `components/textarea/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, heading.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: contact-form. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ContactForm, type ContactFormStatus, type ContactFormValues } from "@/components/sheenui/blocks/contact-form";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ContactForm, type ContactFormStatus, type ContactFormValues } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onSubmit | ((values: ContactFormValues) => void \| Promise<void>) | optional, no default | Called with the trimmed values once they pass validation ((values: ContactFormValues) => void \| Promise<void>). Return a promise to show the loading state; throw to show an error under the form. |
+| validate | boolean | true | Run the block's own checks on submit (boolean). Pass false when a form library validates for you, and feed its messages back through errors. |
+| errors | Partial<Record<"form" \| ContactField, string>> | optional, no default | Error messages from outside (Partial<Record<ContactField \| "form", string>>), for example from react-hook-form's formState.errors. They win over the block's own. |
+| fieldProps | Partial<Record<ContactField, ClassAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLInputElement> & ClassAttributes<HTMLTextAreaElement> & TextareaHTMLAttributes<HTMLTextAreaElement>>> | optional, no default | Extra props for each control (Partial<Record<ContactField, ComponentProps<"input"> \| ComponentProps<"textarea">>>), so {...register("email")} from react-hook-form can be handed over. |
+| status | ContactFormStatus | optional, no default | Controls the status (ContactFormStatus), for when a form library or your own state knows it. Leave it out to let the block track it. |
+| defaultValues | Partial<ContactFormValues> | optional, no default | The values the fields start with (Partial<ContactFormValues>). |
+| minMessageLength | number | 10 | The shortest message accepted by the block's own check (number). |
+| maxMessageLength | number | 1000 | The longest message (number); a character counter is shown. |
+| onReset | (() => void) | optional, no default | Called when the success view's button returns to an empty form (() => void), e.g. to reset your form library. |
+| eyebrow | ReactNode | optional, no default | Shows a small label above the title (ReactNode). |
+| title | ReactNode | optional, no default | Sets the heading (ReactNode). |
+| description | ReactNode | optional, no default | Sets the line under the heading (ReactNode). |
+| aside | ReactNode | optional, no default | Contact details or a map beside the form on a wide block (ReactNode). |
+| headingLevel | HeadingLevelOption | 2 | Level of the heading (1 to 6); "none" renders plain text, no heading. |
+| labels | Partial<ContactFormLabels> | defaultContactFormLabels | Every other string, for translation: labels={{ name: "…" }}; omitted keys keep the English of defaultContactFormLabels. All 14 keys of ContactFormLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element (string). |
+
+### Example 1 of 2: Plain onSubmit
+
+Submit it empty to see the messages and the focus move, then fill it in. onSubmit returns a promise, so the button shows its loading light until it settles; throw from it to show an error under the form.
+
+```tsx
+import { ContactForm } from "@/components/sheenui/blocks/contact-form";
+// Package build (after the first npm release, or a packed tarball): import { ContactForm } from "@sheenui/theme";
+
+// Your call; throw to show the error under the form
+async function sendMessage(values: { name: string; email: string; message: string }) {
+  const res = await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(values),
+  });
+  if (!res.ok) throw new Error("We could not send that. Try again in a minute.");
+}
+
+export function Example() {
+  return (
+    <ContactForm
+      eyebrow="Contact"
+      title="Talk to us"
+      description="Questions, feedback or a project in mind. We reply within one working day."
+      onSubmit={async (values) => {
+        await sendMessage(values);
+      }}
+    />
+  );
+}
+```
+
+### Example 2 of 2: With react-hook-form
+
+validate={false} turns the block's own checks off. fieldProps takes register(...) for each field, errors takes formState.errors, and status follows isSubmitting and isSubmitSuccessful. The state light and the success seal work the same.
+
+```tsx
+import { useForm } from "react-hook-form";
+import { ContactForm, type ContactFormStatus, type ContactFormValues } from "@/components/sheenui/blocks/contact-form";
+// Package build (after the first npm release, or a packed tarball): import { ContactForm, type ContactFormStatus, type ContactFormValues } from "@sheenui/theme";
+
+declare function sendMessage(values: ContactFormValues): Promise<void>;
+
+export function Example() {
+  const { register, handleSubmit, reset, formState } = useForm<ContactFormValues>();
+  const { errors, isSubmitting, isSubmitSuccessful } = formState;
+  const status: ContactFormStatus = isSubmitting ? "submitting" : isSubmitSuccessful ? "success" : "idle";
+
+  return (
+    <ContactForm
+      title="Write to us"
+      validate={false}
+      status={status}
+      errors={{ name: errors.name?.message, email: errors.email?.message, message: errors.message?.message }}
+      fieldProps={{
+        name: register("name", { required: "Enter your name." }),
+        email: register("email", {
+          required: "Enter your email.",
+          pattern: { value: /^\S+@\S+\.\S+$/, message: "Enter a valid email address." },
+        }),
+        message: register("message", { required: "Write a message.", minLength: { value: 10, message: "Write at least 10 characters." } }),
+      }}
+      onSubmit={() => handleSubmit(sendMessage)()}
+      onReset={() => reset()}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Name, email, message, then the send button. |
+| Enter | In a single-line field: submit the form. |
+| Tab after success | Focus has moved to the success message; Tab reaches 'Send another message'. |
+
+### Accessibility
+
+- A real <form> with noValidate. Errors are visible text linked with aria-describedby; a failed check moves focus to the first invalid field.
+- The success view is a status region and receives focus; the outcome is always text, never light alone.
+- The form and the success view share one grid cell, so the card never changes height.
+- The button glows while sending (state light) and the seal's check is drawn once. Reduced motion: the seal fades in and the check appears at once.
+
+### All exports on this page
+
+- ContactForm — A contact form on glass: name, email and a message with inline validation, a loading button and a success seal that lights green.
+- defaultContactFormLabels — The English ContactFormLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the contact form
+
+- Use ContactForm on a contact or support page, with onSubmit(values) returning a promise so the button shows its loading light and a thrown error appears under the form.
+- Use it beside react-hook-form by passing validate={false}, fieldProps from register(...), errors from formState.errors and a status derived from isSubmitting and isSubmitSuccessful.
+- Use the aside slot for an address, hours or a map beside the form on a wide block, and eyebrow, title and description for the heading.
+- Skip it for a long multi-step form; the Stepper and Field components are built for that, while ContactForm is three fields and a message.
+- Pair it with FaqSection above it and SiteFooter below, and send the message from your server with a spam check rather than from the browser alone.
+
+
+### Frequently asked questions
+
+#### How do I build a contact form in React with ContactForm?
+
+Render ContactForm with an onSubmit that receives { name, email, message }. Return a promise to show the loading state, or throw an Error to show its message under the form. Pass title and description for the heading. On success it shows a seal and a 'Send another message' button.
+
+#### How do I use ContactForm with react-hook-form?
+
+Pass validate={false}, fieldProps={{ name: register('name'), email: register('email'), message: register('message') }}, errors built from formState.errors, and status from isSubmitting and isSubmitSuccessful. Call handleSubmit(send)() inside onSubmit and reset() in onReset.
+
+#### How does validation work without a library?
+
+The block checks on submit: a name is required, the email must look like an address and the message must reach minMessageLength (default 10). Errors are visible text linked with aria-describedby, focus moves to the first invalid field, and a message clears as soon as it is fixed.
+
+#### Is the success state accessible?
+
+Yes. The success view is a status region and receives focus, so a screen reader announces 'Message sent'. The green light is only decoration: the outcome is always text. Reduced motion fades the seal in and shows the check at once.
+
+
+### Related pages
+
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section)
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer)
+- [404 page](https://lokendra-builds.github.io/sheenui/blocks/not-found-page)
+- [Announcement banner](https://lokendra-builds.github.io/sheenui/blocks/announcement-banner)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Site Footer with Newsletter and Socials
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/site-footer
+Sidebar name: Site footer
+
+A React site footer block on glass with link columns, a newsletter field with validation, social icon links and a legal row. Accessible, MIT.
+
+What it is: SiteFooter is a React site footer block on one glass panel: brand and blurb, link columns that are navigation landmarks, a newsletter field with validation, social icon links and a legal row. Every part is optional.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/site-footer.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Site footer
+
+Files to copy from `theme/src/`:
+
+- `blocks/{site-footer.tsx, icons.tsx}`
+- `components/button/`
+- `components/input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: site-footer. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { type FooterColumn, SiteFooter } from "@/components/sheenui/blocks/site-footer";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { type FooterColumn, SiteFooter } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| brand | ReactNode | optional, no default | The logo and name at the start of the footer (ReactNode). |
+| description | ReactNode | optional, no default | A line about the product under the brand (ReactNode). |
+| columns | FooterColumn[] | [] | The link columns (FooterColumn[]). Each one is a <nav> named by its title. |
+| onSubscribe | ((email: string) => void \| Promise<void>) | optional, no default | Shows the newsletter form and is called with the trimmed email ((email: string) => void \| Promise<void>). Return a promise to show the loading state; throw to show an error. Without it there is no form. |
+| socials | FooterSocial[] | [] | The social icon links (FooterSocial[]). |
+| copyright | ReactNode | optional, no default | The copyright line in the legal row (ReactNode). |
+| legalLinks | FooterLink[] | [] | The legal links in the legal row, for example privacy and terms (FooterLink[]). |
+| headingLevel | HeadingLevelOption | 2 | Level of the column and newsletter headings (1 to 6); "none" renders plain text. |
+| labels | Partial<SiteFooterLabels> | defaultSiteFooterLabels | Every other string, for translation: labels={{ newsletterTitle: "…" }}; omitted keys keep the English of defaultSiteFooterLabels. All 10 keys of SiteFooterLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the <footer> (string). |
+
+### Example 1 of 2: Full footer
+
+Try the newsletter field with a bad address, then a good one: the message under it is announced. Without onSubscribe the form is not rendered.
+
+```tsx
+import { SiteFooter, type FooterColumn } from "@/components/sheenui/blocks/site-footer";
+// Package build (after the first npm release, or a packed tarball): import { SiteFooter, type FooterColumn } from "@sheenui/theme";
+
+// Your call; throw to show the error under the field
+async function subscribe(email: string) {
+  const res = await fetch("/api/newsletter", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) throw new Error("We could not subscribe that address.");
+}
+
+const columns: FooterColumn[] = [
+  { id: "product", title: "Product", links: [{ label: "Features", href: "/features" }, { label: "Pricing", href: "/pricing" }] },
+  { id: "company", title: "Company", links: [{ label: "About", href: "/about" }, { label: "Contact", href: "/contact" }] },
+];
+
+export function Example() {
+  return (
+    <SiteFooter
+      brand="Acme"
+      description="Tools for small teams who like their software calm."
+      columns={columns}
+      onSubscribe={async (email) => {
+        await subscribe(email);
+      }}
+      socials={[
+        {
+          id: "code",
+          label: "Source code",
+          href: "https://example.com/code",
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <path d="m8 8-4 4 4 4M16 8l4 4-4 4" />
+            </svg>
+          ),
+        },
+      ]}
+      copyright="© 2026 Acme, Inc."
+      legalLinks={[{ label: "Privacy", href: "/privacy" }, { label: "Terms", href: "/terms" }]}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Minimal
+
+Every part is optional: a brand and a legal row make a short footer.
+
+```tsx
+import { SiteFooter } from "@/components/sheenui/blocks/site-footer";
+// Package build (after the first npm release, or a packed tarball): import { SiteFooter } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <SiteFooter
+      brand="Acme"
+      copyright="© 2026 Acme, Inc."
+      legalLinks={[{ label: "Privacy", href: "/privacy" }, { label: "Terms", href: "/terms" }]}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Column links top to bottom, then the newsletter field and button, the social links and the legal links. |
+| Enter | Follow a link, or submit the newsletter form. |
+
+### Accessibility
+
+- A <footer> (the page's contentinfo landmark). Each column is a <nav> named by its heading; with headingLevel 'none' the names fall away with the headings.
+- Social links are named by their label and their icons are aria-hidden. External links open a new tab with rel='noreferrer'.
+- The subscribe confirmation is a polite status region that is always in the page, so it is announced when its text appears.
+- Links and icon buttons grow to 44 px on touch devices. One glass panel holds everything, so there is one backdrop blur.
+
+### All exports on this page
+
+- SiteFooter — A site footer on glass: the brand and a line about it, link columns, an optional newsletter form, social icon links and a legal row.
+- defaultSiteFooterLabels — The English SiteFooterLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the site footer
+
+- Use SiteFooter as the last block of a marketing page, with three or four columns of links, a short description of the product and a legal row with the privacy and terms links.
+- Use onSubscribe(email) to show the newsletter form; return a promise for the loading state or throw to show an error, and the confirmation is announced in a polite status region.
+- Use socials with a label and an icon for each profile; the label names the link and the icon is aria-hidden, so the row stays accessible.
+- Skip the newsletter form when you have no list yet; leave out onSubscribe and the form is not rendered at all, so there is no dead field.
+- Pair it with HeroSection and FeatureGrid above it, and keep it to one glass panel so a page stays within the backdrop-blur budget.
+
+
+### Frequently asked questions
+
+#### How do I build a site footer in React with SiteFooter?
+
+Pass brand, description, columns as { id, title, links } and legalLinks, plus copyright. Add onSubscribe for the newsletter form and socials for icon links. Every prop is optional, so a short footer can be just a brand and a legal row.
+
+#### How does the newsletter field validate and report?
+
+On submit it checks the address and shows an error under the field linked with aria-describedby; a valid one calls onSubscribe, shows a loading button and then announces labels.subscribed in a status region that is always present, so screen readers hear it.
+
+#### Are the footer columns accessible?
+
+The component is a footer element, the page's contentinfo landmark. Each link column is a nav named by its heading, social links are named by their label, and every link grows to 44 px on touch devices. With headingLevel set to none the headings become plain text.
+
+#### Can links open in a new tab?
+
+Yes. Set external: true on a link and it opens in a new tab with rel="noreferrer". Social links always do. Keep external links to places that need it, because a new tab is a surprise for keyboard and screen reader users.
+
+
+### Related pages
+
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+- [404 page](https://lokendra-builds.github.io/sheenui/blocks/not-found-page)
+- [Announcement banner](https://lokendra-builds.github.io/sheenui/blocks/announcement-banner)
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React 404 Page: Glass Not Found Block with Search
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/not-found-page
+Sidebar name: 404 page
+
+A React 404 page block with a large code whose zeros are glass rings, a search slot, a way back and suggested links. Accessible, Tailwind v4, MIT.
+
+What it is: NotFound is a React 404 page block: a large code whose zeros are glass rings, a plain explanation, a slot for your own search field, a main action and suggested links. It is also usable for 403 and 500 pages.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/not-found-page.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > 404 page
+
+Files to copy from `theme/src/`:
+
+- `blocks/not-found-page.tsx`
+- `components/button/`
+- `components/spinner/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: not-found-page. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { NotFound } from "@/components/sheenui/blocks/not-found-page";
+import { Input } from "@/components/sheenui/input/input";
+```
+
+These examples also use input: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/input.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Input, NotFound } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| code | string | "404" | The big code (string). Each 0 is drawn as a glass ring. It is decorative: labels.codeLabel is what is read aloud. |
+| action | NotFoundAction | optional, no default | The main way out, usually back home (NotFoundAction). |
+| search | ReactNode | optional, no default | A slot for your search field (ReactNode), shown under the text: a Input, a Combobox or a command palette trigger. The block does not search for you. |
+| links | NotFoundLink[] | [] | Suggested destinations (NotFoundLink[]). |
+| headingLevel | HeadingLevelOption | 2 | Level of the heading (1 to 6); "none" renders plain text. A 404 page's heading is its h1, so a real page passes headingLevel={1}. |
+| labels | Partial<NotFoundLabels> | defaultNotFoundLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultNotFoundLabels. All 4 keys of NotFoundLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the section (string). |
+
+### Example 1 of 2: With search and links
+
+The search slot takes any node: an Input, a Combobox or a command palette trigger. The block does not search for you. Remember to answer with HTTP status 404 from your router.
+
+```tsx
+import { NotFound } from "@/components/sheenui/blocks/not-found-page";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Input, NotFound } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <NotFound
+      headingLevel={1}
+      action={{ label: "Back to home", href: "/" }}
+      search={<Input type="search" aria-label="Search the site" placeholder="Search the docs" />}
+      links={[
+        { label: "Documentation", href: "/docs", description: "Guides and API reference" },
+        { label: "Pricing", href: "/pricing", description: "Plans for every team" },
+        { label: "Contact", href: "/contact", description: "Talk to a person" },
+      ]}
+    />
+  );
+}
+```
+
+### Example 2 of 2: A custom status code and your own wording
+
+code takes any short string (each 0 becomes a ring), and labels replaces every sentence, so the same block serves a 403 or a 500.
+
+```tsx
+import { NotFound } from "@/components/sheenui/blocks/not-found-page";
+// Package build (after the first npm release, or a packed tarball): import { NotFound } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <NotFound
+      code="403"
+      action={{ label: "Sign in", onClick: () => console.log("sign in") }}
+      labels={{
+        codeLabel: "Error 403",
+        title: "You need permission for this page",
+        description: "Sign in with an account that has access, or ask the owner to invite you.",
+      }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The main action, your search field, then the suggested links in order. |
+| Enter | Follow a link or press the action. |
+
+### Accessibility
+
+- A <section> named by its heading. A 404 page's heading is its h1: pass headingLevel={1}.
+- The large code is aria-hidden; labels.codeLabel ('Error 404') is read instead.
+- Suggested links are a labelled list of real anchors with 44 px targets. The zeros are glass surfaces (keep to two or three), and nothing loops.
+- Digits settle on a spring and the rings drop in once. Reduced motion removes the movement.
+
+### All exports on this page
+
+- NotFound — A 404 page: a large code whose zeros are glass rings, a plain heading and explanation, a slot for your search field, a way back.
+- defaultNotFoundLabels — The English NotFoundLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the 404 page
+
+- Use NotFound as the not-found route of an app or a marketing site, with a main action back home, three or four suggested links and your search field in the search slot.
+- Use the search slot for an Input, a Combobox or a command-palette trigger; the block does not search by itself, so it never promises a result it cannot give.
+- Use code="403" or "500" with labels for the title and description to reuse the block for other error pages without a second component.
+- Skip it as an inline empty state inside a list; EmptyState is the right component for 'no results', while NotFound is a whole page.
+- Pair it with AnnouncementBanner and SiteFooter, and have your router answer with HTTP status 404, because the block only draws the page.
+
+
+### Frequently asked questions
+
+#### How do I make a custom 404 page in React with NotFound?
+
+Render NotFound as your catch-all route with an action like { label: 'Back to home', href: '/' }, a search node, and links as { label, href, description? }. Pass headingLevel={1} for a real page, and make your server or router respond with status 404.
+
+#### Can I change the text and the code?
+
+Yes. code takes any short string and draws each 0 as a glass ring. labels replaces the title, description, spoken code label and links heading, so the same block serves 403 and 500 pages and any language.
+
+#### How is the large 404 made accessible?
+
+The big code is decorative and aria-hidden; a visually hidden line from labels.codeLabel ('Error 404') is read instead, and the heading names the section. The suggested links are a labelled list of real anchors with 44 px targets.
+
+#### Does it loop or distract?
+
+No. The digits settle on a spring and the rings drop in once; nothing loops. The rings are glass surfaces, so keep the code to two or three zeros. Reduced motion removes the movement and keeps the page static.
+
+
+### Related pages
+
+- [Empty state](https://lokendra-builds.github.io/sheenui/components/empty-state)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer)
+- [Announcement banner](https://lokendra-builds.github.io/sheenui/blocks/announcement-banner)
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+- [Lamp login](https://lokendra-builds.github.io/sheenui/blocks/lamp-login)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Announcement Banner: Dismissible Glass Bar
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/announcement-banner
+Sidebar name: Announcement banner
+
+A React announcement banner on glass with a tone, a link and a dismiss button that reports the dismissal through a callback. Stores nothing. MIT.
+
+What it is: AnnouncementBanner is a React announcement banner: a dismissible top bar on glass with a tone, an optional link and static copy. It stores nothing and reports the dismissal through onDismiss so you can remember it.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/announcement-banner.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Announcement banner
+
+Files to copy from `theme/src/`:
+
+- `blocks/announcement-banner.tsx`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{presets.ts, tokens.ts}`
+- `lib/{cn.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: announcement-banner. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { AnnouncementBanner, type AnnouncementTone } from "@/components/sheenui/blocks/announcement-banner";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AnnouncementBanner, type AnnouncementTone } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | The announcement text (ReactNode). Keep it to a sentence; it is static copy, not a live countdown. |
+| tone | AnnouncementTone | "accent" | The semantic colour and icon ("accent" \| "info" \| "success" \| "warning" \| "danger" \| "neutral"). The words carry the meaning; the colour only lights the edge. |
+| link | AnnouncementLink | optional, no default | A link after the text (AnnouncementLink). |
+| icon | ReactNode | optional, no default | Replaces the tone's icon (ReactNode); it is aria-hidden. Pass null for none. |
+| dismissible | boolean | true | Show the dismiss button (boolean). |
+| open | boolean | optional, no default | Controls whether the banner is shown (boolean). Use with onOpenChange; leave it out to let the block keep the state. |
+| defaultOpen | boolean | true | Whether the banner is shown at first when uncontrolled (boolean). Pass false when you have already stored that this visitor dismissed it. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called whenever the banner is shown or hidden ((open: boolean) => void). |
+| onDismiss | (() => void) | optional, no default | Called once when the visitor presses dismiss (() => void). The block stores nothing: save the choice here (a cookie, localStorage, your account settings) and pass defaultOpen={false} next time. |
+| restoreFocusTo | RefObject<HTMLElement \| null> | optional, no default | Where focus goes when the banner is dismissed (RefObject<HTMLElement \| null>). Without it, focus moves to the next focusable element after the banner, or to the <main> landmark when there is none. |
+| labels | Partial<AnnouncementBannerLabels> | defaultAnnouncementBannerLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultAnnouncementBannerLabels. All 3 keys of AnnouncementBannerLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the banner (string). |
+
+### Example 1 of 2: Remember the dismissal yourself
+
+Controlled with open and onOpenChange; onDismiss fires once when the visitor presses the button, which is where you save it (a cookie, localStorage or an account setting) and pass defaultOpen={false} next time.
+
+```tsx
+import { useState } from "react";
+import { AnnouncementBanner } from "@/components/sheenui/blocks/announcement-banner";
+// Package build (after the first npm release, or a packed tarball): import { AnnouncementBanner } from "@sheenui/theme";
+
+// Your own storage: the banner only reports the dismissal.
+const remember = () => window.localStorage.setItem("banner-v2", "dismissed");
+
+export function Example() {
+  const [open, setOpen] = useState(true);
+  return (
+    <AnnouncementBanner
+      open={open}
+      onOpenChange={setOpen}
+      onDismiss={remember}
+      link={{ label: "Read the notes", href: "/changelog" }}
+    >
+      Version 2 is out: new blocks and a faster build.
+    </AnnouncementBanner>
+  );
+}
+```
+
+### Example 2 of 2: Tones
+
+The words carry the meaning; the tone only lights the edge and picks the icon. Set dismissible={false} for a notice that must stay.
+
+```tsx
+import { AnnouncementBanner, type AnnouncementTone } from "@/components/sheenui/blocks/announcement-banner";
+// Package build (after the first npm release, or a packed tarball): import { AnnouncementBanner, type AnnouncementTone } from "@sheenui/theme";
+
+const tones: AnnouncementTone[] = ["accent", "info", "success", "warning", "danger", "neutral"];
+
+export function Example() {
+  return (
+    <div style={{ display: "grid", gap: 12 }}>
+      {tones.map((tone) => (
+        <AnnouncementBanner key={tone} tone={tone} dismissible={tone === "accent"}>
+          This is a {tone} announcement.
+        </AnnouncementBanner>
+      ))}
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The link, then the dismiss button. |
+| Enter / Space on dismiss | Dismiss the banner and call onDismiss. |
+
+### Accessibility
+
+- A labelled group (labels.region), not a landmark and deliberately not a live region, so it is not read out on every page load. Dismissing moves focus on and announces it politely.
+- Tone is never the only signal: the text says it and the icon is aria-hidden. Keep the copy static; a live countdown would be a moving target for assistive tech.
+- The dismiss button has an accessible name and a 44 px target. The banner stores nothing, so there is no hidden persistence to explain.
+- It slides up by transform and fades on its own surface, faster on the way out. Reduced motion: a short fade.
+
+### All exports on this page
+
+- AnnouncementBanner — A dismissible announcement bar for the top of a page: one sentence, an optional link and a close button.
+- defaultAnnouncementBannerLabels — The English AnnouncementBannerLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the announcement banner
+
+- Use AnnouncementBanner above the navbar for a release, a maintenance window or a promotion, with one sentence and a link to the details.
+- Use onDismiss to save the choice in your own storage (a cookie, localStorage or an account setting) and pass defaultOpen={false} on the next visit, so the component itself never touches storage.
+- Use tone to pick the icon and light the edge: accent, info, success, warning, danger or neutral; the wording always says what it means, so colour is never the only signal.
+- Skip live countdowns and rotating text inside it; a moving banner is hard to read with assistive technology, and the component is designed for static copy.
+- Pair it with HeroSection and Navbar below it, and use dismissible={false} for a notice that must stay visible, such as a legal change.
+
+
+### Frequently asked questions
+
+#### How do I build a dismissible announcement banner in React?
+
+Render AnnouncementBanner with your sentence as children, an optional link={{ label, href }}, and onDismiss to remember the choice. Control it with open and onOpenChange if the parent needs to show it again. Pass defaultOpen={false} when you already know the visitor dismissed it.
+
+#### Where does the banner store the dismissal?
+
+Nowhere. It keeps no cookie or localStorage entry. It calls onDismiss once when the visitor presses the button, and you save the choice wherever suits your app. That keeps the block free of hidden persistence and consent questions.
+
+#### Is the banner announced to screen readers?
+
+It is a labelled region landmark, deliberately not a live region, so it is not read out on every page load. The dismiss button has an accessible name and a 44 px target, and the tone icon is aria-hidden because the text carries the meaning.
+
+#### How does it animate?
+
+It slides down by transform and fades in on its own glass surface, then slides up and fades faster on the way out with no overshoot. With reduced motion it only fades for a short time.
+
+
+### Related pages
+
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert)
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+- [Lamp login](https://lokendra-builds.github.io/sheenui/blocks/lamp-login)
+- [OTP verification](https://lokendra-builds.github.io/sheenui/blocks/otp-verification)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+

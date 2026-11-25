@@ -1,0 +1,1 @@
+var e=[`onDrag`,`onDragStart`,`onDragEnd`,`onAnimationStart`];function t(t){let n={...t};for(let t of e)Reflect.deleteProperty(n,t);return n}export{t};

@@ -1,0 +1,1 @@
+import{t as e}from"./code-block-qWWZT6tc.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r({code:t,label:r,language:i,maxHeight:a}){return(0,n.jsx)(e,{code:t,language:i,"aria-label":r,className:`[&_pre]:max-sm:pt-10`,showLineNumbers:!1,header:!1,showWrapToggle:!1,maxHeight:a??`28rem`,level:3})}export{r as default};

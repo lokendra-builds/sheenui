@@ -1,0 +1,1 @@
+import{t as e}from"./segmented-U7hR4LXs.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r({label:t,options:r,value:i,onValueChange:a,size:o=`md`,className:s}){return(0,n.jsx)(e,{"aria-label":t,items:r.map(e=>({value:e.value,label:e.label})),value:i,onValueChange:e=>a(e),size:o,className:s})}export{r as t};

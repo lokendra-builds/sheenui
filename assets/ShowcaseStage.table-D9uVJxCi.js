@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1e3),e(`working`);for(let e of[1,2,3])t({paid:e}),await n(850);e(`success`),await n(1e3)};export{e as default};

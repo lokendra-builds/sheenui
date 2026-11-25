@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "aspect-ratio",
+  "type": "registry:ui",
+  "title": "Aspect ratio",
+  "description": "A React aspect ratio component: a box that keeps its width-to-height ratio so images and video reserve space and the page never jumps. Tailwind v4, MIT.",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "dependencies": [
+    "@base-ui/react@^1.9.0"
+  ],
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json"
+  ],
+  "files": [
+    {
+      "path": "theme/src/components/aspect-ratio/aspect-ratio.tsx",
+      "content": "\"use client\";\n\nimport { useRender } from \"@base-ui/react/use-render\";\n\nimport { cn } from \"../lib/cn\";\n\n/** Props of {@link AspectRatio}. The attributes of a `div` (plus Base UI's `render`) and the ones below. */\nexport type AspectRatioProps = useRender.ComponentProps<\"div\"> & {\n  /** Width divided by height: `16 / 9`, `4 / 3`, `1` (default) for a square. */\n  ratio?: number;\n};\n\n/**\n * A box that keeps a fixed width-to-height ratio at any width: for an image, a video, a map or a chart placeholder, so\n * the page does not jump while the content loads. It is as wide as its container; its children fill it.\n *\n * - `ratio` is width / height (`16 / 9`, `4 / 3`, default `1`).\n * - Put one element inside and make it fill the box (`className=\"size-full object-cover\"` on an `<img>`).\n * - `render` swaps the `<div>` for another element; `className` and `ref` go on the box.\n *\n * Keyboard: not focusable. Accessibility: a plain container with no role; give the media inside it its own text (`alt`, a caption).\n * Glass and motion: no surface and no movement; it clips its children to the rounded corners you give it with `className`.\n *\n * @example\n * ```tsx\n * import { AspectRatio } from \"@sheenui/theme\";\n *\n * export function Example() {\n *   return (\n *     <AspectRatio ratio={16 / 9} className=\"max-w-md rounded-sheen-lg\">\n *       <img src=\"/cover.jpg\" alt=\"A mountain lake at dawn\" className=\"size-full object-cover\" />\n *     </AspectRatio>\n *   );\n * }\n * ```\n *\n * @see /layout/aspect-ratio\n */\nexport function AspectRatio({ ratio = 1, className, style, render, ref, ...props }: AspectRatioProps) {\n  return useRender({\n    defaultTagName: \"div\",\n    render,\n    ref,\n    props: {\n      \"data-slot\": \"aspect-ratio\",\n      ...props,\n      style: { aspectRatio: ratio, ...style },\n      className: cn(\"relative w-full overflow-hidden\", className),\n    },\n  });\n}\n",
+      "type": "registry:ui",
+      "target": "@components/sheenui/aspect-ratio/aspect-ratio.tsx"
+    }
+  ],
+  "docs": "Aspect ratio: https://lokendra-builds.github.io/sheenui/layout/aspect-ratio\n\nInstalled in components/sheenui/aspect-ratio/. Import (use your components alias):\nimport { AspectRatio } from \"@/components/sheenui/aspect-ratio/aspect-ratio\";",
+  "categories": [
+    "layout"
+  ],
+  "meta": {
+    "kind": "component",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/layout/aspect-ratio",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/layout/aspect-ratio"
+  }
+}

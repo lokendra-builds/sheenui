@@ -1,0 +1,1980 @@
+# SheenUI: Start
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Glassmorphism & Liquid Glass React Components
+
+URL: https://lokendra-builds.github.io/sheenui/
+Sidebar name: Introduction
+
+Free glassmorphism and Liquid Glass React components with Motion: 86 components (67 UI, 19 effects), 48 charts and 20 blocks for Tailwind v4 and shadcn.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+v0.1 · MIT
+
+### 86 React components, 67 UI and 19 effects
+
+Charts draw, numbers count, chat types, toasts stack, switches flip. Every piece is a real SheenUI component, built with Motion and CSS springs.
+
+
+### Two looks. One scroll.
+
+Liquid Glass bends the wallpaper at its rim. Aurora Neon frosts it under curtains of light. Same components, same tokens: scroll to watch one app window change look, or switch the whole site.
+
+
+### Glass has depth
+
+Backdrop, rim light and content are separate layers. Scroll and they separate: each moves at its own speed, on transforms only.
+
+- Backdrop: Blur and saturation of whatever sits behind: the layer that makes glass read as glass.
+- Rim light: A specular edge that follows the pointer, lit from the top left on every surface.
+- Content: Text and controls sit on top, always AA-legible, turning solid when transparency is reduced.
+
+
+### Key features
+
+- Glassmorphism and Apple-style Liquid Glass, with a Safari and Firefox fallback
+- Two switchable styles: Liquid Glass and Aurora Neon
+- 86 components (67 UI components and 19 effects), plus 48 charts, 20 blocks and 5 dashboards
+- Motion built in (motion.dev): springs, choreography, reduced-motion safe
+- Accessible: WCAG AA, checked by automated axe and contrast tests (scope on the About page), keyboard, screen readers, High Contrast mode
+- Built for frame rate: animation uses only transform and opacity, loops pause off screen, and Lite glass is there for weak devices
+- Copy-paste or npx shadcn add; built on Base UI + Tailwind v4
+- AI-ready: documented source + llms.txt
+- Free and MIT licensed, for personal and commercial work
+
+
+### Why SheenUI
+
+- Glass with guardrails: Three glass levels that turn solid with reduced transparency, more contrast or Windows high contrast.
+- Motion that respects you: Springs and micro-interactions that turn into gentle fades when reduced motion is on.
+- Built on Base UI: Keyboard navigation, focus management and ARIA come from accessible headless primitives.
+- Copy, don't install: Every component is plain source in theme/. Take what you need and make it yours.
+
+
+### About SheenUI
+
+The short version of what the library is, how it handles glass, motion and accessibility, and how to install it.
+
+#### Glassmorphism React components that stay readable
+
+SheenUI is a library of glassmorphism React components: buttons, inputs, dialogs, menus, tables and more, drawn as frosted glass with a tint, a backdrop blur and a lit rim. Three glass levels come from a few Tailwind CSS v4 tokens, and every surface turns solid when someone asks for reduced transparency or more contrast, so text stays readable on any background. Taken together it is a glassmorphism UI kit for React rather than a single effect.
+
+Browse [all glass UI components](https://lokendra-builds.github.io/sheenui/components/), learn the system in [glass design tokens](https://lokendra-builds.github.io/sheenui/foundations), or see how contrast is checked in [accessible glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism).
+
+#### Liquid Glass for React, with a Safari fallback
+
+Liquid Glass is the Apple look that bends the background behind a panel like a lens. SheenUI’s [Liquid Glass React component](https://lokendra-builds.github.io/sheenui/effects/liquid-glass) does it with an SVG displacement map in Chrome and Edge, and falls back to ordinary frosted glass in Safari and Firefox, so every browser gets a good result.
+
+The [Liquid Glass CSS and React guide](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react) shows the code, and [the best glassmorphism React libraries](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries) compares the alternatives honestly.
+
+#### Animated React components, made with Motion
+
+The animation comes from Motion (formerly Framer Motion). Buttons lift and press, switches spring, tabs slide a pill to the active tab, and a shared set of springs and durations keeps every component in the same rhythm. Reduced motion turns movement into short fades.
+
+The [animated React components](https://lokendra-builds.github.io/sheenui/effects/) page lists the effects, including a border beam, a macOS-style dock and a number ticker. Patterns for your own code are in [12 Framer Motion examples](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples).
+
+#### 48 animated, accessible React charts
+
+The chart set covers line, area, bar and donut charts, funnels, heatmaps, treemaps, Sankey diagrams and more, 48 chart components in all. Each has a glass tooltip you can drive with the arrow keys, a color-blind-safe palette and a table view of the same data.
+
+Start with the [animated React charts gallery](https://lokendra-builds.github.io/sheenui/charts/), or open the [React line chart](https://lokendra-builds.github.io/sheenui/charts/line-chart), [bar chart](https://lokendra-builds.github.io/sheenui/charts/bar-chart) and [donut chart](https://lokendra-builds.github.io/sheenui/charts/donut-chart) pages. [Accessible React charts](https://lokendra-builds.github.io/sheenui/guides/accessible-react-charts) explains the reading model.
+
+#### Glassmorphism blocks: login, OTP, checkout, pricing, AI chat and dashboards
+
+Blocks are whole sections made only from SheenUI components. There are 20 of them, from a [glassmorphism login form](https://lokendra-builds.github.io/sheenui/blocks/glass-login) and an [OTP verification page](https://lokendra-builds.github.io/sheenui/blocks/otp-verification) to a [pricing table](https://lokendra-builds.github.io/sheenui/blocks/pricing), a [checkout form](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout) and an [AI chat UI](https://lokendra-builds.github.io/sheenui/blocks/ai-chat).
+
+5 full [glassmorphism dashboard templates](https://lokendra-builds.github.io/sheenui/dashboards/) cover web analytics, SaaS revenue, e-commerce, product analytics and crypto. Browse them all as [React Tailwind blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+#### Install with the shadcn CLI, or copy the source
+
+Every component is a registry item, so one command copies its source and installs the packages it needs:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json
+```
+
+SheenUI needs React 19.2+ and Tailwind CSS v4 (the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) shows the two CSS imports) and is free under the MIT license. The [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) and the guide to [installing in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) list the tested steps.
+
+
+### Frequently asked questions
+
+#### What is SheenUI?
+
+SheenUI is a free, open-source (MIT) library of glassmorphism and Liquid Glass React components. It has 86 components (67 UI components and 19 effects), 48 charts and 20 blocks, animated with Motion and built on Base UI and Tailwind CSS v4. You copy the source into your app and own the code, including for commercial projects.
+
+#### What is glassmorphism?
+
+Glassmorphism is a UI style where surfaces look like frosted glass: a translucent tint, a background blur (CSS backdrop-filter) and a thin, light border, over a colorful background. SheenUI ships three glass levels as Tailwind CSS v4 utilities; the [glassmorphism React tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial) builds one from scratch.
+
+#### What is the difference between glassmorphism and Liquid Glass?
+
+Glassmorphism blurs what is behind a surface. Liquid Glass, Apple’s design language since iOS 26, also bends that background like a lens and adds a bright rim. SheenUI’s LiquidGlass component refracts in Chrome and Edge and shows frosted glass in Safari and Firefox. See [Glassmorphism vs Liquid Glass](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass).
+
+#### Does Liquid Glass work in Safari and Firefox?
+
+The refraction uses an SVG displacement map inside backdrop-filter, which only Chromium browsers support today. Safari and Firefox get SheenUI's normal frosted glass instead, so nothing breaks.
+
+#### Is glassmorphism accessible?
+
+It can be. SheenUI checks text contrast on the glass (WCAG AA, at least 4.5:1), turns the glass solid when the user asks for reduced transparency or more contrast, and switches to system colors in Windows forced-colors mode. Under reduced motion, movement becomes short fades. Read [accessible glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism) for the details.
+
+#### Does SheenUI use Framer Motion?
+
+It uses Motion for React, the library formerly called Framer Motion: the motion package, imported from motion/react. The [Framer Motion to Motion guide](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion) explains the rename.
+
+#### Is SheenUI free, and what is the licence?
+
+Yes. SheenUI is MIT-licensed, so you can use, change and ship the copied source in personal and commercial projects. It is at version 0.1 and is not on npm yet: you install it with the shadcn CLI or by copying the files a page lists.
+
+#### Which React and Tailwind CSS versions does it need?
+
+React 19.2 or newer, Tailwind CSS 4.1 or newer, Motion 14 and Base UI 1.9 or newer. There is no tailwind.config file: the glass tokens and utilities are plain CSS for Tailwind v4.
+
+#### How is SheenUI different from shadcn/ui?
+
+Both are copy-the-source libraries, so you own the code. shadcn/ui is a neutral, flat design system on Radix. SheenUI is glass by default (frosted and Liquid Glass surfaces, two style presets, light and dark), is built on Base UI, animates with Motion and adds charts, blocks and dashboards. You can install SheenUI items through the shadcn CLI and use both side by side.
+
+#### How do I install SheenUI components?
+
+Copy the folders listed in each page’s “Files to copy” box into a React 19.2+ and Tailwind CSS v4 app, or use the shadcn CLI with one registry URL per component. The [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) has the commands and the Next.js and Vite notes, and the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) covers the two CSS imports.
+
+#### Can I use SheenUI with Next.js or shadcn/ui?
+
+Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare the options in [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives).
+
+#### Who makes SheenUI, and is it ready for production?
+
+Lokendra Singh Rathore designs and builds it as an open-source project. It is version 0.1 (pre-1.0), so props can still change between releases, and no real iPhone or Android phone has been used to check it yet. The [About SheenUI](https://lokendra-builds.github.io/sheenui/about) page says what is tested, how and how to cite it.
+
+
+### One command to start
+
+Copy a component into your React 19 and Tailwind v4 app and own the code. Free, MIT licensed.
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json
+```
+
+
+## Glass Design Tokens: Blur, Tint, Rim & Motion
+
+URL: https://lokendra-builds.github.io/sheenui/foundations
+Sidebar name: Foundations
+
+Glass design tokens behind SheenUI: blur, tint and rim at three levels, OKLCH colors, motion presets and solid fallbacks for reduced transparency.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Foundations
+
+Every SheenUI surface is built from a few design tokens (a tint, a backdrop blur and a lit rim at three glass levels), with motion tokens beside them.
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { SheenScene } from "@/components/sheenui/backdrop/scene";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, SegmentedControl, SheenScene } from "@sheenui/theme";
+```
+
+### SheenScene props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| src | string | required | The fallback image (WebP or JPEG). Required. Decorative: it gets an empty alt. |
+| avifSrc | string | optional, no default | Optional AVIF source for modern browsers; the browser falls back to src. |
+| srcSet | string | optional, no default | srcset of the fallback image, e.g. "/scenes/room-800.webp 800w, /scenes/room.webp 1600w". |
+| avifSrcSet | string | optional, no default | Sets the srcset of the AVIF source, like srcSet for the fallback image. |
+| sizes | string | "100vw" | Sets the sizes attribute that tells the browser how wide the image displays, so it picks a srcSet candidate. |
+| width | number | 1600 | Intrinsic width of the image in pixels. It is written on the <img> with height so the browser knows the aspect ratio before the file arrives; the scene itself still fills its container. |
+| height | number | 900 | Intrinsic height of the image in pixels, written on the <img> with width to reserve its aspect ratio. |
+| dim | number | 0.5 | How much of the page background colour is laid over the image (0 to 1). It dims the scene in dark mode and washes it in light mode, so text over glass keeps 4.5:1. |
+| parallax | boolean | false | Drift the image slowly against the scroll (transform only). Off under reduced motion; it is driven by scroll progress, so nothing runs while the scene is off screen. |
+| priority | boolean | false | Scene is above the fold: load it eagerly with high fetch priority. Otherwise it is lazy, decoded async and low priority. |
+| fixed | boolean | false | Pin the scene behind the whole page (position fixed, z-index -1) instead of filling its positioned parent. |
+| className | string | optional, no default | Adds extra classes to the scene element. |
+
+### SheenLogo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| px | number | 32 | Height of the mark in px; the wordmark scales with it. |
+| variant | "mark" \| "full" | "full" | "full" = mark + "Sheenui" wordmark, "mark" = the ribbon S only. |
+| glow | boolean | true | Soft violet glow under the mark. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### SheenMark props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| px | number | 32 | Sets the width and height in px. |
+| title | string | "SheenUI" | Accessible name. Pass "" when the mark sits next to visible "Sheenui" text. |
+
+### SheenBackdrop props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| mode | "hero" \| "page" | "page" | "hero": the home page look (brightest light behind the hero composition, caustics, a calm veil under the copy; it settles into the page look as the first viewport scrolls away). "page": the quieter docs look. |
+| style | "liquid" \| "aurora" | the saved one (html[data-sheen-style]) | Force a style preset ("liquid" or "aurora"); defaults to the saved one (html[data-sheen-style]). |
+| paused | boolean | false | Pause the ambient motion (e.g. a Pause button). |
+| className | string | optional, no default | Adds extra classes to the fixed backdrop element. |
+
+### SheenMotionProvider props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| nonce | string | optional, no default | CSP nonce for the inline styles Motion injects. |
+| skipAnimations | boolean | false | Turn every Motion animation off (tests, screenshots); the final state is shown at once. |
+
+### AnimatedList props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| as | "div" \| "ol" \| "section" \| "tbody" \| "ul" | "ul" | Sets the tag of the list element. |
+| children | ReactNode | optional, no default | Holds the items, which are AnimatedListItems with stable keys. |
+| className | string | optional, no default | Class names for the list element. |
+| animateExit | boolean | true | Animate items leaving (shorter than an entrance, items below close the gap by sliding up). |
+
+### AnimatedListItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| as | "div" \| "a" \| "article" \| "li" \| "p" \| "section" \| "tr" | "li" | Sets the tag of the item element. |
+| resize | boolean | false | Animate the item's size too (layout), not just its position. Off by default: position-only FLIP never stretches the content. |
+
+### Example: Scene switcher
+
+Blurs the room scene.
+
+```tsx
+import { useState } from "react";
+import { SheenScene } from "@/components/sheenui/backdrop/scene";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, SegmentedControl, SheenScene } from "@sheenui/theme";
+
+const scenes = ["room", "swoosh", "street", "hills", "studio"];
+
+export function Example() {
+  const [scene, setScene] = useState("room");
+
+  return (
+    <div>
+      <SegmentedControl
+        aria-label="Scene"
+        value={scene}
+        onValueChange={setScene}
+        items={scenes.map((name) => ({ value: name, label: name }))}
+      />
+      <div style={{ position: "relative", isolation: "isolate", overflow: "hidden", borderRadius: 16 }}>
+        <SheenScene
+          key={scene}
+          src={`/scenes/${scene}-v2.webp`}
+          avifSrc={`/scenes/${scene}-v2.avif`}
+          srcSet={`/scenes/${scene}-800-v2.webp 800w, /scenes/${scene}-v2.webp 1600w`}
+          avifSrcSet={`/scenes/${scene}-800-v2.avif 800w, /scenes/${scene}-v2.avif 1600w`}
+          dim={0.5}
+        />
+        <div style={{ position: "relative", display: "grid", gap: 12, padding: 16, minHeight: 256, alignContent: "center" }}>
+          {[1, 2, 3].map((level) => (
+            <GlassCard key={level} level={level as 1 | 2 | 3} className="p-4">
+              glass-{level}
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Token board
+
+Read live from the --sheen-* variables of the look you have on. Switch style or theme in the top bar and every swatch follows.
+
+#### Motion springs
+
+- snappy 0.22 s, bounce 0.12
+- smooth 0.3 s, bounce 0
+- gentle 0.55 s, bounce 0.18
+- bouncy 0.4 s, bounce 0.38
+
+
+### Glass levels: backdrop-filter blur for three surfaces
+
+Three levels, each with a solid fallback. Try Reduce transparency or Lite glass in the top bar.
+
+Chips, inputs, toggles. Light blur, most transparent.
+
+Cards and popovers. The everyday surface.
+
+Dialogs and nav bars. Strongest blur, most opaque, safest for text.
+
+
+### Three glass levels, each a set of CSS variables
+
+Glassmorphism is a frosted-glass look: a translucent tint, a backdrop blur and a light rim over a colorful background. In SheenUI it is not a pile of utility classes you repeat on every element. The stylesheet defines three utilities, glass-1, glass-2 and glass-3, and every component picks one. Add a class to your own element and it gets the same surface: <div className="glass-2 rounded-sheen-lg p-6">.
+
+Each level reads a few CSS variables: a tint (--sheen-glass-2-bg), a blur (--sheen-glass-2-blur), a saturation boost, a border and highlights for the lit rim. Because they are variables, the two style presets (Liquid Glass and Aurora Neon) and the light and dark themes only re-point them; no component changes. To use these utilities in a project, follow the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) (the two imports), and see [the glassmorphism card](https://lokendra-builds.github.io/sheenui/components/glass-card) for the basic surface.
+
+
+### Backdrop-filter blur values and the glass budget
+
+The blur is backdrop-filter. Level 1 (chips, inputs, switches) has no blur of its own, only a tint and a rim, because a small control sitting on a blurred card would only blur that card's tint. Level 2 (cards, popovers) blurs 20px, and level 3 (dialogs, navigation bars) blurs 32px and is the most opaque. Every blurred surface costs a full offscreen pass per frame, so the site keeps at most 8 in view and a Lite mode cuts the blur on weak devices. [Backdrop-filter performance](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance) measures why.
+
+
+### Frosted glass CSS without Tailwind
+
+The same look is plain CSS: a semi-transparent background, backdrop-filter: blur(20px) saturate(180%) and a 1px light border. The [glassmorphism React tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial) builds it layer by layer in CSS first, then in Tailwind, then as a component. What the utilities add is the part tutorials skip: dark-mode tuning, a specular highlight and the fallbacks below.
+
+```css
+background: var(--sheen-glass-2-bg);
+backdrop-filter: blur(20px) saturate(180%);
+border: 1px solid var(--sheen-glass-border);
+```
+
+
+### Fallbacks: reduced transparency, more contrast, forced colors
+
+Glass is decoration, never the only thing keeping text readable. When the system asks for reduced transparency (or the in-app switch is on) or for more contrast, every level becomes a solid surface with a solid border. In Windows forced-colors mode it uses system colors with no blur and no rim, and the in-app Lite mode swaps the blur for a cheaper one. [Accessible glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism) covers the contrast checks.
+
+
+### API conventions
+
+Every component speaks one vocabulary, so a prop you learn on one component works the same on the next. The generated props table on each component page shows how it uses these words.
+
+- tone is the semantic colour of a component and comes from one list of six words: danger, warning, success, info, neutral and accent. A component accepts the subset it can show. Alert takes danger, warning, success and info. Badge adds solid, a filled neutral. Spinner and Sparkline add the ink choices current and muted. tone never means a shape or a layout.
+- variant is the visual form (glass, ghost, outline, plain, card and so on), never a colour.
+- Content slots. leading and trailing are the content slots of a control: a node placed before or after the label of Button, Input, the alert dialog actions and the side drawer header. icon is the single decorative glyph of an item-like component such as Alert, an accordion trigger, a menu item or an empty state, and it is hidden from screen readers. A component has one or the other, not both.
+- emptyState is the node shown when there is nothing to show: every chart and table twin, DataTable, BarList and CommandPalette. Boolean state is a flag with a plain name such as loading, disabled or open.
+- labels. Every string a component renders or announces lives in one labels object. Each component exports a default labels constant that your app can spread and translate. A chart and its table twin share one labels type, and an accessible name that depends on content is still a label key.
+- headingLevel (1 to 6) is on every component that renders a heading. Blocks and shells default to 2, cards and panels to 3, and "none" turns the heading into plain text where the component is used inline (false is the deprecated older spelling). The page keeps a correct outline without the component guessing.
+- size is one scale: sm, md and lg, with xs and xl only where the scale needs them. Fields and buttons share the control heights 32, 40 and 48 px (coarse pointers lift small and medium to 44 px), so a Button and an Input of the same size line up. Pixel dimensions of a drawing are named for what they are, such as diameter or px, never size.
+- Logical sides. Anything that places content horizontally uses the words start and end, so right-to-left layouts flip on their own: align takes start, center or end, and menus take inline-start and inline-end for side. Physical names stay only where the screen edge is meant, such as Toaster position or the Dock and Drawer side.
+- Controlled state comes as value, defaultValue and onValueChange (open, defaultOpen and onOpenChange for overlays). A component warns once in development if it switches between controlled and uncontrolled.
+
+
+### Color tokens in OKLCH
+
+OKLCH colors that switch between light and dark with light-dark(). Toggle the theme in the top bar to see them change.
+
+
+### Scenes: a real picture behind the glass
+
+SheenScene is an image layer for the first child of a positioned container, so the blur has something to refract. The dim prop (default 0.5) mixes the page background over it to keep text readable. Serve the files from your own public folder; this page adds the site base path to the same URLs.
+
+### Motion tokens
+
+Springs are defined by duration and bounce. Press play to compare them. With reduced motion on, they all become instant.
+
+
+### Logo and mark
+
+A folded satin ribbon “S”: light on the upper bowl and the band, a deep violet fold below, the moment light catches a polished surface. Use <SheenLogo /> for the full logo, <SheenMark /> for the ribbon alone, and sheen-glint.svg (or the files in brand/) for favicons and images.
+
+
+### Every signature effect
+
+These are the moments that make the library feel physical. Each row names the export behind it and links to a page where it runs live. Turn on Reduce motion in the bar at the top and every row stops moving.
+
+Signature effects, their exports and where to see them live
+
+| Effect | What it does | Export | See it live |
+| --- | --- | --- | --- |
+| Hero entrance | The home hero builds in one timeline: badge, headline, text, buttons and floating cards arrive in order. | Hero (docs site) with spring and follow tokens | Home |
+| Scroll parallax and reveals | Layers drift at different speeds as you scroll, rows rise in when a panel enters, and the hero hands off to the page. | useScroll in the home sections, plus CSS scroll timelines in backdrop.css | Home |
+| Pointer-reactive light | A soft light follows the cursor across glass, so the surface looks like it catches the light. | SpotlightCard, useSheenPointerLight | Spotlight card |
+| Magnetic and press physics | A primary button leans toward the cursor as it gets close, then lifts on hover and sinks on press. | Button, useMagnetic | Button |
+| 3D tilt | A card turns a few degrees toward the pointer on a spring and settles flat when you leave. | TiltCard, TiltCardLayer | Tilt card |
+| Shared-element morph | A card grows into its dialog and shrinks back, so the eye follows one object. A selection pill slides between options the same way. | MorphingDialog, Segmented | Morphing dialog |
+| Rolling numbers | Digits roll to a new value instead of swapping, and charts draw in when they appear. | NumberTicker, chart components | Number ticker |
+| Drag physics | Toasts can be swiped away and a drawer can be dragged shut, and the exit speed follows how fast you flick. | Toaster, Drawer | Toast |
+| Route transitions | Changing page cross-fades and lifts the new content, using the browser's view transitions when they exist. | startRouteTransition | Any page link |
+| Ambient backdrop | Slow ribbons and orbs (Liquid) or an aurora sky (Aurora) move behind the glass and pause when off screen or under Pause motion. | SheenBackdrop | Home |
+| Text effects | Headlines blur in, type out, rotate words or shimmer. | BlurIn, Typewriter, WordRotate, ShimmerText | Blur in |
+| Micro-interactions | Button glow, a light sweep across cards, an underline that draws, icon nudges and a focus pulse. | Button, GlassCard, DialogContent | Button |
+| Theme wave | Switching light and dark sweeps a circle of the new theme out from the switch you pressed. | useThemeWave (docs site) | Home, theme switch |
+| One light for a bento grid | One pointer light is shared by every cell of a bento grid, so only one glow is ever painted. | BentoGrid, BentoCell | Bento grid |
+
+### Foundation components
+
+The logo, the animated backdrop and the app-wide motion provider. SheenBackdrop also pauses its loops off-screen, so you never need to manage that yourself.
+
+#### SheenLogo props
+
+#### SheenMark props
+
+#### SheenBackdrop props
+
+#### SheenMotionProvider props
+
+#### AnimatedList props
+
+#### AnimatedListItem props
+
+
+### Frequently asked questions
+
+#### How do I put a glass surface on my own element?
+
+Give the element glass-1, glass-2 or glass-3. Each utility sets a translucent tint, a backdrop blur and a lit border from variables, so you do not repeat the CSS on each element. The setup (the Tailwind imports) is on the Tailwind v4 glass UI page.
+
+#### Which backdrop-filter blur should I use?
+
+SheenUI blurs 20px on cards and popovers and 32px on dialogs and navigation bars, and none on small controls. Larger blurs cost more per frame, so keep a handful of blurred surfaces in view.
+
+#### Can I change the glass tint or blur?
+
+Yes. Override the variables, for example --sheen-glass-2-bg or --sheen-glass-2-blur, on :root or on one container. Components follow because they read the variables, and the two style presets do exactly that.
+
+#### What happens when someone turns off transparency?
+
+The glass becomes a solid surface with a solid border for reduced transparency and more contrast, and system colors in Windows forced-colors mode. Text contrast does not depend on the blur.
+
+
+### All exports on this page
+
+- ANALYTICS_RANGES — Every AnalyticsRange, shortest first (the order of the range picker).
+- AlertIcon — An exclamation in a circle, for errors and warnings.
+- AnimatedList — A list whose items slide to their new position when they are reordered, inserted or removed, and fade and scale in or out.
+- AnimatedListItem — One item of an AnimatedList.
+- COARSE_POINTER_QUERY — The one touch query SheenUI uses: any coarse pointer (a touch laptop with a mouse counts as touch-capable).
+- CheckIcon — A check mark, for selected states and success.
+- CloseIcon — A cross, for close and remove buttons.
+- DEFAULT_SHEEN_STYLE — The style preset used when nothing is saved: liquid.
+- PREFERS_DARK_QUERY — The OS dark colour scheme query.
+- SHEEN_STYLES — SheenUI's style presets.
+- STAGGER_BUDGET — No stagger may spread a group over more than this (seconds).
+- SheenBackdrop — The page's live wallpaper, one per style preset: silk ribbons and spheres for Liquid Glass, a canvas aurora for Aurora Neon.
+- SheenLogo — The full logo: the ribbon "S" mark plus the wide "Sheenui" wordmark with a violet i-dot.
+- SheenMark — The SheenUI logo mark on its own: a glossy ribbon "S", light on top and a deep violet fold below.
+- SheenMotionProvider — One MotionConfig for the whole app.
+- SheenScene — A real picture behind your glass, so the blur has something to refract.
+- WORLD_FRAME_HEIGHT — Height of the world map's drawing frame (875 units); the frame is 2000 units wide.
+- WORLD_FRAME_WIDTH — Size of the map frame (SVG user units).
+- budgetStagger — A stagger that never spreads a group over more than STAGGER_BUDGET, however many children: transition: { delayChildren.
+- bumpLegend — The legend of a BumpChart: one entry per series, in the chart's colours.
+- changeRatio — Signed percent change from previous to current, as a ratio; null when undefined.
+- chartCsv — The chart's data as CSV text: raw numbers (not formatted), one column per series.
+- chartFileName — File-name-safe slug: "Revenue by channel" → "revenue-by-channel" ("Größe" → "grosse", "Café" → "cafe").
+- chartPngBlob — The chart as a PNG (2× by default, for sharp slides and docs).
+- createForceSimulation — Builds a force simulation over count nodes of radius radii, linked by links (indexes).
+- defaultChartCsvLabels — The English header texts of chartCsv; pass labels to override any of them.
+- defaultEmojiCategories — The built-in emoji set the picker uses, grouped into ChatEmojiCategory entries with searchable names and keywords.
+- defaultKbdLabels — Default key-cap glyphs and spoken names per platform (mac and other, plus their *Spoken variants).
+- defaultQuickReactions — The quick reactions (WhatsApp's set): one tap under a message.
+- distance — Movement distances in pixels: nudge, rise, reveal, panel, hero, and the magneticMax / parallaxMax caps.
+- divergingColor — One step of a diverging scale: t in [-1, 1], 0 is the neutral midpoint.
+- downloadBlob — Save a Blob as a file through a temporary link.
+- duration — Seconds (Motion's unit).
+- ease — Easing curves as cubic-bezier arrays: out for entrances, inOut for loops, exit for leaving .
+- emojiName — The spoken name of an emoji when it is in the set ("red heart"), else the emoji itself.
+- errorBarLegend — The legend of an ErrorBarChart: the estimate and the interval around it.
+- escapeCsvValue — One CSV field: quoted when it holds a comma, quote or line break, and defanged against spreadsheet formula injection.
+- exitPreset — Stand-alone exit target for AnimatePresence children: exit={reduced ?
+- exitTransition — Leaving the screen: duration.exit with ease.exit.
+- exportChartImage — Download the chart inside root as an SVG or PNG file.
+- exportCsv — Download rows as a CSV file: a header row plus data rows (UTF-8 with BOM, quoted and formula-safe).
+- fadeUp — Variants for a fade-and-rise entrance (hidden, visible, exit), each with a full and a reduced (opacity only) version.
+- fileKind — A coarse kind for picking an icon and a tint.
+- findChartSvg — The chart's SVG inside root: the one marked as a chart, else the largest.
+- follow — Physics springs for MotionValues that chase a moving target (useSpring / useFollowValue).
+- formatBytes — 5242880 → "5 MB" (binary steps, the way most upload limits are set).
+- formatChange — "+12.4%", "−3%" in a locale (typographic minus).
+- formatColor — The colour as text in a format: "#7c5cff", "rgb(124 92 255 / 50%)", "hsl(252 100% 68%)".
+- formatShortcut — Formats a shortcut ("mod+shift+p" or an array of keys) for a platform: visible key labels, spoken words and the aria-keyshortcuts value.
+- fuzzyMatch — Fuzzy-match query against text.
+- ganttDay — A date (Date or "YYYY-MM-DD" string, read as a local date) as a day number; null if invalid.
+- ganttLegend — Legend items for a ChartCard: one per group (phase), in its fixed colour slot.
+- getWeekStart — The locale's first day of the week (0 = Sunday).
+- hoverLift — Hover lift + press physics for interactive surfaces (release rebounds on the press spring).
+- isApplePlatform — True on macOS, iOS and iPadOS, where mod means ⌘ Command.
+- isJumboEmoji — True for a short message that is only emoji (1-3): shown large, without a bubble (as WhatsApp, iMessage and Telegram do).
+- isMotionReduced — True when motion is reduced, live: data-motion="reduced" on <html> or the OS setting.
+- isSheenStyle — Type guard: true when value is one of SHEEN_STYLES.
+- isWeakDevice — A device that should get Lite glass straight away: little memory, few cores, or the visitor asked to save data.
+- loadWorld110m — Starts loading the bundled 1:110m world outlines (cached; safe to call repeatedly, e.g.
+- matchCommand — Best match of a query against a label and its extra search words.
+- matchesAccept — Whether a file is allowed by an accept string, by MIME type or extension.
+- matchesShortcut — Does a keydown event match a shortcut?
+- mergeLabels — Merge partial labels over defaults (one level deep for the range maps).
+- networkLegend — Legend items for a network graph's groups (pass to ChartCard's legend).
+- normalizeColor — Normalised hex of any parsable colour (for comparisons), or null.
+- normalizeText — Lower-case, strip accents.
+- orderShortcut — Modifiers first (in the platform's usual order), then the other keys as written.
+- parseColor — Parses #rgb, #rgba, #rrggbb, #rrggbbaa (with or without #), rgb()/rgba() and hsl()/hsla().
+- parseISODate — Parses "YYYY-MM-DD" as a local date.
+- parseShortcut — Split "shift+mod+k" (or an array) into canonical, lower-case key names.
+- populationPyramidLegend — The legend of a PopulationPyramid: the two sides, in the chart's colours.
+- prepareText — Analyse a text once so it can be matched against many queries cheaply.
+- press — Press physics: sink to 0.97 on the stiff press spring, rebound 1.5% on release.
+- projectWorld — Longitude / latitude (degrees) to a point in the map frame.
+- rangeLength — How many points a range has.
+- rangePoints — The time points of a range that ends at end (UTC ms): 24 hours, 7/30/90 days or 12 months.
+- readSheenStyle — The active style preset outside React (reads <html>; "liquid" on the server).
+- resolveChatLabels — Merge partial labels over the defaults (nested records too).
+- resolveCssColor — Resolve a CSS colour expression (tokens, light-dark(), color-mix()) against context.
+- resolveLanguage — Normalise a language name or alias ("typescript", "sh", "py"…).
+- riseIn — Fallback page transition for browsers without View Transitions.
+- scaleIn — Variants for a small scale-and-fade entrance (hidden, visible, exit), each with a full and a reduced (opacity only) version.
+- scaleTo — Scale targets (1 = unchanged) for press, pop-in, overlay entrance and hover.
+- serializeChartSvg — A standalone SVG document of svg, with every style resolved.
+- sheenPointer — Pointer position, shared with backdrops (the aurora sky lifts under it).
+- sheenPreferenceScript — Inline this in <head> (before your CSS) to apply saved preferences with no flash.
+- splitLines — Split tokens into lines (tokens that contain newlines are cut).
+- spring — The four springs.
+- stagger — Parent variant that staggers its children's "visible" state.
+- staggerStep — Stagger steps in seconds, by what is being staggered.
+- startRouteTransition — Run a navigation as a view transition when the browser supports it and motion is allowed, else run it at once.
+- supportsViewTransitions — True when document.startViewTransition exists (Chrome/Edge 111+, Safari 18+, Firefox 144+).
+- tableCsv — CSV from a rendered table (the chart's table view): what you see is what you get.
+- toAriaKeyShortcuts — aria-keyshortcuts value for a shortcut, resolving mod for the platform.
+- toCsv — Build a CSV document (CRLF line endings) from a header row and data rows.
+- toISODate — "2026-10-29" for the local calendar day (what a form submits).
+- tokenize — Tokenize code for language (any alias).
+- useAmbientBeat — Run cb(now, dt) on every ambient beat (~30 Hz, fewer while the page scrolls) while mounted and on.
+- useAutoLiteGlass — Lite glass, automatically, on weak devices: low memory, few cores, Save-Data.
+- useBeatAnimations — Drives paused Web Animations from the shared ambient beat (~30 Hz) instead of letting them free-run at the display rate.
+- useBeatFollower — Run cb(now) on every beat while the beat is awake (see wakeBeat), while mounted and on.
+- useCoarsePointer — True on devices with a coarse pointer (touch).
+- useControllable — One controlled/uncontrolled state hook for every SheenUI component.
+- useFinePointer — True on a mouse or trackpad ((hover: hover) and (pointer: fine)), live; false on touch screens and during server rendering.
+- useGlassMode — Lite glass: cheaper blur and a calmer backdrop for weak devices.
+- useKeepFocusOnReorder — Keeps keyboard focus on an element that React moved.
+- useLoopPlayback — Should a loop (ambient drift, beam, marquee, shimmer, typing dots, a live ticker) be playing?
+- useMagnetic — Magnetic pull: the element leans toward the pointer while the pointer is within reach px of its box, by at most distance.magneticMax px.
+- useMediaQuery — Whether a CSS media query currently matches, kept live with useSyncExternalStore.
+- useMotionGate — Which motion tiers are allowed right now.
+- useMotionPreference — The in-app "reduce motion" switch: [on, setOn] (data-motion="reduced" on <html>, saved in localStorage, synced across tabs; false on the server).
+- useOffscreenLoops — Pause every looping CSS animation while its element (its parent, for loops that move their own element) is off-screen, resume it when it returns.
+- useOsSolidGlass — True when the OS asks for solid surfaces (reduced transparency, more contrast or forced colours).
+- usePrefersDark — True when the OS prefers a dark colour scheme.
+- useReducedTransparency — The in-app "reduce transparency" switch: [on, setOn].
+- useResolvedTheme — The theme actually on screen: the saved choice, or the OS setting when it is "system".
+- useRowReorder — The layout props for a row that should slide to its new place when its siblings reorder.
+- useSheenPointerLight — The pointer rim light for every glass surface (the work is described at the top of this file).
+- useSheenReducedMotion — True when the OS asks for reduced motion OR the in-app toggle is on.
+- useSheenStyle — The active style preset ("liquid" by default, or "aurora") and a setter that saves it (data-sheen-style on <html> plus localStorage, synced across tabs).
+- useTheme — The visitor's colour theme and a setter that saves it (data-theme on <html> plus localStorage, synced across tabs).
+- viewSpring — A spring token for View Transition layers (AnimateView, animateView).
+- worldCountryName — A country's name in locale (Intl.DisplayNames), e.g.
+
+
+### Related pages
+
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Installation](https://lokendra-builds.github.io/sheenui/docs/installation)
+- [Showcase](https://lokendra-builds.github.io/sheenui/showcase)
+- [Forms recipe](https://lokendra-builds.github.io/sheenui/docs/forms)
+- [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)
+
+#### Guides that cover it
+
+- [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks)
+- [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial)
+- [Apple Liquid Glass in CSS and React](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react)
+- [Accessible Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+- [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass)
+- [backdrop-filter Performance: Fast Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance)
+- [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+- [Best Glassmorphism React Libraries (2026)](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries)
+- [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
+
+
+## React Component Showcase with Live Glass Demos
+
+URL: https://lokendra-builds.github.io/sheenui/showcase
+Sidebar name: Showcase
+
+An animated React component showcase: 21 live SheenUI stories, from a Button to a login lamp, on glass stages that pause off-screen and for reduced motion.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Showcase
+
+This React component showcase puts 21 SheenUI stories on one page: each card is a live glass component on a lit stage, and every card links to its docs page.
+
+Three cards move at a time, only while they are on screen.
+
+[See all components](https://lokendra-builds.github.io/sheenui/components/), or browse the [effects](https://lokendra-builds.github.io/sheenui/effects/) and [blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+### From a card to your app
+
+Every card links to the page that documents it: the props, the keyboard and accessibility notes, the files to copy and the shadcn install command. For a whole screen, start with the [React glass login page](https://lokendra-builds.github.io/sheenui/blocks/glass-login) or the [lamp login](https://lokendra-builds.github.io/sheenui/blocks/lamp-login); for the refraction look, with [Liquid Glass UI for React](https://lokendra-builds.github.io/sheenui/effects/liquid-glass); for motion on its own, with the [animated React components](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+### When to use Showcase
+
+- Use it to judge SheenUI at a glance before you install anything: each card plays the same story as the stage at the top of its component page, on the same lit glass stage, in whichever of the four looks you have chosen.
+- Use it to compare motion: the springs, the glass and the pacing are shared tokens, so a Dialog, a Toast and a Command palette move alike.
+- Open a card to reach the full docs page with live examples, props, keyboard table and the shadcn command that copies the source into your app.
+- Skip it when you need to test a component yourself: the cards are pictures of a story and take no input, so use the examples on the component page instead.
+- Share the page link when you want a team to see the library moving; it needs no sign-in and plays nothing it does not need to.
+
+
+### Frequently asked questions
+
+#### Why do only some cards move at a time?
+
+At most three cards animate at once, the ones nearest the middle of the screen, so scrolling stays smooth. The rest rest on the last frame of their story and start when they reach the middle.
+
+#### Do the animations pause when I leave the tab?
+
+Yes. Cards stop when they scroll off screen and when the tab is hidden, and there is a Pause animations button on the page. Nothing runs in the background.
+
+#### What happens with reduced motion turned on?
+
+Every card shows the final frame of its story and does not loop. That follows the operating system setting and SheenUI's own reduce motion switch.
+
+#### Are these real components or recordings?
+
+They are the real components from @sheenui/theme, driven by small scripted stories. The Lamp login, Payment checkout and OTP verification cards type into the actual blocks.
+
+
+### Showcase
+
+- Component: [Animated React button](https://lokendra-builds.github.io/sheenui/components/button): A press, a loading spinner, then a green check and a sweep of light.
+- Block: [Glass lamp login page for React](https://lokendra-builds.github.io/sheenui/blocks/lamp-login): Pull the cord and a warm light cone reveals the sign-in card.
+- Component: [React OTP input with a glass seal](https://lokendra-builds.github.io/sheenui/components/otp-input): Six digits are typed, a light scans, then the cells fold into a glass seal.
+- Block: [Glass payment checkout form](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout): The card preview flips for the security code, then glows amber and green.
+- Component: [React Switch with a spring thumb](https://lokendra-builds.github.io/sheenui/components/switch): The thumb springs across and the stage light switches on with it.
+- Block: [React OTP verification screen](https://lokendra-builds.github.io/sheenui/blocks/otp-verification): A ring fills with every digit, then the padlock opens in a flood of light.
+- Component: [Toast stack in React](https://lokendra-builds.github.io/sheenui/components/toast): A deploy pipeline raises, stacks and swaps glass notifications.
+- Component: [React Tabs with a sliding pill](https://lokendra-builds.github.io/sheenui/components/tabs): The pill slides between tabs and a count badge ticks up.
+- Component: [Glass modal dialog for React](https://lokendra-builds.github.io/sheenui/components/dialog): A strong-glass modal springs in over a dimmed stage, then confirms.
+- Effect: [React morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog): A card grows into a dialog and flies back to where it came from.
+- Effect: [macOS-style dock in React](https://lokendra-builds.github.io/sheenui/effects/macos-dock): A pointer sweeps along the dock and the icons swell around it.
+- Effect: [3D tilt card in React](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card): The card leans toward the pointer while a glare slides across the glass.
+- Effect: [Spotlight card in React](https://lokendra-builds.github.io/sheenui/effects/spotlight-card): A soft light follows the pointer and lights the card's rim.
+- Effect: [Liquid Glass effect for React](https://lokendra-builds.github.io/sheenui/effects/liquid-glass): A lens of refracting glass slides over the content behind it.
+- Effect: [Animated border beam in React](https://lokendra-builds.github.io/sheenui/effects/border-beam): A comet of light runs around the rounded edge, then rests.
+- Effect: [Blur-in text animation for React](https://lokendra-builds.github.io/sheenui/effects/blur-in): A headline sharpens out of a blur, word by word.
+- Effect: [Typewriter text effect in React](https://lokendra-builds.github.io/sheenui/effects/typewriter): A phrase is typed with a human rhythm, deleted and replaced.
+- Effect: [Animated number ticker in React](https://lokendra-builds.github.io/sheenui/effects/number-ticker): Odometer digits roll up to new revenue and user counts.
+- Component: [React command palette](https://lokendra-builds.github.io/sheenui/overlays/command-palette): A shortcut opens the palette, a query filters it and Enter runs a command.
+- Component: [Glass color picker for React](https://lokendra-builds.github.io/sheenui/forms/color-picker): The handle glides across the color area and the stage takes the color.
+- Component: [React carousel with glass dots](https://lokendra-builds.github.io/sheenui/components/carousel): Slides advance one by one while the active dot fills.
+
+## Install Glassmorphism Components with shadcn CLI
+
+URL: https://lokendra-builds.github.io/sheenui/docs/installation
+Sidebar name: Installation
+
+Add SheenUI's glassmorphism components to any React 19 + Tailwind CSS v4 app with one shadcn CLI command, or copy the source. Works with Vite and Next.js.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Installation
+
+Add SheenUI's shadcn glassmorphism components to a React 19 and Tailwind CSS v4 app with one shadcn command, or copy the source folders you need.
+
+SheenUI works like shadcn/ui: you copy the source of the components you use into your project and own it. The fastest way is the shadcn CLI, because every component, chart and block is a registry item. One command copies the files and installs the packages they need, so you can add the [glass card](https://lokendra-builds.github.io/sheenui/components/glass-card) or the [button](https://lokendra-builds.github.io/sheenui/components/button) without reading an import graph. You end up with plain React components in your own folders that you can read, change and keep.
+
+### First, the @/* path alias
+
+The shadcn CLI needs an @/* alias that points at your source folder. A Next.js app made with create-next-app --import-alias "@/*" has it already. A fresh Vite app does not, and shadcn init stops with Could not find valid path aliases. In Vite, add the same paths entry to tsconfig.json and tsconfig.app.json (inside compilerOptions):
+
+```
+"paths": { "@/*": ["./src/*"] }
+```
+
+Do not add baseUrl: TypeScript 7 rejects it, and paths alone works on TypeScript 5, 6 and 7. Then give Vite the same alias in vite.config.ts, next to the React and Tailwind plugins:
+
+```tsx
+import { fileURLToPath } from "node:url";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+});
+```
+
+Make sure src/index.css holds @import "tailwindcss";, then run npx shadcn@latest init -d. The [install guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) shows every file in full.
+
+
+### Install with the shadcn CLI
+
+In a project that already has React 19.2 and Tailwind CSS v4 (new to it? the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) is two lines of CSS), run the add command with the registry URL of the component:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json
+```
+
+The item installs into components/sheenui/ and pulls in the shared tokens, glass styles, motion presets and hooks. Replace glass-card with any item name: button, dialog, data-table, a chart or a block.
+
+An example can use more than the page's own component: the dialog example has an Input, so add input too. The Files to copy box on each page lists every item its examples import. A dashboard is the item analytics-demo-saas (dashboard plus sample data; the other four are analytics-demo-web, -ecommerce, -product and -finance) or analytics-saas for the dashboard alone.
+
+
+### Install everything, or a whole family
+
+Five bundle items install a family in one command. A bundle has no files of its own: it lists the real items it needs, so nothing is copied twice and the shared theme comes along once.
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json
+```
+
+all is the whole library. The smaller ones are components, charts, blocks and dashboards (the five dashboards with the components, charts and demo data they need). Expect a lot of files: all copies several hundred, so prefer a family or single items when you only need part of the library. To use short names, add the registry to your components.json once:
+
+```
+"registries": {
+  "@sheenui": "https://lokendra-builds.github.io/sheenui/r/{name}.json"
+}
+```
+
+```bash
+npx shadcn@latest add @sheenui/all
+```
+
+The namespace form was tested with shadcn CLI 4.23; the URL form above is the one that needs no setup. The same short form works for single items, for example @sheenui/button.
+
+
+### Add the two CSS imports
+
+Import Tailwind first and the SheenUI styles after it in your global stylesheet. The CLI adds the second line for you; check the order and the path:
+
+```css
+@import "tailwindcss";
+@import "@/components/sheenui/styles/index.css";
+```
+
+That is the line the CLI adds, and Vite resolves the @/ alias inside CSS. Next.js cannot, so there write the relative path from your global stylesheet, for example ../components/sheenui/styles/index.css in app/globals.css. Then put sheenPreferenceScript in the document head to avoid a flash of the wrong theme (see [dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)). The [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) explains what the stylesheet defines.
+
+In Next.js, a chart or dashboard example that passes a function (a format formatter, seriesLegend, a dashboard's load) must live in a file that starts with "use client"; a Server Component cannot pass functions to client components.
+
+
+### Copy the files by hand
+
+Prefer no CLI? Every docs page has a Files to copy box computed from the real import graph: the folders to copy from theme/src and the npm packages to add, usually @base-ui/react, motion, clsx and tailwind-merge. Copy the shared styles, lib, motion and hooks folders once, then the component folders you need, all under components/sheenui/ (the folder the CLI uses, so the stylesheet import above is the same), and import the styles after Tailwind. Components that need the browser already start with "use client", so they also work in the Next.js App Router.
+
+
+### Set up the providers and the backdrop
+
+Glass needs something colorful behind it, and Motion needs one shared configuration. Mount them once at the root of your app: SheenMotionProvider follows the reduced-motion setting, SheenBackdrop is the live wallpaper of the active style (or give <body> the static sheen-backdrop class), and ToastProvider with Toaster are only needed if you use toasts.
+
+```tsx
+import { SheenMotionProvider } from "@/components/sheenui/motion/provider";
+import { SheenBackdrop } from "@/components/sheenui/backdrop/backdrop";
+import { ToastProvider } from "@/components/sheenui/toast/toast";
+import { Toaster } from "@/components/sheenui/toast/toaster";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <SheenMotionProvider>
+      <ToastProvider>
+        <SheenBackdrop />
+        {children}
+        <Toaster />
+      </ToastProvider>
+    </SheenMotionProvider>
+  );
+}
+```
+
+In Next.js put this in a client component and render it inside <body>. The README's Project setup section also shows how to inline sheenPreferenceScript before first paint.
+
+
+### Import paths: copied files or the package
+
+A copied install (the shadcn CLI or a hand copy) has no barrel: every component is its own file under components/sheenui/, so you import it from that file, for example import { Button } from "@/components/sheenui/button/button". @/components is the alias from your components.json.
+
+The @sheenui/theme package (one barrel, import { Button } from "@sheenui/theme") is the single import form for a project that consumes the theme as a package. Copying files is the route this site documents, so the Code tab of every example shows the Copied files imports by default. The Import path switch above each code sample changes it to Package, and the choice is remembered. Helpers from @sheenui/theme/demo-data map to their own files too, for example @/components/sheenui/blocks/analytics/demo-web, which a dashboard page lists as an optional extra registry item.
+
+
+### Common install problems
+
+- Components render unstyled: the SheenUI import is missing or comes before @import "tailwindcss" (the order is explained in the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)).
+- Next.js reports it cannot resolve @/components/sheenui/styles/index.css: change the import to the relative path.
+- The theme flashes or html shows a hydration warning: inline sheenPreferenceScript in the head and add suppressHydrationWarning to html.
+
+Framework steps, tested versions and the rest of the troubleshooting table are in the [guide to installing SheenUI in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks). The components sit on Base UI: see [Base UI components styled with glass](https://lokendra-builds.github.io/sheenui/docs/base-ui), and browse [all glass UI components](https://lokendra-builds.github.io/sheenui/components/) when you are set up. To see who maintains the project and what is tested, read the [About SheenUI](https://lokendra-builds.github.io/sheenui/about) page.
+
+
+### Frequently asked questions
+
+#### Which versions do I need?
+
+React 19.2 or newer and Tailwind CSS v4. The components also use Base UI, Motion, clsx and tailwind-merge; the shadcn CLI installs the ones a component needs.
+
+#### Do I need a tailwind.config.js?
+
+No. Tailwind v4 is configured in CSS. Import tailwindcss first and the SheenUI styles after it, and add an @source line only if Tailwind does not scan the folder that holds your copied components.
+
+#### Does it work with Next.js and Vite?
+
+Yes. Next.js App Router and Vite with React Router or TanStack Router were tested end to end. The installation guide lists the tested versions and the one CSS path to change in Next.js.
+
+#### Can I copy files instead of using the CLI?
+
+Yes. Every docs page has a Files to copy box with the exact folders and npm packages for that component, so you take only what you use.
+
+
+### Related pages
+
+- [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Forms recipe](https://lokendra-builds.github.io/sheenui/docs/forms)
+- [Dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)
+
+
+## React Hook Form + Zod with Glass Inputs
+
+URL: https://lokendra-builds.github.io/sheenui/docs/forms
+Sidebar name: Forms recipe
+
+A React form recipe: react-hook-form and zod with SheenUI Field, validation messages, focus on error, an async submit and every control via Controller.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Forms recipe
+
+A form recipe for React with react-hook-form and zod: SheenUI's Field wires labels and errors, every control forwards ref and onBlur, and the submit button shows the async state.
+
+Files to copy from `theme/src/`:
+
+- `components/alert/`
+- `components/button/`
+- `components/checkbox/`
+- `components/field/`
+- `components/input/`
+- `components/number-field/`
+- `components/select/`
+- `components/drawer/parts/sheet.tsx`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, glide-highlight.tsx, group-segments.ts, motion-props.ts, page-size.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+shadcn CLI:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/alert.json
+```
+
+Registry items: alert, button, checkbox, field, input, number-field, select. The command installs the first; swap the name in the URL for any other. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Alert } from "@/components/sheenui/alert/alert";
+import { Button } from "@/components/sheenui/button/button";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+import { ColorField } from "@/components/sheenui/color-picker/color-picker";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { Input } from "@/components/sheenui/input/input";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { Rating } from "@/components/sheenui/rating/rating";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+import { Select } from "@/components/sheenui/select/select";
+import { Slider } from "@/components/sheenui/slider/slider";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Alert, Button, Checkbox, ColorField, Combobox, DatePicker, Field, FieldControl, FieldDescription, FieldError, FieldLabel, Input, NumberField, OtpInput, RadioGroup, Rating, SegmentedControl, Select, Slider, Switch, TagsInput } from "@sheenui/theme";
+```
+
+### Example 1 of 2: Sign-up form: zod, Field and an async submit
+
+Text inputs use register() (they forward ref, onChange, onBlur and name); everything else goes through Controller. Submit with errors to see focus move to the first invalid field; use an @example.com email for a server error.
+
+```tsx
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { Alert } from "@/components/sheenui/alert/alert";
+import { Button } from "@/components/sheenui/button/button";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { Input } from "@/components/sheenui/input/input";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Alert, Button, Checkbox, Field, FieldControl, FieldDescription, FieldError, FieldLabel, Input, NumberField, Select } from "@sheenui/theme";
+
+const plans = [
+  { value: "free", label: "Free", description: "1 seat" },
+  { value: "team", label: "Team", description: "Up to 10 seats" },
+  { value: "business", label: "Business", description: "Up to 50 seats" },
+];
+
+const schema = z.object({
+  name: z.string().min(2, "Enter your name"),
+  email: z.email("Enter a valid email address"),
+  plan: z.enum(["free", "team", "business"], { error: "Pick a plan" }),
+  seats: z.number({ error: "Enter the number of seats" }).int().min(1, "At least 1 seat").max(50, "At most 50 seats"),
+  terms: z.boolean().refine((accepted) => accepted, "Accept the terms to continue"),
+});
+type SignUp = z.infer<typeof schema>;
+
+export function Example() {
+  const [created, setCreated] = useState<string | null>(null);
+  const {
+    register,
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUp>({
+    resolver: zodResolver(schema),
+    defaultValues: { name: "", email: "", plan: undefined, seats: 5, terms: false },
+  });
+
+  const onSubmit = async (values: SignUp) => {
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    if (values.email.endsWith("@example.com")) {
+      setError("email", { message: "That email is already registered" });
+      return;
+    }
+    setCreated(values.name);
+  };
+
+  if (created) return <Alert tone="success" title={`Welcome, ${created}`}>Your account is ready.</Alert>;
+
+  return (
+    <form noValidate onSubmit={(event) => void handleSubmit(onSubmit)(event)} className="flex w-full max-w-md flex-col gap-4">
+      <Field required invalid={Boolean(errors.name)}>
+        <FieldLabel>Name</FieldLabel>
+        <FieldControl>
+          <Input {...register("name")} autoComplete="name" />
+        </FieldControl>
+        <FieldError>{errors.name?.message}</FieldError>
+      </Field>
+
+      <Field required invalid={Boolean(errors.email)}>
+        <FieldLabel>Email</FieldLabel>
+        <FieldControl>
+          <Input {...register("email")} type="email" autoComplete="email" />
+        </FieldControl>
+        <FieldDescription>Try anything@example.com to see a server error.</FieldDescription>
+        <FieldError>{errors.email?.message}</FieldError>
+      </Field>
+
+      <Controller
+        control={control}
+        name="plan"
+        render={({ field, fieldState }) => (
+          <Field required invalid={fieldState.invalid}>
+            <FieldLabel>Plan</FieldLabel>
+            <FieldControl>
+              <Select items={plans} placeholder="Choose a plan" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />
+            </FieldControl>
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="seats"
+        render={({ field, fieldState }) => (
+          <Field required invalid={fieldState.invalid}>
+            <FieldLabel>Seats</FieldLabel>
+            <FieldControl>
+              <NumberField value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} min={1} max={50} />
+            </FieldControl>
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="terms"
+        render={({ field, fieldState }) => (
+          <Checkbox label="I accept the terms of service" checked={field.value} onCheckedChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} error={fieldState.error?.message} />
+        )}
+      />
+
+      <Button type="submit" loading={isSubmitting} className="self-start">
+        Create account
+      </Button>
+    </form>
+  );
+}
+```
+
+### Example 2 of 2: Every control with Controller
+
+The pattern never changes: value (or checked), the change handler, onBlur, ref and name. The values update live on the right.
+
+```tsx
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { ColorField } from "@/components/sheenui/color-picker/color-picker";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { Rating } from "@/components/sheenui/rating/rating";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+import { Slider } from "@/components/sheenui/slider/slider";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
+// Package build (after the first npm release, or a packed tarball): import { ColorField, Combobox, DatePicker, OtpInput, RadioGroup, Rating, SegmentedControl, Slider, Switch, TagsInput } from "@sheenui/theme";
+
+type Everything = {
+  volume: number;
+  notify: boolean;
+  stars: number | null;
+  birthday: Date | null;
+  country: string | null;
+  tags: string[];
+  view: string;
+  code: string;
+  billing: string | null;
+  brand: string;
+};
+
+const countries = [
+  { value: "in", label: "India" },
+  { value: "de", label: "Germany" },
+  { value: "us", label: "United States" },
+];
+
+export function Example() {
+  const { control } = useForm<Everything>({
+    defaultValues: { volume: 40, notify: true, stars: 4, birthday: null, country: null, tags: ["react"], view: "week", code: "", billing: "monthly", brand: "#7c5cff" },
+  });
+  const values = useWatch({ control });
+
+  return (
+    <form noValidate onSubmit={(event) => event.preventDefault()} className="flex max-w-md flex-col gap-4">
+      <Controller control={control} name="volume" render={({ field }) => <Slider label="Volume" value={field.value} onValueChange={(v) => field.onChange(v)} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller control={control} name="notify" render={({ field }) => <Switch label="Email me about updates" checked={field.value} onCheckedChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller control={control} name="stars" render={({ field }) => <Rating label="Rate it" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller control={control} name="birthday" render={({ field }) => <DatePicker label="Birthday" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller control={control} name="country" render={({ field }) => <Combobox label="Country" options={countries} value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller control={control} name="tags" render={({ field }) => <TagsInput label="Topics" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller
+        control={control}
+        name="view"
+        render={({ field }) => (
+          <SegmentedControl
+            aria-label="View"
+            items={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }]}
+            value={field.value}
+            onValueChange={field.onChange}
+            onBlur={field.onBlur}
+            ref={field.ref}
+            name={field.name}
+          />
+        )}
+      />
+      <Controller control={control} name="code" render={({ field }) => <OtpInput length={4} label="Code" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <Controller
+        control={control}
+        name="billing"
+        render={({ field }) => (
+          <RadioGroup
+            label="Billing"
+            items={[{ value: "monthly", label: "Monthly" }, { value: "yearly", label: "Yearly" }]}
+            value={field.value}
+            onValueChange={field.onChange}
+            onBlur={field.onBlur}
+            ref={field.ref}
+            name={field.name}
+          />
+        )}
+      />
+      <Controller control={control} name="brand" render={({ field }) => <ColorField label="Brand colour" value={field.value} onValueChange={field.onChange} onBlur={field.onBlur} ref={field.ref} name={field.name} />} />
+      <pre className="m-0 text-xs">{JSON.stringify(values, null, 2)}</pre>
+    </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Moves through the fields; after a failed submit focus goes to the first invalid control (react-hook-form calls its ref.focus()). |
+| Enter | Submits from any text field. |
+
+### Accessibility
+
+- Field links each label, description and error to its control (for, aria-describedby, aria-invalid), and the error is announced as an alert when it appears.
+- Every SheenUI form control forwards ref, onBlur, name and the aria props: ref lets react-hook-form focus the control after a failed validation, onBlur marks it touched.
+- The submit button shows loading through aria-busy and ignores clicks while it runs, so a second submit cannot start; focus stays on it.
+- Server errors are put on the field they belong to with setError, so they are announced and linked like client-side errors.
+
+### Install
+
+The form libraries are your app's dependencies, not SheenUI's. The examples were tested with react-hook-form 7.91, zod 4.6 and @hookform/resolvers 7.0:
+
+```bash
+pnpm add react-hook-form zod @hookform/resolvers
+```
+
+The controls come from the registry; every item below installs with npx shadcn@latest add and its docs page lists the exact files: [Field](https://lokendra-builds.github.io/sheenui/forms/field), [Input](https://lokendra-builds.github.io/sheenui/components/input), [Select](https://lokendra-builds.github.io/sheenui/components/select), [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox), [NumberField](https://lokendra-builds.github.io/sheenui/forms/number-field), [Button](https://lokendra-builds.github.io/sheenui/components/button), [Alert](https://lokendra-builds.github.io/sheenui/components/alert). Each control page has the single-field version of this pattern; the [Field page](https://lokendra-builds.github.io/sheenui/forms/field) shows it with every control.
+
+
+### Frequently asked questions
+
+#### When do I use register() and when Controller with SheenUI controls?
+
+Text inputs use register(): Input forwards ref, onChange, onBlur and name, which is all register() hands out. Select and NumberField (value and onValueChange) and Checkbox (checked and onCheckedChange) are controlled, so they go through Controller and receive field.value, field.onChange, field.onBlur and field.ref. The sign-up example on this page uses both.
+
+#### How do I show a server error on one field?
+
+Call setError with the field name and a message from the submit handler, for example setError("email", { message: "That email is already registered" }). FieldError renders it under the control, linked through aria-describedby and announced as an alert, the same as a zod error. Try an @example.com address in the first form above.
+
+#### Does SheenUI need react-hook-form or zod?
+
+No. They are your app's dependencies, not SheenUI's, and the controls also work with plain React state through their value props. The examples were tested with react-hook-form 7.91, zod 4.6 and @hookform/resolvers 7.0.
+
+#### How do I stop a double submit?
+
+Pass isSubmitting from react-hook-form to the Button as loading. The button sets aria-busy, ignores clicks while the async submit runs and keeps focus, so a second submit cannot start.
+
+
+### Related pages
+
+- [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)
+- [Dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)
+- [Built on Base UI](https://lokendra-builds.github.io/sheenui/docs/base-ui)
+- [Right-to-left and localisation](https://lokendra-builds.github.io/sheenui/docs/rtl)
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance)
+- [About SheenUI](https://lokendra-builds.github.io/sheenui/about)
+
+
+## Tailwind v4 Glass UI: Setup, Layers & Tokens
+
+URL: https://lokendra-builds.github.io/sheenui/docs/tailwind-v4
+Sidebar name: Tailwind CSS v4 setup
+
+Tailwind v4 glass UI in two CSS imports: no config file, the @source rule, layer order, @theme tokens, glass utilities and v3 changes. Vite and Next.js.
+
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Tailwind CSS v4 setup
+
+A Tailwind v4 glass UI needs two CSS imports and no config file: the SheenUI stylesheet defines the glass tokens, the layer order, the motion variants and the dark variant.
+
+### The two imports
+
+SheenUI is styled with Tailwind CSS v4 and needs no configuration file. In your global stylesheet, import Tailwind first and the SheenUI styles after it:
+
+```css
+@import "tailwindcss";
+@import "@/components/sheenui/styles/index.css";
+```
+
+This is the copied-files form: the shadcn CLI adds the second line for you when it installs the sheenui-theme item, and a hand copy puts the same stylesheet in the same folder. Vite resolves the @/ alias inside CSS; Next.js cannot, so there write the path relative to your global stylesheet, for example ../components/sheenui/styles/index.css in app/globals.css.
+
+Package build (packed tarball; the package is not on npm yet):
+
+```css
+@import "tailwindcss";
+@import "@sheenui/theme/styles.css";
+```
+
+A Vite app also needs Tailwind’s Vite plugin (pnpm add -D tailwindcss @tailwindcss/vite), added next to the React plugin:
+
+```ts
+// vite.config.ts
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+export default { plugins: [react(), tailwindcss()] };
+```
+
+In a Next.js app, use @tailwindcss/postcss in postcss.config.mjs instead; the CSS file is the same. The [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) has the exact paths for the CLI and manual routes, and the [framework guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) covers Next.js, Vite and React Router.
+
+
+### Telling Tailwind where the classes are
+
+Tailwind only generates the utilities it finds in files it scans, and it skips node_modules. The packed package solves that itself: its stylesheet ends with an @source line that points at the package’s own components, so the two package imports above are enough. If you import only the component folders you use, take @sheenui/theme/styles/base.css and add one @source line per folder.
+
+When you copy the source into your app, the files are part of your project and Tailwind finds them. Add @source only if your setup excludes the folder (for example a git-ignored one), with a path relative to the CSS file that points at components/sheenui. The copy test that backs every “Files to copy” list builds each one in an empty Vite app with the two imports and such an @source line.
+
+
+### Layer order
+
+Tailwind v4 declares four cascade layers: theme, base, components and utilities. SheenUI uses three of them and adds one. The glass classes (glass-1, glass-2, glass-3) live in components, so a utility on the same element, such as p-6 or rounded-sheen-lg, overrides them without !important. Page defaults (body color, the focus ring, the forced-colors border on buttons) are in base. Everything else the library writes by hand (motion rules, presets, backdrops, the reduced-transparency and contrast fallbacks) is in a layer named sheen.
+
+Because sheen is first mentioned after Tailwind’s own declaration, it ranks above utilities. If your app needs its own order, declare the layers once at the top of the stylesheet, as this docs site does, and put your page rules in a layer after sheen.
+
+
+### Tokens exposed through @theme
+
+The entry file imports tokens, motion, glass, backgrounds, the two style presets (Liquid Glass and Aurora Neon), the backdrop styles and a contrast layer for the prefers-contrast: more setting. Colors are oklch values held in --sheen-* custom properties; the presets re-point them through a data-sheen-style attribute on the html element, and light or dark comes from color-scheme and light-dark().
+
+A @theme inline block maps those properties to Tailwind names, so ordinary utilities read the tokens: bg-sheen-bg, text-sheen-fg-muted, bg-sheen-accent-soft, outline-sheen-focus, rounded-sheen-lg and ease-sheen-exit. Because the utilities point at variables, switching the theme or the preset restyles them without a rebuild. A small @theme block adds text-2xs (11px labels). [Glassmorphism tokens for Tailwind CSS](https://lokendra-builds.github.io/sheenui/foundations) explains the glass tokens one by one.
+
+
+### The smallest glass surface in plain Tailwind
+
+Without SheenUI, one Tailwind CSS v4 glass surface is a handful of utilities over a colorful background (blur needs something to blur). backdrop-blur-xl is a 24px blur:
+
+```tsx
+<div className="bg-linear-to-br from-violet-500 via-fuchsia-400 to-amber-300 p-8">
+  <div className="rounded-2xl border border-white/60 bg-white/55 p-6 backdrop-blur-xl backdrop-saturate-150 dark:border-white/15 dark:bg-slate-900/50">
+    Frosted glass
+  </div>
+</div>
+```
+
+That is the whole idea; the [glassmorphism tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial) adds the lit rim, contrast checks and fallbacks. SheenUI replaces the repeated utilities with glass-1, glass-2 and glass-3 (below), tokens that follow the preset, and solid fallbacks. The dark: variant above follows the data-theme attribute once the SheenUI styles are imported (see the [dark mode page](https://lokendra-builds.github.io/sheenui/docs/dark-mode)); in plain Tailwind v4, declare it yourself:
+
+```css
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+```
+
+
+### The glass utilities
+
+Three classes make a surface glass. glass-1 is a tint, a specular gradient, noise and a lit rim with no blur of its own, which keeps a page with dozens of small controls inside the budget of eight blurred surfaces. glass-2 adds a backdrop blur and saturation, and glass-3 a stronger blur with the deepest shadow. Use them like any class:
+
+```tsx
+<div className="glass-2 rounded-sheen-xl p-6 text-sheen-fg">
+  <h2 className="text-lg font-semibold">Plan</h2>
+  <p className="text-sheen-fg-muted">Billed yearly.</p>
+</div>
+```
+
+Each level falls back on its own: a solid surface where backdrop-filter is missing, under reduced transparency and under prefers-contrast: more, and system colors in forced-colors mode. Never fade or filter a wrapper of a glass element; the blur then stops seeing the page behind it.
+
+
+### Custom variants
+
+Two custom variants ship with it: dark follows data-theme, and motion-ok applies a class only when movement is welcome, which keeps transforms out of reduced-motion sessions. A third, motion-reduced, is its inverse, for the calmer stand-in such as a short fade. Write motion-ok:hover:-translate-y-0.5 or motion-ok:translate-x-2 motion-reduced:transition-opacity. See [dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode) for the first.
+
+
+### Coming from Tailwind v3
+
+Four things change. Configuration moves from tailwind.config.js into CSS (@theme, @custom-variant, @source). The three @tailwind directives become one @import "tailwindcss". Colors are oklch variables rather than hex values, so an opacity modifier such as bg-sheen-accent/20 is computed with color-mix. And the dark variant is no longer the dark class: here it reads data-theme="dark". If you have a v3 project, upgrade it first with Tailwind’s own migration tool, then add the two imports.
+
+
+### Frequently asked questions
+
+#### How do I set up glassmorphism with Tailwind CSS v4?
+
+Import tailwindcss first and the SheenUI stylesheet after it in your global CSS, with Tailwind's plugin for your bundler (@tailwindcss/vite or @tailwindcss/postcss); no tailwind.config.js is needed. The stylesheet defines the glass-1, glass-2 and glass-3 classes and the --sheen tokens, so a panel is className="glass-2 rounded-sheen-lg p-6" over something colorful, such as the sheen-backdrop class on the body.
+
+#### Does SheenUI work with Tailwind CSS v3?
+
+No. The styles use Tailwind v4 features: CSS-first configuration with @theme and @custom-variant, and the oklch tokens in the stylesheet. The peer dependency is tailwindcss 4.1 or newer.
+
+#### Do I need a tailwind.config.js?
+
+No. Tailwind v4 reads its configuration from your CSS. Import tailwindcss first, then the SheenUI styles; add an @source line only if Tailwind does not scan the folder that holds the copied components.
+
+#### Why must the SheenUI import come after Tailwind?
+
+The stylesheet defines tokens, glass levels, motion variants and presets that build on Tailwind's layers. Importing it afterwards lets its rules and custom variants win over the base layer, and the order is the same in the Vite and Next.js steps.
+
+#### How do I get the dark: variant to follow the theme switch?
+
+SheenUI declares @custom-variant dark against the data-theme attribute on the html element, so dark: classes follow the visitor's saved choice, with the operating system as the fallback when nothing is saved.
+
+#### Can my own utilities override a glass class?
+
+Yes. The glass-1, glass-2 and glass-3 classes sit in the components layer, which Tailwind orders before utilities, so p-6, rounded-sheen-lg or bg-transparent on the same element win without !important.
+
+#### Which Tailwind plugin do I use with Vite and with Next.js?
+
+@tailwindcss/vite in a Vite app and @tailwindcss/postcss in a Next.js app. Both read the same CSS entry file; SheenUI adds nothing to either config.
+
+
+### Related pages
+
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [Dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)
+- [Installation](https://lokendra-builds.github.io/sheenui/docs/installation)
+- [Built on Base UI](https://lokendra-builds.github.io/sheenui/docs/base-ui)
+- [Right-to-left and localisation](https://lokendra-builds.github.io/sheenui/docs/rtl)
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance)
+
+
+## React Dark Mode with Tailwind v4 and Glass
+
+URL: https://lokendra-builds.github.io/sheenui/docs/dark-mode
+Sidebar name: Dark mode
+
+Add dark mode to a React and Tailwind CSS v4 app with SheenUI: a data-theme switch, the system fallback, no flash on load and glass tuned for dark.
+
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Dark mode
+
+React dark mode with Tailwind CSS in SheenUI is one data-theme attribute that the tokens, the dark variant and the useTheme hook all read.
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { useTheme } from "@/components/sheenui/hooks/use-preferences";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { useTheme } from "@sheenui/theme";
+```
+
+### Example: Switch the theme
+
+useTheme returns the saved choice and a setter; this page's header toggle uses the same hook.
+
+```tsx
+import { useTheme } from "@/components/sheenui/hooks/use-preferences";
+// Package build (after the first npm release, or a packed tarball): import { useTheme } from "@sheenui/theme";
+
+export function ThemeButton() {
+  const { theme, setTheme } = useTheme();
+  return <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>Theme: {theme}</button>;
+}
+```
+
+### How dark mode works in SheenUI
+
+The theme is the data-theme attribute on the html element: light, dark, or absent for the system setting. The tokens read it through light-dark() and attribute selectors, and Tailwind's dark: variant is declared against the same attribute, so utility classes and tokens always agree. The useTheme hook writes the attribute, saves it and syncs other tabs.
+
+Dark glass is tuned separately: less backdrop saturation, deeper tints and the same contrast targets (WCAG AA). Reduced transparency and the contrast preference override both themes with solid surfaces, so dark mode never weakens accessibility. Read [accessible glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism) for the checks.
+
+Three things are worth testing in your own app: the first paint (no flash of the wrong theme), the system setting when nothing is saved, and the forced-colors and high-contrast modes, where glass becomes solid and borders become system colors. All three are handled by the theme, but custom components you add must use the tokens instead of fixed colors to inherit that behavior.
+
+For first paint, inline sheenPreferenceScript in the head; the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) shows where. The [Next.js and Vite guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) covers the hydration warning.
+
+
+### The attributes on the html element
+
+Every preference is a data attribute on <html>, saved in localStorage under a sheen: key. CSS reacts to the attribute, so a preference needs no JavaScript after the first paint.
+
+- data-theme: light or dark; absent follows the operating system.
+- data-motion: reduced turns springs into short fades; absent is full motion.
+- data-transparency: reduced makes every glass surface solid; absent is glass.
+- data-glass: lite or full, the cheaper blur for slow devices.
+- data-sheen-style: liquid (the default) or aurora, the two style presets.
+
+
+### The dark variant in Tailwind CSS v4
+
+Tailwind v4 reads dark: from the system setting unless you redefine it. The SheenUI styles already do that against data-theme; in a project that does not import them, declare the same variant yourself:
+
+```css
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+```
+
+Then dark:bg-slate-900/50 follows the attribute that useTheme writes, and a plain @media (prefers-color-scheme) no longer decides. See the [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) for the rest of the CSS.
+
+
+### Colors in your own components
+
+A custom component inherits dark mode when it takes its colors from tokens instead of writing dark: pairs. The semantic tokens (--sheen-bg, --sheen-fg, --sheen-border and the rest) are defined with light-dark(), and color-scheme follows data-theme, so one class resolves to a different value in each theme. Tailwind exposes them as bg-sheen-bg, text-sheen-fg, text-sheen-fg-muted and border-sheen-border; glass-1, glass-2 and glass-3 are the three glass levels, each with its own dark tint.
+
+```tsx
+export function Note({ children }: { children: React.ReactNode }) {
+  return (
+    <aside className="glass-2 rounded-sheen-lg border border-sheen-border p-4 text-sheen-fg">
+      <p className="text-sm text-sheen-fg-muted">{children}</p>
+    </aside>
+  );
+}
+```
+
+That component needs no theme logic: switch data-theme and the tint, the border and both text colors change together.
+
+
+### What the contrast targets are
+
+The text tokens are measured in the browser against the worst case, the brightest backdrop blob peak under plain, glass-1 and glass-2 surfaces, in both themes: body and status text must reach 4.5:1, and focus rings and control edges 3:1. The numbers sit in the comment at the top of the token file. If you add your own accent or status color, check it the same way on a glass surface, not only on the flat page color.
+
+
+### No flash of the wrong theme
+
+A server-rendered page does not know the saved choice, so the first paint can show the wrong theme until React loads. Put sheenPreferenceScript inline in the head: it runs before first paint, copies the saved values onto the html element and falls back to the Liquid Glass preset when storage is unavailable. In a Next.js root layout:
+
+```tsx
+import { sheenPreferenceScript } from "@/components/sheenui/hooks/use-preferences";
+// Package build (after the first npm release, or a packed tarball): import { sheenPreferenceScript } from "@sheenui/theme";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" data-sheen-style="liquid" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: sheenPreferenceScript }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+suppressHydrationWarning is needed because the script changes the html element before React compares it with the server markup. In a Vite app, paste the script text into index.html.
+
+
+### Frequently asked questions
+
+#### Where is the theme choice stored?
+
+In localStorage under sheen:theme, as light or dark. System is the absence of a value, so the operating system's setting applies. The choice is synced across tabs.
+
+#### How do I avoid a flash of the wrong theme?
+
+Inline sheenPreferenceScript in the head. It runs before first paint and sets data-theme, data-motion and data-sheen-style from localStorage; in Next.js add suppressHydrationWarning to the html element.
+
+#### Does the glass look the same in dark mode?
+
+No, on purpose. Dark glass saturates the backdrop less (140 percent against 180 in light) because the dark blobs are already deep and more saturation would lower text contrast.
+
+#### Can I force one theme?
+
+Yes. Call setTheme from the useTheme hook, or set data-theme on the html element yourself. Setting it removes the system fallback until you pass system again.
+
+#### How do I add a theme toggle with a system option?
+
+Call setTheme with light, dark or system. System removes the data-theme attribute and the saved value, so the operating system's setting takes over again.
+
+
+### Related pages
+
+- [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [Accessible glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+- [Built on Base UI](https://lokendra-builds.github.io/sheenui/docs/base-ui)
+- [Right-to-left and localisation](https://lokendra-builds.github.io/sheenui/docs/rtl)
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance)
+
+
+## Base UI Components Styled with Glass & Motion
+
+URL: https://lokendra-builds.github.io/sheenui/docs/base-ui
+Sidebar name: Built on Base UI
+
+SheenUI styles Base UI's accessible headless components with glass and Motion: Tailwind CSS v4 styling, keyboard and ARIA from Base UI. MIT.
+
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Built on Base UI
+
+SheenUI styles Base UI's accessible headless components with glass and Motion, so keyboard, focus and ARIA behavior comes from Base UI.
+
+### What Base UI does for SheenUI
+
+Base UI is a set of unstyled, accessible React primitives. SheenUI wraps them: the primitive supplies the behavior (state, focus management, keyboard handling and ARIA), and SheenUI supplies the glass surface, the Tailwind CSS v4 classes and the Motion animation. That split is why a styled Base UI component here keeps its accessibility when you change how it looks.
+
+The theme imports primitives for dialogs and alert dialogs, drawers, popovers, tooltips, preview cards, menus, context menus, menubars, navigation menus, tabs, accordions, collapsibles, selects, comboboxes, autocompletes, checkboxes, radio groups, switches, toggles, sliders, number fields, one-time-code fields, fields and fieldsets, progress and meter, scroll areas, toasts, toolbars and avatars. Each docs page names the primitive it is built on in its source link.
+
+
+### Styled Base UI components with Tailwind CSS v4
+
+Base UI exposes state as data attributes (open, checked, disabled, active) and CSS variables (the sliding tab indicator reads its size and position from variables). SheenUI styles those hooks with Tailwind variants, so there is no runtime styling library and no theme provider beyond the optional motion provider. See the [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) for how the tokens reach the classes.
+
+Animation is layered on top: a dialog springs in with Motion while Base UI owns the focus trap, and under reduced motion the spring becomes a short fade. The [glass modal dialog](https://lokendra-builds.github.io/sheenui/components/dialog) and [animated tabs](https://lokendra-builds.github.io/sheenui/components/tabs) show both layers.
+
+
+### Which primitive sits under which component
+
+Eight of the wrappers, with the Base UI module each one imports and the behavior that stays the primitive’s. SheenUI adds the glass classes, the Motion animation and flat part names on top.
+
+SheenUI components, the Base UI primitive each wraps, and what stays Base UI’s
+
+| SheenUI component | Base UI primitive | Stays Base UI’s |
+| --- | --- | --- |
+| Dialog | @base-ui/react/dialog | focus trap, Escape, scroll lock, focus return |
+| Menu | @base-ui/react/menu | arrow keys, typeahead, submenu handling |
+| Popover | @base-ui/react/popover | positioning, outside-click dismissal, focus handling |
+| Tooltip | @base-ui/react/tooltip | open delays, hover and focus triggers |
+| Select | @base-ui/react/select | listbox semantics, typeahead, form value |
+| Tabs | @base-ui/react/tabs | arrow-key movement, tab and panel ARIA |
+| Checkbox | @base-ui/react/checkbox | checked and indeterminate state, form input |
+| Switch | @base-ui/react/switch | checked state, form input |
+
+### The render prop instead of asChild
+
+Where Radix uses asChild, Base UI uses a render prop that takes an element or a function. It is how a button becomes a router link without losing its styles. Read [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix) for a checked comparison of coverage and migration, and [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives) for how this fits the copy-paste approach.
+
+
+### What a wrapper looks like
+
+A SheenUI component is a thin layer over one primitive. It forwards props and the render prop to the primitive, adds the glass classes and the Motion animation, and exports the parts as flat names (Dialog, DialogTrigger, DialogContent, DialogTitle) where Base UI nests them (Dialog.Root, Dialog.Trigger, Dialog.Popup). The state of the primitive stays the source of truth: controlled and uncontrolled use follow Base UI’s value, defaultValue and onValueChange (open, defaultOpen and onOpenChange for overlays).
+
+That is also the limit. Where Base UI has no primitive (the charts, the chat blocks, the data table on TanStack Table), SheenUI writes the behavior itself, and its tests run an axe check on every component.
+
+
+### Imports and bundle size
+
+The theme imports every primitive from its own subpath, such as @base-ui/react/dialog or @base-ui/react/menu, and never from the package root. A bundler therefore pulls in only the primitives behind the components you use: a project that copies the Button and the Dialog does not ship the Menu or the Combobox. The declared range is @base-ui/react ^1.9.0, as a peer dependency of the theme.
+
+
+### Base UI utilities beyond the primitives
+
+Some components have no primitive and still accept the render prop: Button, Breadcrumb, Sidebar, AspectRatio, BlurIn and LiquidGlass build it with Base UI’s useRender hook, so render={<a href="/pricing" />} works on all of them the same way it works on a dialog trigger. Field merges its own props with the control’s through mergeProps, and Tabs sets Base UI’s DirectionProvider, which is how right-to-left layouts reach the arrow-key order. The theme reads the text direction through Base UI’s useDirection as well, so a dir set on the page or on an ancestor is followed.
+
+
+### Restyling a wrapper without losing its behavior
+
+className goes on the outer element of a component and is merged with the glass classes, so yours wins. Inner parts take their own partClassName prop (triggerClassName on the Select button, for example), and every string the component shows or announces lives in a labels prop. None of this touches the primitive, so keyboard handling, focus return and ARIA keep working after a restyle.
+
+
+### What you install
+
+The shadcn CLI and the packed package add @base-ui/react as a peer dependency, next to motion, clsx and tailwind-merge. See the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) for the commands.
+
+
+### Frequently asked questions
+
+#### Do I have to install Base UI myself?
+
+The shadcn CLI and the packed package both add @base-ui/react for you. If you copy files by hand, run pnpm add @base-ui/react next to motion, clsx and tailwind-merge, because it is a peer dependency and the components import its primitives directly.
+
+#### Can I use Radix components next to SheenUI?
+
+Yes, nothing is shared at runtime. Base UI and Radix are separate packages with separate state, so mixing them only costs bundle size; avoid nesting one library's overlay inside the other's focus trap.
+
+#### Where does the focus and keyboard behavior come from?
+
+From Base UI. SheenUI adds the glass styling, the Motion animation and the Tailwind classes, but arrow-key movement, typeahead, focus return and Escape handling are the primitive's, which is why they stay correct when you restyle.
+
+#### Which Base UI version does SheenUI need?
+
+@base-ui/react 1.9 or newer within version 1 (^1.9.0). It is a peer dependency, so your app owns the version, and the theme imports each primitive from a subpath like @base-ui/react/dialog so unused ones stay out of the bundle.
+
+#### How do I replace the element a component renders?
+
+Use the render prop, Base UI's equivalent of Radix asChild. SheenUI's Button accepts render={<a href="..." />} to become a link, and the hero buttons on this site do exactly that.
+
+
+### Related pages
+
+- [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+- [Dialog](https://lokendra-builds.github.io/sheenui/components/dialog)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+- [Right-to-left and localisation](https://lokendra-builds.github.io/sheenui/docs/rtl)
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance)
+- [About SheenUI](https://lokendra-builds.github.io/sheenui/about)
+
+
+## React RTL and Localisation: dir, Labels, Locale
+
+URL: https://lokendra-builds.github.io/sheenui/docs/rtl
+Sidebar name: Right-to-left and localisation
+
+Right-to-left and localised React UI with SheenUI: set dir, use logical sides, translate strings through labels and format dates and numbers by locale.
+
+By Lokendra Singh Rathore. Published November 16, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Right-to-left and localisation
+
+React RTL support in SheenUI needs no provider: components follow dir on the html element or any wrapper, so tab pills, arrow keys and drawers mirror, strings come from a partial labels prop and dates and numbers follow a locale prop.
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { BarChart } from "@/components/sheenui/charts/bar-chart";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { defaultPaginationLabels, Pagination } from "@/components/sheenui/pagination/pagination";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { BarChart, type ChartSeries, DatePicker, defaultPaginationLabels, GlassCard, Pagination, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+```
+
+### Example 1 of 3: A right-to-left wrapper
+
+Everything inside follows dir: the tab pill, the page arrows and the keyboard (Left and Right swap).
+
+```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/sheenui/pagination/pagination";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+// Package build (after the first npm release, or a packed tarball): import { Pagination, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+
+export function Example() {
+  const [page, setPage] = useState(3);
+  return (
+    <div dir="rtl" lang="ar" className="flex flex-col gap-4">
+      <Tabs defaultValue="overview">
+        <TabsList>
+          <TabsTab value="overview">نظرة عامة</TabsTab>
+          <TabsTab value="projects">المشاريع</TabsTab>
+          <TabsTab value="settings">الإعدادات</TabsTab>
+        </TabsList>
+        <TabsPanel value="overview">إحصاءات مساحة العمل.</TabsPanel>
+        <TabsPanel value="projects">المراحل والمسؤولون.</TabsPanel>
+        <TabsPanel value="settings">الملف الشخصي والفواتير.</TabsPanel>
+      </Tabs>
+      <Pagination page={page} onPageChange={setPage} pageCount={12} />
+    </div>
+  );
+}
+```
+
+### Example 2 of 3: Translate the strings
+
+labels takes a partial object over defaultPaginationLabels. Functions get the numbers, so word order stays yours.
+
+```tsx
+import { useState } from "react";
+import { Pagination, defaultPaginationLabels } from "@/components/sheenui/pagination/pagination";
+// Package build (after the first npm release, or a packed tarball): import { Pagination, defaultPaginationLabels } from "@sheenui/theme";
+
+const german = {
+  ...defaultPaginationLabels,
+  nav: "Seitennavigation",
+  first: "Erste Seite",
+  previous: "Vorherige Seite",
+  next: "Nächste Seite",
+  last: "Letzte Seite",
+  page: (page: number) => `Seite ${page}`,
+  morePages: "Weitere Seiten",
+  pageOf: (page: number, pageCount: number) => `Seite ${page} von ${pageCount}`,
+};
+
+export function Example() {
+  const [page, setPage] = useState(5);
+  return <Pagination page={page} onPageChange={setPage} pageCount={20} labels={german} />;
+}
+```
+
+### Example 3 of 3: Dates and numbers
+
+locale picks the month names, the first weekday and the digits; the chart's default number format follows its own locale.
+
+```tsx
+import { BarChart } from "@/components/sheenui/charts/bar-chart";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { BarChart, DatePicker, GlassCard, type ChartSeries } from "@sheenui/theme";
+
+const sales = [
+  { month: "Jan", umsatz: 12400 },
+  { month: "Feb", umsatz: 18250 },
+  { month: "Mär", umsatz: 15980 },
+];
+const series: ChartSeries[] = [{ key: "umsatz", label: "Umsatz", color: 1 }];
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div dir="rtl" lang="ar-EG">
+        <DatePicker label="التاريخ" locale="ar-EG" />
+      </div>
+      <GlassCard className="p-4">
+        <BarChart data={sales} index="month" series={series} locale="de" aria-label="Umsatz pro Monat" />
+      </GlassCard>
+    </div>
+  );
+}
+```
+
+### How a component learns the direction
+
+Every component that mirrors itself asks one internal hook, useResolvedDirection in hooks/use-direction.ts. It checks, in order, a direction prop, Base UI’s DirectionProvider, the nearest ancestor with a dir attribute and finally <html dir>. On the server it answers ltr. One shared MutationObserver watches dir, so flipping it at runtime re-renders only the components that care. The hook is not exported from @sheenui/theme; you set dir and the components do the rest.
+
+Key handlers do not subscribe. They call isRtlAt(element), one computed-style read at the moment of the key press, which is why the arrow keys of Tabs and Calendar swap their meaning in right-to-left text. The repo’s own lint rule, sheen/no-direction-detection, rejects any other way of reading the direction, so a new component cannot quietly bypass it.
+
+Portalled surfaces (a Drawer, the Toaster) sit under <body>, so no wrapper above them can set the direction. They follow Base UI’s provider or <html dir>. For an app that is right-to-left throughout, put dir="rtl" on html and nothing else is needed.
+
+
+### Logical sides
+
+Props name sides by reading order, not by screen edge, wherever a screen edge is not what you mean. align on Popover, Tooltip, HoverCard and Menu is start, center or end. Menu’s side also takes inline-start and inline-end. Drawer takes side="start" or "end", and the Toaster accepts position="top-end", where start is the left corner in ltr and the right corner in rtl. The physical values (left, right) remain for the cases that really are about the screen, such as a toast pinned to the bottom-right.
+
+Inside the components the CSS follows the same rule: logical utilities such as ps-*, me-* and text-end, never pl-* or text-right. Write your own code that way and it mirrors for free.
+
+
+### Strings live in labels
+
+A component never hard-codes a string that is rendered or announced. Each one exports a type, such as PaginationLabels, and its English defaults, defaultPaginationLabels. The labels prop is Partial of that type, merged over the defaults, so you translate only what you use. Plain strings stay strings; anything with a number in it is a function, which keeps plurals and word order in your hands. The defaults are plain data with no DOM access, so they are safe to read while prerendering.
+
+```tsx
+<Pagination labels={{ ...defaultPaginationLabels, next: "Weiter" }} pageCount={20} />
+```
+
+Charts follow the same pattern (defaultBarChartLabels holds the keyboard hint and the tooltip’s total and previous-period names), as do the date pickers, the carousel and the side drawer. There is no global i18n provider by design: the strings belong to the component that shows them, so you can load only the languages a screen needs.
+
+
+### Locale-aware components
+
+Text that comes from the language rather than from you is formatted with Intl in the locale you pass. Calendar and the date pickers take a BCP 47 locale: month and weekday names, the first day of the week (override it with weekStartsOn) and even the digits follow it, so ar-EG starts on Saturday in Arabic digits. Without one they use the browser’s, so on a prerendered page pass locale and a fixed today to keep the server and client markup equal.
+
+Charts take locale for the default number format: compact values and axis ticks keep the decimals a step needs, so 0.25 stays 0,25 in German. For anything else pass format, a function from number to text. WorldMap reads country names from Intl.DisplayNames in its locale, and its keyboard type-to-find matches in that locale too. See [date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker), [calendar](https://lokendra-builds.github.io/sheenui/forms/calendar) and [world map](https://lokendra-builds.github.io/sheenui/charts/world-map).
+
+
+### Charts and direction
+
+Charts read the direction through useChartDirection, which wraps the same hook. Their keyboard swaps Left and Right, and plots with a time or bin axis, such as the histogram, mirror themselves. Some charts, the Marimekko among them, deliberately draw left to right in every language so a share axis never flips under its numbers. Numerals and Latin text inside a right-to-left page keep their own direction: wrap an inline value in <bdi> when you mix them in your own markup.
+
+
+### Frequently asked questions
+
+#### How do I turn on right-to-left?
+
+Set dir="rtl" on the html element or on any wrapper. There is no provider to mount: components read the nearest dir ancestor, and a runtime change of dir re-renders them.
+
+#### Do I have to translate every string myself?
+
+Only the ones you ship. Each component with built-in text has a labels prop that takes a partial object over its English defaults, so you pass just the keys you change.
+
+#### Do charts flip in right-to-left?
+
+Their keyboard and text do, and several mirror the plot itself. Numbers and axes keep their own digits and order: pass locale (or format) for the number style you want.
+
+#### Where do portalled surfaces get their direction?
+
+From Base UI's DirectionProvider or from html dir, since a portal sits under body and has no wrapper above it. Put dir on html for an app that is right-to-left throughout.
+
+
+### Related pages
+
+- [Date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker)
+- [Calendar](https://lokendra-builds.github.io/sheenui/forms/calendar)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+- [Performance](https://lokendra-builds.github.io/sheenui/docs/performance)
+- [About SheenUI](https://lokendra-builds.github.io/sheenui/about)
+- [Introduction](https://lokendra-builds.github.io/sheenui/)
+
+
+## React Glass UI Performance: Budgets and Numbers
+
+URL: https://lokendra-builds.github.io/sheenui/docs/performance
+Sidebar name: Performance
+
+How SheenUI keeps glass fast: blur and refraction budgets, JavaScript per route, motion gates and reduced motion, with labelled lab numbers and limits.
+
+By Lokendra Singh Rathore. Published November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Performance
+
+React glass UI performance in SheenUI is a set of enforced budgets: at most 8 blurred surfaces in view, 3 refracting ones, a JavaScript limit per route, loops that pause off-screen and full reduced-motion support, with lab numbers and their limits.
+
+### What is enforced
+
+These are rules the docs site is built against, and a failing check stops a release. A budget that cannot be met says so in the tables below instead of being quietly loosened.
+
+- Blurred surfaces. At most 8 elements with a backdrop-filter are in view at once, checked at every scroll position of key pages in a real browser. Glass nested inside glass draws no blur of its own, and while a dialog is open the page behind it stops blurring.
+- Refraction. The [Liquid Glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass) lens refracts on at most 3 surfaces page-wide; the rest fall back to frosted blur until a slot frees up.
+- Motion. Only transform and opacity animate, apart from a short listed set of exceptions. An ancestor of glass never gets an opacity below 1, a filter, a mask or a clip-path, because that flattens the glass inside it.
+- Loops sleep. Marquees, beams, ambient backdrops, looping CSS animations and live charts pause when they scroll off-screen and when the tab is hidden, then resume.
+- Reduced motion. The OS setting and the in-app switch both calm every loop and pointer effect. Exits are shorter than entrances and never overshoot.
+- Interaction. A browser test drives real interactions on a fixed set of routes in both looks and fails on a long task over 50 ms or any layout shift. Scrolling a page from top to bottom may add at most 0.01 of layout shift.
+- JavaScript per route. pnpm budget measures the gzip size of the scripts a route needs before it can hydrate, and of everything it fetches in the first seconds after load. A route over its class budget fails the check.
+
+JavaScript budgets per page class, in KB gzip, with the last pnpm budget run (measured on the 25 Nov 2026 build) as minimum, median and maximum
+
+| Page class | Routes | Initial JS budget | Initial JS measured (min / median / max) | Fetched by load + idle budget | Fetched measured (min / median / max) |
+| --- | --- | --- | --- | --- | --- |
+| Home | 1 | 135 | 133.0 | 280 | 270.3 |
+| Plain docs, foundations and guides | 22 | 190 | 144.0 / 155.8 / 189.0 | 270 (one page at 465) | 232.6 / 251.4 / 374.3 |
+| Example, popup or form page | 117 | 210 | 131.8 / 194.2 / 207.7 | 390 (six pages held between 425 and 490) | 231.8 / 280.8 / 475.8 |
+| Chart page | 50 | 250 | 132.4 / 228.0 / 244.5 | 360 (the gallery at 470) | 278.2 / 301.1 / 402.1 |
+
+Initial JS is what the browser downloads before the page can hydrate. Lazy parts such as charts and demos load afterwards, so the second pair of columns counts every script requested in the first 5 seconds after load. The floor is the shared docs shell, about 132 KB, plus roughly 100 KB it fetches when idle.
+
+### Lab measurements
+
+Method. Measured 25 Nov 2026 on the deployed site, the production build users get, not a local build. Machine: a Linux desktop (Ubuntu 24.04, AMD Ryzen 9 9950X, 32 threads, 60 GB RAM; load average 1.1 to 3.7 during the runs, none above 4) running Chromium 159.0.8154.6 (Playwright build, headless), against the deployed site at lokendra-builds.github.io/sheenui, which GitHub Pages serves through its CDN with gzip or brotli compression. Page loads: CPU slowed 4x (Emulation.setCPUThrottlingRate 4) and a slow-4G network (Network.emulateNetworkConditions: 150 ms latency, 1638.4 kbit/s down, 750 kbit/s up) on a 390 by 844 px phone viewport at 3x pixel ratio, a new browser context for every load. Each figure is the median of 5 cold loads. LCP is the last largest-contentful-paint entry. CLS counts layout shifts without recent input up to 5 seconds after the load event. Total Blocking Time is the time over 50 ms of each long task that ends after First Contentful Paint, up to 5 seconds after load. JavaScript bytes are the encoded response sizes of every script, before the load event and by 5 seconds after it. The Lighthouse table is a separate run of Lighthouse 13.6.0, mobile preset with simulated throttling (4x CPU, 150 ms round trip, 1638.4 kbit/s), median of 3, on the site’s default look. This is a laboratory profile run on a desktop machine, not a phone.
+
+Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB
+
+| Route | LCP s | CLS | TBT ms | Longest task ms, median (worst run) | JS before load KB | JS by load + 5 s KB |
+| --- | --- | --- | --- | --- | --- | --- |
+| Home | 0.98 | 0.0006 | 5 | 64 (85) | 141 | 319 KB |
+| Button (component) | 0.86 | 0.0008 | 0 | 59 (77) | 200 | 307 KB |
+| Data table | 1.34 | 0 | 33 | 83 (145) | 210 | 443 KB |
+| Line chart | 0.96 | 0 | 0 | 61 (89) | 238 | 345 KB |
+| Chart gallery | 1.10 | 0 | 67 | 74 (87) | 228 | 441 KB |
+| Chat thread | 1.22 | 0 | 63 | 116 (146) | 213 | 461 KB |
+| Guide (backdrop-filter performance) | 0.78 | 0.0001 | 0 | 64 (78) | 166 | 295 KB |
+| Web analytics dashboard | 1.45 | 0 | 0 | 132 (180) | 215 | 420 KB |
+| SaaS dashboard | 1.22 | 0 | 0 | 124 (144) | 211 | 399 KB |
+
+Lighthouse mobile Performance score and Total Blocking Time per route, median of 3 runs
+
+| Route | Performance score | Total Blocking Time ms |
+| --- | --- | --- |
+| Home | 100 | 9 ms |
+| Button (component) | 100 | 10 ms |
+| Data table | 99 | 109 ms |
+| Line chart | 100 | 4 ms |
+| Chart gallery | 100 | 9 ms |
+| Chat thread | 100 | 72 ms |
+| Guide (backdrop-filter performance) | 94 | 10 ms |
+| Web analytics dashboard | 99 | 88 ms |
+| SaaS dashboard | 100 | 26 ms |
+
+Interaction latency at 4x CPU: time from the pointer event to the first frame that shows the opened popup, median of 5
+
+| Interaction | Route | Median ms | Range ms |
+| --- | --- | --- | --- |
+| Open a dropdown menu | /overlays/dropdown-menu | 91 | 87 to 121 |
+| Open a popover | /components/popover | 60 | 59 to 65 |
+| Open a dialog | /components/dialog | 51 | 49 to 62 |
+| Open the side drawer | /overlays/drawer | 57 | 53 to 70 |
+
+Interactions were measured on a 1440 by 900 px viewport with the 4x CPU slowdown and no network throttling, after the page had loaded and the demo had hydrated. The JavaScript columns are transferred (compressed) sizes including headers, so they differ a little from the gzip figures in the budget table.
+
+Other lab metrics, the target each is held to and whether it was met
+
+| Metric | Target | Measured | Met |
+| --- | --- | --- | --- |
+| Largest Contentful Paint (4x CPU, slow 4G) | 2.5 s or less | Medians 0.78 to 1.45 s across the 9 routes; the slowest single load was 2.39 s | Yes |
+| Lighthouse Largest Contentful Paint, guide page | 2.5 s or less | Median 2.9 s (runs 2.0, 2.9 and 3.1 s), which gives the 94 score; the other 8 routes score 99 or 100 | No |
+| Cumulative Layout Shift (load plus 5 s) | 0.05 or less | 0 to 0.0008 in every median; the largest single load was 0.0008 | Yes |
+| Interaction latency at 4x CPU | under 200 ms | Medians 51 to 91 ms; the slowest single interaction was 121 ms (dropdown menu) | Yes |
+| Longest task while loading (4x CPU, 390 px) | 50 ms or less where achievable | All 9 routes still show a task over 50 ms. The median longest task ranges from 59 to 132 ms; 3 routes (chat thread, SaaS dashboard, web analytics dashboard) are over 100 ms; the worst single load was 180 ms | No |
+
+### Honest limits
+
+- Long tasks over 50 ms remain on the throttled phone profile: all 9 measured routes still show one, with the median longest task between 59 and 132 ms and the worst single load at 180 ms. The chat thread and the two dashboards are over 100 ms. They were reduced, not removed.
+- Real refraction runs in Chromium only. Safari and Firefox accept the filter but draw nothing, so they get the frosted blur instead.
+- There is no field data yet: every number above is a lab run, with one machine and one network profile.
+- The guide page scores 94 in Lighthouse, because its simulated Largest Contentful Paint is about 2.9 s, over the 2.5 s target. Lighthouse is a simulation and the machine was not otherwise idle (load average up to 3.7), so treat differences of a few points as noise. The budget table was measured on the 25 Nov 2026 build with pnpm budget, not on the deployed site. Run your own build with pnpm budget and the browser’s own tools before relying on any of this.
+
+
+### Keep your own page fast with glass
+
+- Count the blur. Keep at most 8 blurred surfaces in view, and 3 of them refracting. Use glass-1 for small controls, since it never blurs, and do not stack glass in glass. The [backdrop-filter performance guide](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance) explains why each surface costs a render pass.
+- Offer Lite glass. It lowers the blur radius for slow devices. SheenUI applies it automatically on weak hardware and the visitor can switch it from the preferences bar (see [Foundations](https://lokendra-builds.github.io/sheenui/foundations)).
+- Animate transform and opacity only. Do not fade, filter, mask or clip a wrapper that holds glass: animate the glass element itself.
+- Let loops sleep. The [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee), [Particles](https://lokendra-builds.github.io/sheenui/effects/particles) and [Liquid Glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass) effects already pause off-screen and in hidden tabs; do the same for any loop of your own.
+- Import only what you use. Components are copied as source, so a page pays only for the files it imports (see [Installation](https://lokendra-builds.github.io/sheenui/docs/installation)).
+
+
+### Frequently asked questions
+
+#### Is backdrop-filter slow?
+
+Each blurred surface is an extra full-size render pass, so the cost grows with how many are in view at once, not with how many exist. SheenUI holds a page to at most 8 blurred surfaces in view and at most 3 refracting ones, and nested glass draws no blur of its own.
+
+#### How do I make glass cheaper on a slow phone?
+
+Turn on Lite glass: set data-glass="lite" on the html element, or call useGlassMode. It cuts the blur radius and calms the backdrop, with the same contrast and layout. SheenUI also turns it on by itself for low memory, few cores, Save-Data or measured dropped frames, unless the visitor chose.
+
+#### Does SheenUI work with reduced motion?
+
+Yes. The OS setting and the html data-motion=reduced switch both turn loops into a single quick pass and drop pointer effects, and exits stay shorter than entrances.
+
+#### Are these numbers from real visitors?
+
+No. They are lab runs on a simulated slow phone profile, so they show regressions and trade-offs but not what your visitors see. They were measured on one machine on 25 Nov 2026. There is no field data for the demo site yet.
+
+
+### Related pages
+
+- [backdrop-filter performance](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [About SheenUI](https://lokendra-builds.github.io/sheenui/about)
+- [Introduction](https://lokendra-builds.github.io/sheenui/)
+- [Showcase](https://lokendra-builds.github.io/sheenui/showcase)
+
+
+## About SheenUI: MIT Glass React Components
+
+URL: https://lokendra-builds.github.io/sheenui/about
+Sidebar name: About SheenUI
+
+SheenUI is an MIT-licensed, pre-1.0 library of glass React components by Lokendra Singh Rathore: what it is, its status, how it is tested, how to cite it.
+
+By Lokendra Singh Rathore. Published November 17, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > About SheenUI
+
+SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, built on Base UI, Tailwind CSS v4 and Motion, at version 0.1 and not on npm.
+
+### What SheenUI is
+
+SheenUI is a copy-the-source library of glass React components: 67 UI components, 19 animated effects, 48 charts, 20 blocks and 5 dashboards. Each is built on a [Base UI](https://lokendra-builds.github.io/sheenui/docs/base-ui) primitive where one exists, styled with Tailwind CSS v4 and animated with Motion. Two looks ship with it, Liquid Glass and Aurora Neon, each in light and dark.
+
+It is a source library, not a package you import from node_modules: the CLI copies the files into your repository and you own them. The [glass design tokens](https://lokendra-builds.github.io/sheenui/foundations) (three glass levels, blur, tint and rim) and the [Tailwind v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4) are the whole contract between the library and your app.
+
+
+### Who makes it
+
+SheenUI is designed and built by [Lokendra Singh Rathore](https://github.com/lokendra-builds) (GitHub: lokendra-builds), as an open-source project. The source, the issue tracker and the history live in the [SheenUI repository](https://github.com/lokendra-builds/sheenui). There is no company behind it and no paid tier.
+
+
+### License and cost
+
+SheenUI is released under the [MIT license](https://opensource.org/licenses/MIT). It costs nothing, needs no account and sends no telemetry. Third-party licenses (Base UI, Motion, the fonts) are listed in the repository’s notices file.
+
+
+### Status: version 0.1, pre-1.0, not on npm
+
+The current version is 0.1.0. Until 1.0, a prop or a file can move between versions. No GitHub release has been published yet, so 0.1.0 is simply the version in the source. The package is private, so there is nothing to npm install; the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) shows the shadcn CLI route (183 registry items) and the manual one.
+
+Known limits, stated plainly: Liquid Glass refraction is Chromium-only (other browsers show frosted glass), and no real iPhone or Android phone has been used, so iOS Safari blur is unverified. It needs React 19.2 or newer and Tailwind CSS 4.1 or newer.
+
+
+### How it is built and checked
+
+Each component has a unit test that renders it in light and dark, in both looks, and runs axe-core on every render: 141 test files run in a real Chromium through Vitest browser mode, with coverage gates (90% of lines, functions and statements, 80% of branches). 13 Playwright specs cover the built site: a sweep of every route, visual baselines, accessibility, a pixel-level contrast check and the motion rules (loops pause off-screen, reduced motion is respected).
+
+Every docs page lists the exact files to copy, computed from the import graph, and a copy test builds each list in an empty Vite app. A build check fails on a missing title, a duplicate description, a broken link or a number on the site that disagrees with the code. The [dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode) and [right-to-left](https://lokendra-builds.github.io/sheenui/docs/rtl) pages describe the two behaviours that touch every component, and the [performance](https://lokendra-builds.github.io/sheenui/docs/performance) page lists the budgets and lab numbers.
+
+
+### How to cite SheenUI
+
+Link to [https://lokendra-builds.github.io/sheenui](https://lokendra-builds.github.io/sheenui) or to the repository. For a text citation, use:
+
+```text
+SheenUI. Glassmorphism and Liquid Glass React components. Lokendra Singh Rathore. MIT license. https://lokendra-builds.github.io/sheenui/about
+```
+
+A page-level fact (a prop, a count, a browser limit) is best cited with the page it comes from: every docs page has a stable URL, and [the component index](https://lokendra-builds.github.io/sheenui/components/), [the charts](https://lokendra-builds.github.io/sheenui/charts/) and the [guides](https://lokendra-builds.github.io/sheenui/guides/) list them.
+
+
+### Frequently asked questions
+
+#### Is SheenUI on npm?
+
+No. The theme package is marked private on purpose, so it cannot be published by accident. You install a component with the shadcn CLI (npx shadcn@latest add <url>.json), which copies the source into your app, or you copy the files the page lists.
+
+#### Is it free for commercial use?
+
+Yes. The license is MIT: use, change and ship the copied source in a commercial product. Keep the copyright and license notice with the source.
+
+#### Is it stable enough for production?
+
+It is version 0.1, pre-1.0, so props and file layout can still change between releases. The tests, the type checks and the accessibility checks run on every component, but no real iPhone or Android phone has been used yet and the Liquid Glass refraction only works in Chromium.
+
+#### Who maintains it, and where do I report a problem?
+
+Lokendra Singh Rathore maintains it. Open an issue on the GitHub repository; a reproduction (the component, browser and the look: Liquid Glass or Aurora Neon, light or dark) is the fastest way to a fix.
+
+
+### Related pages
+
+- [Introduction](https://lokendra-builds.github.io/sheenui/)
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [Showcase](https://lokendra-builds.github.io/sheenui/showcase)
+- [Installation](https://lokendra-builds.github.io/sheenui/docs/installation)
+- [Forms recipe](https://lokendra-builds.github.io/sheenui/docs/forms)
+- [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4)
+

@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(700),e(`working`);for(let e of[12,31,38,57,72,88,100])t({value:e}),await n(e===38?650:380);e(`success`)};export{e as default};

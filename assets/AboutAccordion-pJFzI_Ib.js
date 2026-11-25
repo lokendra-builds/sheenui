@@ -1,0 +1,1 @@
+export{n as AboutSection}from"./AboutAccordion-CEDgUhUy.js";

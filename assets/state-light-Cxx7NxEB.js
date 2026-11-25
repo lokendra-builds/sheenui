@@ -1,0 +1,1 @@
+import{n as e}from"./cn-CgB_fvgf.js";import{t}from"./vendor-react-D30i__oY.js";var n=t();function r({className:t,...r}){return(0,n.jsx)(`span`,{"aria-hidden":!0,"data-slot":`state-light`,className:e(t),...r})}export{r as t};

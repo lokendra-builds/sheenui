@@ -1,0 +1,1 @@
+function e(e){let t=0,n=0,r=0,i=0,a=!1,o=0,s=0,c=a=>{let l=1-Math.exp(-Math.min(64,a-s)/70);s=a,r+=(t-r)*l,i+=(n-i)*l,Math.abs(t-r)+Math.abs(n-i)>.25?(e(r,i),o=requestAnimationFrame(c)):(r=t,i=n,o=0,e(r,i))};return{to(l,u){t=l,n=u,a?o||=(s=performance.now(),requestAnimationFrame(c)):(a=!0,r=l,i=u,e(l,u))},reset(){a=!1},stop(){o&&cancelAnimationFrame(o),o=0}}}export{e as t};

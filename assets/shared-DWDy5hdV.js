@@ -1,0 +1,1 @@
+import"./rolldown-runtime-WkwZ5CU-.js";import{i as e,t}from"./vendor-react-D30i__oY.js";e();var n=t();function r({children:e}){return(0,n.jsx)(`div`,{className:`flex flex-wrap items-center gap-3`,children:e})}function i({children:e}){return(0,n.jsx)(`span`,{"aria-hidden":!0,className:`text-sm text-sheen-fg-muted`,children:e})}export{r as n,i as t};

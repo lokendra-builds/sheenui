@@ -1,0 +1,1 @@
+export{t as MarimekkoChart}from"./marimekko-chart-BR-ycMsa.js";

@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n=e(()=>t(()=>import(`./DialogPageBody-B9AMEug2.js`).then(e=>e.DialogPage),[]),{eager:!0,minHeight:`80vh`});export{n as default};

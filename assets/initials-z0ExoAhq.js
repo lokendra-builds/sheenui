@@ -1,0 +1,1 @@
+function e(e,t=`first-two`){let n=e.trim().split(/\s+/).filter(Boolean);return(t===`first-last`&&n.length>1?[n[0],n[n.length-1]]:n.slice(0,2)).map(e=>e?.[0]??``).join(``).toUpperCase()}export{e as t};

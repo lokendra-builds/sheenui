@@ -1,0 +1,2593 @@
+# SheenUI: Charts (part 5 of 6)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Scatter Plot & Bubble Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/scatter-plot
+Sidebar name: Scatter & bubble chart
+
+A React scatter plot and bubble chart with nearest-point hover, arrow-key navigation and a least-squares trend line in one prop. Animated, accessible, MIT.
+
+What it is: A React scatter plot and bubble chart that shows how two measures relate, one dot per item, with an optional trend line. Pass series as readonly ScatterSeries[]: each a label plus a data array of { x, y } points, with an optional size for bubbles.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/scatter-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Scatter & bubble chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{scatter-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-utils.ts}`
+- `components/charts/chart-parts/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: scatter-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { ScatterChart, scatterLegend, type ScatterSeries, ScatterTable } from "@/components/sheenui/charts/scatter-chart";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, formatCompact, ScatterChart, scatterLegend, type ScatterSeries, ScatterTable } from "@sheenui/theme";
+```
+
+### ScatterChart props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| series | readonly ScatterSeries[] | required | Up to 3 series: in a scatter every colour sits next to every other, so a 4th would be hard to tell apart. Series past the third fold into one neutral "Other" series. |
+| xLabel | string | optional, no default | Name of the x measure: titles the axis and the tooltip. |
+| yLabel | string | optional, no default | Name of the y measure: titles the axis and the tooltip. |
+| sizeLabel | string | optional, no default | Sets the name of the size measure (bubble charts). |
+| bubble | boolean | false | Size each point by its size (a bubble chart). |
+| trendline | boolean | false | Draw a least-squares trend line through each series (needs 2+ points with different x). |
+| includeZero | boolean | false | Keep 0 on the axes even when the data sits far from it. |
+| height | number | 300 | Height of the chart in px; the width follows the container. |
+| formatX | ((n: number) => string) | formatCompact | Formats x values on the axis and in the tooltip. |
+| formatY | ((n: number) => string) | formatCompact | Formats y values on the axis and in the tooltip. |
+| formatSize | ((n: number) => string) | formatCompact | Formats bubble sizes in the tooltip. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<ScatterChartLabels> | defaultScatterChartLabels | Every other string, for translation: labels={{ x: "…" }}; omitted keys keep the English of defaultScatterChartLabels. All 10 keys of ScatterChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+| scatterLegend(series) | LegendItem[] | optional, no default | Returns legend items with the same “Other” fold. |
+| linearRegression(points) | { slope, intercept, r2 } \| null | optional, no default | The fit the trend line uses. |
+
+### ScatterTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<ScatterChartLabels> | defaultScatterChartLabels | Every other string, for translation: labels={{ x: "…" }}; omitted keys keep the English of defaultScatterChartLabels. All 10 keys of ScatterChartLabels are listed in the key table under the props table. |
+| series | readonly ScatterSeries[] | required | Up to 3 series: in a scatter every colour sits next to every other, so a 4th would be hard to tell apart. Series past the third fold into one neutral "Other" series. |
+| bubble | boolean | false | Size each point by its size (a bubble chart). |
+| xLabel | string | optional, no default | Name of the x measure: titles the axis and the tooltip. |
+| yLabel | string | optional, no default | Name of the y measure: titles the axis and the tooltip. |
+| sizeLabel | string | optional, no default | Sets the name of the size measure (bubble charts). |
+| formatX | ((n: number) => string) | formatCompact | Formats x values on the axis and in the tooltip. |
+| formatY | ((n: number) => string) | formatCompact | Formats y values on the axis and in the tooltip. |
+| formatSize | ((n: number) => string) | formatCompact | Formats bubble sizes in the tooltip. |
+| caption | string | optional, no default | Sets a visually hidden caption that names the table. |
+
+### Example 1 of 3: Scatter with trend lines
+
+Two series, each with its own fitted trend (dotted, so it never reads as data). Their slope and R² are part of the chart's accessible name.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { scatterLegend, ScatterTable, ScatterChart, type ScatterSeries } from "@/components/sheenui/charts/scatter-chart";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, formatCompact, scatterLegend, ScatterTable, ScatterChart, type ScatterSeries } from "@sheenui/theme";
+
+const usd = (n: number) => "$" + formatCompact(n);
+
+const series: ScatterSeries[] = [
+  {
+    label: "Search",
+    color: 1,
+    data: [
+      { x: 2400, y: 11800, label: "Week 1" },
+      { x: 3600, y: 15200, label: "Week 2" },
+      { x: 4800, y: 18900, label: "Week 3" },
+      { x: 6100, y: 22100, label: "Week 4" },
+    ],
+  },
+  {
+    label: "Social",
+    color: 2,
+    data: [
+      { x: 2100, y: 12800, label: "Week 1" },
+      { x: 3300, y: 14600, label: "Week 2" },
+      { x: 4500, y: 17900, label: "Week 3" },
+      { x: 5900, y: 19400, label: "Week 4" },
+    ],
+  },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Ad spend vs revenue"
+      legend={scatterLegend(series)}
+      table={<ScatterTable series={series} xLabel="Spend" yLabel="Revenue" formatX={usd} formatY={usd} />}
+    >
+      <ScatterChart
+        trendline
+        series={series}
+        xLabel="Weekly spend"
+        yLabel="Weekly revenue"
+        formatX={usd}
+        formatY={usd}
+        aria-label="Weekly ad spend against revenue, by channel"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Bubble chart
+
+bubble sizes each point by area (4× the population is 4× the ink, not 16×). Big bubbles sit behind small ones, each with a surface ring, so every city stays visible and reachable.
+
+```tsx
+import { formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { ScatterChart, type ScatterSeries } from "@/components/sheenui/charts/scatter-chart";
+// Package build (after the first npm release, or a packed tarball): import { formatCompact, ScatterChart, type ScatterSeries } from "@sheenui/theme";
+
+const eur = (n: number) => "€" + formatCompact(n);
+
+const series: ScatterSeries[] = [
+  {
+    label: "Europe",
+    color: 1,
+    data: [
+      { label: "London", x: 3200, y: 5400, size: 9.0 },
+      { label: "Berlin", x: 1700, y: 4300, size: 3.7 },
+      { label: "Paris", x: 2300, y: 4600, size: 2.1 },
+    ],
+  },
+  {
+    label: "Asia",
+    color: 2,
+    data: [
+      { label: "Tokyo", x: 1500, y: 3800, size: 14.0 },
+      { label: "Singapore", x: 3100, y: 5200, size: 5.9 },
+      { label: "Bengaluru", x: 520, y: 1500, size: 13.2 },
+    ],
+  },
+  {
+    label: "Americas",
+    color: 3,
+    data: [
+      { label: "New York", x: 4200, y: 7100, size: 8.3 },
+      { label: "Toronto", x: 2200, y: 4500, size: 2.8 },
+      { label: "São Paulo", x: 850, y: 1600, size: 12.3 },
+    ],
+  },
+];
+
+export function Example() {
+  return (
+    <ScatterChart
+      bubble
+      series={series}
+      xLabel="Average rent"
+      yLabel="Average net salary"
+      sizeLabel="Population"
+      formatX={eur}
+      formatY={eur}
+      formatSize={(n) => n + "M"}
+      aria-label="Rent against salary in nine cities, sized by population"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Edge cases
+
+A single point gets a padded axis around it; a fourth series folds into a neutral “Other” (in a scatter every color is compared with every other, so three is the limit).
+
+```tsx
+import { ScatterChart, type ScatterSeries } from "@/components/sheenui/charts/scatter-chart";
+// Package build (after the first npm release, or a packed tarball): import { ScatterChart, type ScatterSeries } from "@sheenui/theme";
+
+const fourSeries: ScatterSeries[] = [
+  { label: "Europe", color: 1, data: [{ label: "London", x: 3200, y: 5400 }, { label: "Berlin", x: 1700, y: 4300 }] },
+  { label: "Asia", color: 2, data: [{ label: "Tokyo", x: 1500, y: 3800 }, { label: "Seoul", x: 1150, y: 3300 }] },
+  { label: "Americas", color: 3, data: [{ label: "New York", x: 4200, y: 7100 }, { label: "Austin", x: 1900, y: 5600 }] },
+  { label: "Africa", data: [{ label: "Lagos", x: 700, y: 900 }, { label: "Nairobi", x: 800, y: 1200 }] },
+];
+
+export function Example() {
+  return (
+    <>
+      <ScatterChart series={[{ label: "Today", data: [{ x: 42, y: 1280 }] }]} aria-label="Sessions against revenue today" />
+      <ScatterChart series={fourSeries} aria-label="Rent against salary by region" /> {/* the 4th is drawn as "Other" */}
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| → / ← | Next / previous point in x order. |
+| ↑ / ↓ | Next / previous point in y order. |
+| Home / End | Jump to the first / last point in x order. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is one focusable figure: its aria-label is the chart title, a one-line hint describes how to read it, and in a ChartCard with a table view aria-details points at that table. Each move is announced politely, once. Each move announces the point's x, y (and size, for bubbles).
+- ScatterTable is the same data as a real table. Pass it to ChartCard's table prop and the Chart / Table tabs let anyone read every value without color or sight.
+- With reduced motion on, the points start at their final positions and a data change jumps straight to the new state.
+
+### All exports on this page
+
+- MAX_SCATTER_SERIES — In a scatter every colour is compared with every other ("all pairs"): three is the safe limit.
+- ScatterChart — A scatter plot of x against y, with optional bubble sizes and trendline.
+- ScatterTable — The table view of a scatter chart: one row per point, grouped by series (with the same "Other" fold).
+- defaultScatterChartLabels — The built-in English strings of ScatterChart; spread it into your own labels and change what you need.
+- foldScatterSeries — The series as drawn: the first three keep their colour slot, the rest fold into a neutral "Other".
+- linearRegression — Least-squares fit y = slope * x + intercept, with R².
+- scatterLegend — Legend items for a scatter chart, with the same "Other" fold as the chart.
+
+
+### When to use the scatter plot and bubble chart
+
+- Use it as a scatter chart with a trend line for ad spend against revenue per week, where you want to see whether two measures move together and quantify the relationship with a fitted line.
+- It suits a bubble chart of cities, plotting rent against salary with bubble area showing population so a small number of large points stays visible.
+- It works for comparing up to three groups, such as two campaigns, each with its own series color and its own trend line with slope and R squared.
+- Skip it when one axis is categorical or time, where LineChart or BarChart fit better; for thousands of points of one variable, Beeswarm or Histogram shows the distribution more clearly.
+- Pair it with ChartCard for the title, legend and Chart / Table tabs, ScatterTable for the text twin, and scatterLegend so a folded Other series is labeled the same way.
+
+
+### Frequently asked questions
+
+#### How do I add a trend line to a scatter plot in React?
+
+Set trendline on ScatterChart. It fits a least-squares line per series, drawn dotted and clipped to the plot so it never reads as data. The slope and R squared are part of the chart's accessible name. linearRegression is exported too.
+
+#### How do I turn it into a bubble chart?
+
+Set bubble and give each point a size. Bubbles are sized by area, so four times the population is four times the ink, with a minimum of 8px across. Big bubbles sit behind small ones, each with a surface ring.
+
+#### How many series can I plot?
+
+Up to three; series past the third fold into one neutral Other series, because in a scatter every color sits beside every other. Each series is a label, optional color and a data array of x, y, optional size, label and id.
+
+#### How do the keyboard and pointer find points?
+
+The pointer only has to be near a point, since hit testing finds the nearest one. With the keyboard, Left and Right move through points in x order, Up and Down in y order, Home and End to the first and last in x order, and Escape clears the reading.
+
+
+### Related pages
+
+- [Sparkbar](https://lokendra-builds.github.io/sheenui/charts/sparkbar)
+- [Stacked area chart](https://lokendra-builds.github.io/sheenui/charts/stacked-area-chart)
+- [Step line chart](https://lokendra-builds.github.io/sheenui/charts/step-line-chart)
+- [Streamgraph](https://lokendra-builds.github.io/sheenui/charts/streamgraph)
+- [Real-time chart](https://lokendra-builds.github.io/sheenui/charts/realtime-chart)
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Sparkbar: Mini Bar Chart for React Tables
+
+URL: https://lokendra-builds.github.io/sheenui/charts/sparkbar
+Sidebar name: Sparkbar
+
+A React sparkbar: a mini bar chart for stat tiles and table cells, with a win/loss mode and a spoken summary for screen readers. Glass style, Tailwind v4.
+
+What it is: A React sparkbar is a mini bar chart for stat tiles and table cells, the bar twin of the sparkline. Pass values as a readonly number[], oldest first; a missing entry leaves a gap, never a zero.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/sparkbar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Sparkbar
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{sparkbar.tsx, chart-utils.ts}`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, math.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: sparkbar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Sparkbar } from "@/components/sheenui/charts/sparkbar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, Sparkbar } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| values | readonly (number \| null \| undefined)[] | required | Values, oldest first. A missing (non-numeric) entry leaves its slot empty: a gap, never a zero. |
+| variant | "bar" \| "winloss" | "bar" | "bar": tiny columns, sized by value (negative values hang below a zero line). "winloss": only the sign counts: up for a win (> 0), down for a loss (< 0), a dash for a draw (0). |
+| highlight | number \| "none" \| "last" | variant === "bar" ? "last" : "none" | Which bar to emphasise at full strength; the rest step back to a lighter step of the same hue. "last" (the latest value; default for "bar"), "none" (default for "winloss"), or an index into values (negative counts from the end: -1 is the last entry). An index outside values, or on a gap, emphasises nothing. |
+| color | ChartColor | 1 | Colour slot of the bars ("bar"), or of wins ("winloss"). |
+| negativeColor | ChartColor | 2 | Sets the colour slot of losses ("winloss"). |
+| height | number | 32 | Height of the chart in px; the width follows the container. |
+| format | ((n: number) => string) | formatCompact | Formats the low / high / latest values in the spoken summary. |
+| aria-label | string | optional, no default | Name the trend, e.g. "Weekly signups". A summary of the values is appended. Without it the sparkbar is decorative. |
+| labels | Partial<SparkbarLabels> | defaultSparkbarLabels | Every other string, for translation: labels={{ barSummary: "…" }}; omitted keys keep the English of defaultSparkbarLabels. All 3 keys of SparkbarLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: In stat tiles
+
+The latest bar is drawn at full strength; earlier bars recede to a lighter tint. Values below zero hang from a zero line. Use highlight="none" when no period is special.
+
+```tsx
+import { Sparkbar } from "@/components/sheenui/charts/sparkbar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Sparkbar } from "@sheenui/theme";
+
+const tiles = [
+  {
+    label: "Signups",
+    value: "1,284",
+    values: [62, 74, 70, 81, 77, 92, 88, 97, 104, 99, 112, 126],
+    note: "Weekly, last 12 weeks",
+  },
+  {
+    label: "Orders",
+    value: "3,912",
+    values: [210, 244, 236, 251, 290, 302, 287, 276, 318, 331, 309, 358, 362, 371],
+    note: "Daily, last 14 days",
+  },
+  {
+    label: "Net cash flow",
+    value: "+$18.4K",
+    values: [4.2, -1.8, 3.1, 5.6, -0.6, -2.4, 1.9, 6.8, 3.3, -1.1, 4.7, 2.5],
+    note: "Weekly, US$ thousands",
+    highlight: "none" as const,
+  },
+];
+
+export function Example() {
+  return (
+    <>
+      {tiles.map((tile) => (
+        <GlassCard key={tile.label} className="flex min-w-0 flex-col gap-2 p-5">
+          <p className="text-sm text-sheen-fg-muted">{tile.label}</p>
+          <p className="text-3xl font-semibold tracking-tight">{tile.value}</p>
+          <Sparkbar
+            values={tile.values}
+            highlight={tile.highlight}
+            aria-label={`${tile.label}, ${tile.note.toLowerCase()}`}
+          />
+          <p className="text-2xs text-sheen-fg-muted">{tile.note}</p>
+        </GlassCard>
+      ))}
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Win / loss in a table
+
+Only the sign counts: up for a win, down for a loss, a short dash for a draw. Wins and losses use two distinct palette hues (not success and danger: a loss isn't an error).
+
+```tsx
+import { Sparkbar } from "@/components/sheenui/charts/sparkbar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Sparkbar } from "@sheenui/theme";
+
+const standings = [
+  { team: "Harbour City", results: [1, 1, -1, 1, 1, 0, 1, 1, -1, 1, 1, 1] },
+  { team: "Northfield Rovers", results: [1, -1, 1, 0, 1, -1, 1, 1, 0, -1, 1, 1] },
+  { team: "Ashdown Athletic", results: [-1, 1, 0, -1, 1, -1, -1, 1, 1, 0, -1, 1] },
+  { team: "Kestrel Town", results: [-1, -1, 1, -1, 0, -1, 1, -1, -1, 1, -1, 0] },
+];
+
+export function Example() {
+  return (
+    <GlassCard className="overflow-hidden p-0">
+      <div role="region" aria-label="League form" tabIndex={0} className="overflow-x-auto">
+        <table className="w-full min-w-[30rem] text-start text-sm">
+          <caption className="sr-only">League form, last 12 matches</caption>
+          <thead className="text-xs text-sheen-fg-muted">
+            <tr className="border-b border-sheen-border">
+              <th scope="col" className="px-5 py-3 font-medium">Team</th>
+              <th scope="col" className="px-5 py-3 font-medium">Last 12</th>
+              <th scope="col" className="px-5 py-3 text-end font-medium">W–D–L</th>
+            </tr>
+          </thead>
+          <tbody>
+            {standings.map((row) => {
+              const w = row.results.filter((r) => r > 0).length;
+              const l = row.results.filter((r) => r < 0).length;
+              return (
+                <tr key={row.team} className="border-b border-sheen-border last:border-0">
+                  <th scope="row" className="px-5 py-3 font-medium whitespace-nowrap">{row.team}</th>
+                  <td className="w-56 px-5 py-3">
+                    <Sparkbar
+                      variant="winloss"
+                      height={24}
+                      values={row.results}
+                      aria-label={`${row.team}, last 12 matches`}
+                    />
+                  </td>
+                  <td className="px-5 py-3 text-end whitespace-nowrap tabular-nums">
+                    {w}–{row.results.length - w - l}–{l}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </GlassCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not applicable: the sparkbar is not interactive, so it is not a tab stop. |
+
+### Accessibility
+
+- With an aria-label it is an image named by that label plus a short summary (or “No data”); without one it is decorative.
+- Put the number it summarizes next to it as text: the bars are a glanceable hint, not the only source of the value.
+- Under reduced motion nothing morphs: the bars render at their final values and new data replaces the old at once.
+
+### All exports on this page
+
+- Sparkbar — A tiny bar chart for stat tiles and table cells: magnitude ("bar") or wins and losses ("winloss").
+- defaultSparkbarLabels — The built-in English strings of Sparkbar; spread it into your own labels and change what you need.
+
+
+### When to use the sparkbar chart
+
+- Use it as a sparkline bar chart inside a stat tile to show the last twelve periods of a metric beside the current number, with the latest bar at full strength and history in a lighter tint.
+- It fits a table cell showing a team's recent record, using variant winloss so only the sign of each result is drawn: up for a win, down for a loss, a short dash for a draw.
+- It works for tiny trend hints in a list of accounts or projects, where hundreds of rows need a glanceable shape and not a full chart with axes.
+- Skip it when readers need to hover for values or compare axes, since a sparkbar is not interactive; use BarChart for that, or Sparkline when the series is a continuous line rather than discrete periods.
+- Pair it with Sparkline for continuous trends, Badge or a plain number for the headline value next to it, and DataTable to place a sparkbar in a column.
+
+
+### Frequently asked questions
+
+#### How is a mini bar chart in React different from a sparkline?
+
+Sparkbar is the bar twin of Sparkline: each value is a discrete period drawn as its own bar, sized by value, with negative values hanging from a zero line. Use it for counts per day, week or month.
+
+#### How do I highlight a specific bar?
+
+highlight defaults to last in bar mode and none in win/loss mode. Pass a number to index values, with negatives counting from the end, or none when no period is special. The other bars step back to a lighter tint of the same hue.
+
+#### What does a screen reader hear?
+
+With an aria-label, the sparkbar is an image named by that label plus a summary: low, high and latest, or the win/loss record, or No data. Without a label it is decorative, so put the number it summarizes beside it as text.
+
+#### How are missing values handled?
+
+values accepts numbers, null or undefined, oldest first. A missing entry leaves its slot empty, so there is a gap and never a zero. Bars never grow wider than 12px, height defaults to 32, and the width follows the container.
+
+
+### Related pages
+
+- [Stacked area chart](https://lokendra-builds.github.io/sheenui/charts/stacked-area-chart)
+- [Step line chart](https://lokendra-builds.github.io/sheenui/charts/step-line-chart)
+- [Streamgraph](https://lokendra-builds.github.io/sheenui/charts/streamgraph)
+- [Real-time chart](https://lokendra-builds.github.io/sheenui/charts/realtime-chart)
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Stacked Area Chart for React (100% Mode)
+
+URL: https://lokendra-builds.github.io/sheenui/charts/stacked-area-chart
+Sidebar name: Stacked area chart
+
+A React stacked area chart that shows how a total builds from its parts, with a 100% mode, a crosshair listing every series and morphing data. Accessible.
+
+What it is: A React stacked area chart shows how a total builds from its parts over time, or in 100% mode how the mix shifts. Pass data as readonly ChartRow[]: one object per point: the index key plus one number per series key.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/stacked-area-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Stacked area chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{percent-bar-chart.tsx, stacked-area-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-utils.ts}`
+- `components/charts/chart-parts/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: stacked-area-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { seriesLegend } from "@/components/sheenui/charts/chart-parts/legend-tooltip";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StackedAreaChart, StackedAreaTable } from "@/components/sheenui/charts/stacked-area-chart";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, type ChartSeries, seriesLegend, StackedAreaChart, StackedAreaTable } from "@sheenui/theme";
+```
+
+### StackedAreaChart props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One object per point: the index key plus one number per series key. |
+| index | string | required | Key of the x value in each row (e.g. "month"). |
+| series | readonly ChartSeries[] | required | Bands from the bottom of the stack up. Give each a fixed color slot so filtering never repaints it. |
+| mode | "stacked" \| "percent" | "stacked" | "stacked": bands add up to the total. "percent": every x position is scaled to 100%, so the bands show each series' share. A point whose values add up to 0 has no shares: the bands break around it (a gap, marked with a dashed "no data" column) instead of dipping to 0%. |
+| curve | "linear" \| "monotone" | "linear" | "linear" joins points with straight lines; "monotone" with smooth curves that never overshoot a value. |
+| height | number | 260 | Height of the chart in px; the width follows the container. |
+| format | ((n: number) => string) | formatCompact | Formats values in the tooltip (and the axis in "stacked" mode). Negative values count as 0. |
+| formatPercent | ((n: number) => string) | formatPercentDefault | Formats shares (0–100) in "percent" mode. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| patterns | boolean | true when series.length > 3 | Tell series apart without colour (hatch fills, dash styles, marker shapes). |
+| labels | Partial<StackedAreaChartLabels> | defaultStackedAreaChartLabels | Every other string, for translation: labels={{ total: "…" }}; omitted keys keep the English of defaultStackedAreaChartLabels. All 4 keys of StackedAreaChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Accessible summary of what the chart shows. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### StackedAreaTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | Takes the same rows as the chart. |
+| index | string | required | Key of each row that names its position on the axis. |
+| series | readonly ChartSeries[] | required | Takes the same series as the chart. |
+| mode | "stacked" \| "percent" | "stacked" | Match the chart: "percent" shows each share beside the value it comes from. |
+| format | ((n: number) => string) | formatCompact | Formats a value for the data table cells: takes the number, returns the text shown. |
+| formatPercent | ((n: number) => string) | formatPercentDefault | Formats shares in percent mode. |
+| indexLabel | string | index | Sets the header of the first column. |
+| caption | string | optional, no default | Visually hidden caption naming the table (also names its scroll region). |
+| labels | Partial<Pick<StackedAreaChartLabels, "total" \| "noData">> | defaultStackedAreaChartLabels | Override the "Total" column header and the empty text. Every other string, for translation: labels={{ total: "…" }}; omitted keys keep the English of defaultStackedAreaChartLabels. All 2 keys of StackedAreaChartLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 3: Stacked and 100% stacked
+
+Switch the mode, the curve and the range: the bands morph between them. Hover, tap, or focus the chart and use the arrow keys.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { seriesLegend } from "@/components/sheenui/charts/chart-parts/legend-tooltip";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StackedAreaTable, StackedAreaChart } from "@/components/sheenui/charts/stacked-area-chart";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, seriesLegend, StackedAreaTable, StackedAreaChart, type ChartSeries } from "@sheenui/theme";
+
+const data = [
+  { month: "Jun", organic: 41000, paid: 23000, referral: 9800, social: 6400 },
+  { month: "Jul", organic: 44200, paid: 24100, referral: 10300, social: 7100 },
+  { month: "Aug", organic: 46900, paid: 26800, referral: 11200, social: 7600 },
+  { month: "Sep", organic: 49100, paid: 27500, referral: 11900, social: 8800 },
+  { month: "Oct", organic: 52300, paid: 29400, referral: 12600, social: 9300 },
+];
+const series: ChartSeries[] = [
+  { key: "organic", label: "Organic", color: 1 },
+  { key: "paid", label: "Paid", color: 2 },
+  { key: "referral", label: "Referral", color: 3 },
+  { key: "social", label: "Social", color: 4 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Sessions by channel"
+      legend={seriesLegend(series, "rect")}
+      table={<StackedAreaTable data={data} index="month" series={series} mode="stacked" />}
+    >
+      <StackedAreaChart
+        data={data}
+        index="month"
+        mode="stacked" // or "percent"
+        curve="linear" // or "monotone"
+        series={series}
+        aria-label="Monthly sessions by channel, stacked"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Share of a whole
+
+mode="percent" scales every quarter to 100%. The tooltip leads with the share and keeps the raw value beside it; the table view shows both.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { seriesLegend } from "@/components/sheenui/charts/chart-parts/legend-tooltip";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StackedAreaTable, StackedAreaChart } from "@/components/sheenui/charts/stacked-area-chart";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, seriesLegend, StackedAreaTable, StackedAreaChart, type ChartSeries } from "@sheenui/theme";
+
+const data = [
+  { quarter: "Q1 ’25", desktop: 41000, mobile: 39000, tablet: 5800 },
+  { quarter: "Q2 ’25", desktop: 38500, mobile: 43500, tablet: 5500 },
+  { quarter: "Q3 ’25", desktop: 36200, mobile: 47800, tablet: 5300 },
+  { quarter: "Q4 ’25", desktop: 33800, mobile: 52400, tablet: 5000 },
+];
+const series: ChartSeries[] = [
+  { key: "desktop", label: "Desktop", color: 1 },
+  { key: "mobile", label: "Mobile", color: 2 },
+  { key: "tablet", label: "Tablet", color: 3 },
+];
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Sessions by device"
+      legend={seriesLegend(series, "rect")}
+      table={<StackedAreaTable mode="percent" data={data} index="quarter" series={series} />}
+    >
+      <StackedAreaChart mode="percent" curve="monotone" data={data} index="quarter" series={series} aria-label="Share of sessions by device" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 3 of 3: Edge cases
+
+One data point draws a flat band across the plot; a month with no values breaks a 100% chart around a dashed “no data” column instead of dipping to 0%; no data keeps the chart's footprint.
+
+```tsx
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StackedAreaChart } from "@/components/sheenui/charts/stacked-area-chart";
+// Package build (after the first npm release, or a packed tarball): import { StackedAreaChart, type ChartSeries } from "@sheenui/theme";
+
+const series: ChartSeries[] = [
+  { key: "organic", label: "Organic", color: 1 },
+  { key: "paid", label: "Paid", color: 2 },
+];
+const plans: ChartSeries[] = [
+  { key: "free", label: "Free", color: 1 },
+  { key: "pro", label: "Pro", color: 2 },
+  { key: "team", label: "Team", color: 3 },
+];
+const signups = [
+  { month: "May", free: 420, pro: 160, team: 40 },
+  { month: "Jun", free: 460, pro: 190, team: 55 },
+  { month: "Jul", free: 0, pro: 0, team: 0 },
+  { month: "Aug", free: 510, pro: 230, team: 70 },
+];
+
+export function Example() {
+  return (
+    <>
+      <StackedAreaChart data={[{ month: "Oct", organic: 41000, paid: 23000 }]} index="month" series={series} aria-label="Sessions in October" />
+      <StackedAreaChart mode="percent" data={signups} index="month" series={plans} aria-label="Share of signups by plan" /> {/* July adds up to 0: a gap */}
+      <StackedAreaChart data={[]} index="month" series={series} emptyState="No sessions yet" aria-label="Sessions" />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ← / → | Previous / next point. |
+| Home / End | Jump to the first / last point. |
+| Escape | Clear the reading. |
+| Enter / Space on a legend key | Hide or show that series (inside a ChartCard). |
+
+### Accessibility
+
+- The chart is one focusable figure: its aria-label is the chart title, a one-line hint describes how to read it, and in a ChartCard with a table view aria-details points at that table. Each move is announced politely, once. Each move announces every series' value and the total.
+- StackedAreaTable is the same data as a real table. Pass it to ChartCard's table prop and the Chart / Table tabs let anyone read every value without color or sight.
+- Reduced motion: the stacked areas appear at their final values and data changes jump instead of morphing.
+
+### All exports on this page
+
+- StackedAreaChart — Stacked areas that show how parts add up over time, in absolute values or as a share (mode="percent").
+- StackedAreaTable — The table view of a stacked area chart: every value per x, plus the total the tooltip shows (negative values count as 0, as in the chart).
+- defaultStackedAreaChartLabels — The built-in English strings of StackedAreaChart; spread it into your own labels and change what you need.
+
+
+### When to use the stacked area chart
+
+- Use it as a stacked area graph for sessions by channel over a year, where the total and the contribution of organic, paid and referral traffic matter as the totals build up.
+- It suits a 100% stacked area chart with mode percent, such as quarterly sessions by device, to show when mobile overtook desktop without the total distorting the view.
+- It also handles gaps honestly: in percent mode, a month with no signups breaks the chart around a dashed no data column instead of dipping to 0%.
+- Skip it when the series should be compared against each other, since stacked bands share baselines; LineChart or a grouped BarChart makes that easier, and Streamgraph suits a flowing, symmetric view.
+- Pair it with ChartCard for a legend where Enter or Space on a key hides a series, StackedAreaTable for exact values, and a segmented control to switch stacked and percent modes.
+
+
+### Frequently asked questions
+
+#### How do I build a stacked area chart in React with SheenUI?
+
+Pass data rows, the index key for x, and series listed from the bottom band up, each with key, label and an optional color slot from 1 to 8. A required aria-label names the chart. Height defaults to 260 and the width follows the container.
+
+#### How do I switch to a 100% stacked area chart?
+
+Set mode to percent. Every x is scaled to 100% so bands show shares, the tooltip leads with the share and keeps the raw value beside it, and an x whose values add up to 0 is drawn as a gap. formatPercent changes the format.
+
+#### Which curve types are available?
+
+curve defaults to linear for straight segments, or monotone for smooth curves that never overshoot a data point. Bands are separated by a real 2px gap, draw in on first view and tween when data changes.
+
+#### How do I read it with a keyboard or toggle series?
+
+Focus the chart, then Left and Right move between points, Home and End jump to the ends, and Escape clears the reading. Inside a ChartCard, Enter or Space on a legend key hides or shows that series. Reduced motion makes the animations instant.
+
+
+### Related pages
+
+- [Step line chart](https://lokendra-builds.github.io/sheenui/charts/step-line-chart)
+- [Streamgraph](https://lokendra-builds.github.io/sheenui/charts/streamgraph)
+- [Real-time chart](https://lokendra-builds.github.io/sheenui/charts/realtime-chart)
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Step Line Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/step-line-chart
+Sidebar name: Step line chart
+
+A React step line chart for values that hold, then jump: prices, plan limits, rates and headcount. Snapping crosshair and hover bands. Animated, MIT.
+
+What it is: A React step line chart for values that hold and then jump, such as prices, plan limits and headcount. Pass data as readonly ChartRow[]: one object per point: the index key plus one number per series key.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/step-line-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Step line chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{step-line-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-utils.ts, range-area-chart.tsx}`
+- `components/charts/chart-parts/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: step-line-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { type ChartSeries, formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { StepLineChart } from "@/components/sheenui/charts/step-line-chart";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { type ChartSeries, formatCompact, StepLineChart } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One object per point: the index key plus one number per series key. |
+| index | string | required | Key of the x value in each row (e.g. "month"). |
+| series | readonly ChartSeries[] | required | The lines to draw. Give each a fixed color slot so filtering never repaints it. |
+| curve | StepCurve | "step-after" | Where each value's label sits on its step. |
+| area | boolean | false | Fill under each line with a soft 10% wash. |
+| zero | boolean | true | Keep zero on the value axis. Turn off for levels far from zero (prices, rates), so the steps aren't squashed into the top of the plot. Always on with area. |
+| height | number | 260 | Height of the chart in px; the width follows the container. |
+| format | ((n: number) => string) | formatCompact | Formats values in the tooltip and labels, and on the axis (the default axis format follows the tick step). |
+| endLabels | boolean | true | Label the end of each line (2–4 series, when the chart is wide enough and the labels don't collide). |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<StepLineChartLabels> | defaultStepLineChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultStepLineChartLabels. Its only key is listed in the key table under the props table. |
+| aria-label | string | required | Accessible summary of what the chart shows. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### StepLineTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | The rows to show: one object per row, holding the index key and one number per series key. |
+| index | string | required | The key in each row that names the row, such as "month". It becomes the first column. |
+| series | readonly CompareSeries[] | required | Series to list as columns; one with a compareKey also gets a previous-period column. |
+| format | ((n: number) => string) | formatCompact | Formats each number in the table cells. |
+| indexLabel | string | optional, no default | Header of the first column; the index key when left out. |
+| caption | string | optional, no default | Visually hidden caption naming the table for screen readers. |
+| labels | Partial<ChartTableLabels> | defaultChartTableLabels | Text for i18n (defaults come from the enclosing ChartCard's labels, else English). Every other string, for translation: labels={{ noData: "…" }}; omitted keys keep the English of defaultChartTableLabels. All 2 keys of ChartTableLabels are listed in the key table under the props table. |
+
+### Example 1 of 2: Price changes
+
+The curve sets where each label sits on its step: "step-after" (the value starts at its label), "step" (mid-step) or "step-before" (the value is reached at its label). The line is the same; only the anchors move. Prices sit far from zero, so zero={false} lets the axis hug them instead of squashing every step into the top of the plot.
+
+```tsx
+import { formatCompact, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StepLineChart } from "@/components/sheenui/charts/step-line-chart";
+// Package build (after the first npm release, or a packed tarball): import { StepLineChart, formatCompact, type ChartSeries } from "@sheenui/theme";
+
+const pricing = [
+  { month: "Jan", pro: 42, team: 50, enterprise: 60 },
+  { month: "Feb", pro: 45, team: 50, enterprise: 60 },
+  { month: "Mar", pro: 45, team: 54, enterprise: 60 },
+  { month: "Apr", pro: 45, team: 54, enterprise: 66 },
+  { month: "May", pro: 48, team: 57, enterprise: 66 },
+];
+
+const series: ChartSeries[] = [
+  { key: "enterprise", label: "Enterprise", color: 3 },
+  { key: "team", label: "Team", color: 2 },
+  { key: "pro", label: "Pro", color: 1 },
+];
+
+export function Example() {
+  return (
+    <StepLineChart
+      curve="step-after"
+      zero={false}
+      data={pricing}
+      index="month"
+      series={series}
+      format={(n) => "$" + formatCompact(n)}
+      aria-label="Monthly price per seat, by plan"
+    />
+  );
+}
+```
+
+### Example 2 of 2: With an area wash
+
+One series, so no legend: the title names it. area keeps zero on the axis, so the wash fills to a real baseline.
+
+```tsx
+import { StepLineChart } from "@/components/sheenui/charts/step-line-chart";
+// Package build (after the first npm release, or a packed tarball): import { StepLineChart } from "@sheenui/theme";
+
+const seats = [
+  { month: "Jan", seats: 120 },
+  { month: "Feb", seats: 135 },
+  { month: "Mar", seats: 150 },
+  { month: "Apr", seats: 180 },
+  { month: "May", seats: 210 },
+  { month: "Jun", seats: 262 },
+];
+
+export function Example() {
+  return (
+    <StepLineChart
+      area
+      curve="step-before"
+      data={seats}
+      index="month"
+      series={[{ key: "seats", label: "Seats" }]}
+      aria-label="Licensed seats at the end of each month"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| ← / → (↑ / ↓) | Previous / next point. |
+| Home / End | Jump to the first / last point. |
+| Escape | Clear the reading. |
+
+### Accessibility
+
+- The chart is a focusable figure named by its aria-label (the chart title), with a one-line reading hint as its description and, inside a ChartCard with a table view, aria-details pointing at that table; moving through it announces each value politely, once. Each move announces the point and its values.
+- StepLineTable is the table view (the same table as ChartTable): pass it as the ChartCard table prop. The Chart / Table tabs put every value in text, so none depends on color.
+- Reduced motion: the steps appear at their final values and data changes jump instead of morphing.
+
+### All exports on this page
+
+- StepLineChart — A line chart whose lines hold their value until the next change.
+- StepLineTable — The table view of a StepLineChart: one row per step on the x axis, one column per series.
+- defaultStepLineChartLabels — The built-in English strings of StepLineChart; spread it into your own labels and change what you need.
+
+
+### When to use the step line chart
+
+- Use it as a step chart for plan pricing over time, where a price holds flat until the next change, and the hover band marks the step each price holds for.
+- It fits licensed seats at the end of each month or headcount, where values hold between events and a smooth line would invent in-between numbers.
+- It also suits interest rates, quota limits or feature thresholds, with area adding a soft wash under a single series that keeps zero on the axis.
+- Skip it when the value changes continuously, such as temperature or traffic; LineChart is the honest shape, and RangeAreaChart fits when each point has a low and a high.
+- Pair it with ChartCard for the title and legend, a StepLineTable as the Chart / Table tab, and a segmented control to switch plans or ranges.
+
+
+### Frequently asked questions
+
+#### What does the curve prop change on a step line chart?
+
+It sets where each value's label, crosshair and dot sit on its step: step-after (the default, value starts at its label), step (mid-step) or step-before (value is reached at its label). The line itself is the same, only the anchors move.
+
+#### Why does my step chart look squashed against the top?
+
+Zero is kept on the value axis by default. For levels far from zero, such as prices, set zero to false so the axis hugs the data. With area on, zero stays on the axis so the wash fills to a real baseline.
+
+#### Can I plot several series?
+
+Yes. With two to four series on a wide chart, endLabels (on by default) names each line at its end when labels do not collide. With one series, no legend is needed and the card title names it.
+
+#### How do I read it without a mouse?
+
+Focus the chart, then Left and Right (or Up and Down) move to the previous or next point, and Home and End jump to the ends. The hover band and crosshair snap to the step under the pointer, and the tooltip lists each series' value there.
+
+
+### Related pages
+
+- [Streamgraph](https://lokendra-builds.github.io/sheenui/charts/streamgraph)
+- [Real-time chart](https://lokendra-builds.github.io/sheenui/charts/realtime-chart)
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Streamgraph Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/streamgraph
+Sidebar name: Streamgraph
+
+A React streamgraph: stacked areas flowing around a moving center line, with a wiggle baseline, inside labels and a crosshair that reads every layer. MIT.
+
+What it is: A React streamgraph shows how a mix swells and fades over time as stacked areas flowing around a moving center line. Pass data as readonly ChartRow[]: one row per x value.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/streamgraph.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Streamgraph
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{streamgraph.tsx, category-bar.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/button/`
+- `components/charts/category-bar/`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/charts/streamgraph/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: streamgraph. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartRow, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { Streamgraph } from "@/components/sheenui/charts/streamgraph";
+import { streamgraphLegend } from "@/components/sheenui/charts/streamgraph/model";
+import { StreamgraphTable } from "@/components/sheenui/charts/streamgraph/parts";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, type ChartRow, type ChartSeries, Streamgraph, streamgraphLegend, StreamgraphTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per x value (e.g. per week). |
+| index | string | required | Key of the x value in each row. |
+| series | readonly ChartSeries[] | required | The layers. Up to 8 keep their colour slot; any more fold into “Other”. |
+| offset | "wiggle" \| "silhouette" | "wiggle" | "wiggle" (default): the classic streamgraph, as flat as possible. "silhouette": mirrored around a centre line. |
+| order | "none" \| "insideOut" | "insideOut" | "insideOut" (default) puts layers that peak mid-way in the middle; "none" keeps series order (bottom up). |
+| inlineLabels | boolean | true | Name each layer inside its thickest stretch, when it fits. |
+| height | number | 300 | Height of the chart in px; the width follows the container. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats shares of the total. |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| patterns | boolean | true when layers > 3 | Tell layers apart without colour (hatch fills; the first layer stays solid). |
+| labels | Partial<StreamgraphLabels> | defaultStreamgraphLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultStreamgraphLabels. All 5 keys of StreamgraphLabels are listed in the key table under the props table. |
+| aria-label | string | required | Accessible summary of what the chart shows. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### StreamgraphTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | One row per x value (e.g. per week). |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the tooltips and data table: takes the number, returns the text shown. |
+| labels | Partial<StreamgraphLabels> | defaultStreamgraphLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultStreamgraphLabels. All 5 keys of StreamgraphLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| index | string | required | Key of the x value in each row. |
+| series | readonly ChartSeries[] | required | The layers. Up to 8 keep their colour slot; any more fold into “Other”. |
+| indexLabel | string | optional, no default | Sets the header of the first column. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+
+### Example 1 of 2: A year of listening
+
+Seven genres over 52 weeks. Hover a layer to bring it forward; use left / right to move through time and up / down to pick a layer. Switch the baseline to compare wiggle and silhouette.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartRow, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { Streamgraph } from "@/components/sheenui/charts/streamgraph";
+import { streamgraphLegend } from "@/components/sheenui/charts/streamgraph/model";
+import { StreamgraphTable } from "@/components/sheenui/charts/streamgraph/parts";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, streamgraphLegend, StreamgraphTable, Streamgraph, type ChartRow, type ChartSeries } from "@sheenui/theme";
+
+const series: ChartSeries[] = [
+  { key: "pop", label: "Pop", color: 5 },
+  { key: "hiphop", label: "Hip-hop", color: 2 },
+  { key: "rock", label: "Rock", color: 8 },
+];
+const data: ChartRow[] = [
+  { week: "Nov 3", pop: 6.2, hiphop: 4.1, rock: 2.8 },
+  { week: "Nov 10", pop: 6.8, hiphop: 4.4, rock: 2.5 },
+  { week: "Nov 17", pop: 7.4, hiphop: 3.9, rock: 2.2 },
+  { week: "Nov 24", pop: 7.0, hiphop: 4.8, rock: 2.6 },
+  { week: "Dec 1", pop: 8.1, hiphop: 5.2, rock: 3.0 },
+  { week: "Dec 8", pop: 7.6, hiphop: 4.6, rock: 3.4 },
+];
+const oneDecimal = new Intl.NumberFormat("en", { maximumFractionDigits: 1 });
+const hours = (n: number) => oneDecimal.format(n) + " h";
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Listening by genre"
+      legend={streamgraphLegend(series)}
+      table={<StreamgraphTable data={data} index="week" series={series} format={hours} />}
+    >
+      <Streamgraph data={data} index="week" series={series} offset="wiggle" format={hours} aria-label="Weekly listening hours by genre" />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Traffic sources around a launch
+
+Thirty days of visits by source, with a launch spike in week three. Silhouette or wiggle, the total is always the stream's thickness.
+
+```tsx
+import { type ChartRow, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { Streamgraph } from "@/components/sheenui/charts/streamgraph";
+// Package build (after the first npm release, or a packed tarball): import { Streamgraph, type ChartRow, type ChartSeries } from "@sheenui/theme";
+
+const sources: ChartSeries[] = [
+  { key: "search", label: "Search", color: 1 },
+  { key: "social", label: "Social", color: 2 },
+  { key: "referral", label: "Referral", color: 3 },
+  { key: "email", label: "Email", color: 7 },
+];
+const traffic: ChartRow[] = [
+  { day: "Day 1", search: 1800, social: 640, referral: 1100, email: 420 },
+  { day: "Day 8", search: 1850, social: 700, referral: 1150, email: 400 },
+  { day: "Day 15", search: 2300, social: 1900, referral: 2600, email: 2400 },
+  { day: "Day 22", search: 2100, social: 1200, referral: 1700, email: 450 },
+  { day: "Day 30", search: 1950, social: 800, referral: 1300, email: 430 },
+];
+
+export function Example() {
+  return <Streamgraph data={traffic} index="day" series={sources} height={260} aria-label="Daily visits by source" />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart (one tab stop). |
+| ← / → | Move through time. |
+| ↑ / ↓ | Pick a layer, top to bottom as stacked on screen. |
+| Home / End | First / last point in time. |
+| Escape | Clear the layer and the crosshair. |
+
+### Accessibility
+
+- The chart is one focusable figure; each step through time announces every layer's value and share, largest first, then the total. With a layer picked, only that layer is read.
+- Layer names sit on solid tags of the chart surface, so they meet AA contrast on any layer color; layers that are too thin for a name rely on the legend and the tooltip.
+- Color slots are fixed per series and never repeat: more than 8 layers fold into a gray “Other”.
+- On phones the readout docks above the plot instead of covering it; vertical swipes keep scrolling the page.
+- The table view lists every value with a total column. Reduced motion draws the layers in place.
+
+### All exports on this page
+
+- Streamgraph — Stacked areas flowing around a moving centre line: how a mix of categories swells and fades over time (genres, topics, traffic sources).
+- StreamgraphTable — One row per x value, one column per layer, plus the total.
+- defaultStreamgraphLabels — The built-in English strings of Streamgraph; spread it into your own labels and change what you need.
+- foldStreamSeries — Fold series past the 8th into one "Other" layer (neutral grey).
+- insideOutOrder — Inside-out order (Byron & Wattenberg): series that peak early and late go to the edges, the ones peaking mid-way sit in the middle.
+- streamBaseline — Baseline per x of a stream: "wiggle" minimises the layers' weighted slope (Byron & Wattenberg's streamgraph, as d3's stackOffsetWiggle).
+- streamgraphLegend — Legend for a streamgraph: one swatch per layer, as folded.
+
+
+### When to use Streamgraph
+
+- Use it as a stream chart for a year of listening hours by genre, where the shape of each layer shows how a mix swells and fades across 52 weeks.
+- It suits traffic sources around a launch, with thirty days of visits by source and a spike in week three, where the stream's thickness is always the total.
+- It works for any many-category time series where totals matter less than the rhythm of change, with layer names printed inside their thickest stretch when they fit.
+- Skip it when readers must read exact values or compare layers against a common baseline; StackedAreaChart keeps a flat bottom, and LineChart compares individual series better.
+- Pair it with ChartCard and its legend, StreamgraphTable for exact values as text, and a SegmentedControl to switch offset between wiggle and silhouette.
+
+
+### Frequently asked questions
+
+#### What is the difference between wiggle and silhouette?
+
+offset defaults to wiggle, Byron and Wattenberg's minimal-wiggle baseline, which keeps layers as flat as they can be. Silhouette mirrors the stream around a center line. In both, the total is the stream's thickness.
+
+#### How are layers ordered?
+
+order defaults to insideOut, which puts layers that peak mid-way in the middle. Set none to keep your series order from bottom up. Each series has a fixed color slot, and series past eight fold into Other.
+
+#### How do I read a layer with the keyboard?
+
+Left and Right move through time, Up and Down pick a layer top to bottom as stacked on screen, Home and End jump to the first or last point, and Escape clears the layer. Hovering a layer lights it and dims the rest, and the crosshair reads every layer with its share.
+
+#### Can I hide the inline layer names?
+
+Set inlineLabels to false. By default each layer is named inside its thickest stretch, only when the name fits. The legend, tooltip and StreamgraphTable always carry every name, and height defaults to 300px.
+
+
+### Related pages
+
+- [Real-time chart](https://lokendra-builds.github.io/sheenui/charts/realtime-chart)
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Real-Time Streaming Line Chart for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/realtime-chart
+Sidebar name: Real-time chart
+
+A live, real-time line chart for React: new samples glide in while the time axis slides, with a Pause button and a still mode for reduced motion. MIT.
+
+What it is: A real-time React line chart: each new sample glides in from the right while the time axis slides under it. Pass data as readonly ChartRow[]: samples so far, oldest first: { time, …values }.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/streaming-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Real-time chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{streaming-chart.tsx, category-bar.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx, streamgraph.tsx}`
+- `components/button/`
+- `components/charts/category-bar/`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/charts/streamgraph/`
+- `components/charts/streaming-chart/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: streaming-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartRow, type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StreamingChart } from "@/components/sheenui/charts/streaming-chart";
+import { useStreamingData } from "@/components/sheenui/charts/streaming-chart/model";
+import { StreamingTable } from "@/components/sheenui/charts/streaming-chart/parts";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, type ChartRow, type ChartSeries, StreamingChart, StreamingTable, useStreamingData } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | Samples so far, oldest first: { time, …values }. Append rows as they arrive (or use useStreamingData). |
+| index | string | "time" | Key of the timestamp (ms) in each row. |
+| series | readonly ChartSeries[] | required | Up to 4 lines, each with a fixed color slot. |
+| rate | number | 1000 | Expected ms between samples. The view trails the newest sample by this much, so points glide in. |
+| window | number | 60 | How much time is in view, in samples. |
+| paused | boolean | optional, no default | Pause the view (controlled). Data keeps arriving; resuming glides to the present. |
+| defaultPaused | boolean | false | Starts in the paused state (uncontrolled). |
+| onPausedChange | ((paused: boolean) => void) | optional, no default | Called with the new paused state when the user pauses or resumes (controlled paused). |
+| area | boolean | true | Fill under each line with a fading wash. |
+| zero | boolean | false | Keep zero on the value axis. |
+| height | number | 240 | Sets the height of the plot in px. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the axis, tooltip and data table: takes the number, returns the text shown. |
+| formatTime | ((time: Date) => string) | "2:05:09 PM" (or "14:05:09") in locale | Formats a timestamp as text. |
+| locale | string | the browser's | BCP 47 locale of the default formats. |
+| timeZone | string | the viewer's | IANA time zone of the default time format, e.g. "UTC". |
+| emptyState | ReactNode | optional, no default | Shown before the first sample arrives. |
+| labels | Partial<StreamingChartLabels> | defaultStreamingChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultStreamingChartLabels. All 8 keys of StreamingChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Accessible summary of what the chart shows. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### useStreamingData(source, options)
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| source | (time, index) => number \| Record<string, number> | optional, no default | Called every rate ms for the next sample. |
+| options.rate | number | 1000 | Sets the number of milliseconds between two samples. |
+| options.history | number | 60 | Samples generated for the past at mount, so the chart starts full. |
+| options.capacity | number | 240 | Keeps this many samples; older ones drop off. |
+| options.index / valueKey | string | "time" / "value" | Keys of the timestamp, and of the value when source returns a number. |
+| options.enabled | boolean | true | Set it to false to stop sampling. |
+| options.startAt | number | Date.now() | Time of the newest sample on the first render. Pass a fixed time on prerendered pages (the server's and the browser's history must match); right after mount the history is rebuilt to end now. |
+| options.pauseWhenHidden | boolean | true | No timer while the tab is hidden; back on the tab the missed samples are filled in, so the line stays continuous. |
+| options.idle | boolean | false | Rest without losing time (e.g. pass !inView): no timer while true, then the missed samples are filled in. |
+
+### StreamingTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly ChartRow[] | required | Samples so far, oldest first: { time, …values }. Append rows as they arrive (or use useStreamingData). |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the axis, tooltip and data table: takes the number, returns the text shown. |
+| labels | Partial<StreamingChartLabels> | defaultStreamingChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultStreamingChartLabels. All 8 keys of StreamingChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | BCP 47 locale of the default formats. |
+| index | string | "time" | Key of the timestamp (ms) in each row. |
+| series | readonly ChartSeries[] | required | Up to 4 lines, each with a fixed color slot. |
+| timeZone | string | the viewer's | IANA time zone of the default time format, e.g. "UTC". |
+| formatTime | ((time: Date) => string) | "2:05:09 PM" (or "14:05:09") in locale | Formats a timestamp as text. |
+| limit | number | 20 | Limits the rows shown, newest first. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+
+### Example 1 of 2: Two series, one sample a second
+
+useStreamingData calls your function every second and keeps a rolling buffer; the chart and its table both read it. Call it in the small component that renders the card, so each sample re-renders only that card. Hover, tap or arrow through the line to hold the view and read values. Pause stops the view; data keeps arriving and Resume glides to the present.
+
+```tsx
+import { useEffect, useRef, useState } from "react";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type ChartSeries } from "@/components/sheenui/charts/chart-utils";
+import { StreamingChart } from "@/components/sheenui/charts/streaming-chart";
+import { useStreamingData } from "@/components/sheenui/charts/streaming-chart/model";
+import { StreamingTable } from "@/components/sheenui/charts/streaming-chart/parts";
+// Package build (after the first npm release, or a packed tarball): import { useStreamingData, ChartCard, StreamingTable, StreamingChart, type ChartSeries } from "@sheenui/theme";
+
+const series: ChartSeries[] = [
+  { key: "cpu", label: "CPU", color: 1 },
+  { key: "memory", label: "Memory", color: 3 },
+];
+const percent = (n: number) => Math.round(n) + "%";
+
+// Stand-ins for your metrics source: replace them with a real reading.
+const readCpu = () => 35 + Math.random() * 30;
+const readMemory = () => 55 + Math.random() * 10;
+
+// The hook lives in the card's own component: a sample re-renders this card, not the page.
+// Off-screen the feed rests (idle) and the missed samples are filled in when it's back.
+export function Example() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(true);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => setNear(entry?.isIntersecting ?? true), { rootMargin: "200px" });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const data = useStreamingData(
+    () => ({ cpu: readCpu(), memory: readMemory() }),
+    { rate: 1000, history: 60, idle: !near },
+  );
+  return (
+    <div ref={ref}>
+      <ChartCard title="web-01" table={<StreamingTable data={data} series={series} format={percent} />}>
+        <StreamingChart
+          data={data}
+          series={series}
+          rate={1000}
+          window={60}
+          format={percent}
+          aria-label="CPU and memory of web-01, last minute"
+        />
+      </ChartCard>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: Fast feed with a zero baseline
+
+Two samples a second, 40 seconds in view, the axis anchored at zero. Push your own rows (from a socket, say) and the chart animates them the same way.
+
+```tsx
+import { useEffect, useState } from "react";
+import { type ChartRow } from "@/components/sheenui/charts/chart-utils";
+import { StreamingChart } from "@/components/sheenui/charts/streaming-chart";
+// Package build (after the first npm release, or a packed tarball): import { StreamingChart, type ChartRow } from "@sheenui/theme";
+
+export function Example() {
+  const [rows, setRows] = useState<ChartRow[]>([]);
+  useEffect(() => {
+    // Your feed: one message per sample, e.g. { "rps": 812 }
+    const socket = new WebSocket("wss://example.com/metrics");
+    socket.onmessage = (event) => {
+      const rps = Number(JSON.parse(String(event.data)).rps);
+      setRows((r) => [...r.slice(-200), { time: Date.now(), rps }]);
+    };
+    return () => socket.close();
+  }, []);
+  return (
+    <StreamingChart
+      data={rows}
+      series={[{ key: "rps", label: "Requests / s", color: 7 }]}
+      rate={500}
+      window={80}
+      zero
+      aria-label="Requests per second"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart, then the Pause button. |
+| ← / → | Read the previous / next sample; the view holds still while you read. |
+| Home / End | Oldest / newest sample in view. |
+| Space / K | Pause or resume the view. |
+| Escape | Stop reading; the view catches up with the present. |
+
+### Accessibility
+
+- Anything that moves on its own can be paused (WCAG 2.2.2): the Pause button is built in, and Space or K toggles it from the chart.
+- New samples are never announced on their own (that would be a flood); a sample read by keyboard is announced once, with every series' value.
+- The status pill says Live, Holding or Paused in words, and the latest values in the header double as the legend.
+- Reduced motion: no sliding, no pulse and no rolling numbers; the chart redraws in place once per sample.
+- Off-screen or in a background tab the chart rests (no frame loop, no redraw, no pulse); useStreamingData stops its timer in a background tab (and off-screen with `idle`), then fills in the gap so the chart glides to the present.
+- The table view lists the latest samples, newest first.
+
+### All exports on this page
+
+- StreamingChart — A live line chart: new samples glide in from the right as the time axis slides smoothly under them, like a heart-rate monitor.
+- StreamingTable — The latest samples, newest first: time and each series' value.
+- defaultStreamingChartLabels — The built-in English strings of StreamingChart; spread it into your own labels and change what you need.
+- useLiveData — Live (streaming) rows for any chart: appends next() every interval ms into a sliding window.
+- useStreamingData — A rolling buffer of samples: calls source(time, index) every rate ms and keeps the last capacity rows, { time, ...values }.
+
+
+### When to use the real-time chart
+
+- Use it as a live chart in React for an ops wall or a status page, such as requests per second and error rate over the last minute, where samples keep arriving and the line should glide along instead of redrawing.
+- It fits a monitoring panel fed by a WebSocket, because you can append your own rows to data and the chart animates them the same way as generated ones.
+- It also works as a fast feed with the axis anchored at zero, such as two samples a second with 40 seconds in view.
+- Skip it when data arrives rarely or the history is the point; LineChart handles a static range better, and Tracker fits status-by-day history.
+- Pair it with ChartCard for the title, useStreamingData to generate and buffer samples, and StreamingTable for the latest rows as text; the chart brings its own Live status and Pause button.
+
+
+### Frequently asked questions
+
+#### How do I build a real time chart in React with SheenUI?
+
+Call useStreamingData(source, options) in the small component that renders the card; it calls source every rate ms, 1000 by default, and keeps a rolling buffer. Pass the rows and series to StreamingChart. Each sample then re-renders only that card.
+
+#### Can users pause the chart to read a value?
+
+Yes. Hovering, tapping or arrowing holds the view still, and there is a built-in Pause button; Space or K toggles it from the chart. Data keeps arriving while paused, and Resume glides to the present. Use paused or defaultPaused to control it.
+
+#### What does it do on prerendered pages?
+
+Timestamps depend on the clock and the viewer's time zone, so pass timeZone and locale, and a fixed options.startAt, so server and browser histories match. Right after mount the history is rebuilt to end now.
+
+#### How does it save work in the background?
+
+With pauseWhenHidden on by default, no timer runs while the tab is hidden, and the missed samples are filled in when you return so the line stays continuous. Under reduced motion the chart redraws in place, with no sliding.
+
+
+### Related pages
+
+- [Sunburst chart](https://lokendra-builds.github.io/sheenui/charts/sunburst)
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Sunburst Chart for React with Zoom
+
+URL: https://lokendra-builds.github.io/sheenui/charts/sunburst
+Sidebar name: Sunburst chart
+
+A React sunburst chart: a hierarchy as rings with hover path tracing, rolling numbers and click-to-zoom with an animated sweep and breadcrumb. Accessible.
+
+What it is: A React sunburst chart shows a hierarchy as rings around a center; click a group to zoom into it with an animated sweep. Pass data as readonly SunburstNode[]: the hierarchy: leaves carry a value; groups carry children (any depth).
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/sunburst-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Sunburst chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{sunburst-chart.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-tip.tsx, chart-utils.ts, flow-utils.tsx, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/charts/sunburst-chart/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-resolved-scheme.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: sunburst-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { SunburstChart } from "@/components/sheenui/charts/sunburst-chart";
+import { sunburstLegend, type SunburstNode } from "@/components/sheenui/charts/sunburst-chart/model";
+import { SunburstTable } from "@/components/sheenui/charts/sunburst-chart/parts";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, SunburstChart, sunburstLegend, type SunburstNode, SunburstTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly SunburstNode[] | required | The hierarchy: leaves carry a value; groups carry children (any depth). |
+| height | number | 360 | Height in px; the chart is a circle that fits the smaller of width and height. |
+| rings | number | 3 | Rings shown at once (deeper levels appear as you zoom in). |
+| drillDown | boolean | true when there are groups | Click / Enter on a group zooms into it. |
+| path | readonly string[] | optional, no default | The zoomed-in path (group labels from the top), controlled. |
+| defaultPath | readonly string[] | [] | Labels of the group to start zoomed into (uncontrolled). |
+| onPathChange | ((path: string[]) => void) | optional, no default | Called with the path of labels when the user zooms in or out (controlled path). |
+| onNodeClick | ((node: { label: string; value: number; path: string[]; }) => void) | optional, no default | Called on click / Enter on a node that has nothing to zoom into. |
+| format | ((n: number) => string) | compact numbers in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the total for the tooltips and data table: takes the share, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<SunburstChartLabels> | defaultSunburstChartLabels | Every other string, for translation: labels={{ root: "…" }}; omitted keys keep the English of defaultSunburstChartLabels. All 9 keys of SunburstChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### SunburstTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly SunburstNode[] | required | The hierarchy: leaves carry a value; groups carry children (any depth). |
+| format | ((n: number) => string) | compact numbers in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the total for the tooltips and data table: takes the share, returns the text shown. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| headers | Partial<{ name: string; value: string; ofParent: string; ofTotal: string; }> | optional, no default | Override the column headers: { name, value, ofParent, ofTotal }. |
+| labels | Partial<SunburstTableLabels> | defaultSunburstTableLabels | Strings for the cells that have no value. Merged over defaultSunburstTableLabels. Every other string, for translation: labels={{ notApplicable: "…" }}; omitted keys keep the English of defaultSunburstTableLabels. Its only key is listed in the key table under the props table. |
+| emptyState | ReactNode | optional, no default | Shown when there are no rows. |
+
+### Example 1 of 3: Zoomable cloud spend
+
+Three levels of a monthly bill. Each service family has its own palette slot; its children share the hue in lighter steps outwards. Click Compute (or press Enter on it) to zoom in. The path can be controlled: the buttons below jump straight to a level.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { SunburstChart } from "@/components/sheenui/charts/sunburst-chart";
+import { sunburstLegend, type SunburstNode } from "@/components/sheenui/charts/sunburst-chart/model";
+import { SunburstTable } from "@/components/sheenui/charts/sunburst-chart/parts";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, sunburstLegend, SunburstTable, SunburstChart, type SunburstNode } from "@sheenui/theme";
+import { useState } from "react";
+
+const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 1 });
+const formatUsd = (n: number) => usd.format(n);
+
+const spend: SunburstNode[] = [
+  {
+    label: "Compute",
+    children: [
+      { label: "Kubernetes", children: [{ label: "Web", value: 18400 }, { label: "Workers", value: 9600 }, { label: "Cron jobs", value: 2100 }] },
+      { label: "VMs", children: [{ label: "Build agents", value: 7200 }, { label: "Bastion", value: 600 }] },
+      { label: "Serverless", value: 3900 },
+    ],
+  },
+  {
+    label: "Storage",
+    children: [
+      { label: "Object storage", children: [{ label: "Media", value: 6800 }, { label: "Backups", value: 4100 }, { label: "Logs", value: 2700 }] },
+      { label: "Block storage", value: 5200 },
+    ],
+  },
+  // ... Databases, Network, Observability
+];
+
+export function Example() {
+  const [path, setPath] = useState<string[]>([]);
+  return (
+    <ChartCard
+      title="Cloud spend"
+      legend={sunburstLegend(spend)}
+      table={<SunburstTable data={spend} format={formatUsd} caption="Spend by service" />}
+    >
+      <SunburstChart
+        data={spend}
+        path={path}
+        onPathChange={setPath}
+        format={formatUsd}
+        aria-label="Monthly cloud spend by service"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 3: Bundle size, two rings
+
+rings={2} shows two levels at a time; deeper ones appear as you zoom in. Arcs too thin for a name stay unlabelled and are read in the center, the tooltip and the table.
+
+```tsx
+import { SunburstChart } from "@/components/sheenui/charts/sunburst-chart";
+import { type SunburstNode } from "@/components/sheenui/charts/sunburst-chart/model";
+// Package build (after the first npm release, or a packed tarball): import { SunburstChart, type SunburstNode } from "@sheenui/theme";
+
+const bundle: SunburstNode[] = [
+  {
+    label: "node_modules",
+    children: [
+      { label: "react-dom", value: 132 },
+      { label: "motion", value: 58 },
+      { label: "@base-ui", children: [{ label: "dialog", value: 14 }, { label: "menu", value: 18 }, { label: "tabs", value: 9 }, { label: "utils", value: 22 }] },
+      { label: "tailwind-merge", value: 21 },
+      { label: "react", value: 8 },
+    ],
+  },
+  {
+    label: "src",
+    children: [
+      { label: "components", children: [{ label: "charts", value: 96 }, { label: "data-table", value: 41 }, { label: "forms", value: 37 }, { label: "overlays", value: 29 }] },
+      { label: "pages", value: 64 },
+      { label: "hooks", value: 9 },
+    ],
+  },
+  { label: "styles", value: 31 },
+];
+
+export function Example() {
+  return (
+    <SunburstChart
+      data={bundle}
+      rings={2}
+      height={300}
+      format={(kb) => `${kb} kB`}
+      aria-label="Production bundle size by package and folder"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Flat data: one ring
+
+Without children a sunburst is a single ring, like a donut; every arc gets its own slot. Values below a sliver still get a hairline arc.
+
+```tsx
+import { SunburstChart } from "@/components/sheenui/charts/sunburst-chart";
+// Package build (after the first npm release, or a packed tarball): import { SunburstChart } from "@sheenui/theme";
+
+<SunburstChart
+  data={[
+    { label: "Chrome", value: 64.8 },
+    { label: "Safari", value: 18.6 },
+    { label: "Edge", value: 5.3 },
+    { label: "Firefox", value: 2.7 },
+    { label: "Mobile", value: 2.4 },
+    { label: "Other", value: 6.2 },
+  ]}
+  height={300}
+  format={(n) => `${n.toFixed(1)}%`}
+  aria-label="Browser share of sessions"
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the breadcrumb buttons, then the chart (one stop). |
+| ← / → | Previous / next arc in the ring (wraps around). |
+| ↓ | Out to the arc's first child. |
+| ↑ | Back in to its parent. |
+| Home / End | First / last arc of the ring. |
+| Enter / Space | Zoom into the group (onNodeClick for an arc with nothing to zoom into). |
+| Escape / Backspace | Zoom out one level; at the top, Escape clears the reading. |
+
+### Accessibility
+
+- The chart is one focusable figure with the role description “sunburst chart”; the breadcrumb is a nav landmark named after the chart, with aria-current on the level shown.
+- Moves and zooms are announced through a polite live region (“Compute, Kubernetes: $30.1K, 63% of Compute, 29% of total”, “Compute: 3 items”).
+- The center always reads the active arc (or the level shown); the Table view (SunburstTable) lists every node, indented by depth.
+- Arc names are drawn in black or white, whichever contrasts more with the fill, and only where they fit.
+- Reduced motion: no sweep and no zoom animation; the number in the center jumps.
+
+### All exports on this page
+
+- SunburstChart — A hierarchy as rings around a centre: each ring is a level, each arc's angle its share.
+- SunburstTable — Every node, depth first (groups in bold, children indented), with its value and shares.
+- defaultSunburstChartLabels — The built-in English strings of SunburstChart; spread it into your own labels and change what you need.
+- defaultSunburstTableLabels — English defaults of SunburstTableLabels.
+- sunburstLegend — Legend items for a sunburst's top-level groups (pass to ChartCard's legend).
+
+
+### When to use the sunburst chart
+
+- Use it as a hierarchical pie chart for a bundle size breakdown, where packages sit in rings by folder and you need to see which branch of the hierarchy owns the weight.
+- It fits cloud spend by team and service, or disk usage by folder, where clicking a group zooms into it with an animated sweep.
+- It works for flat data too: without children it becomes a single ring like a donut, with every arc taking its own slot and tiny values still getting a hairline arc.
+- Skip it when the hierarchy has many tiny leaves or readers must compare sizes precisely; Treemap uses area more efficiently, and a BarChart is better for exact comparison.
+- Pair it with ChartCard for the title, SunburstTable for the nested text view with percent of parent and total, and onNodeClick to open details for a leaf.
+
+
+### Frequently asked questions
+
+#### How do I make a sunburst chart in React?
+
+Pass nested data: leaves carry a value, groups carry children to any depth and add them up. Each node has a label and an optional color. Height defaults to 360 and the chart is a circle fitting the smaller of width and height.
+
+#### How many rings are shown, and how do I zoom?
+
+rings defaults to 3 levels at a time; deeper ones appear as you zoom. Click or press Enter on a group to zoom into it; the breadcrumb, the center, or Escape zoom back out. Use path, defaultPath and onPathChange to control the zoom.
+
+#### How do I move around with the keyboard?
+
+Left and Right move around the ring and wrap, Down goes out to the first child, Up back to the parent, and Home and End reach the first or last arc of the ring. Enter or Space zooms in, and Escape or Backspace zooms out one level.
+
+#### Why are some arcs unlabeled?
+
+Arcs too thin to hold a name stay unlabeled. Hover one to read it in the center, where the number rolls to its value, or find it in the tooltip and the SunburstTable. Reduced motion skips the sweep and the number roll.
+
+
+### Related pages
+
+- [Uptime tracker](https://lokendra-builds.github.io/sheenui/charts/uptime-tracker)
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+- [Line chart](https://lokendra-builds.github.io/sheenui/charts/line-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Uptime Tracker for React Status Pages
+
+URL: https://lokendra-builds.github.io/sheenui/charts/uptime-tracker
+Sidebar name: Uptime tracker
+
+A React uptime tracker: one status block per day, build or check, each with its own tooltip, plus icons and patterns so color is never the only cue.
+
+What it is: A React uptime tracker draws the status-page view of uptime: one block per day, build or check, each with its own tooltip. Pass data as readonly TrackerBlock[]: takes one block per period, oldest first.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/tracker-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Uptime tracker
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{tracker-chart.tsx, category-bar.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/button/`
+- `components/charts/category-bar/`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: tracker-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { type TrackerBlock, TrackerChart, type TrackerStatus, TrackerTable } from "@/components/sheenui/charts/tracker-chart";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, type TrackerBlock, TrackerChart, type TrackerStatus, TrackerTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly TrackerBlock[] | required | Takes one block per period, oldest first. |
+| statuses | Record<string, TrackerStatus> | defaultTrackerStatuses | Sets the status definitions, keyed by status name. |
+| height | number | 32 | Height of the blocks in px. |
+| startLabel | ReactNode | optional, no default | Text under the first and last block, e.g. "90 days ago" / "Today". |
+| endLabel | ReactNode | optional, no default | Caption under the right end of the strip, e.g. "Today". |
+| showLegend | boolean | true | Show each status (icon, label and count) under the strip. |
+| formatLabel | ((label: Date) => string) | "Mar 3" in locale | Formats Date / number labels. |
+| locale | string | "en" | Locale of the default formats. |
+| emptyState | ReactNode | optional, no default | Shown when there are no blocks. |
+| labels | Partial<TrackerChartLabels> | defaultTrackerChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultTrackerChartLabels. All 7 keys of TrackerChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the strip for assistive tech (e.g. "API uptime, last 90 days"). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### TrackerTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly TrackerBlock[] | required | Takes one block per period, oldest first. |
+| labels | Partial<TrackerChartLabels> | defaultTrackerChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultTrackerChartLabels. All 7 keys of TrackerChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default formats. |
+| statuses | Record<string, TrackerStatus> | defaultTrackerStatuses | Sets the status definitions, keyed by status name. |
+| formatLabel | ((label: Date) => string) | "Mar 3" in locale | Formats Date / number labels. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| order | "newest" \| "oldest" | "newest" | Sets the sort order: newest first (default), or oldest first. |
+| limit | number | 30 | Rows shown before "Show all" (opening the table stays instant on long strips). |
+
+### Example 1 of 3: Uptime, last 90 days
+
+Hover, tap and drag, or arrow through the days. Degraded days are striped, outages carry a caret, and the legend counts each status.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { TrackerTable, TrackerChart, type TrackerBlock } from "@/components/sheenui/charts/tracker-chart";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, TrackerTable, TrackerChart, type TrackerBlock } from "@sheenui/theme";
+
+const data: TrackerBlock[] = [
+  { label: new Date("2026-08-02"), status: "ok", detail: "No incidents" },
+  { label: new Date("2026-08-03"), status: "degraded", detail: "Elevated error rate on /v2/search for 22 min" },
+  // … one block per day
+];
+
+<ChartCard
+  title="api.example.com"
+  aside={<span className="text-sm font-semibold tabular-nums">99.94% uptime</span>}
+  table={<TrackerTable data={data} caption="Daily status" />}
+>
+  <TrackerChart data={data} startLabel="90 days ago" endLabel="Today" aria-label="API uptime, last 90 days" />
+</ChartCard>
+```
+
+### Example 2 of 3: A status page
+
+One compact tracker per service, without legends, in a single glass card.
+
+```tsx
+import { TrackerChart, type TrackerBlock } from "@/components/sheenui/charts/tracker-chart";
+// Package build (after the first npm release, or a packed tarball): import { TrackerChart, type TrackerBlock } from "@sheenui/theme";
+
+type Service = { name: string; uptime: string; data: TrackerBlock[] };
+
+// One block per day (shortened here); status keys: "ok", "degraded", "down"
+const services: Service[] = [
+  {
+    name: "API",
+    uptime: "99.98%",
+    data: [
+      { label: new Date("2026-08-02"), status: "ok", detail: "No incidents" },
+      { label: new Date("2026-08-03"), status: "degraded", detail: "Elevated error rate for 22 min" },
+      { label: new Date("2026-08-04"), status: "ok" },
+    ],
+  },
+  {
+    name: "Dashboard",
+    uptime: "100%",
+    data: [
+      { label: new Date("2026-08-02"), status: "ok" },
+      { label: new Date("2026-08-03"), status: "ok" },
+      { label: new Date("2026-08-04"), status: "ok" },
+    ],
+  },
+  {
+    name: "Webhooks",
+    uptime: "99.71%",
+    data: [
+      { label: new Date("2026-08-02"), status: "ok" },
+      { label: new Date("2026-08-03"), status: "down", detail: "Delivery outage, 41 min" },
+      { label: new Date("2026-08-04"), status: "ok" },
+    ],
+  },
+];
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-5">
+      {services.map((s) => (
+        <div key={s.name}>
+          <div className="flex justify-between text-sm">
+            <span className="font-medium">{s.name}</span>
+            <span className="text-sheen-fg-muted tabular-nums">{s.uptime}</span>
+          </div>
+          <TrackerChart
+            data={s.data}
+            height={28}
+            showLegend={false}
+            startLabel="30 days ago"
+            endLabel="Today"
+            aria-label={s.name + " uptime, last 30 days"}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Example 3 of 3: Custom statuses: CI builds
+
+Any set of statuses, each with a palette slot or a status tone, an icon, and stripes or a caret as a second cue.
+
+```tsx
+import { TrackerChart, type TrackerBlock, type TrackerStatus } from "@/components/sheenui/charts/tracker-chart";
+// Package build (after the first npm release, or a packed tarball): import { TrackerChart, type TrackerBlock, type TrackerStatus } from "@sheenui/theme";
+
+// Any 14px SVG works as a status icon; these are stand-ins.
+const icon = (d: string) => (
+  <svg aria-hidden viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+const CheckIcon = () => icon("M3 8.5l3.2 3.2L13 4.8");
+const CrossIcon = () => icon("M4 4l8 8M12 4l-8 8");
+const RetryIcon = () => icon("M13 8a5 5 0 1 1-1.6-3.7M13 3v3h-3");
+const DashIcon = () => icon("M4 8h8");
+
+const statuses: Record<string, TrackerStatus> = {
+  passed: { label: "Passed", tone: 7, icon: <CheckIcon /> },
+  failed: { label: "Failed", tone: 8, flag: true, icon: <CrossIcon /> },
+  flaky: { label: "Passed on retry", tone: 4, striped: true, icon: <RetryIcon /> },
+  none: { label: "Cancelled", tone: "neutral", icon: <DashIcon /> },
+};
+
+// One block per build (shortened here)
+const builds: TrackerBlock[] = [
+  { label: "#1203", status: "passed" },
+  { label: "#1204", status: "passed" },
+  { label: "#1205", status: "flaky", detail: "Passed on the second attempt" },
+  { label: "#1206", status: "failed", detail: "3 tests failed" },
+  { label: "#1207", status: "none", detail: "Cancelled by a newer push" },
+  { label: "#1208", status: "passed" },
+];
+
+export function Example() {
+  return <TrackerChart data={builds} statuses={statuses} startLabel="#1203" endLabel="#1208" aria-label="Last builds on main" />;
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the strip (one tab stop). |
+| → / ↓ | Next block (← in right-to-left layouts); a scrolling strip follows it. |
+| ← / ↑ | Previous block. |
+| Home / End | Oldest / newest block. |
+| Escape | Stop reading. |
+
+### Accessibility
+
+- The strip is one focusable figure; its description counts each status (“Operational: 82, Degraded: 4…”), so the summary needs no hovering.
+- Each block read by keyboard is announced once: period, status and detail.
+- Color is never the only cue: every status has an icon and a name, degraded blocks are striped and outages carry a caret.
+- Strips too long for the width scroll inside their own container, opened at the latest end, instead of squeezing blocks below 3px.
+- Forced colors give every block a CanvasText border; reduced motion draws the strip in place.
+
+### All exports on this page
+
+- TrackerChart — A strip of status blocks, one per period (Tremor's Tracker): uptime, build health, SLA days.
+- TrackerTable — Every block: its period, status (icon + label) and detail.
+- defaultTrackerChartLabels — The built-in English strings of TrackerChart; spread it into your own labels and change what you need.
+- defaultTrackerStatuses — The default statuses: "ok", "degraded", "down" and "none" (no data).
+- trackerToneColor — CSS colour of a status tone.
+
+
+### When to use the uptime tracker
+
+- Use it as a status page uptime bar for the last 90 days, where each block is a day with its own tooltip and the legend counts each status.
+- It fits a compact status page with one strip per service in a single glass card, without legends, so a dozen services fit in one view.
+- It works for CI history, such as the last 48 builds on main, using custom statuses with their own palette slot or tone, an icon and optional stripes or a caret.
+- Skip it when you need the magnitude of a value over time; use LineChart or Sparkbar, and use CalendarHeatmap for a year of daily intensity in a week by weekday grid.
+- Pair it with ChartCard for the title and legend, Badge to show the current status, and TrackerTable to give screen reader users every period as a table row.
+
+
+### Frequently asked questions
+
+#### How do I build an uptime tracker in React with SheenUI?
+
+Pass data as blocks, oldest first, each with label, status and optional detail. The default statuses are ok, degraded, down and none. startLabel and endLabel add text under the two ends, such as 90 days ago and Today.
+
+#### Is color the only way to tell statuses apart?
+
+No. Every status has an icon and a name, degraded days are striped, and outages carry a caret. You can define your own statuses with a label, tone, icon, striped and flag, so a second cue exists beyond color.
+
+#### What happens with a long strip on a narrow screen?
+
+Blocks never get thinner than 3px: a longer strip scrolls inside the card, opened at its latest end, and the keyboard focus follows the active block. Block height defaults to 32px, and Date labels are formatted with formatLabel or locale.
+
+#### How do I use it with a keyboard?
+
+The tracker is one tab stop. Right or Down moves to the next block (in right-to-left layouts Left takes Right's place), Left or Up to the previous, Home to the oldest and End to the newest, and Escape stops reading. Touch can tap and drag.
+
+
+### Related pages
+
+- [Treemap](https://lokendra-builds.github.io/sheenui/charts/treemap)
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+- [Line chart](https://lokendra-builds.github.io/sheenui/charts/line-chart)
+- [Area chart](https://lokendra-builds.github.io/sheenui/charts/area-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## React Treemap Chart: Animated & Accessible
+
+URL: https://lokendra-builds.github.io/sheenui/charts/treemap
+Sidebar name: Treemap
+
+A squarified React treemap with zoomable groups, labels only where they fit and black or white text chosen by contrast. No chart dependency. Free, MIT.
+
+What it is: A React treemap shows part-to-whole as nested rectangles, laid out by the squarified algorithm so tiles stay easy to compare. Pass data as readonly TreemapNode[]: nodes: leaves carry a value; groups carry children (any depth).
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/treemap.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Treemap
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{treemap.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: treemap. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { Treemap, treemapLegend, type TreemapNode, TreemapTable } from "@/components/sheenui/charts/treemap";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, formatCompact, Treemap, treemapLegend, type TreemapNode, TreemapTable, useToast } from "@sheenui/theme";
+```
+
+### Treemap
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly TreemapNode[] | required | Nodes: leaves carry a value; groups carry children (any depth). |
+| height | number | 320 | Height of the treemap in px; the width follows the container. |
+| color | ChartColor | 1 | Hue for tiles that don't get a group colour (flat data: one series, one hue). Hierarchies colour each top-level group by its own slot instead. |
+| patterns | boolean | true when there are more than 3 top-level groups | Tell groups apart without colour (hatch fills). Default: on when the chart has more than 3 groups. A flat treemap is one hue, so it has no groups to tell apart. |
+| nested | boolean | true | Show each group's children inside it, under a header. |
+| drillDown | boolean | true when there are groups | Click / Enter on a group zooms into it, with a breadcrumb to zoom back out. |
+| path | readonly string[] | optional, no default | The zoomed-in path (group labels from the top), controlled. |
+| defaultPath | readonly string[] | [] | Path of the node the chart starts zoomed into (uncontrolled). |
+| onPathChange | ((path: string[]) => void) | optional, no default | Called with the path of labels when the user zooms in or out (controlled path). |
+| onNodeClick | ((node: { label: string; value: number; path: string[]; }) => void) | optional, no default | Called on click / Enter on a tile that has nothing to zoom into. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the total for the labels, tooltips and data table: takes the share, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<TreemapLabels> | defaultTreemapLabels | Every other string, for translation: labels={{ root: "…" }}; omitted keys keep the English of defaultTreemapLabels. All 10 keys of TreemapLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech (required). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### TreemapTable props, treemapLegend and squarify
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly TreemapNode[] | required | Nodes: leaves carry a value; groups carry children (any depth). |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the total for the labels, tooltips and data table: takes the share, returns the text shown. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+| headers | Partial<{ name: string; value: string; ofParent: string; ofTotal: string; }> | optional, no default | Override the column headers: { name, value, ofParent, ofTotal }. |
+| labels | Partial<TreemapTableLabels> | defaultTreemapTableLabels | Strings for the cells that have no value. Merged over defaultTreemapTableLabels. Every other string, for translation: labels={{ notApplicable: "…" }}; omitted keys keep the English of defaultTreemapTableLabels. Its only key is listed in the key table under the props table. |
+| emptyState | ReactNode | optional, no default | Shown when there are no nodes. |
+| treemapLegend(data) | LegendItem[] | optional, no default | Legend items for the top-level groups, for ChartCard's legend. |
+| squarify(values, rect) | TreemapRect[] | optional, no default | The layout on its own: one rect per value, in input order. |
+
+### Example 1 of 2: Cloud spend, zoomable
+
+Each team keeps one palette slot and its services share the hue. Click a team (or focus the chart, move with the arrow keys and press Enter) to zoom in; the breadcrumb or Escape zooms back out. Switching the quarter re-flows the tiles.
+
+```tsx
+import { useState } from "react";
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { formatCompact } from "@/components/sheenui/charts/chart-utils";
+import { treemapLegend, TreemapTable, Treemap, type TreemapNode } from "@/components/sheenui/charts/treemap";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, formatCompact, treemapLegend, TreemapTable, Treemap, type TreemapNode } from "@sheenui/theme";
+
+const usd = (n: number) => "$" + formatCompact(n);
+
+const spend: TreemapNode[] = [
+  {
+    label: "Engineering",
+    color: 1,
+    children: [
+      { label: "Compute", value: 158000 },
+      { label: "Storage", value: 64000 },
+      { label: "CDN", value: 21000 },
+    ],
+  },
+  {
+    label: "Data",
+    color: 7,
+    children: [
+      { label: "Warehouse", value: 92000 },
+      { label: "Streaming", value: 37000 },
+    ],
+  },
+  {
+    label: "Support",
+    color: 3,
+    children: [
+      { label: "Tooling", value: 18000 },
+      { label: "Telephony", value: 12000 },
+    ],
+  },
+];
+
+export function Example() {
+  const [path, setPath] = useState<string[]>([]);
+  return (
+    <ChartCard
+      title="Cloud spend"
+      legend={treemapLegend(spend)}
+      table={<TreemapTable data={spend} format={usd} />}
+    >
+      <Treemap
+        data={spend}
+        format={usd}
+        path={path} // optional: control the zoom level
+        onPathChange={setPath}
+        aria-label="Cloud spend by team and service"
+      />
+    </ChartCard>
+  );
+}
+```
+
+### Example 2 of 2: Flat data, one hue
+
+Without groups every tile is the same series, so it takes one hue and needs no legend; size alone carries the value. Tiny tiles stay unlabelled rather than overflow, and the tooltip and table still read them. Click a tile to handle it.
+
+```tsx
+import { Treemap, type TreemapNode } from "@/components/sheenui/charts/treemap";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Treemap, useToast, type TreemapNode } from "@sheenui/theme";
+
+const bundle: TreemapNode[] = [
+  { label: "react-dom", value: 132 },
+  { label: "motion", value: 58 },
+  { label: "lucide-react", value: 34 },
+  { label: "date-fns", value: 21 },
+  { label: "zod", value: 14 },
+];
+
+export function Example() {
+  const toast = useToast();
+  return (
+    <Treemap
+      data={bundle}
+      color={7}
+      format={(n) => `${n} kB`}
+      onNodeClick={(node) => toast.info(node.label)}
+      aria-label="JavaScript bundle size by package"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the chart. It is one tab stop; the arrow keys then read it. |
+| Arrow keys | Move spatially between tiles. |
+| Home / End | Largest / smallest tile. |
+| Enter | Zoom into the group (with drillDown). |
+| Escape / Backspace | Zoom back out. |
+
+### Accessibility
+
+- The chart is a focusable figure named by its aria-label and described by the reading hint (and the drill-down hint when it is on); zooming is announced, and the breadcrumb is real buttons.
+- TreemapTable is the table view: pair it with ChartCard's table prop (Chart / Table tabs) so every value can be read without color or sight. It lists every node.
+- Reduced motion: the tiles appear at their final sizes and data changes jump instead of morphing.
+
+### All exports on this page
+
+- Treemap — Part-to-whole as nested rectangles, laid out with the squarified algorithm so tiles stay close to square (and comparable).
+- TreemapTable — Every node, depth first (groups in bold, children indented), with its value and shares.
+- defaultTreemapLabels — The built-in English strings of Treemap; spread it into your own labels and change what you need.
+- defaultTreemapTableLabels — English defaults of TreemapTableLabels.
+- squarify — Lays values out inside rect as rectangles whose areas are proportional to the values.
+- treemapLegend — Legend items for a hierarchical treemap's top-level groups (pass to ChartCard's legend).
+
+
+### When to use Treemap
+
+- Use it as a treemap chart in React for cloud spend by team and service, where each team keeps one hue, services share it, and tile area shows where the money goes.
+- It fits a portfolio or inventory with a natural hierarchy, such as product categories and SKUs, where clicking a group zooms in and the breadcrumb or Escape zooms back.
+- Flat data also works: without groups every tile uses one hue and needs no legend, so size alone carries the value.
+- Skip it when exact comparison or time trends matter, since area is hard to judge; use BarChart for comparisons, and SunburstChart when the path through the hierarchy matters more than area.
+- Pair it with ChartCard for the title, treemapLegend for the top-level group legend, and TreemapTable for every node as text with percent of group and total.
+
+
+### Frequently asked questions
+
+#### Do I need a library for a treemap in React?
+
+No. The squarified layout is implemented in the file with no dependency, so tiles stay close to square. The layout is also exported as squarify(values, rect) if you want rectangles for your own rendering.
+
+#### How do I enable drill-down?
+
+With groups, drillDown is on by default: click a team, or focus the chart, move with arrow keys and press Enter. The breadcrumb, Escape or Backspace zooms out. Control the zoom with path, defaultPath and onPathChange.
+
+#### Why are small tiles unlabeled?
+
+Labels appear only where they fit, in black or white by contrast. Tiny tiles stay unlabeled rather than overflow, while the tooltip and TreemapTable still read them. Use onNodeClick for tiles with nothing to zoom into.
+
+#### How are colors assigned?
+
+In a hierarchy, each top-level group takes its own palette slot from node.color or position, and its children share the hue. For flat data, the color prop picks one slot from 1 to 8, default 1.
+
+
+### Related pages
+
+- [Waffle chart](https://lokendra-builds.github.io/sheenui/charts/waffle)
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+- [Line chart](https://lokendra-builds.github.io/sheenui/charts/line-chart)
+- [Area chart](https://lokendra-builds.github.io/sheenui/charts/area-chart)
+- [Bar chart](https://lokendra-builds.github.io/sheenui/charts/bar-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+
+
+## Waffle Chart & Pictogram for React
+
+URL: https://lokendra-builds.github.io/sheenui/charts/waffle
+Sidebar name: Waffle chart
+
+A React waffle chart: a 10×10 grid where each cell is one percent, split by largest remainder, plus a pictogram variant with any icon. Accessible, MIT.
+
+What it is: A React waffle chart is a 10 × 10 grid where every cell is one percent, so “61 in 100” lands faster than any pie. Pass data as readonly WaffleItem[]: the parts of the whole.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/waffle-chart.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Waffle chart
+
+Next.js: samples here pass functions (formatters, seriesLegend, a dashboard's load), so put them in a file that starts with "use client".
+
+Files to copy from `theme/src/`:
+
+- `components/charts/{waffle-chart.tsx, category-bar.tsx, chart-export-menu.tsx, chart-export.ts, chart-figure.tsx, chart-fit.tsx, chart-icons.tsx, chart-parts.tsx, chart-patterns.tsx, chart-pointer.tsx, chart-tip.tsx, chart-utils.ts, heatmap.tsx}`
+- `components/button/`
+- `components/charts/category-bar/`
+- `components/charts/chart-parts/`
+- `components/charts/heatmap/`
+- `components/drawer/parts/sheet.tsx`
+- `components/kbd/`
+- `components/menu/`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, csv.ts, form.ts, glide-highlight.tsx, heading.ts, math.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: waffle-chart. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { WaffleChart, type WaffleItem, WaffleTable } from "@/components/sheenui/charts/waffle-chart";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChartCard, WaffleChart, type WaffleItem, WaffleTable } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly WaffleItem[] | required | The parts of the whole. Negative values count as 0; more than 8 parts fold the smallest into "Other". |
+| total | number | 0 | The whole. Default: the sum of the values. When larger, the rest of the cells stay empty. |
+| rows | number | 10 | Number of grid rows; with columns it sets the grid size (10 × 10 = one cell per percent). |
+| columns | number | 10 | Number of cells in each row of the grid; with rows it sets the grid size. |
+| variant | "grid" \| "pictogram" | "grid" | "grid": rounded squares. "pictogram": icon in every cell (people, devices…). |
+| icon | ReactNode | PERSON | The pictogram's icon. Use currentColor: it's drawn in the part's colour. |
+| fill | "rows" \| "columns" | "rows" | Fill row by row (default) or column by column, from the start corner. |
+| maxCell | number | 28 (grid) / 32 (pictogram) | Sets the largest cell in px. |
+| showLegend | boolean | true | Show each part's key, name and share beside (or under, when narrow) the grid. |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the whole for the labels, tooltips and data table: takes the share, returns the text shown. |
+| locale | string | "en" | Locale of the default number formats. |
+| emptyState | ReactNode | optional, no default | Shown when there is nothing to plot. |
+| labels | Partial<WaffleChartLabels> | defaultWaffleChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultWaffleChartLabels. All 9 keys of WaffleChartLabels are listed in the key table under the props table. |
+| aria-label | string | required | Names the chart for assistive tech. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### WaffleTable props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | readonly WaffleItem[] | required | The parts of the whole. Negative values count as 0; more than 8 parts fold the smallest into "Other". |
+| format | ((n: number) => string) | formatCompact in locale | Formats a value for the labels, tooltips and data table: takes the number, returns the text shown. |
+| labels | Partial<WaffleChartLabels> | defaultWaffleChartLabels | Every other string, for translation: labels={{ instructions: "…" }}; omitted keys keep the English of defaultWaffleChartLabels. All 9 keys of WaffleChartLabels are listed in the key table under the props table. |
+| locale | string | "en" | Locale of the default number formats. |
+| rows | number | 10 | Number of grid rows; with columns it sets the grid size (10 × 10 = one cell per percent). |
+| formatPercent | ((ratio: number) => string) | percentages in locale | Formats a share of the whole for the labels, tooltips and data table: takes the share, returns the text shown. |
+| total | number | 0 | The whole. Default: the sum of the values. When larger, the rest of the cells stay empty. |
+| columns | number | 10 | Number of cells in each row of the grid; with rows it sets the grid size. |
+| caption | string | optional, no default | Hidden caption that names the table for screen readers. |
+
+### Example 1 of 3: Share of a whole
+
+Switch the quarter: only the cells that change hands pop. Hover a cell or a legend row, tap, or arrow through the parts.
+
+```tsx
+import { ChartCard } from "@/components/sheenui/charts/chart-parts/chart-card";
+import { WaffleTable, WaffleChart, type WaffleItem } from "@/components/sheenui/charts/waffle-chart";
+// Package build (after the first npm release, or a packed tarball): import { ChartCard, WaffleTable, WaffleChart, type WaffleItem } from "@sheenui/theme";
+
+const data: WaffleItem[] = [
+  { label: "Mobile", value: 61380, color: 1 },
+  { label: "Desktop", value: 31020, color: 7 },
+  { label: "Tablet", value: 6510, color: 3 },
+];
+
+<ChartCard title="Sessions by device" table={<WaffleTable data={data} caption="Sessions by device" />}>
+  <WaffleChart data={data} aria-label="Sessions by device" />
+</ChartCard>
+```
+
+### Example 2 of 3: Pictogram
+
+Any icon that uses currentColor, one per cell. Here: how 100 employees get to work.
+
+```tsx
+import { WaffleChart } from "@/components/sheenui/charts/waffle-chart";
+// Package build (after the first npm release, or a packed tarball): import { WaffleChart } from "@sheenui/theme";
+
+<WaffleChart
+  variant="pictogram"
+  data={[
+    { label: "Public transport", value: 41, color: 7 },
+    { label: "Cycle or walk", value: 27, color: 3 },
+    { label: "Car", value: 24, color: 2 },
+    { label: "Work from home", value: 8, color: 1 },
+  ]}
+  aria-label="How employees commute"
+/>
+```
+
+### Example 3 of 3: Part of a larger whole
+
+With a `total` above the sum, the rest of the cells stay empty. Any grid size works: here 20 × 5.
+
+```tsx
+import { WaffleChart, type WaffleItem } from "@/components/sheenui/charts/waffle-chart";
+// Package build (after the first npm release, or a packed tarball): import { WaffleChart, type WaffleItem } from "@sheenui/theme";
+
+const storage: WaffleItem[] = [
+  { label: "Photos", value: 38.4, color: 5 },
+  { label: "Apps", value: 22.1, color: 7 },
+  { label: "Documents", value: 9.3, color: 4 },
+  { label: "System", value: 11.8, color: 1 },
+];
+const oneDecimal = new Intl.NumberFormat("en", { maximumFractionDigits: 1 });
+
+<WaffleChart
+  data={storage}
+  total={128}
+  rows={5}
+  columns={20}
+  format={(n) => `${oneDecimal.format(n)} GB`}
+  aria-label="iPhone storage, 128 GB"
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the grid (one tab stop). |
+| → / ↓ | Next part (← in right-to-left layouts). |
+| ← / ↑ | Previous part. |
+| Home / End | First / last part. |
+| Escape | Stop reading. |
+
+### Accessibility
+
+- The grid is one focusable figure whose description lists every part's share; the cells themselves are hidden from assistive tech, so nobody has to step through 100 of them.
+- Reading a part announces its value, share and cell count once.
+- The legend names every part next to its share, and the table view lists values, shares and cells: color is never the only cue.
+- Cells are split by largest remainder, so the cell counts always add up to the grid.
+- Reduced motion: no wave, no pop on change; the grid is drawn in place.
+
+### All exports on this page
+
+- WaffleChart — A 10 × 10 grid where each cell is one percent of a whole: shares people grasp at a glance ("62 in 100").
+- WaffleTable — Every part with its value, share and cell count (plus the empty remainder, if any).
+- defaultWaffleChartLabels — The built-in English strings of WaffleChart; spread it into your own labels and change what you need.
+- foldWaffleItems — More than 8 parts: the 7 largest keep their place (in your order) and their colour slot.
+- waffleCells — Cells per part, by largest remainder so they add up exactly.
+- waffleLegend — Legend for a waffle: each part's key, name and share, as the chart shows them.
+
+
+### When to use the waffle chart
+
+- Use it as a percentage grid chart to make a share land fast, such as sessions by device on a 10 by 10 grid where every cell is exactly one percent.
+- It fits storage or quota displays on a part of a larger whole, such as 81.6 GB of 128 GB used, with total above the sum leaving the rest of the cells empty.
+- The pictogram variant suits human-scale statistics, such as how 100 employees get to work, drawing any currentColor icon in each cell.
+- Skip it when precision matters or there are more than a handful of parts; BarChart is more accurate, and Meter or Progress fits a single completion value.
+- Pair it with ChartCard for the title and Chart / Table tabs, WaffleTable for the text twin, and NumberTicker to show the headline figure beside the grid.
+
+
+### Frequently asked questions
+
+#### How are cells assigned so they always add up?
+
+Cells are split by largest remainder, so the counts always sum to the grid size even when percentages round awkwardly, and any part with a value keeps at least one cell. Negative values count as 0, and with more than eight parts the seven largest stay and the rest fold into Other.
+
+#### Can I use a grid that is not 10 by 10?
+
+Yes. rows and columns both default to 10, and any size works, such as 20 columns by 5 rows for a storage bar. fill chooses rows or columns order, and maxCell caps the cell size in px.
+
+#### How do I make a pictogram waffle chart?
+
+Set variant to pictogram and pass an icon, any ReactNode that draws with currentColor; the default is a person. Each cell shows the icon in its part's color, and hovering a cell or legend row lights up the whole part.
+
+#### How do I navigate it without a mouse?
+
+Focus the grid, then Right or Down moves to the next part (in right-to-left layouts Left takes Right's place), Left or Up to the previous, Home and End to the first or last part, and Escape stops reading. Changed data pops only the cells that change.
+
+
+### Related pages
+
+- [Waterfall chart](https://lokendra-builds.github.io/sheenui/charts/waterfall-chart)
+- [World map](https://lokendra-builds.github.io/sheenui/charts/world-map)
+- [Line chart](https://lokendra-builds.github.io/sheenui/charts/line-chart)
+- [Area chart](https://lokendra-builds.github.io/sheenui/charts/area-chart)
+- [Bar chart](https://lokendra-builds.github.io/sheenui/charts/bar-chart)
+- [Donut chart](https://lokendra-builds.github.io/sheenui/charts/donut-chart)
+
+48 charts pages in all: browse them on [Charts](https://lokendra-builds.github.io/sheenui/charts/).
+

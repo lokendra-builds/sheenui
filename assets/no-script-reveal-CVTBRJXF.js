@@ -1,0 +1,1 @@
+import{t as e}from"./vendor-react-D30i__oY.js";var t=e(),n=`data-sheen-reveal`;function r(){return(0,t.jsx)(`div`,{hidden:!0,children:(0,t.jsx)(`noscript`,{children:(0,t.jsx)(`style`,{children:`[${n}]{opacity:1!important;transform:none!important}`})})})}export{r as t};

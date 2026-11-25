@@ -1,0 +1,1 @@
+var e=async(e,t,n,r)=>{for(let i=t+1;i<=e.length;i+=1)n(e.slice(0,i)),await r(85)},t=async({state:t,scene:n,wait:r})=>{let i=`alex@example.com`;await r(700),await e(i.slice(0,5),0,e=>n({email:e}),r),await r(300),n({touched:!0}),t(`error`),await r(1300),await e(i,5,e=>n({email:e}),r),await r(300),t(`success`)};export{t as default};

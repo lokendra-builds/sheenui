@@ -1,0 +1,2330 @@
+# SheenUI: Components (part 2 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Glassmorphism Card Component for React & Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/components/glass-card
+Sidebar name: Glass card
+
+A glassmorphism card for React and Tailwind CSS v4: three frosted glass levels, a pointer-following sheen and a solid fallback for reduced transparency.
+
+What it is: The glassmorphism card is SheenUI's basic frosted-glass surface for React: pick one of three blur levels, and a soft highlight follows the pointer.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Glass card
+
+Files to copy from `theme/src/`:
+
+- `components/glass-card/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/light-follower.ts`
+- `lib/{cn.ts, heading.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: glass-card. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard, GlassCardContent, GlassCardDescription, GlassCardFooter, GlassCardHeader, GlassCardTitle } from "@/components/sheenui/glass-card/glass-card";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, GlassCard, GlassCardContent, GlassCardDescription, GlassCardFooter, GlassCardHeader, GlassCardTitle } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| level | 2 \| 1 \| 3 | 2 | 1 = subtle (chips), 2 = cards (default), 3 = most opaque (dialogs, bars). |
+| sheen | boolean | true | Soft highlight that follows the pointer (mouse and pen only). |
+| tint | boolean | false | Tints the surface with the accent for featured content. |
+| interactive | boolean | false | Lifts slightly on hover; use for clickable cards. Movement is off with reduced motion. |
+
+### GlassCardTitle props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| headingLevel | HeadingLevelOption | 3 | Heading level ("none" renders a paragraph with the same look). |
+
+### Example 1 of 2: Card with header, content and footer
+
+Everything your team needs to ship.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard, GlassCardContent, GlassCardDescription, GlassCardFooter, GlassCardHeader, GlassCardTitle } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { Button, GlassCard, GlassCardContent, GlassCardDescription, GlassCardFooter, GlassCardHeader, GlassCardTitle } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard className="w-full max-w-sm">
+      <GlassCardHeader>
+        <GlassCardTitle>Team plan</GlassCardTitle>
+        <GlassCardDescription>Everything your team needs to ship.</GlassCardDescription>
+      </GlassCardHeader>
+      <GlassCardContent>
+        <p className="text-4xl font-semibold">$29<span className="text-sm">/mo</span></p>
+      </GlassCardContent>
+      <GlassCardFooter>
+        <Button fullWidth>Upgrade</Button>
+      </GlassCardFooter>
+    </GlassCard>
+  );
+}
+```
+
+### Example 2 of 2: Levels, tint and interactive
+
+Interactive cards lift on hover; tinted cards carry a hint of the accent color.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <GlassCard level={1} className="p-5">Level 1</GlassCard>
+      <GlassCard level={2} interactive className="p-5">Level 2 · interactive</GlassCard>
+      <GlassCard level={3} tint className="p-5">Level 3 · tint</GlassCard>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a plain card is not interactive. Buttons and links inside it keep their own tab stops. For a clickable card give it role="link" or role="button" and a tabIndex. |
+
+### Accessibility
+
+- Plain markup with no role, so reading order is the DOM order.
+- Glass levels keep text at 4.5:1 over any backdrop; reduced transparency makes the card opaque, and forced colors give it a real border.
+- The sheen is a soft highlight that follows a mouse or pen (never on touch). The hover lift is off with reduced motion.
+
+### When to use the glass card
+
+- Use GlassCard as a glassmorphism card for the tiles on a dashboard or pricing page, where grouped content sits on a gradient or photo background and the frosted surface keeps text readable.
+- Use the tint prop to mark a featured plan or highlighted stat, so one card among several reads as accent colored without writing custom styles.
+- Use interactive for a clickable card in a project grid, adding role, tabIndex and key handlers yourself, so it lifts on hover and shows a solid focus ring.
+- Skip it when you need the full refracting lens look, which LiquidGlass provides, or when a page has more than a handful of cards in view, since each is a backdrop-filter surface.
+- Pair it with Badge and Button in the footer, Avatar in the header, and Progress or NumberTicker in the content area for stat cards.
+
+
+### Frequently asked questions
+
+#### How do I create a glassmorphism card in React?
+
+Render GlassCard and compose GlassCardHeader, GlassCardTitle, GlassCardDescription, GlassCardContent and GlassCardFooter inside it. It is a div with backdrop blur, and level 1, 2 or 3 sets how opaque the glass is, from chips and cards to dialogs and bars. Level 2 is the default.
+
+#### Does the card have a performance limit?
+
+Each GlassCard is one backdrop-filter surface, and the source states a budget of at most 8 in view at once. Past that, use fewer glass surfaces or plain containers for inner content. Reduced transparency makes the card opaque, and forced colors give it a solid border and background.
+
+#### What does the sheen prop do?
+
+It adds a soft highlight that follows the pointer, on by default. It only reacts to mouse and pen, never touch, and it stays at rest with reduced motion. Set sheen to false to turn it off. The light moves with a composited translate, so the card is not repainted on each move.
+
+#### Is a GlassCard focusable?
+
+Not on its own. It has no role, so a plain card is just a group of content. For a clickable card, give it role link or button with tabIndex 0 and key handlers; interactive then draws a solid focus ring. Every div prop, including onClick and className, is accepted.
+
+
+### Related pages
+
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover)
+
+#### Guides that cover it
+
+- [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial)
+- [Apple Liquid Glass in CSS and React](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react)
+- [Accessible Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+- [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass)
+- [backdrop-filter Performance: Fast Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance)
+- [Best Glassmorphism React Libraries (2026)](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries)
+- [shadcn Alternatives with Animation: Nine Libraries Compared (2026)](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives)
+- [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Glass Input Field for React with Label & Errors
+
+URL: https://lokendra-builds.github.io/sheenui/components/input
+Sidebar name: Input
+
+A glassmorphism text input for React with label, description and error wired for screen readers by Base UI Field, plus a soft focus glow. Tailwind v4.
+
+What it is: A glass text input for React with its label, description and error message wired up for screen readers, and a soft accent glow on focus.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/input.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Input
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/input/`
+- `components/spinner/`
+- `lib/{cn.ts, field-size.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: input. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Input } from "@/components/sheenui/input/input";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Input } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Class for the outer wrapper (label + field + messages), same as Select and Combobox. |
+| onBlur | FocusEventHandler<HTMLInputElement> | optional, no default | Called when the field loses focus (native onBlur; also the point where a form library marks the field touched). |
+| size | FieldSize | "md" | Height and padding, the same scale as Button and every other field: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens). |
+| label | ReactNode | optional, no default | Text above the field, linked to the input as its accessible name. |
+| description | ReactNode | optional, no default | Muted helper text under the field. Hidden while an error shows. |
+| error | ReactNode | optional, no default | Error message; marks the field invalid and is announced to screen readers. |
+| leading | ReactNode | optional, no default | Icon or text shown inside the field, on the left. |
+| trailing | ReactNode | optional, no default | Icon, text or button shown inside the field, on the right. |
+| loading | boolean | false | Shows a spinner at the field's trailing edge and sets aria-busy (a lookup or validation is running). The field stays editable. |
+| name | string | optional, no default | Field name for form submission and for matching an error from a form library. |
+| readOnly | boolean | false | The value can be selected and copied but not edited; the field stays focusable and is submitted with the form. |
+| required | boolean | false | The field must be filled before the form can be submitted. |
+| autoComplete | string | "email" for type="email" | Autofill hint (the HTML autocomplete token, for example "email" or "one-time-code"). |
+| enterKeyHint | "search" \| "enter" \| "done" \| "go" \| "next" \| "previous" \| "send" | "search" for type="search" | Label of the on-screen keyboard's Enter key. |
+| inputClassName | string | optional, no default | Adds extra classes to the native <input> element. |
+
+### Example 1 of 3: Label, description and icon
+
+Press / to focus from anywhere.
+
+```tsx
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Input } from "@sheenui/theme";
+import { Search as SearchIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Input
+      label="Search"
+      placeholder="Find components…"
+      description="Press / to focus from anywhere."
+      leading={<SearchIcon />}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Validation
+
+Pass error to mark the field invalid; the message is linked to the input and announced.
+
+```tsx
+import { useState } from "react";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Input } from "@sheenui/theme";
+
+export function Example() {
+  const [email, setEmail] = useState("hello@");
+  const error = /^\S+@\S+\.\S+$/.test(email) ? undefined : "Enter a valid email address.";
+
+  return (
+    <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} error={error} />
+  );
+}
+```
+
+### Example 3 of 3: Sizes
+
+sm (32px), md (40px, default) and lg (48px): the same scale as Button, so a button beside an input lines up. On touch screens sm and md are 44px.
+
+```tsx
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Input } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-3">
+      <Input size="sm" placeholder="Small" aria-label="Small" />
+      <Input size="md" placeholder="Medium" aria-label="Medium" />
+      <Input size="lg" placeholder="Large" aria-label="Large" />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move focus to or from the input. |
+| Type, select, paste | Everything the native input does works, including autofill and undo. |
+
+### Accessibility
+
+- label, description and error are linked with aria-labelledby and aria-describedby; an error is announced politely.
+- Icons and affixes are decorative (aria-hidden); the input keeps its own name.
+- Text is 16 px on touch screens so iOS does not zoom on focus; the border keeps 3:1 contrast.
+
+### When to use Input
+
+- Use Input as a text input with label and error for single-line entry like email, password, search and names in a sign-in or checkout form, where a label and an error message must be tied to the field.
+- Use leading and trailing for a search box with a magnifier icon, or a password field with a show button inside the right edge of the field.
+- Use the error prop for server-side validation messages, which mark the field invalid with aria-invalid and are announced without moving focus.
+- Skip it when the text spans several lines or the value is a stepped number. Use Textarea for multi-line text, NumberField for a stepper, and OtpInput for a fixed-length code.
+- Pair it with Button for submit, its label, description and error props for the field text, and Select or Combobox in the same form, since all three share the className wrapper convention.
+
+
+### Frequently asked questions
+
+#### How do I add a label and error to a glass input in React?
+
+Pass label, description and error. Base UI Field links them to the input through aria-labelledby, aria-describedby and aria-invalid. The description is hidden while an error shows, and the error is announced to screen readers. Without a visible label, set aria-label instead.
+
+#### What does className style on the Input?
+
+className styles the outer wrapper that holds label, field and messages, matching Select and Combobox. Use inputClassName for the native input element. Every other prop, such as type, value, onChange and autoComplete, passes to the input.
+
+#### Will iOS zoom into the field on focus?
+
+The input is 44px tall with 16px text on touch screens, which is what stops iOS Safari from zooming on focus. The control border keeps a 3:1 contrast against its surroundings for WCAG 1.4.11, and forced colors mode keeps a visible border.
+
+#### Does the input work with form libraries?
+
+Yes. It accepts the native input props, so value, onChange, name, ref and onBlur work with controlled state or libraries such as react-hook-form. Typing, selection and browser autofill behave natively, because the field renders a real input element inside the glass wrapper.
+
+
+### Related pages
+
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover)
+- [Progress](https://lokendra-builds.github.io/sheenui/components/progress)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React OTP Input: Animated One-Time Code Field
+
+URL: https://lokendra-builds.github.io/sheenui/components/otp-input
+Sidebar name: OTP input
+
+An animated React OTP input with paste, arrow keys and SMS autofill from Base UI's OTP field. Digits pop in, errors shake. Tailwind CSS v4, free, MIT.
+
+What it is: A React OTP input with one slot per digit, paste and SMS autofill, and Motion feedback: digits pop in, errors shake and success ripples.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/otp-input.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > OTP input
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/otp-input/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: otp-input. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { OtpInput, type OtpStatus } from "@/components/sheenui/otp-input/otp-input";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { OtpInput, type OtpStatus } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Form field name (the joined code is submitted under it). |
+| required | boolean | optional, no default | Mark the field as required for form validation. |
+| disabled | boolean | optional, no default | Disables every digit slot of the field. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| size | "sm" \| "md" \| "lg" | "md" | Slot size, in step with the other controls: "sm", "md" (default) or "lg". |
+| length | number | 6 | Number of digits the code has. |
+| value | string | optional, no default | Sets the code so far when controlled. Digits only. |
+| defaultValue | string | optional, no default | Sets the starting code when uncontrolled. |
+| onValueChange | ((value: string) => void) | optional, no default | Called on every change with the digits entered so far. |
+| onComplete | ((value: string) => void) | optional, no default | Fires once every slot is filled. |
+| status | OtpStatus | "idle" | "error" shakes the field and glows red; "success" plays successEffect. Set back to "idle" before re-triggering. |
+| successEffect | OtpSuccessEffect | "seal" | What "success" plays: "seal" (the slots fold into one glass seal with a drawn check), "ring" (a ring ripples round each slot) or "none" (colour only). Reduced motion fades the seal in and skips the rest. |
+| stateLight | boolean | true | Lights the row by status: a red aura and lit edge for "error", green for "success" (data-state on the row, drawn on its own layer). The status is always written as text and border colour too. |
+| label | ReactNode | optional, no default | Visible text above the slots; it names the first slot. |
+| labels | Partial<OtpInputLabels> | defaultOtpInputLabels | Every string, for translation: { name: "Verification code" } (the default accessible name). Every other string, for translation: labels={{ name: "…" }}; omitted keys keep the English of defaultOtpInputLabels. Its only key is listed in the key table under the props table. |
+| aria-label | string | labels?.name ?? defaultOtpInputLabels.name | Accessible name when no visible label is shown. |
+| aria-labelledby | string | optional, no default | Id of an element that names the field (instead of label / aria-label). |
+| description | ReactNode | optional, no default | Muted helper text under the slots. |
+| errorMessage | ReactNode | optional, no default | Shown and announced while status is "error". |
+| successMessage | ReactNode | optional, no default | Shown and announced while status is "success". |
+| digitLabel | ((position: number, length: number) => string) | (position, total) => `Digit ${position} of ${total}` | Accessible name of slots 2…n. Translate it with the rest of your UI. |
+| grouped | boolean | false | Visually split the slots into two groups (e.g. 3 + 3). |
+| mask | boolean | false | Hide the digits like a password field. |
+| autoFocus | boolean | optional, no default | Focus the first slot on mount. Use it only when the code is the one thing on the screen. |
+| id | string | generated | Id of the first slot; a generated one is used when omitted. |
+| className | string | optional, no default | Class for the outer wrapper (label + slots + messages). |
+
+### Example 1 of 4: Basic
+
+Enter the code we sent you.
+
+```tsx
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+// Package build (after the first npm release, or a packed tarball): import { OtpInput } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <OtpInput length={6} label="Verification code" description="Enter the code we sent you." />
+  );
+}
+```
+
+### Example 2 of 4: Status feedback
+
+The correct code is 123456. Anything else shakes the field.
+
+```tsx
+import { useState } from "react";
+import { OtpInput, type OtpStatus } from "@/components/sheenui/otp-input/otp-input";
+// Package build (after the first npm release, or a packed tarball): import { OtpInput, type OtpStatus } from "@sheenui/theme";
+
+export function Example() {
+  const [value, setValue] = useState("");
+  const [status, setStatus] = useState<OtpStatus>("idle");
+
+  return (
+    <OtpInput
+      grouped
+      value={value}
+      status={status}
+      errorMessage="That code didn't match. Try 123456."
+      successMessage="Code verified."
+      // Only clear the status once the code is incomplete again: onValueChange also fires for the
+      // last digit, and an unconditional reset there would undo onComplete's result.
+      onValueChange={(v) => { setValue(v); if (v.length < 6) setStatus("idle"); }}
+      onComplete={(v) => setStatus(v === "123456" ? "success" : "error")}
+    />
+  );
+}
+```
+
+### Example 3 of 4: Success effect
+
+Type any 6 digits. "seal" (the default) scans the slots with light, folds them into one glass seal and draws a check; "ring" ripples a ring round each slot; "none" only recolours them. Reduced motion fades the seal in and skips the rest.
+
+```tsx
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+// Package build (after the first npm release, or a packed tarball): import { OtpInput } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <OtpInput
+      successEffect="seal" // "seal" (default) | "ring" | "none"
+      status="success"
+      defaultValue="123456"
+      successMessage="Code verified."
+    />
+  );
+}
+```
+
+### Example 4 of 4: Masked, 4 digits
+
+```tsx
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+// Package build (after the first npm release, or a packed tarball): import { OtpInput } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <OtpInput length={4} mask label="PIN" />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the first empty slot. |
+| 0-9 (or letters, for alphanumeric) | Fill the slot and advance. |
+| Backspace | Clear the slot and move back. |
+| Arrow Left / Arrow Right | Move between slots. |
+| Paste | Fill every slot at once. |
+
+### Accessibility
+
+- The first slot is named by the label and the others "Digit n of N"; autoComplete="one-time-code" lets phones suggest the code.
+- The error and success messages sit in a polite live region; the seal and its sparks are decorative (aria-hidden), so the announcement is the same for every successEffect.
+- Slots are at least 44 px wide and 48 px tall with a 3:1 border (WCAG 1.4.11).
+
+### All exports on this page
+
+- OtpInput — One-time code input: a row of single-digit slots for SMS, email and authenticator codes.
+- defaultOtpInputLabels — The English OtpInputLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the OTP input
+
+- Use OtpInput as a verification code input in React on a two-factor sign-in or phone verification screen, where an SMS or authenticator code of fixed length arrives and people type or paste it. Treat it as an input-otp alternative when you want styled, labeled code slots instead of a headless primitive.
+- Use onComplete to verify the code the moment the last digit lands, and set status to error or success to shake the field or play a soft ripple with a message.
+- Use grouped for a six digit code shown as 3 + 3, or mask when the code is sensitive and should not be readable over someone's shoulder.
+- Skip it when the value is not a fixed-length numeric code. Use Input for an email or a recovery phrase, including a password with a show button in its trailing slot.
+- Pair it with Button for a resend action, Alert for a rate-limit message, and the OTP verification block, which already assembles these pieces on one screen.
+
+
+### SheenUI OtpInput or input-otp?
+
+input-otp is a headless one-time-code library. SheenUI's OtpInput is built on Base UI's OTP field and arrives styled: glass slots, paste and SMS autofill, grouped and mask options, and error and success feedback through the status prop. Use input-otp if you want to draw every slot yourself; use this one if you want a finished, accessible field to copy.
+
+
+### Frequently asked questions
+
+#### How do I build a React OTP input with SheenUI?
+
+Render OtpInput with a length, 6 by default, and handle value with onValueChange or leave it uncontrolled with defaultValue. onComplete fires once every slot is filled. It is built on Base UI OTPField, and name submits the joined code with a form.
+
+#### Can users paste a code or use SMS autofill?
+
+Yes to both. Pasting a whole code fills every slot at once, and the slots use autoComplete one-time-code, so phones can offer the SMS code. Typing advances to the next slot, Backspace clears and moves back, and the left and right arrow keys move between slots.
+
+#### How are the slots named for screen readers?
+
+The first slot is named by the label or aria-label, which defaults to Verification code. The others are named Digit n of N through digitLabel, which you can translate. Error and success messages sit in a polite live region, and each slot is at least 44px wide and 48px tall.
+
+#### How do I trigger the error shake more than once?
+
+Set status back to idle before setting it to error again. The shake and the success ripple play when the status changes, so repeating the same status does nothing. Both animations use transform and opacity only, and both are skipped when reduced motion is on.
+
+
+### Related pages
+
+- [OTP verification](https://lokendra-builds.github.io/sheenui/blocks/otp-verification)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Popover](https://lokendra-builds.github.io/sheenui/components/popover)
+- [Progress](https://lokendra-builds.github.io/sheenui/components/progress)
+- [Select](https://lokendra-builds.github.io/sheenui/components/select)
+- [Slider](https://lokendra-builds.github.io/sheenui/components/slider)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Popover Component with Glass Panel
+
+URL: https://lokendra-builds.github.io/sheenui/components/popover
+Sidebar name: Popover
+
+A glassmorphism popover for React, anchored to a button for small forms and details. Escape and outside click close it. Base UI, Tailwind CSS v4, MIT.
+
+What it is: A glass React popover anchored to its trigger, for small forms and details; Escape or a click outside closes it. Use Popover as a glass popover for a small filter panel opened from a toolbar button, where a few controls and an Apply action fit in a panel anchored to the button.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/popover.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Popover
+
+Files to copy from `theme/src/`:
+
+- `components/popover/`
+- `components/drawer/parts/sheet.tsx`
+- `hooks/{use-latest.ts, use-media-query.ts}`
+- `lib/{cn.ts, form.ts, popup-motion.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: popover. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@/components/sheenui/popover/popover";
+```
+
+These examples also use button, input: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/input.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Input, Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| modal | boolean \| "trap-focus" | false (a sheet: true) | Traps focus and locks scroll while open (Base UI's modal). A sheet is modal unless you set this. |
+| mobile | MobilePresentation | "popup" | How the panel opens on a phone-width screen (max-width: 640px): "popup" is the usual panel next to the trigger; "sheet" is a bottom sheet with a drag handle, swipe-down to dismiss, a scrollable body capped at 85 dvh and home-indicator padding. Escape closes and focus returns to the trigger in both. |
+| Popover open / defaultOpen | boolean | false | Controls whether the popover is open (open), or sets its initial state (defaultOpen). |
+| PopoverTrigger render | ReactElement | optional, no default | Render as your own element, e.g. render={<Button />}. |
+| PopoverContent side | "top" \| "bottom" \| "left" \| "right" | "bottom" | Side of the trigger it opens on. |
+| PopoverContent align | "start" \| "center" \| "end" | "center" | Sets the alignment along that side. |
+| PopoverContent sideOffset | number (px) | 8 | Gap between the trigger and the popover. |
+| Popover ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example onOpenChange, onOpenChangeComplete, actionsRef, modal, triggerId, defaultTriggerId). |
+| PopoverTrigger ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example nativeButton, id, className, style, handle, payload). |
+| PopoverContent ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style, className, render, initialFocus, finalFocus). |
+
+### PopoverContent props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<PopoverLabels> | defaultPopoverLabels | Spoken text. Merged over defaultPopoverLabels. Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultPopoverLabels. Its only key is listed in the key table under the props table. |
+| side | "top" \| "bottom" \| "left" \| "right" | "bottom" | Preferred side of the trigger. It flips when there is no room. |
+| align | "center" \| "end" \| "start" | "center" | Sets the alignment along that side. |
+| sideOffset | number | 8 | Gap between trigger and panel, in px. |
+
+### Example 1 of 3: Share link
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@/components/sheenui/popover/popover";
+// Package build (after the first npm release, or a packed tarball): import { Button, Input, Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="glass" />}>Share</PopoverTrigger>
+      <PopoverContent>
+        <PopoverTitle>Share this page</PopoverTitle>
+        <PopoverDescription>Anyone with the link can view it.</PopoverDescription>
+        <Input readOnly defaultValue="https://example.com/blocks" />
+        <PopoverClose render={<Button size="sm" />}>Done</PopoverClose>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Example 2 of 3: Placement and a controlled panel
+
+side and align place the panel; open and onOpenChange let your code close it after saving.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Input } from "@/components/sheenui/input/input";
+import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@/components/sheenui/popover/popover";
+// Package build (after the first npm release, or a packed tarball): import { Button, Input, Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@sheenui/theme";
+
+export function Example() {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("Q3 roadmap");
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger render={<Button variant="glass" />}>{name}</PopoverTrigger>
+      <PopoverContent side="right" align="start" className="flex w-72 flex-col gap-3">
+        <PopoverTitle>Rename</PopoverTitle>
+        <Input label="Name" value={name} onChange={(event) => setName(event.target.value)} />
+        <Button size="sm" onClick={() => setOpen(false)}>Save</Button>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Example 3 of 3: Bottom sheet on phones
+
+mobile='sheet' presents the panel as a bottom sheet under 640px wide, modal with a drag handle and swipe-to-dismiss. The default, 'popup', keeps the anchored panel. Press “Preview on a phone” to try it on a desktop screen (or narrow the window).
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@/components/sheenui/popover/popover";
+// Package build (after the first npm release, or a packed tarball): import { Button, Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Popover mobile="sheet">
+      <PopoverTrigger render={<Button variant="glass">Details</Button>} />
+      <PopoverContent>
+        <PopoverTitle>Billing</PopoverTitle>
+        <PopoverDescription>Next invoice on 1 Dec.</PopoverDescription>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open or close it from the trigger; focus moves into the panel. |
+| Tab / Shift + Tab | Cycle inside the panel. |
+| Escape | Close it and return focus to the trigger. |
+
+### Accessibility
+
+- The trigger gets aria-expanded and aria-haspopup; the panel is labeled by PopoverTitle when you render one.
+- Use a Popover for interactive content; use a Tooltip for a short label and a HoverCard for a preview.
+- Under reduced motion the panel only fades.
+
+### All exports on this page
+
+- Popover — Glass popover: a small floating panel anchored to a button, for extra controls or details that do not deserve a full dialog.
+- PopoverClose — A button inside PopoverContent that closes the popover (for "Done" or "Cancel" actions).
+- PopoverContent — The glass panel of a Popover, portalled to the end of the body and positioned next to the trigger.
+- PopoverDescription — Muted helper text under the title.
+- PopoverTitle — The popover's heading.
+- PopoverTrigger — The element that opens a Popover.
+- defaultPopoverLabels — English defaults of PopoverLabels.
+
+
+### When to use Popover
+
+- Use Popover for a Filters or Share button in a toolbar that opens a compact panel with a few fields and a confirm action, kept next to the button so the page behind stays in view.
+- Use it for an account menu with a profile summary and a sign out button, or a share panel with a link field, where content stays near the trigger.
+- Use side, align and sideOffset on PopoverContent to place the panel, knowing it flips to the other side when there is no room in the viewport.
+- Skip it when the content is a plain hint or a list of commands. Use Tooltip for a label on hover, Menu for actions, and Dialog when the task needs the whole page's attention.
+- Pair it with Button through the render prop on PopoverTrigger, Field and Switch for settings inside the panel, and Calendar when a date picker needs custom content.
+
+
+### Frequently asked questions
+
+#### How do I build a React popover with SheenUI?
+
+Compose Popover with PopoverTrigger and PopoverContent, then PopoverTitle, PopoverDescription and your controls inside. Popover holds open, defaultOpen and onOpenChange and renders no element. It wraps Base UI Popover, so positioning, outside-press handling and focus management are included.
+
+#### How does the popover behave with the keyboard?
+
+Enter or Space on the trigger toggles it, focus moves into the panel, and Tab cycles inside it. Escape or an outside press closes it and returns focus to the trigger. The trigger gets aria-expanded and aria-controls automatically; the panel is a dialog named by PopoverTitle.
+
+#### Can I change the popover width and position?
+
+The panel is w-72 and never wider than the viewport minus 2rem; override it with className. side defaults to bottom, align to center and sideOffset to 8px. A preferred side flips when there is no room. Everything else passes to the Base UI popup.
+
+#### What does the popover do with reduced motion or transparency?
+
+The panel is a glass-2 surface that fades and springs in from the trigger side. With reduced motion it only fades. Reduced transparency and forced colors both give it a solid surface, so text stays readable when the backdrop blur is switched off by the user.
+
+
+### Related pages
+
+- [Progress](https://lokendra-builds.github.io/sheenui/components/progress)
+- [Select](https://lokendra-builds.github.io/sheenui/components/select)
+- [Slider](https://lokendra-builds.github.io/sheenui/components/slider)
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated React Progress Bar (Indeterminate Too)
+
+URL: https://lokendra-builds.github.io/sheenui/components/progress
+Sidebar name: Progress
+
+A glass React progress bar with an accent fill and a slow sweep of light. Pass null for an indeterminate loading bar. Accessible, Tailwind CSS v4, MIT.
+
+What it is: A glass React progress bar with an accent fill and a sweep of light, plus an indeterminate mode for loading states.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/progress.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Progress
+
+Files to copy from `theme/src/`:
+
+- `components/progress/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: progress. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Progress } from "@/components/sheenui/progress/progress";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Progress } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | number \| null | required | A number from 0 to max. Pass null for an indeterminate (loading) bar. |
+| max | number | 100 | The value that means "done" (value is read against it). |
+| label | ReactNode | optional, no default | Text above the bar, also its accessible name. |
+| showValue | boolean | true | Show the percentage on the right. |
+| locale | Intl.LocalesArgument | the browser's | Sets the BCP 47 locale of the percentage ("18%" or "18 %"). |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Determinate and indeterminate
+
+```tsx
+import { Progress } from "@/components/sheenui/progress/progress";
+// Package build (after the first npm release, or a packed tarball): import { Progress } from "@sheenui/theme";
+
+export function Example() {
+  const value = 64; // 0 to 100
+
+  return (
+    <>
+      <Progress label="Uploading design.fig" value={value} />
+      <Progress label="Preparing export" value={null} />
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Several tasks with labels
+
+Each bar has its own name. The value is read to screen readers; showValue also prints it.
+
+```tsx
+import { Progress } from "@/components/sheenui/progress/progress";
+// Package build (after the first npm release, or a packed tarball): import { Progress } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-5">
+      <Progress label="Photos" value={100} />
+      <Progress label="Videos" value={42} />
+      <Progress label="Documents" value={7} showValue={false} />
+      <Progress label="Waiting for the server" value={null} />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: Progress is a read-out, not a control. |
+
+### Accessibility
+
+- Base UI renders role="progressbar" with aria-valuenow, aria-valuemin and aria-valuemax; label names it.
+- value={null} is indeterminate: no aria-valuenow, so it is announced as busy rather than as a percentage.
+- The track and fill keep 3:1 contrast against the surface. Under reduced motion the fill jumps to each new value and the indeterminate bar becomes a still, half-tone bar.
+
+### When to use Progress
+
+- Use Progress as an animated progress bar for a file upload or an import job where the total is known, showing the percentage on the right and a label like Uploading report.pdf above the bar.
+- Use it for a multi-step setup wizard, passing value and a max equal to the number of steps so the bar fills as each step completes.
+- Use value null for an indeterminate bar while a request has no known length, which Base UI exposes without aria-valuenow so screen readers do not read a false number.
+- Skip it when the number is a measurement against a range, such as disk space or password strength, where Meter fits. Use Spinner for tiny waits and Skeleton for content shapes.
+- Pair it with Button to start or cancel the task, Toast for completion, and DataTable progress cells to show per-row status in a long list.
+
+
+### Frequently asked questions
+
+#### How do I make a React progress bar with SheenUI?
+
+Render Progress with a value from 0 to max, which defaults to 100 so value reads as a percentage. Add a label, which also names the bar for assistive technology. Set showValue to false to hide the percentage, and pass locale for prerendered pages so server and browser text match.
+
+#### What does an indeterminate progress bar look like?
+
+Pass value as null. The bar slides to signal loading with no known end, and Base UI omits aria-valuenow, aria-valuemin and aria-valuemax in that state. Under reduced motion it becomes a static, half-tone full-width bar instead of sliding.
+
+#### How does it animate between values?
+
+The fill is a full-width bar moved with translateX, transform only, so the rounded leading edge never distorts and the track clips it. A light sweeps across the fill a few times after each change. With reduced motion the fill jumps straight to each new value.
+
+#### Is the progress bar focusable?
+
+No. It is a read-out with role progressbar, so it takes no tab stop. Base UI supplies aria-valuenow, min and max for determinate values, and the label provides the name. Forced colors keep the fill visible, and the percentage is formatted in the locale you pass.
+
+#### When should I use Progress, Meter or Spinner?
+
+Use Progress for a task with a known length, such as an upload or a setup wizard, and pass value={null} while the length is unknown. Use Meter for a measurement against a range, such as disk used or password strength. A Spinner says that something is busy without saying how far along it is.
+
+#### Can I hide the percentage or translate it?
+
+Yes. showValue turns the percentage text on or off, and the number is formatted in the locale prop. label names the bar for assistive tech: Base UI renders role="progressbar" with aria-valuenow, aria-valuemin and aria-valuemax, and leaves all three out while the value is null.
+
+
+### Related pages
+
+- [Meter](https://lokendra-builds.github.io/sheenui/components/meter)
+- [Bullet chart](https://lokendra-builds.github.io/sheenui/charts/bullet-chart)
+- [Select](https://lokendra-builds.github.io/sheenui/components/select)
+- [Slider](https://lokendra-builds.github.io/sheenui/components/slider)
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Select Dropdown with Glass Menu
+
+URL: https://lokendra-builds.github.io/sheenui/components/select
+Sidebar name: Select
+
+A glassmorphism React select dropdown: the chevron flips, items drift in with Motion and typing jumps to an option. Built on Base UI and Tailwind CSS v4.
+
+What it is: A glass React select dropdown for picking one option, with type-to-jump and items that drift in; for search or multi-select, use the Combobox.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/select.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Select
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/select/`
+- `components/drawer/parts/sheet.tsx`
+- `components/spinner/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, field-size.ts, form.ts, glide-highlight.tsx, group-segments.ts, page-size.ts, popup-a11y.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: select. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Select } from "@/components/sheenui/select/select";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Select } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| items | SelectItem[] | required | Takes the options, in display order. |
+| value | string \| null | optional, no default | The selected value (controlled). null means nothing selected. |
+| defaultValue | string \| null | optional, no default | Sets the starting value when uncontrolled. |
+| onValueChange | ((value: string \| null) => void) | optional, no default | Called with the new value when the person picks an option. |
+| open | boolean | optional, no default | Whether the list is open (controlled). Pair with onOpenChange. Leave it out to let the trigger decide. |
+| defaultOpen | boolean | false | Whether the list starts open when uncontrolled. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the list opens or closes. |
+| label | ReactNode | optional, no default | Text above the trigger, linked to it as its accessible name. |
+| description | ReactNode | optional, no default | Muted helper text under the trigger. |
+| error | ReactNode | optional, no default | Error message under the trigger. Marks the select invalid and is announced. |
+| placeholder | ReactNode | labels.placeholder ("Select…") | Shown in the trigger while nothing is selected, as a node. |
+| labels | Partial<SelectLabels> | defaultSelectLabels | Every string, for translation: the placeholder and the heading of ungrouped items. Every other string, for translation: labels={{ placeholder: "…" }}; omitted keys keep the English of defaultSelectLabels. All 3 keys of SelectLabels are listed in the key table under the props table. |
+| id | string | generated | Id of the trigger button; a generated one is used when omitted. |
+| name | string | optional, no default | Submits the value with a form. |
+| required | boolean | optional, no default | Marks the field as required for form validation. |
+| disabled | boolean | optional, no default | Disables the select and its popup. |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| loading | boolean | false | The options are on their way: the trigger shows a spinner and is marked busy (aria-busy). Keep passing the items you have. |
+| readOnly | boolean | optional, no default | Show the value but do not allow changes. |
+| aria-label | string | optional, no default | Accessible name when there is no visible label. |
+| aria-labelledby | string | optional, no default | Id of an element that names the select. |
+| aria-describedby | string | optional, no default | Id of extra help text; joined with the description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the select invalid without an error message. |
+| onBlur | FocusEventHandler<HTMLButtonElement> | optional, no default | Called when the trigger loses focus (react-hook-form: marks the field touched). |
+| className | string | optional, no default | Class for the outer wrapper (label + trigger + helper text), same as Input and Combobox. |
+| triggerClassName | string | optional, no default | Class for the trigger button. |
+| virtualized | boolean \| "auto" | "auto" | Windows the list so only the options near the viewport are in the DOM: true always, false never, "auto" only above 200 options (VIRTUALIZE_THRESHOLD). Arrow keys, Home / End, PageUp / PageDown and type-ahead still reach every option, aria-setsize / aria-posinset keep the count for screen readers, and the scroll height does not change. Windowed rows are a fixed height (one line; a description is cut to fit) and group headings are visual only. |
+| mobile | MobilePresentation | "popup" | How the list opens on a phone-width screen (max-width: 640px): "popup" is the usual floating list; "sheet" is a bottom sheet with a drag handle, swipe-down to dismiss, a scrollable body capped at 85 dvh, home-indicator padding and a dimmed scrim. Focus is trapped and returned and Escape closes in both. |
+
+### Example 1 of 4: Icons and descriptions
+
+```tsx
+import { useState } from "react";
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Select } from "@sheenui/theme";
+
+const Dot = ({ color }: { color: string }) => <span aria-hidden className="size-2.5 rounded-full" style={{ background: color }} />;
+
+export function Example() {
+  const [value, setValue] = useState<string | null>("react");
+
+  return (
+    <Select
+      label="Framework"
+      items={[
+        { value: "react", label: "React", description: "UI library by Meta", icon: <Dot color="#58c4dc" /> },
+        { value: "vue", label: "Vue", description: "Progressive framework", icon: <Dot color="#42b883" /> },
+        { value: "angular", label: "Angular", description: "Not available on your plan", disabled: true },
+      ]}
+      value={value}
+      onValueChange={setValue}
+    />
+  );
+}
+```
+
+### Example 2 of 4: Grouped
+
+Where your data is stored.
+
+```tsx
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Select } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Select
+      label="Region"
+      placeholder="Choose a region"
+      items={[
+        { value: "bom", label: "Mumbai", description: "ap-south-1", group: "Asia Pacific" },
+        { value: "fra", label: "Frankfurt", description: "eu-central-1", group: "Europe" },
+        { value: "iad", label: "Virginia", description: "us-east-1", group: "Americas" },
+      ]}
+    />
+  );
+}
+```
+
+### Example 3 of 4: Thousands of options
+
+Above 200 options the list is windowed on its own (virtualized defaults to auto); pass virtualized to force it. Only the rows near the viewport are in the DOM, yet Home, End, PageUp, PageDown and type-ahead reach every option and screen readers still hear 'item 3,000 of 5,000'. Press End, or type 'Item 4321'.
+
+```tsx
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Select } from "@sheenui/theme";
+
+const items = Array.from({ length: 5000 }, (_, i) => ({
+  value: String(i + 1),
+  label: `Item ${String(i + 1).padStart(4, "0")}`,
+}));
+
+export function Example() {
+  return <Select label="Item" items={items} virtualized />;
+}
+```
+
+### Example 4 of 4: Bottom sheet on phones
+
+mobile='sheet' opens the list as a bottom sheet under 640px wide: a drag handle you can swipe down, a scrolling body capped at 85dvh, safe-area padding and a dimmed scrim. The default, 'popup', keeps the floating list. Press “Preview on a phone” to try it on a desktop screen (or narrow the window).
+
+```tsx
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Select } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Select
+      label="Region"
+      mobile="sheet"
+      items={[
+        { value: "bom", label: "Mumbai", description: "ap-south-1" },
+        { value: "fra", label: "Frankfurt", description: "eu-central-1" },
+        { value: "iad", label: "Virginia", description: "us-east-1" },
+      ]}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space / Arrow Down | Open the list from the trigger. |
+| Arrow Down / Arrow Up | Move through the options. |
+| Home / End | Jump to the first or last option. |
+| Type a letter | Jump to the next option that starts with it. |
+| Enter / Space | Pick the highlighted option. |
+| Escape | Close the list and return focus to the trigger. |
+
+### Accessibility
+
+- A Base UI Select: the trigger is a combobox-style button with aria-expanded, the popup a listbox of options.
+- label, description and error are linked to the trigger; the error is announced politely.
+- name submits the value with a form. Pass aria-label when there is no visible label.
+
+### All exports on this page
+
+- Select — A glass select: opens below the trigger, supports groups, icons and descriptions, and you can type to jump to an option.
+- VIRTUALIZE_THRESHOLD — Lists longer than this are windowed on their own (virtualized="auto"): Select, Combobox and CommandPalette.
+- defaultSelectLabels — The English SelectLabels used when labels is omitted; a partial labels prop is merged over it.
+- useVirtualWindow — A small windowing hook for long lists of equally tall rows.
+
+
+### When to use Select
+
+- Use Select as a glass select for a short, fixed list like a sort order, a time zone preset or a billing plan, where people pick one value and the options fit in one popup. Use it as a custom select in Tailwind projects when the native dropdown cannot be styled to match the rest of the page.
+- Use group, icon and description on items for a language or workspace picker, where headings, flags or a second line help people choose the right entry.
+- Use error, required and name for a field inside a form, with the value submitted natively and the message linked to the trigger for screen readers.
+- Skip it when the list is long enough that people want to type to find an item, or when several values can be picked. Combobox handles both, and RadioGroup suits two or three visible choices.
+- Pair it with Input and Combobox in the same form, which share the className wrapper convention, and Field or react-hook-form through ref, onBlur and name.
+
+
+### Frequently asked questions
+
+#### How do I build a React select dropdown with SheenUI?
+
+Render Select with an items array of value and label objects, then control it with value and onValueChange, or leave it uncontrolled with defaultValue. Add label, description and placeholder, which defaults to "Select…". It wraps Base UI Select, so the listbox behavior comes included.
+
+#### Which keys work on the select?
+
+Enter, Space or the Down arrow opens the list. Up and Down move through options, Home and End jump to the ends, and typing jumps to a matching option. Enter or Space selects, and Escape closes and returns focus to the trigger. Disabled items are shown but cannot be selected.
+
+#### How do I style the trigger and wrapper separately?
+
+className styles the outer wrapper that holds label, trigger and helper text, as in Input and Combobox. triggerClassName styles the button. For forms it forwards ref to the trigger, plus onBlur, name, required, disabled, aria-invalid and aria-describedby, so form libraries can focus it after a failed validation.
+
+#### When should I switch from Select to Combobox?
+
+Switch when people would rather type than scroll, or when they need several values. Select supports typeahead jumping but has no search box, async loading or chips. Combobox adds filtering, loadOptions, onCreate and a multiple mode with removable chips, and takes options with the same value and label fields.
+
+
+### Related pages
+
+- [Combobox (Select2)](https://lokendra-builds.github.io/sheenui/components/combobox)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Slider](https://lokendra-builds.github.io/sheenui/components/slider)
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Range Slider: Single & Dual Thumb
+
+URL: https://lokendra-builds.github.io/sheenui/components/slider
+Sidebar name: Slider
+
+A glass React slider for one value or a range: drag, click the track or use the arrow keys. Built on Base UI Slider and Tailwind CSS v4. Free and MIT.
+
+What it is: A glass React slider that picks a single value or a range by dragging, clicking the track or pressing the arrow keys. Use Slider as a React slider component for a volume or brightness control where people want to drag and hear or see the change as they go, and exact digits matter less than feel.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/slider.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Slider
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/slider/`
+- `components/field/`
+- `hooks/use-latest.ts`
+- `lib/{cn.ts, form.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: slider. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Slider } from "@/components/sheenui/slider/slider";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Slider } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Field name, used for native form submission and by form libraries. |
+| disabled | boolean | optional, no default | Disables the slider so it cannot be moved. |
+| value | number \| number[] | optional, no default | Takes one number, or two for a range. |
+| defaultValue | number \| number[] | optional, no default | Sets the starting value when uncontrolled. |
+| onValueChange | ((value: number \| number[]) => void) | optional, no default | Called on every change while dragging or using the keyboard. |
+| onValueCommitted | ((value: number \| number[]) => void) | optional, no default | Called once when a change ends: the pointer is released, or a key press is done. Use it to save, instead of saving on every step. |
+| min | number | 0 | Lowest selectable value, the value at the left end of the track; keep it below max. |
+| max | number | 100 | Highest selectable value, the value at the right end of the track; keep it above min. |
+| step | number | 1 | Sets the size of one step. |
+| largeStep | number | 10 (a change of 10 in the value, not ten steps) | Sets the step for PageUp / PageDown and Shift + arrows. |
+| minStepsBetweenValues | number | 0 | For a range: the smallest allowed gap between two thumbs, in steps. |
+| id | string | optional, no default | Id of the slider root (a label or a form library can point at it). |
+| form | string | optional, no default | Id of a <form> element to submit with when the slider is outside it. |
+| label | ReactNode | optional, no default | Text above the track, also the slider's accessible name. |
+| showValue | boolean | true | Show the current value(s) next to the label. |
+| showBubble | boolean | true | Show a bubble with the value above the thumb while dragging (useful on touch, where a finger covers the thumb). |
+| aria-label | string | optional, no default | Label for screen readers when there is no visible label. |
+| aria-labelledby | string | optional, no default | Id of an element that names the slider (instead of label). |
+| labels | Partial<SliderLabels> | defaultSliderLabels | Every string, for translation: the names of the two range thumbs. Every other string, for translation: labels={{ minimum: "…" }}; omitted keys keep the English of defaultSliderLabels. All 2 keys of SliderLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Single value and range
+
+```tsx
+import { useState } from "react";
+import { Slider } from "@/components/sheenui/slider/slider";
+// Package build (after the first npm release, or a packed tarball): import { Slider } from "@sheenui/theme";
+
+export function Example() {
+  const [volume, setVolume] = useState(40);
+
+  return (
+    <>
+      <Slider label="Volume" value={volume} onValueChange={(v) => setVolume(Array.isArray(v) ? (v[0] ?? 0) : v)} />
+      <Slider label="Price range" defaultValue={[200, 800]} min={0} max={1000} step={10} />
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Step, bounds and states
+
+```tsx
+import { Slider } from "@/components/sheenui/slider/slider";
+// Package build (after the first npm release, or a packed tarball): import { Slider } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-6">
+      <Slider label="Temperature" min={16} max={30} step={0.5} defaultValue={21.5} />
+      <Slider aria-label="Brightness" defaultValue={70} showValue={false} />
+      <Slider label="Locked" defaultValue={40} disabled />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Focus each thumb in turn. |
+| Arrow keys | Change the value by one step. |
+| Page Up / Page Down | Change the value by 10 by default (set with largeStep). |
+| Home / End | Jump to the minimum or maximum. |
+
+### Accessibility
+
+- Each thumb is role="slider" with aria-valuenow, aria-valuemin and aria-valuemax; a range slider has one thumb per value.
+- The label names the group; the value text is announced as it changes.
+- The track is 44 px tall on touch screens and its edge has a 3:1 border; a value bubble shows above the thumb while dragging.
+
+### All exports on this page
+
+- Slider — A slider for picking a number (volume, price) or a range between two numbers.
+- defaultSliderLabels — The English SliderLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use Slider
+
+- Use Slider for a price range filter, a zoom level or an audio volume, where a thumb on a track is quicker than typing; pair it with a visible value when the exact number matters. For a dual range slider in Tailwind, pass two values and the component draws two thumbs on one track.
+- Use two values for a price range filter on a product list, with minStepsBetweenValues keeping the thumbs from crossing and the bubble showing the value above the thumb while dragging.
+- Use onValueCommitted to save a setting once when the drag or key press ends, rather than firing a request on every step of onValueChange.
+- Skip it when people must enter an exact figure, where NumberField fits, or when there are three or four named choices, where SegmentedControl or RadioGroup is clearer.
+- Pair it with NumberField for a typed fallback, Field to describe the range, and Button to apply the filter after the range is chosen.
+
+
+### Frequently asked questions
+
+#### How do I build a React range slider with two thumbs?
+
+Pass an array of two numbers as value or defaultValue, and one thumb appears per entry. The thumbs are named Minimum and Maximum unless you set your own labels. Use minStepsBetweenValues to enforce a gap between them, and min, max and step to set the scale.
+
+#### Which keyboard keys move the slider?
+
+Tab focuses each thumb. The arrow keys change the value by one step, PageUp and PageDown by 10 (the value, not ten steps) by default, which largeStep can change, and Home and End jump to the ends. Each thumb is a native input type range, so it reports value, min and max.
+
+#### How do I stop saving on every drag step?
+
+Use onValueCommitted. onValueChange fires on every change while dragging or pressing keys, while onValueCommitted fires once when the pointer is released or a key press is done. Saving there avoids a flood of requests while the value moves under the thumb.
+
+#### Does the slider work on touch screens?
+
+Yes. The track is 44px tall on touch, and showBubble, on by default, shows the value above the thumb during a drag so a finger does not hide it. Thumb scaling and the bubble spring are gated by motion preferences; reduced motion keeps only color and opacity changes.
+
+
+### Related pages
+
+- [Switch](https://lokendra-builds.github.io/sheenui/components/switch)
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip)
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated React Toggle Switch with Motion
+
+URL: https://lokendra-builds.github.io/sheenui/components/switch
+Sidebar name: Switch
+
+An iOS-style React toggle switch: the thumb springs across a glass track with Motion and fills with the accent. Base UI, Tailwind CSS v4, free, MIT.
+
+What it is: An animated React toggle switch, an iOS switch in Tailwind, whose thumb springs across a glass track with Motion and fills with the accent color when on.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/switch.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Switch
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/switch/`
+- `hooks/{use-direction.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, field-control-shell.tsx, form.ts, motion-props.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: switch. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Classes for the outer element: the <label> (or the wrapper holding an error); the control itself when there is neither. |
+| controlClassName | string \| ((state: SwitchRootState) => string \| undefined) | optional, no default | Classes for the switch track itself. Base UI's state function form works here. |
+| label | ReactNode | optional, no default | Text next to the switch. Clicking it toggles the switch. |
+| description | ReactNode | optional, no default | Muted helper text under the label. Only shown together with label. |
+| error | ReactNode | optional, no default | Error message under the control. Marks it invalid (aria-invalid, danger border) and is announced; linked with aria-describedby. |
+| stateLight | boolean | false | A calm accent light round the track while it is on (data-state="on", an aura on its own layer). The checked fill already says "on": this is the glow only. Off with reduced transparency and forced colours. |
+| checked / defaultChecked | boolean | false | Controlled or uncontrolled state. |
+| onCheckedChange | (checked) => void | optional, no default | Called with the new checked state when the control is toggled. |
+| disabled | boolean | false | Makes the control non-interactive. |
+
+### Example 1 of 2: With label and description
+
+```tsx
+import { useState } from "react";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [on, setOn] = useState(true);
+
+  return (
+    <Switch
+      checked={on}
+      onCheckedChange={setOn}
+      label="Email notifications"
+      description="Get a summary every Monday."
+    />
+  );
+}
+```
+
+### Example 2 of 2: A settings list
+
+One piece of state for a group of switches, each with its own name.
+
+```tsx
+import { useState } from "react";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Switch } from "@sheenui/theme";
+
+const channels = [
+  { key: "email", label: "Email", description: "Receipts and weekly summaries." },
+  { key: "push", label: "Push notifications", description: "Mentions and replies." },
+  { key: "sms", label: "Text messages", description: "Security alerts only." },
+] as const;
+
+export function Example() {
+  const [enabled, setEnabled] = useState({ email: true, push: true, sms: false });
+
+  return (
+    <div className="flex flex-col gap-5">
+      {channels.map(({ key, label, description }) => (
+        <Switch
+          key={key}
+          label={label}
+          description={description}
+          checked={enabled[key]}
+          onCheckedChange={(checked) => setEnabled((prev) => ({ ...prev, [key]: checked }))}
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Move focus to or from the switch. |
+| Space / Enter | Toggle it. |
+
+### Accessibility
+
+- role="switch" with aria-checked; the label and description share one <label>.
+- On and off differ by thumb position as well as color; forced colors outline the track.
+- The touch hit area is 44 px; under reduced motion the thumb jumps instead of sliding.
+
+### When to use Switch
+
+- Use Switch as an animated switch in React for settings that apply the moment they change, such as dark mode, push notifications or a public profile toggle in an account page. Use it as a Framer Motion switch: the thumb moves with Motion, the library formerly called Framer Motion, on the shared SheenUI spring.
+- Use label and description together for a preferences row, so the text and the helper line sit in one label element and clicking the words flips the switch.
+- Use the error prop when a toggle can fail to save, for example a server rejection, so the message shows under the control and is announced to screen readers.
+- Skip it when the choice is only applied after a form is submitted. Use Checkbox for that, and use RadioGroup or SegmentedControl when the choice is between named options.
+- Pair it with GlassCard for a settings panel, Toast to confirm that a change was saved, and Field or the settings-page block for grouped preference rows.
+
+
+### Frequently asked questions
+
+#### How do I make a react toggle switch with SheenUI?
+
+Render Switch with label and either checked plus onCheckedChange, or defaultChecked for uncontrolled use. It takes every Base UI Switch.Root prop, so name, value, disabled, readOnly and required work. className goes on the switch track, not on the wrapper around the label.
+
+#### Which keys toggle the switch?
+
+Tab focuses it, and Space toggles it. Enter toggles it too, since it is a button, and Enter from the switch never submits a surrounding form. It exposes role switch with aria-checked, and the off-state track keeps a 3:1 border for WCAG 1.4.11.
+
+#### How does the thumb animate?
+
+The accent fill fades in on its own layer and the thumb springs across, stretching toward its destination while pressed and carrying its velocity if toggled again mid-slide. With reduced motion the thumb snaps into place and only the fill fades.
+
+#### Does a switch need a label?
+
+Yes, it needs an accessible name. Use the label prop, which wraps the control in a label element, or pass aria-label when the design shows no text. The description only renders together with a label. Touch screens get a 44px hit area around the track.
+
+
+### Related pages
+
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+- [Spinner](https://lokendra-builds.github.io/sheenui/components/spinner)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip)
+
+#### Guides that cover it
+
+- [Accessible Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Loading Spinner with Reduced Motion
+
+URL: https://lokendra-builds.github.io/sheenui/components/spinner
+Sidebar name: Spinner
+
+A React loading spinner in five sizes and three colors with a screen-reader label; it holds still as a static arc under reduced motion. Tailwind v4, MIT.
+
+What it is: A React loading spinner for work with no known length, announced politely and held still as a static arc under reduced motion. Use Spinner as a loading indicator in React for a wait with no known length, such as a route transition, a panel waiting for data or a search that has just been submitted.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/spinner.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Spinner
+
+Files to copy from `theme/src/`:
+
+- `components/spinner/`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: spinner. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Spinner } from "@/components/sheenui/spinner/spinner";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Spinner } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| size | "sm" \| "md" \| "lg" \| "xl" \| "xs" | "md" | "xs" (12px), "sm" (16px), "md" (24px), "lg" (32px) or "xl" (48px). |
+| tone | "accent" \| "current" \| "muted" | "accent" | "current" follows the surrounding text colour, "accent" or "muted". |
+| showLabel | boolean | false | Print the label next to the spinner instead of hiding it from sight. |
+| labels | Partial<SpinnerLabels> | defaultSpinnerLabels | Every other string, for translation: labels={{ loading: "…" }}; omitted keys keep the English of defaultSpinnerLabels. Its only key is listed in the key table under the props table. |
+
+### Example: Sizes, tones and loading buttons
+
+Five sizes on glass with their names, a labelled panel, muted and current-colour tones, and a row of busy buttons. showLabel prints the text; the label is always read aloud.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Spinner } from "@/components/sheenui/spinner/spinner";
+// Package build (after the first npm release, or a packed tarball): import { Button, Spinner } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full flex-col gap-4">
+      <div className="glass-2 grid grid-cols-5 gap-3 rounded-sheen-xl p-5">
+        {(["xs", "sm", "md", "lg", "xl"] as const).map((size) => (
+          <div key={size} className="flex flex-col items-center gap-3">
+            <Spinner size={size} />
+            <span className="text-xs font-medium text-sheen-fg-muted">{size}</span>
+          </div>
+        ))}
+      </div>
+      <div className="glass-2 flex flex-col items-center gap-3 rounded-sheen-xl p-6">
+        <Spinner size="xl" showLabel labels={{ loading: "Loading your projects" }} className="flex-col" />
+      </div>
+      <div className="glass-2 flex flex-wrap items-center gap-3 rounded-sheen-xl p-5">
+        <Button aria-busy disabled>
+          <Spinner size="sm" tone="current" labels={{ loading: "Saving" }} />
+          Saving
+        </Button>
+        <Button variant="glass" aria-busy disabled>
+          <Spinner size="sm" tone="current" labels={{ loading: "Syncing" }} />
+          Syncing files
+        </Button>
+        <Button loading>Button prop</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a spinner is a read-out. Put it inside a control that is busy, not on a tab stop of its own. |
+
+### Accessibility
+
+- It is a role="status" live region with a visually hidden label ("Loading" by default), so mounting it announces politely. Remove it when the work is done.
+- The ring itself is aria-hidden. Use labels.loading to say what is loading, in the page language.
+- Reduced motion (OS setting or the in-app toggle) keeps the arc turning, slower: it is the loading signal itself. Everything else about the page stops moving.
+- The track keeps 3:1 against the surface; forced colors draw it in CanvasText.
+
+### All exports on this page
+
+- Spinner — A loading spinner for something that has no known length (a button, a panel, a route).
+- defaultSpinnerLabels — The English SpinnerLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use Spinner
+
+- Use Spinner next to a Saving label or inside a disabled button while a request runs and you cannot say how long it will take; switch to Progress once you can report how far along it is.
+- Use showLabel to print the word Loading next to the ring in an empty state, and keep the default hidden label for places where the ring alone is clear.
+- Use tone current to inherit the surrounding text color inside a button or a badge, and the xs or sm sizes to fit a line of text.
+- Skip it when the task has a measurable end, where Progress fits, or when you know the shape of the incoming content, where Skeleton gives a calmer placeholder.
+- Pair it with Button, which shows its own spinner through the loading prop, useOffscreenLoops near the app root to pause off-screen loops, and EmptyState for a loading panel.
+
+
+### Frequently asked questions
+
+#### How do I add a loading spinner in React with SheenUI?
+
+Render Spinner. Choose size from xs at 12px to xl at 48px, with md at 24px as the default, and tone from accent, current or muted. It is a role status live region with a hidden Loading label, so mounting it announces Loading politely. Remove it when the work finishes.
+
+#### How do I translate the spinner label?
+
+Pass labels with a loading string, for example labels={{ loading: "Chargement" }}. That text is what a screen reader says and what showLabel prints. The default is Loading, and the partial object you pass is merged over the English defaults.
+
+#### What happens with reduced motion?
+
+The arc stops turning and shows as a static arc on its track, with the same Loading label for screen readers. Normally it turns once a second using a CSS rotation transform. The track keeps 3:1 contrast and forced colors draw it in CanvasText.
+
+#### Should the spinner go inside a button?
+
+Put it next to the content it replaces, or inside a button that has aria-busy. If you use SheenUI Button, set its loading prop instead, which shows the spinner, ignores clicks and sets aria-busy for you, so you do not need to compose the pieces by hand.
+
+
+### Related pages
+
+- [Progress](https://lokendra-builds.github.io/sheenui/components/progress)
+- [Skeleton](https://lokendra-builds.github.io/sheenui/components/skeleton)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Tabs](https://lokendra-builds.github.io/sheenui/components/tabs)
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Animated Tabs for React with Sliding Pill
+
+URL: https://lokendra-builds.github.io/sheenui/components/tabs
+Sidebar name: Tabs
+
+Animated React tabs: a glass pill slides to the active tab, arrow keys move between tabs and long tab lists scroll. Base UI Tabs, Tailwind CSS v4, MIT.
+
+What it is: Animated tabs for React are a Base UI tab list where a glass pill slides to the active tab, driven by the indicator variables, with full arrow-key support.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/tabs.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Tabs
+
+Files to copy from `theme/src/`:
+
+- `components/tabs/`
+- `hooks/{use-direction.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: tabs. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| Tabs value / defaultValue | string | optional, no default | Sets the active tab (controlled or uncontrolled). |
+| Tabs onValueChange | (value) => void | optional, no default | Called when the active tab changes. |
+| TabsList className | string | optional, no default | Styles the glass track. Other props (aria-label, activateOnFocus, ...) go to the tablist itself. |
+| TabsList activateOnFocus | boolean | false | Activate tabs as arrow keys move focus (otherwise Enter / Space). |
+| TabsList morph | boolean | false | Tabs with an icon collapse to just the icon; the active tab grows to show its label. |
+| TabsTab value | string | optional, no default | Matches a TabsPanel value. |
+| TabsTab icon | ReactNode | optional, no default | A decorative glyph before the label (aria-hidden). With morph on the list, the label shows only while the tab is active. |
+| TabsTab disabled | boolean | false | Disables this tab so it cannot be selected. |
+| TabsPanel value | string | optional, no default | Shown when its tab is active. |
+| Tabs ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example orientation, style, className, render). |
+| TabsList ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style, render, loopFocus). |
+| TabsTab ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style, className, render, nativeButton). |
+| TabsPanel ...props | Base UI props | optional, no default | The rest is passed to the underlying Base UI part (for example style, className, render, keepMounted). |
+
+### Example 1 of 3: Basic
+
+Workspace stats and recent activity.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+
+const panels = [
+  ["overview", "Overview", "Workspace stats and recent activity."],
+  ["projects", "Projects", "Milestones, owners and deadlines."],
+  ["settings", "Settings", "Profile, billing and preferences."],
+] as const;
+
+export function Example() {
+  return (
+    <Tabs defaultValue="overview" className="w-full max-w-md">
+      <TabsList>
+        {panels.map(([value, label]) => (
+          <TabsTab key={value} value={value}>
+            {label}
+          </TabsTab>
+        ))}
+      </TabsList>
+      {panels.map(([value, label, body]) => (
+        <TabsPanel key={value} value={value}>
+          <GlassCard level={2} className="p-5">
+            <h3 className="font-semibold">{label}</h3>
+            <p className="mt-1 text-sm text-sheen-fg-muted">{body}</p>
+          </GlassCard>
+        </TabsPanel>
+      ))}
+    </Tabs>
+  );
+}
+```
+
+### Example 2 of 3: More tabs than room
+
+When the tabs don't fit, the track scrolls sideways instead of clipping: swipe or shift-scroll it, and tabs snap into place. The edges fade only where more tabs are hiding, and choosing a tab (or arrowing to it) scrolls it fully into view. The pill stays on its tab while the track scrolls.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+
+const manyTabs = ["Overview", "Projects", "Members", "Billing", "Integrations", "Security", "Settings"];
+
+export function Example() {
+  // Nothing to configure: TabsList scrolls on its own when it overflows.
+
+  return (
+    <Tabs defaultValue="billing" className="w-full max-w-xs">
+      <TabsList aria-label="Workspace">
+        {manyTabs.map((label) => (
+          <TabsTab key={label} value={label.toLowerCase()}>
+            {label}
+          </TabsTab>
+        ))}
+      </TabsList>
+      {manyTabs.map((label) => (
+        <TabsPanel key={label} value={label.toLowerCase()}>
+          <GlassCard level={2} className="p-5">
+            <h3 className="font-semibold">{label}</h3>
+            <p className="mt-1 text-sm text-sheen-fg-muted">The {label.toLowerCase()} panel.</p>
+          </GlassCard>
+        </TabsPanel>
+      ))}
+    </Tabs>
+  );
+}
+```
+
+### Example 3 of 3: Morphing tabs
+
+With morph on TabsList, tabs that carry an icon collapse to just the icon, and the active tab grows to reveal its label as the pill glides over. Tabs without an icon keep their label.
+
+```tsx
+import { Folder as FolderIcon, House as HomeIcon, Settings as GearIcon } from "lucide-react";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/sheenui/tabs/tabs";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Tabs, TabsList, TabsPanel, TabsTab } from "@sheenui/theme";
+
+const panels = [
+  ["overview", "Overview", "Workspace stats and recent activity."],
+  ["projects", "Projects", "Milestones, owners and deadlines."],
+  ["settings", "Settings", "Profile, billing and preferences."],
+] as const;
+
+export function Example() {
+  return (
+    <Tabs defaultValue="overview" className="w-full max-w-md">
+      <TabsList morph aria-label="Workspace">
+        <TabsTab value="overview" icon={<HomeIcon />}>
+          Overview
+        </TabsTab>
+        <TabsTab value="projects" icon={<FolderIcon />}>
+          Projects
+        </TabsTab>
+        <TabsTab value="settings" icon={<GearIcon />}>
+          Settings
+        </TabsTab>
+      </TabsList>
+      {panels.map(([value, label, body]) => (
+        <TabsPanel key={value} value={value}>
+          <GlassCard level={2} className="p-5">
+            <h3 className="font-semibold">{label}</h3>
+            <p className="mt-1 text-sm text-sheen-fg-muted">{body}</p>
+          </GlassCard>
+        </TabsPanel>
+      ))}
+    </Tabs>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Enter the tab list once (on the active tab); the next Tab moves to the panel. |
+| Arrow Left / Arrow Right | Move focus between tabs (Arrow Up / Down when vertical). |
+| Home / End | Jump to the first or last tab. |
+| Enter / Space | Activate the focused tab (set activateOnFocus on TabsList to activate as focus moves). |
+
+### Accessibility
+
+- role="tablist", tab and tabpanel with aria-selected and aria-controls from Base UI; name the list with aria-label.
+- When the tabs do not fit, the list scrolls sideways and a focused tab is scrolled into view.
+- The gliding pill is decorative: the active tab is announced through aria-selected. Under reduced motion the pill jumps instead of sliding.
+
+### When to use Tabs
+
+- Use Tabs as a React tabs component with a sliding indicator for a settings page with Profile, Billing and Security sections, where related panels share one place and the sliding glass pill shows the current section.
+- Use it for a product page with Overview, Specs and Reviews, keeping a panel mounted through keepMounted when it holds state such as a half-filled form.
+- Use activateOnFocus on TabsList when selection should follow keyboard focus, and the controlled value with onValueChange when the active tab should live in app state or the URL.
+- Skip it when the choice changes a value, not a panel, where SegmentedControl is lighter, or when the links navigate to separate pages, where VerticalNav or Navbar fit better.
+- Pair it with GlassCard for the panel content, Badge for counts inside a tab label, and Select on narrow screens when you have more sections than fit.
+
+
+### Frequently asked questions
+
+#### How do I build animated tabs in React with SheenUI?
+
+Compose Tabs with TabsList, TabsTab and TabsPanel. Give each TabsTab and TabsPanel the same value, and use defaultValue, or value with onValueChange, to control it. The pill slides through Base UI CSS variables, a translate transition on the glass track, and jumps instead of sliding under reduced motion.
+
+#### Which keys work on the tab list?
+
+Tab enters the list once, on the active tab, then moves on to the panel. Left and Right arrows move between tabs, Up and Down when vertical, Home and End jump to the ends, and Enter or Space activates the focused tab. The panel itself is focusable so scrollable content stays reachable.
+
+#### What happens when the tabs do not fit?
+
+The list scrolls sideways instead of clipping. The scrollbar is hidden, tabs snap into place, the edges fade where more is hidden, and the active tab scrolls into view whenever it changes. Name the list with aria-label when the page does not already name it.
+
+#### Are inactive panels kept in the DOM?
+
+No, inactive panels are hidden, and the leaving panel is removed at once so quick switching never shows two panels. Add keepMounted to a TabsPanel to keep it rendered. The entering panel rises 6px using a transform only; with reduced motion it simply appears.
+
+
+### Related pages
+
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip)
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert)
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar)
+
+#### Guides that cover it
+
+- [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks)
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+- [Framer Motion Is Now Motion](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion)
+- [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Toast Notifications: Stack & Swipe
+
+URL: https://lokendra-builds.github.io/sheenui/components/toast
+Sidebar name: Toast
+
+Glass React toast notifications that stack, fan out on hover and swipe away, in any corner. Screen readers announce them. Motion + Tailwind v4, MIT.
+
+What it is: A React toast is a glass notification that stacks, fans out on hover and can be swiped away, announced automatically to screen readers.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Toast
+
+Files to copy from `theme/src/`:
+
+- `components/toast/`
+- `components/spinner/`
+- `hooks/{use-direction.ts, use-media-query.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: toast. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ToastProvider, useToast } from "@/components/sheenui/toast/toast";
+import { Toaster } from "@/components/sheenui/toast/toaster";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Toaster, ToastProvider, useToast } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| viewportReady | boolean | true | Set to false while the Toaster is lazy-loaded: toasts raised meanwhile are held (their timer has not started) and shown, in order, once this turns true, which is when the Toaster has mounted. |
+| onViewportNeeded | (() => void) | undefined | Called when a toast is held because the viewport is not ready, so the app can start loading the Toaster. |
+| position | ToastPositionProp | "top-right" | Where the stack sits. Top positions slide in from above and stack downwards; bottom positions slide up and stack upwards. On phones every position spans the screen width (minus 16px gutters), so only top / bottom matters there. "top-left" and the other left / right names are physical; "top-start", "top-end", "bottom-start" and "bottom-end" follow the text direction (start is the left corner in ltr, the right corner in rtl). |
+| className | string | optional, no default | Extra classes for the viewport (the fixed element that holds the stack). |
+| container | HTMLElement \| null | the page (document.body, fixed to the screen) | Render the stack inside this element instead of the page: the viewport turns absolute and sits in the corner of the container (give it position: relative), so a demo or a panel can host its own toasts next to what triggers them. |
+| onlyPositioned | boolean | false | Show only toasts that were given this position option (a second Toaster for per-toast positions). |
+| labels | Partial<ToasterLabels> | defaultToasterLabels | Visible-to-assistive-tech text of the toasts. Translate it here; dismiss is the accessible name of each toast's × button. Every other string, for translation: labels={{ dismiss: "…" }}; omitted keys keep the English of defaultToasterLabels. All 4 keys of ToasterLabels are listed in the key table under the props table. |
+| ToastProvider timeout | number (ms) | 5000 | How long a toast stays up. 0 keeps it until dismissed. |
+| ToastProvider limit | number | 3 | How many toasts show at once; older ones are hidden, not dropped. |
+| <Toaster /> | component | optional, no default | Renders the stack. Place it once, inside the provider. |
+| useToast() | { info, success, warning, error, loading, promise, update, dismiss } | optional, no default | info / success / warning / error / loading take (title, description?, options?) and return the toast id. |
+| options | ToastOptions | optional, no default | id, duration (ms; 0 or persistent keeps it; a toast with an action stays until dismissed), action ({ label, onClick }), position (per toast, shown by a Toaster with onlyPositioned), priority, onClose. |
+| promise | (promise, { loading, success, error }, options?) => Promise | optional, no default | One toast that shows loading, then success or error; success and error may be functions of the result. |
+| update | (id: string, changes: ToastUpdate) => void | optional, no default | Change a showing toast: type, title, description, duration, action. |
+| dismiss | (id?: string) => void | optional, no default | Close one toast by id, or all of them when called without one. |
+
+### Example 1 of 3: Position
+
+Pick an edge and a side, then stack a few. The newest toast sits at the edge and older ones peek out behind it; hover the stack (or press F6) to fan it out. Swipe a toast up or right to dismiss it.
+
+```tsx
+import { ToastProvider, useToast } from "@/components/sheenui/toast/toast";
+import { Toaster } from "@/components/sheenui/toast/toaster";
+// Package build (after the first npm release, or a packed tarball): import { ToastProvider, Toaster, useToast } from "@sheenui/theme";
+
+function App() {
+  const toast = useToast();
+  return <button onClick={() => toast.info("Hello from the toast stack")}>Show a toast</button>;
+}
+
+// Once, at the app root (top-right is the default):
+export function Root() {
+  return (
+    <ToastProvider>
+      <App />
+      <Toaster />
+    </ToastProvider>
+  );
+}
+```
+
+### Example 2 of 3: Types
+
+Success, error and info each get their own icon color. Fire a few in a row to see them stack.
+
+```tsx
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { useToast } from "@sheenui/theme";
+
+const toast = useToast();
+toast.success("Changes saved", "Your profile is up to date.");
+toast.error("Upload failed", "The file is larger than 10 MB.");
+toast.info("New version available");
+toast.dismiss(); // close them all
+```
+
+### Example 3 of 3: Promise, action, persistent and update
+
+toast.promise shows one toast that turns into success or error. An action adds a button such as Undo. persistent keeps a toast until it is dismissed, and update edits one by id.
+
+```tsx
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { useToast } from "@sheenui/theme";
+
+export function Example() {
+  const toast = useToast();
+
+  const save = () =>
+    toast.promise(new Promise<string>((resolve) => setTimeout(() => resolve("report.pdf"), 1500)), {
+      loading: "Saving report…",
+      success: (name) => `${name} saved`,
+      error: "Could not save",
+    });
+
+  const remove = () =>
+    toast.warning("Message deleted", undefined, { action: { label: "Undo", onClick: () => toast.success("Restored") } });
+
+  const upload = () => {
+    const id = toast.loading("Uploading…", "0 of 3 files");
+    setTimeout(() => toast.update(id, { type: "success", title: "Upload complete", description: "3 of 3 files", duration: 4000 }), 1800);
+  };
+
+  return (
+    <>
+      <button onClick={save}>Promise</button>
+      <button onClick={remove}>Action</button>
+      <button onClick={upload}>Update by id</button>
+      <button onClick={() => toast.info("Stays until closed", undefined, { persistent: true })}>Persistent</button>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| F6 | Move focus to the toast region (announced once with every toast that has an action). Tab then reaches each Action and Dismiss button. |
+| Tab | Reach each toast's Dismiss button while the stack is open. |
+| Enter / Space | Dismiss the focused toast. |
+| Escape | Dismiss the focused toast. |
+
+### Accessibility
+
+- Toasts are announced through a polite live region (errors too) and never steal focus. A toast with an action adds a hidden line to that announcement: "Press F6, then Tab to reach Undo."
+- A toast with an action stays until it is dismissed (WCAG 2.2.1); an explicit duration on it is raised to at least 20 s. Timers also pause while a toast is hovered or focused. Still offer the same action somewhere in the page (an Undo in the list, say).
+- The stack expands, and each toast pauses its timer, while it is hovered or holds focus, so there is time to read.
+- Every action in a toast needs a visible label; swipe towards the nearest edge dismisses it on touch.
+
+### All exports on this page
+
+- ToastProvider — Glass toasts that stack, expand on hover and can be swiped away.
+- Toaster — The fixed viewport that renders the toast stack.
+- defaultToasterLabels — English defaults of ToasterLabels.
+- useToast — const toast = useToast() returns the functions that show toasts.
+
+
+### When to use Toast
+
+- Use Toast as an animated toast in React for short, non-blocking feedback such as Saved, Copied to clipboard or Invite sent, where the person can keep working and the message needs no answer. If you are comparing a sonner alternative, SheenUI's Toast is called through the useToast hook and styled with the same glass tokens as the rest of the kit.
+- Use toast.error for a failed background request, such as a sync that did not finish, with a description line explaining what to try next.
+- Use position on Toaster for bottom-center on a mobile-first app or top-right on a desktop dashboard, remembering that on phones every position spans the screen width.
+- Skip it when the message must stay visible next to a form or needs a decision. Use Alert for persistent inline messages and Dialog or AlertDialog when the person must answer.
+- Pair it with Button actions that call useToast, Switch and Checkbox settings that save instantly, and DataTable bulk actions that finish in the background.
+
+
+### Choosing between SheenUI Toast and Sonner
+
+Sonner is a popular React toast library built around one global toast() call. SheenUI's toast is built on Base UI's Toast: you wrap the app in ToastProvider, render one Toaster and call useToast() for toast.success, toast.info, toast.error and toast.dismiss. Toasts stack, expand on hover or focus, can be swiped away, pause their timer while hovered or focused and fade under reduced motion. Choose Sonner if you want a global function and nothing to provide; choose this one if you want glass styling, Base UI's accessibility model and the source in your own repository.
+
+
+### Frequently asked questions
+
+#### How do I show a toast notification in React with SheenUI?
+
+Wrap your app in ToastProvider and render one Toaster inside it. In any component below, call const toast = useToast(), then toast.success(title, description), toast.info or toast.error. Titles and descriptions are React nodes, and toast.dismiss(id) closes one toast, or all of them with no id.
+
+#### How does keyboard and screen reader support work?
+
+Toasts are announced politely through a live region and never steal focus. F6 moves focus to the viewport in Base UI, Tab reaches each Dismiss button, and Enter, Space or Escape closes the focused toast. The timer pauses while a toast is hovered or focused, giving time to read.
+
+#### Can I swipe a toast away?
+
+Yes. Swipe toward the nearest edge on touch; on phones either side dismisses. The exit speed follows the swipe velocity, clamped to a range of 60 to 400 ms. Under reduced motion toasts fade only and the stack rearranges without sliding, though swiping still tracks your finger.
+
+#### How do I translate the toast Dismiss button?
+
+Pass labels to Toaster with a dismiss string, such as labels={{ dismiss: "Fermer" }}. The default is Dismiss. The region itself is named by the label prop, Toast notifications by default (so it never clashes with a Notifications panel), so give each stack its own name if a page renders more than one.
+
+
+### Related pages
+
+- [Alert dialog](https://lokendra-builds.github.io/sheenui/overlays/alert-dialog)
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center)
+- [Tooltip](https://lokendra-builds.github.io/sheenui/components/tooltip)
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert)
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar)
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+- [Framer Motion Is Now Motion](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Tooltip Component with Glass Style
+
+URL: https://lokendra-builds.github.io/sheenui/components/tooltip
+Sidebar name: Tooltip
+
+A small glass tooltip for React that opens on hover and keyboard focus, with instant hand-off between tooltips. Base UI, Tailwind CSS v4, free, MIT.
+
+What it is: A glass React tooltip that appears on hover and keyboard focus; inside a provider, moving between tooltips is instant. Use Tooltip as a glass tooltip to name an icon-only toolbar button on hover or focus, such as Bold or Export, adding the shortcut in the text when there is one.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/tooltip.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Tooltip
+
+Files to copy from `theme/src/`:
+
+- `components/tooltip/`
+- `hooks/use-controllable.ts`
+- `lib/{cn.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: tooltip. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Tooltip, TooltipProvider } from "@/components/sheenui/tooltip/tooltip";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Tooltip, TooltipProvider } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| content | ReactNode | required | What the tooltip says. |
+| children | ReactElement<unknown, string \| JSXElementConstructor<any>> | required | The element that shows the tooltip on hover, keyboard focus or (touch) a long press. Must accept a ref (a native element or a SheenUI component). |
+| side | "top" \| "bottom" \| "left" \| "right" | "top" | Which side of the trigger it opens on. It flips when there is no room. |
+| align | "center" \| "end" \| "start" | "center" | Alignment along that side: "start", "center" or "end". |
+| delay | number | 300 | Sets the delay before showing, in ms. |
+| open | boolean | optional, no default | Open state (controlled). Pair with onOpenChange. Leave it out to let hover, focus and touch decide. |
+| defaultOpen | boolean | false | Starting open state when uncontrolled. |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the tooltip wants to open or close (hover, focus, Escape, touch hold). |
+| disabled | boolean | false | Never show the tooltip (the trigger still works). |
+| className | string | optional, no default | Adds extra classes to the tooltip bubble. |
+
+### Example 1 of 2: Icon toolbar
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Tooltip, TooltipProvider } from "@/components/sheenui/tooltip/tooltip";
+// Package build (after the first npm release, or a packed tarball): import { Button, Tooltip, TooltipProvider } from "@sheenui/theme";
+import { Bold as BoldIcon, Italic as ItalicIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Tooltip content="Bold">
+        <Button variant="glass" size="icon" aria-label="Bold"><BoldIcon /></Button>
+      </Tooltip>
+      <Tooltip content="Italic" side="bottom">
+        <Button variant="glass" size="icon" aria-label="Italic"><ItalicIcon /></Button>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+```
+
+### Example 2 of 2: Sides and delay
+
+side picks the edge it opens on. delay is how long the pointer must rest before it opens; 0 shows it at once. A TooltipProvider makes moving between tooltips instant.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Tooltip, TooltipProvider } from "@/components/sheenui/tooltip/tooltip";
+// Package build (after the first npm release, or a packed tarball): import { Button, Tooltip, TooltipProvider } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Tooltip content="Opens above (the default)">
+        <Button variant="glass">Top</Button>
+      </Tooltip>
+      <Tooltip content="Opens to the right" side="right">
+        <Button variant="glass">Right</Button>
+      </Tooltip>
+      <Tooltip content="Opens at once" delay={0}>
+        <Button variant="glass">No delay</Button>
+      </Tooltip>
+      <Tooltip content="Waits a full second" delay={1000} side="bottom">
+        <Button variant="glass">Slow</Button>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Focusing the trigger shows the tooltip; leaving it hides it. |
+| Escape | Dismiss the tooltip while keeping focus on the trigger. |
+
+### Accessibility
+
+- Tooltip adds no tab stop of its own; the trigger keeps its own. The bubble has role=“tooltip” and, while it is open, the trigger points to it with aria-describedby (added to any description it already has), so the text is announced as its description. It describes, it does not name: an icon-only trigger still needs its own aria-label.
+- Keep it to a short label. Anything interactive belongs in a Popover; essential text must not live only in a tooltip.
+- The bubble stays open while the pointer moves onto it (so it can be read while magnified) but holds no controls. On touch screens a long press (about half a second) shows it for a couple of seconds, and lifting the finger does not activate the trigger; a plain tap never shows it, so never hide the only label of a control in a tooltip. Under reduced motion it only fades.
+
+### When to use Tooltip
+
+- Use Tooltip to label icon-only buttons in an editor toolbar (Bold, Italic, Export) on hover and on keyboard focus, and put the shortcut, such as Ctrl+B, beside the name.
+- Use it for short supplementary hints on a form, like why a field wants a particular format, where the hint is useful but nobody is blocked without it.
+- Use TooltipProvider once near the app root so moving between neighboring triggers shows the next tip at once, and use delay to tune the 300ms default.
+- Skip it when the content is essential, long or interactive. Use Popover for controls, HoverCard for a rich preview, and plain visible text when a label must always be readable.
+- Pair it with Button using size icon, Kbd to show shortcuts inside the tip, and Avatar or Badge when a name or status needs a short explanation.
+
+
+### Frequently asked questions
+
+#### How do I add a react tooltip with SheenUI?
+
+Wrap a single element that accepts a ref in Tooltip and pass content as the text. Choose side, which defaults to top and flips near the viewport edge, align, and delay in ms, 300 by default. Use open with onOpenChange to control it, or disabled to switch it off.
+
+#### Does the tooltip work with the keyboard and touch?
+
+It shows when the trigger gets focus and hides on blur or Escape, and the trigger keeps its own tab stop. On touch, a long press of about half a second shows it for a couple of seconds, and lifting the finger does not activate the trigger.
+
+#### Is the tooltip text announced by screen readers?
+
+The bubble has role tooltip and, while open, the trigger points to it with aria-describedby, merged with any description the trigger already has. It describes but does not name, so an icon-only button still needs its own aria-label. Never hide a control's only label inside a tooltip.
+
+#### Why use TooltipProvider?
+
+It lets people move from one trigger to the next and see the next tooltip instantly instead of waiting out the delay again. Place it once near the app root. It renders no element and adds no tab stops, and each Tooltip inside keeps its own behavior.
+
+
+### Related pages
+
+- [Alert](https://lokendra-builds.github.io/sheenui/components/alert)
+- [Avatar](https://lokendra-builds.github.io/sheenui/components/avatar)
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Button group](https://lokendra-builds.github.io/sheenui/components/button-group)
+- [Checkbox](https://lokendra-builds.github.io/sheenui/components/checkbox)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

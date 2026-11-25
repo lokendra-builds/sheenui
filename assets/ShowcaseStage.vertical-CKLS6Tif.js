@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),e(`working`),t({page:`inbox`}),await n(1200),t({unread:0}),await n(800),t({page:`projects`}),e(`idle`),await n(1500),e(`idle`)};export{e as default};

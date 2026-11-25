@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1100),t({phase:1}),e(`error`),await n(1500),t({phase:2}),e(`success`),await n(1200)};export{e as default};

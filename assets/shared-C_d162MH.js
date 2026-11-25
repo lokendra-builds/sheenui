@@ -1,0 +1,1 @@
+import{n as e}from"./demo-utils-DKtmFFFD.js";import{t}from"./button-8i4LQrEk.js";import{t as n}from"./vendor-react-D30i__oY.js";var r=n(),i=[`Nov`,`Dec`,`Jan`,`Feb`,`Mar`,`Apr`,`May`,`Jun`,`Jul`,`Aug`,`Sep`,`Oct`];function a({onClick:e,label:n=`Shuffle data`}){return(0,r.jsx)(t,{variant:`glass`,size:`sm`,onClick:e,children:n})}var o=t=>e(t*7919+13);export{i as n,o as r,a as t};

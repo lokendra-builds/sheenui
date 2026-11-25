@@ -1,0 +1,1 @@
+function e(){document.documentElement.dataset.hydrated=`true`}function t(e=1e3){return typeof window>`u`?Promise.resolve():new Promise(t=>{typeof window.requestIdleCallback==`function`?window.requestIdleCallback(()=>t(),{timeout:e}):window.setTimeout(t,200)})}export{t as n,e as t};

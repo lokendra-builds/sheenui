@@ -1,0 +1,2295 @@
+# SheenUI: Blocks (part 1 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Free React & Tailwind Blocks in Glassmorphism
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/
+Sidebar name: All blocks
+
+Copy-paste React blocks in glassmorphism: login, sign-up, OTP, checkout, pricing, AI chat, dashboards and settings. Tailwind CSS v4 + Motion. Free, MIT.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > All blocks
+
+React Tailwind blocks in glass: login, pricing, checkout and AI chat, ready to copy.
+
+### Blocks (20)
+
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login): A React glass login page, a glassmorphism login form with validation, a password reveal, a loading state and social sign-in buttons, built from SheenUI's Button, GlassCard and Input.
+- [Lamp login](https://lokendra-builds.github.io/sheenui/blocks/lamp-login): A dark stage with a pull cord: pull it and a warm light cone reveals a glass sign-in card. The card is always there for keyboards and screen readers.
+- [OTP verification](https://lokendra-builds.github.io/sheenui/blocks/otp-verification): A glass OTP verification page for React that submits on the last digit, shakes on a wrong code and counts down to resend.
+- [Payment checkout](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout): A glass React checkout form for card or UPI payments, with a live card preview, input formatting and an order summary.
+- [Dashboard stats](https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats): Dashboard stat cards for React are glass KPI cards whose numbers count up, sparklines draw in and periods switch with a sliding pill.
+- [AI chat](https://lokendra-builds.github.io/sheenui/blocks/ai-chat): An AI chat UI for React with replies that stream in word by word, a “thinking” shimmer, Markdown with code blocks and a model picker.
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page): A split-screen sign-up page for React: an animated brand panel beside a glass form with social sign-up and a live password-strength meter.
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid): A glassmorphism bento grid for React whose cells run live mini-demos built from real SheenUI components.
+- [Chat app](https://lokendra-builds.github.io/sheenui/blocks/chat-app): A complete React chat app template: the chat list and the open chat side by side, stacking into list then chat on narrow screens.
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center): A React notification center: a bell with a live unread count that opens a glass inbox with tabs, day groups and inline actions.
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing): A glass React pricing table with a monthly/yearly toggle, prices that roll like an odometer and a full comparison table.
+- [Settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page): A complete React settings page with a scroll-spy side nav, profile upload, notification switches and a glass save bar.
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section): This React hero section is a landing-page block that sets a display headline, a lede and calls to action over any backdrop, with a glass frame for your product shot and a logo strip.
+- [Feature grid](https://lokendra-builds.github.io/sheenui/blocks/feature-grid): This React feature grid is a marketing block that lays icon, title and text cards out in two to four columns by its own width, with one optional highlight card that is tinted, lit and spans two columns.
+- [Testimonials](https://lokendra-builds.github.io/sheenui/blocks/testimonials): These React testimonials are a social-proof block that shows customer quotes on glass cards, as a grid or as a marquee in one or two rows that rests on hover, focus, off-screen and with a Pause button.
+- [FAQ section](https://lokendra-builds.github.io/sheenui/blocks/faq-section): This React FAQ section is a block that shows questions in a glass accordion with find-in-page, and a faqPageJsonLd helper that returns the schema.org FAQPage object for the same questions.
+- [Contact form](https://lokendra-builds.github.io/sheenui/blocks/contact-form): This React contact form is a block with name, email and message fields, inline validation, a loading button and a success seal that lights green, working with a plain onSubmit or with react-hook-form.
+- [Site footer](https://lokendra-builds.github.io/sheenui/blocks/site-footer): This React site footer is a block on glass with link columns that are navigation landmarks, a newsletter field with validation, social icon links and a legal row.
+- [404 page](https://lokendra-builds.github.io/sheenui/blocks/not-found-page): This React 404 page is a not-found block with a large code whose zeros are glass rings, a plain explanation, a slot for your search field, a way back and suggested links.
+- [Announcement banner](https://lokendra-builds.github.io/sheenui/blocks/announcement-banner): This React announcement banner is a dismissible top bar on glass with a tone, a link and static copy, which reports the dismissal through a callback instead of storing it.
+
+
+### About blocks
+
+#### Overview
+
+Blocks are complete sections you can paste into an app and ship, from a glassy login page to a full dashboard. Each of the 20 blocks below is built only from SheenUI components, so spacing, glass levels and motion already match, which makes them free React UI blocks under the MIT licence and ready-made landing page sections for Tailwind. You get a live demo, the code, the keyboard notes and the list of files to copy, and the same React and Tailwind source works in Vite, Next.js and any other React 19 setup.
+
+Start with authentication: a [glassmorphism login form](https://lokendra-builds.github.io/sheenui/blocks/glass-login), a split-screen [sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page) and an [OTP verification page](https://lokendra-builds.github.io/sheenui/blocks/otp-verification). For selling, there is a [pricing table](https://lokendra-builds.github.io/sheenui/blocks/pricing) and a [checkout form](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout). For product screens, see the [AI chat UI](https://lokendra-builds.github.io/sheenui/blocks/ai-chat), the [chat app](https://lokendra-builds.github.io/sheenui/blocks/chat-app), a [settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page), a [notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center) and a [bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid).
+
+Looking for full analytics screens? The [glassmorphism dashboard templates](https://lokendra-builds.github.io/sheenui/dashboards/) have their own page, with five complete dashboards that use the [animated React charts](https://lokendra-builds.github.io/sheenui/charts/). If you would rather assemble your own, browse the [glass UI components](https://lokendra-builds.github.io/sheenui/components/) they are made from, and read the [glassmorphism React tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial) to see how the surface works. To add a block to your app, follow the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) and the [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+#### Frequently asked questions
+
+#### What is a block?
+
+A block is a ready-made section or screen, such as a login form, a pricing table or an AI chat, assembled only from SheenUI components so it matches the rest of your interface.
+
+#### How do I add a block to my project?
+
+Every block page lists its files to copy, and the registry installs it with one shadcn command. The installation page shows the steps.
+
+#### Can I change the blocks?
+
+Yes. They are plain React source in your repository, with Tailwind classes you can edit; nothing is hidden in a package.
+
+
+## React Glass Login Page: Glassmorphism Form
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/glass-login
+Sidebar name: Glass login
+
+A glassmorphism login form for React and Tailwind CSS v4: validation, password reveal, loading state and social buttons. Accessible, free, copy-paste.
+
+What it is: A glassmorphism login form for React with validation, a password reveal, a loading state and social sign-in buttons, built from SheenUI's Button, GlassCard and Input.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-login.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Glass login
+
+Files to copy from `theme/src/`:
+
+- `blocks/{glass-login.tsx, icons.tsx}`
+- `components/button/`
+- `components/glass-card/`
+- `components/input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: glass-login. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassLogin } from "@/components/sheenui/blocks/glass-login";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassLogin } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | "Welcome back" | Sets the heading (ReactNode, default "Welcome back"). |
+| subtitle | ReactNode | "Sign in to continue to your workspace." | The line under the heading (ReactNode, default "Sign in to continue to your workspace."). |
+| onSubmit | ((values: GlassLoginValues) => void \| Promise<void>) | optional, no default | Called with the form values. Return a promise to show a loading state; throw to show an error. |
+| onSocial | ((provider: "github" \| "google") => void) | optional, no default | Show "Continue with GitHub / Google" buttons. Without it the social row is hidden. |
+| forgotHref | string | "#" | Target of the "Forgot password?" link (string, default "#"). |
+| signUpHref | string \| null | "#" | Target of the sign-up link (string \| null, default "#"). Hide the sign-up line by passing null. |
+| minPasswordLength | number | 8 | Minimum password length checked before submitting (number, default 8). |
+| labels | Partial<GlassLoginLabels> | defaultGlassLoginLabels | Every other string, for translation: labels={{ email: "…" }}; omitted keys keep the English of defaultGlassLoginLabels. All 15 keys of GlassLoginLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Level of the title heading (1 to 6, default 2); set it to fit the page's outline. "none" renders a paragraph with no heading role (for an example). |
+| className | string | optional, no default | Adds extra classes to the outer glass card (string). |
+
+### Example 1 of 2: Sign in
+
+Try submitting empty, then with any email and an 8+ character password.
+
+```tsx
+import { GlassLogin } from "@/components/sheenui/blocks/glass-login";
+// Package build (after the first npm release, or a packed tarball): import { GlassLogin } from "@sheenui/theme";
+
+// Your auth calls; signIn throws on failure so the card shows the error
+async function signIn(email: string, password: string) {
+  const res = await fetch("/api/sign-in", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Wrong email or password");
+}
+
+function startOAuth(provider: "github" | "google") {
+  window.location.assign("/auth/" + provider);
+}
+
+export function Example() {
+  return (
+    <GlassLogin
+      onSubmit={async ({ email, password }) => {
+        await signIn(email, password);
+      }}
+      onSocial={(provider) => startOAuth(provider)}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Your copy, a stricter rule, a failing sign-in
+
+Change the heading and the line under it, require 12 characters, hide the sign-up link and leave out the social buttons (they only show when onSocial is given). This one always fails, so you can see the error.
+
+```tsx
+import { GlassLogin } from "@/components/sheenui/blocks/glass-login";
+// Package build (after the first npm release, or a packed tarball): import { GlassLogin } from "@sheenui/theme";
+
+<GlassLogin
+  title="Sign in to Acme"
+  subtitle="Use your work email."
+  minPasswordLength={12}
+  signUpHref={null}
+  onSubmit={async () => {
+    throw new Error("Wrong email or password"); // the card shows the error and stays editable
+  }}
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Email, password, the reveal button, the forgot link, submit, the social buttons, then the sign-up link. |
+| Enter | Submit the form. |
+
+### Accessibility
+
+- A real <form> with noValidate and visible error text linked to its field (aria-describedby).
+- A failed check moves focus to the first invalid field once its message is linked, and the message is announced.
+- The reveal button has a state-aware name (“Show password” / “Hide password” by default).
+- Targets are at least 44 px on touch devices.
+
+### All exports on this page
+
+- GlassLogin — A sign-in card: email and password with show/hide, inline validation, a loading state, optional GitHub and Google buttons and a sign-up link.
+- defaultGlassLoginLabels — The English GlassLoginLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the glass login form
+
+- Use GlassLogin as a glassy login page for a SaaS dashboard, where one frosted card with email, password and a forgot-password link sits over an aurora or gradient background. Use it as a liquid glass login form when the sign-in screen sits over a SheenBackdrop.
+- Use it inside a modal or drawer when a signed-out visitor clicks a gated action, such as saving a design or posting a comment, and you want sign-in without leaving the page.
+- Use it for an internal admin tool that needs only email and password plus optional GitHub and Google buttons, with the built-in strings translated through the labels prop and the heading through title and subtitle.
+- Skip it when sign-up and sign-in share one screen with a brand panel and password-strength feedback; AuthSplit covers that layout, while GlassLogin only links out to a sign-up page.
+- Pair it with SheenBackdrop for the aurora behind the card, the Input component for any extra fields you add around it, and useSheenReducedMotion if you animate the page behind the card.
+
+
+### Frequently asked questions
+
+#### How do I build a glassmorphism login form in React with GlassLogin?
+
+Import GlassLogin from @sheenui/theme and pass onSubmit, which receives { email, password }. Return a promise to show the button loading state, or throw an Error to display its message under the form. Add onSocial(provider) to reveal the GitHub and Google buttons, which stay hidden without it.
+
+#### How does GlassLogin validate the email and password?
+
+It renders a real form with noValidate and runs its own checks on submit. A malformed email or a password shorter than minPasswordLength (default 8) shows visible error text linked with aria-describedby, and focus moves to the first invalid field. Change the messages through the labels prop, including the shortPassword function.
+
+#### Can I translate or rename the text in the login card?
+
+Yes, every user-facing string lives in GlassLoginLabels: field labels, the show and hide password names, the divider, the submit text and the error messages. Pass a partial labels object and it is merged over defaultGlassLoginLabels, so you only override the strings you change. title and subtitle accept any ReactNode.
+
+#### Does the login block work with Next.js and reduced motion?
+
+The file starts with "use client", so import it from a client component or a route that renders one. The loading state and hover fades use the shared motion tokens, and reduced motion and reduced transparency preferences are honored. Targets grow to 44 px on touch devices.
+
+
+### Related pages
+
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Button](https://lokendra-builds.github.io/sheenui/components/button)
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page)
+- [Lamp login](https://lokendra-builds.github.io/sheenui/blocks/lamp-login)
+- [OTP verification](https://lokendra-builds.github.io/sheenui/blocks/otp-verification)
+- [Payment checkout](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout)
+
+#### Guides that cover it
+
+- [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Lamp Login: Pull-Cord Glass Sign-In
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/lamp-login
+Sidebar name: Lamp login
+
+A React login screen on a dark stage: pull the lamp cord and a warm light cone reveals a glass sign-in card. Keyboard accessible. Tailwind v4, MIT.
+
+What it is: A dark stage with a pull cord: pull it and a warm light cone reveals a glass sign-in card. The card is always there for keyboards and screen readers.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/lamp-login.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Lamp login
+
+Files to copy from `theme/src/`:
+
+- `blocks/{lamp-login.tsx, glass-login.tsx, icons.tsx}`
+- `components/button/`
+- `components/glass-card/`
+- `components/input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, heading.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: lamp-login. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { LampLogin } from "@/components/sheenui/blocks/lamp-login";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { LampLogin } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| lit | boolean | optional, no default | Controls whether the light is on (boolean). Use with onLitChange; leave it out to let the block keep the state. |
+| defaultLit | boolean | false | The light's starting state when uncontrolled (boolean, default false; with reduced motion the light starts on). |
+| onLitChange | ((lit: boolean) => void) | optional, no default | Called when the light is switched by the cord, or by focus entering the card ((lit: boolean) => void). |
+| title | ReactNode | "Welcome back" | Sets the card heading (ReactNode, default "Welcome back"). |
+| subtitle | ReactNode | "Sign in to continue to your workspace." | The line under the heading (ReactNode, default "Sign in to continue to your workspace."). |
+| onSubmit | ((values: GlassLoginValues) => void \| Promise<void>) | optional, no default | Called with the form values. Return a promise to show a loading state; throw to show an error. |
+| onSocial | ((provider: "github" \| "google") => void) | optional, no default | Show "Continue with GitHub / Google" buttons. Without it the social row is hidden. |
+| forgotHref | string | "#" | Target of the "Forgot password?" link (string, default "#"). |
+| signUpHref | string \| null | "#" | Target of the sign-up link (string \| null, default "#"). Hide the sign-up line by passing null. |
+| minPasswordLength | number | 8 | Minimum password length checked before submitting (number, default 8). |
+| loginLabels | Partial<GlassLoginLabels> | defaultGlassLoginLabels | Every other string, for translation: loginLabels={{ email: "…" }}; omitted keys keep the English of defaultGlassLoginLabels. All 15 keys of GlassLoginLabels are listed in the key table under the props table. |
+| labels | Partial<LampLoginLabels> | defaultLampLoginLabels | Every other string, for translation: labels={{ cord: "…" }}; omitted keys keep the English of defaultLampLoginLabels. All 3 keys of LampLoginLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Level of the card heading (1 to 6). "none" renders a paragraph with no heading role (for an example). |
+| className | string | optional, no default | Adds extra classes to the stage (string). |
+
+### Example 1 of 2: Pull the cord
+
+Click the bead, press Enter or Space on it, or drag it down on a touch screen. Tabbing into the card also switches the light on. With reduced motion the light starts on.
+
+```tsx
+import { LampLogin } from "@/components/sheenui/blocks/lamp-login";
+// Package build (after the first npm release, or a packed tarball): import { LampLogin } from "@sheenui/theme";
+
+// Your call; throw to show the error under the form
+async function signIn(email: string, password: string) {
+  const res = await fetch("/api/sign-in", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error("Wrong email or password");
+}
+
+export function Example() {
+  return (
+    <LampLogin
+      onSubmit={async ({ email, password }) => {
+        await signIn(email, password);
+      }}
+    />
+  );
+}
+```
+
+### Example 2 of 2: Starts lit, with social buttons
+
+defaultLit starts with the light on; onLitChange reports every switch. onSocial and the other GlassLogin options pass straight through.
+
+```tsx
+import { LampLogin } from "@/components/sheenui/blocks/lamp-login";
+// Package build (after the first npm release, or a packed tarball): import { LampLogin } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <LampLogin
+      defaultLit
+      onLitChange={(lit) => console.log(lit ? "light on" : "light off")}
+      onSocial={(provider) => console.log(provider)}
+      title="Back in the studio"
+      subtitle="Sign in to pick up where you left off."
+      labels={{ cord: "Studio lamp" }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The cord first, then the card's fields, links and buttons in order. |
+| Enter / Space on the cord | Pull it: switch the light on or off. |
+| Drag the cord down | On touch: past about 24 px counts as a pull. |
+| Focus into the card | Switches the light on, so nobody types into the dark. |
+
+### Accessibility
+
+- The cord is a real toggle button named by labels.cord; its pressed state says whether the light is on. The hint under the lamp is text.
+- The card is always in the page and in tab order. The lamp, cone and dimming layer are aria-hidden: nothing is said by light alone.
+- The stage is forced dark, so the glass and its text keep at least 4.5:1 contrast whatever the page theme.
+- Reduced motion: the light starts on, the cord does not swing and the cone does not grow; pulling it still changes the light with a short fade.
+
+### All exports on this page
+
+- LampLogin — A sign-in card on a dark stage: a lamp with a pull cord.
+- defaultLampLoginLabels — The English LampLoginLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the lamp login form
+
+- Use LampLogin as an animated login page for a product that wants one memorable first impression: a dark stage, a lamp with a pull cord, and a sign-in card that the light reveals.
+- Use it for a portfolio, a game or a creative tool where the sign-in screen is part of the brand, and the form itself still needs real validation, a loading state and error messages.
+- Use lit, defaultLit and onLitChange when the surrounding page needs to know whether the light is on, for example to start the stage already lit after a failed sign-in.
+- Skip it for a plain admin sign-in where speed matters more than delight; GlassLogin is the same form without the stage.
+- Pair it with GlassLogin options such as onSocial and forgotHref, which it passes straight through, and with useSheenReducedMotion if you add motion of your own around it.
+
+
+### Frequently asked questions
+
+#### How do I build a pull-cord lamp login in React?
+
+Render LampLogin from @sheenui/theme with an onSubmit that receives { email, password }. Pulling the cord (click, Enter, Space, or a drag down on touch) switches the light on and reveals the card. Return a promise from onSubmit to show the loading state, or throw to show an error.
+
+#### Can keyboard and screen-reader users sign in without pulling the cord?
+
+Yes. The card is always in the page and in tab order; the light is only a look. The cord is a real toggle button named by labels.cord, and focus entering the card switches the light on, so nobody types into the dark.
+
+#### What happens with reduced motion?
+
+The light starts on, the cord does not swing and the cone does not grow. Pulling the cord still switches the light with a short fade.
+
+#### Can I translate the text?
+
+Yes. labels holds the cord name and the two hints, and loginLabels holds every string of the card (it is a GlassLogin). Pass partial objects and they are merged over the English defaults.
+
+
+### Related pages
+
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [OTP verification](https://lokendra-builds.github.io/sheenui/blocks/otp-verification)
+- [Payment checkout](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout)
+- [Dashboard stats](https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats)
+- [AI chat](https://lokendra-builds.github.io/sheenui/blocks/ai-chat)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## OTP Verification Page for React with Resend Timer
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/otp-verification
+Sidebar name: OTP verification
+
+A glass OTP verification page for React: auto-submit on the last digit, shake on a wrong code, success state and resend countdown. Tailwind v4, MIT.
+
+What it is: A glass OTP verification page for React that submits on the last digit, shakes on a wrong code and counts down to resend.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/otp-verification.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > OTP verification
+
+Files to copy from `theme/src/`:
+
+- `blocks/{otp-verification.tsx, icons.tsx}`
+- `components/button/`
+- `components/glass-card/`
+- `components/otp-input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: otp-verification. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { OtpVerification } from "@/components/sheenui/blocks/otp-verification";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { OtpVerification } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| destination | ReactNode | "your email" | Where the code was sent, shown in the description (ReactNode, default "your email"). |
+| length | number | 6 | Sets the number of digits (number, default 6). |
+| onVerify | (code: string) => boolean \| Promise<boolean> | required | Return true if the code is correct. Throwing counts as a wrong code. |
+| onResend | (() => void \| Promise<void>) | optional, no default | Called when the person asks for a new code. Without it the resend control still resets the field. |
+| onContinue | (() => void) | optional, no default | Shows a "Continue" button once the code is accepted. |
+| resendAfter | number | 30 | Seconds before "Resend" becomes available (number, default 30). |
+| autoFocus | boolean | true | Focus the first digit on mount (boolean, default true). Turn it off when the block is not the main task on the page. |
+| labels | Partial<OtpVerificationLabels> | defaultOtpVerificationLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultOtpVerificationLabels. All 15 keys of OtpVerificationLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Level of the title heading (1 to 6, default 2); set it to fit the page's outline. "none" renders a paragraph with no heading role (for an example). |
+| className | string | optional, no default | Adds extra classes to the outer glass card (string). |
+| variant | "default" \| "unlock" | "default" | "default" (the plain card) or "unlock" ("default" \| "unlock", default "default"): a padlock inside a progress ring that fills with every digit and spins while the code is checked. A right code closes the ring in green, opens the lock, bursts sparks, floods the card with light and shows a "Verified" badge; a wrong code rattles the lock and clears the digits. Reduced motion swaps all of it for an instant change. |
+
+### Example 1 of 3: Verify a code
+
+The correct code is 123456.
+
+```tsx
+import { OtpVerification } from "@/components/sheenui/blocks/otp-verification";
+// Package build (after the first npm release, or a packed tarball): import { OtpVerification } from "@sheenui/theme";
+
+<OtpVerification
+  destination="you@example.com"
+  onVerify={async (code) => {
+    const res = await fetch("/api/verify", { method: "POST", body: JSON.stringify({ code }) });
+    return res.ok;
+  }}
+  onResend={async () => {
+    await fetch("/api/resend", { method: "POST" });
+  }}
+/>
+```
+
+### Example 2 of 3: Unlock variant
+
+variant="unlock" puts a padlock inside a ring that fills with every digit. A right code opens the lock and floods the card with light; a wrong code rattles it and clears the digits. The correct code is 482913.
+
+```tsx
+import { OtpVerification } from "@/components/sheenui/blocks/otp-verification";
+// Package build (after the first npm release, or a packed tarball): import { OtpVerification } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <OtpVerification
+      variant="unlock"
+      destination="the phone ending in 47"
+      onVerify={async (code) => code === "482913"}
+      onContinue={() => window.location.assign("/app")}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Four digits, with a Continue button
+
+length changes the number of slots; onContinue adds a Continue button once the code is accepted. The correct code is 4821.
+
+```tsx
+import { OtpVerification } from "@/components/sheenui/blocks/otp-verification";
+// Package build (after the first npm release, or a packed tarball): import { OtpVerification } from "@sheenui/theme";
+
+const router = { push: (to: string) => window.location.assign(to) };
+
+export function Example() {
+  return (
+    <OtpVerification
+      length={4}
+      destination="+1 ••• ••• 0142"
+      onVerify={async (code) => code === "4821"}
+      onContinue={() => router.push("/welcome")}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| 0–9 | Type or paste the digits; focus advances by itself. |
+| Backspace | Step back to the previous digit. |
+| Tab, then Enter / Space on Verify | Verify (the code also verifies as soon as the last digit is in). Verify pressed early moves focus to the first empty slot and explains. |
+| Enter / Space on Resend | Ask for a new code, once the countdown is over. |
+
+### Accessibility
+
+- The digit field is named by codeLabel; wrong-code, incomplete, resent and success messages share one polite live region.
+- The resend countdown is text, not color only.
+- After success focus moves to Continue (or the heading).
+
+### All exports on this page
+
+- OtpVerification — A one-time-code card: digit slots, a verify button, a resend countdown and a success state.
+- defaultOtpVerificationLabels — The English OtpVerificationLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the OTP verification page
+
+- Use OtpVerification as an OTP verification UI for the email or SMS confirmation step after sign-up, where the visitor types a six-digit code and, once it is accepted, sees a Continue button if you pass onContinue. Use it as the 2FA code screen after a password step.
+- Use it for a two-factor sign-in step in an admin panel, setting length to 4 or 8 to match your provider and resendAfter to the cooldown your backend enforces.
+- Use it to confirm a sensitive action such as changing a payout account, with destination naming the phone number or address so the person knows where to look.
+- Skip it when you only need the bare digit field inside your own layout; the OtpInput component gives you the slots without the card, verify button and resend countdown.
+- Pair it with GlassLogin or AuthSplit for the step that comes before it, and with Toast if your flow needs extra confirmation after Continue.
+
+
+### Frequently asked questions
+
+#### How do I build an OTP verification page in React with this block?
+
+Render OtpVerification with a required onVerify(code) that returns true for a correct code, either directly or from a promise. Add destination, onResend and onContinue as needed. The code is checked automatically when the last digit is entered, and a thrown error counts as a wrong code.
+
+#### How does the resend countdown work?
+
+The resend control stays disabled and shows text such as "Resend in 30s" until resendAfter seconds (default 30) pass. Then Resend code calls onResend and starts a new countdown. Without onResend the control still resets the field. The countdown is real text, so it does not depend on color alone.
+
+#### Is the OTP field accessible to screen readers and keyboard users?
+
+The field is named by the codeLabel string, and wrong-code, incomplete, resent and success messages share one polite live region. Typing or pasting advances focus, Backspace steps back, and pressing Verify early focuses the first empty slot and explains. After success, focus moves to Continue or the heading.
+
+#### Can I stop the first digit from taking focus on page load?
+
+Yes. autoFocus defaults to true, which suits a page whose main task is entering the code. Set autoFocus={false} when the block sits among other content or in a dialog you do not want to steal focus. Every string, including the description function, can be replaced through labels.
+
+
+### Related pages
+
+- [OTP input](https://lokendra-builds.github.io/sheenui/components/otp-input)
+- [Payment checkout](https://lokendra-builds.github.io/sheenui/blocks/payment-checkout)
+- [Dashboard stats](https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats)
+- [AI chat](https://lokendra-builds.github.io/sheenui/blocks/ai-chat)
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Checkout Form: Card & UPI Payment UI
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/payment-checkout
+Sidebar name: Payment checkout
+
+A glass payment checkout for React: card form with live card preview and formatting, a UPI option, order summary and success state. Tailwind CSS v4, MIT.
+
+What it is: A glass React checkout form for card or UPI payments, with a live card preview, input formatting and an order summary.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/payment-checkout.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Payment checkout
+
+Files to copy from `theme/src/`:
+
+- `blocks/{payment-checkout.tsx, icons.tsx}`
+- `components/button/`
+- `components/glass-card/`
+- `components/input/`
+- `components/spinner/`
+- `components/status-icons/`
+- `components/tabs/`
+- `blocks/payment-checkout/`
+- `hooks/{use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: payment-checkout. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@/components/sheenui/blocks/payment-checkout";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| lines | CheckoutLine[] | defaultLines | The order summary rows (CheckoutLine[], default: a small demo order). Amounts are in major units. The default is sample content for demos and prototypes: pass your own in production. |
+| currency | string | "USD" | Sets the ISO 4217 currency code (string, default "USD"). |
+| locale | string | "en-US" | BCP 47 locale used to format amounts (string, default "en-US"). |
+| methods | PaymentMethod[] | ["card", "upi"] | Which payment methods to offer, in tab order (PaymentMethod[], default ["card", "upi"]). With one method the tabs are hidden. |
+| onPay | ((method: PaymentMethod, details: PaymentDetails) => void \| Promise<void>) | optional, no default | Called with valid details when the user pays. Return a promise to show a loading state; throw to show an error. |
+| onApplyPromo | ((code: string) => CheckoutLine \| null \| undefined \| Promise<CheckoutLine \| null \| undefined>) | optional, no default | Shows a promo-code field. Resolve to a discount line (negative amount) to apply it, or to null to reject the code. |
+| assurances | { icon?: ReactNode; text: ReactNode; }[] | defaultAssurances | Short reassurance notes under the summary (default: two generic notes). Pass [] to hide them. The default is sample content for demos and prototypes: pass your own in production. |
+| flipCard | boolean | true | Turns the card preview over to its back (the security code strip) while the CVC field has focus (boolean, default true). Reduced motion cross-fades the two sides instead of turning. |
+| stateLight | boolean | true | Lights the card by state (boolean, default true): amber while the payment is processing, red after a refusal, green once paid. The state is always written as text too. |
+| labels | Partial<PaymentCheckoutLabels> | defaultPaymentCheckoutLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultPaymentCheckoutLabels. All 38 keys of PaymentCheckoutLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Level of the headings (1 to 6, default 2); set it to fit the page's outline. "none" renders them as paragraphs with no heading role (for an example). |
+| className | string | optional, no default | Adds extra classes to the outer glass card (string). |
+
+### Example 1 of 3: Checkout
+
+Fill in any 16-digit card number, a name, an expiry like 12/29 and a CVC, or a UPI ID like name@bank.
+
+```tsx
+import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@/components/sheenui/blocks/payment-checkout";
+// Package build (after the first npm release, or a packed tarball): import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@sheenui/theme";
+
+// Your call; send a provider token, not the raw card (see PCI note)
+async function createPayment(method: PaymentMethod, details: PaymentDetails) {
+  const res = await fetch("/api/payments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ method, details }),
+  });
+  if (!res.ok) throw new Error("Payment failed");
+}
+
+export function Example() {
+  return (
+    <PaymentCheckout
+      currency="USD"
+      lines={[
+        { label: "Pro plan", description: "Billed monthly", amount: 29 },
+        { label: "Sales tax (8%)", amount: 2.32 },
+      ]}
+      onPay={async (method, details) => {
+        await createPayment(method, details);
+      }}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Card only, in euros, with a promo code
+
+One method hides the tabs; currency and locale format the amounts. Try the code SHEEN10: onApplyPromo resolves to a discount line, or to null to reject a code.
+
+```tsx
+import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@/components/sheenui/blocks/payment-checkout";
+// Package build (after the first npm release, or a packed tarball): import { PaymentCheckout, type PaymentDetails, type PaymentMethod } from "@sheenui/theme";
+
+// Your call; send a provider token, not the raw card
+async function createPayment(method: PaymentMethod, details: PaymentDetails) {
+  const res = await fetch("/api/payments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ method, details }),
+  });
+  if (!res.ok) throw new Error("Payment failed");
+}
+
+export function Example() {
+  return (
+    <PaymentCheckout
+      methods={["card"]}
+      currency="EUR"
+      locale="de-DE"
+      lines={[
+        { label: "Team plan", description: "5 seats, billed yearly", amount: 240 },
+        { label: "VAT (19%)", amount: 45.6 },
+      ]}
+      onApplyPromo={(code) => (code.trim().toUpperCase() === "SHEEN10" ? { label: "Promo SHEEN10", amount: -24 } : null)}
+      assurances={[{ text: "Invoice by email" }]}
+      onPay={async (method, details) => {
+        await createPayment(method, details);
+      }}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Without the flip and the light
+
+flipCard and stateLight are on by default. Turn them off for the plain card: the preview stays on its front and the card is never lit. The same states are still written as text.
+
+```tsx
+import { PaymentCheckout } from "@/components/sheenui/blocks/payment-checkout";
+// Package build (after the first npm release, or a packed tarball): import { PaymentCheckout } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <PaymentCheckout
+      flipCard={false}
+      stateLight={false}
+      labels={{ title: "Plain card details", summary: "Plain order summary", processing: "Contacting your bank" }}
+      onPay={() => new Promise<void>((resolve) => setTimeout(resolve, 1400))}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | The method tabs, the fields, the promo field and the pay button. |
+| ← / → | Switch between payment method tabs. |
+| Enter on a field | Submit the form. |
+| Focus into CVC | The card preview turns over to its back. |
+
+### Accessibility
+
+- The flip and the state light are visual only: processing is announced through a status region, a refusal is an alert and the paid result takes focus.
+- Reduced motion: the preview cross-fades instead of turning, the check is drawn at once.
+- Errors are visible text linked to their field (aria-describedby); a failed check focuses the first invalid field.
+- onPay failures use role="alert"; promo changes and the paid result are announced through a status region.
+- The numeric fields raise the numeric keyboard and carry autocomplete hints (cc-number, cc-exp, cc-csc).
+
+### Card data and PCI DSS
+
+The card fields are ordinary inputs, so onPay receives the raw card number, expiry and CVC. Do not post those to your own server: that puts it in PCI DSS scope (SAQ D). In production use your payment provider's hosted or tokenised fields (Stripe Elements, Adyen Drop-in, Braintree Hosted Fields) in place of the card inputs and pass only the token on, or treat this block as the layout and validation reference. The UPI method carries no card data.
+
+
+### All exports on this page
+
+- PaymentCheckout — A checkout card: card or UPI details with live validation, an order summary, an optional promo code and a success state.
+- defaultPaymentCheckoutLabels — The English PaymentCheckoutLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the payment checkout form
+
+- Use PaymentCheckout as a credit card form with a live card preview in the payment step of a purchase flow, where one side collects card or UPI details and the other shows an order summary with a total.
+- Use it for a subscription upgrade screen, passing lines like a Pro plan billed monthly and an onApplyPromo callback that returns a negative discount line for a valid code.
+- Use it for storefronts that serve India, since methods can be ["card", "upi"] or just ["upi"], and currency and locale control how every amount is formatted.
+- Skip it when you need to collect raw card data on your own servers; use your payment provider's hosted or tokenized fields and treat this block as a layout and validation reference.
+- Pair it with an Input for any billing address fields you add around it, and a Button-based confirmation page after the success panel. It already uses Tabs for method switching.
+
+
+### Frequently asked questions
+
+#### How do I make a React checkout form with PaymentCheckout?
+
+Pass lines (label, amount in major units, optional description), a currency such as USD, and onPay(method, details). Return a promise for the loading state or throw to show an error above the button. The block never calls a payment provider itself; it only hands you validated details.
+
+#### Is it safe to send the card number from onPay to my server?
+
+No. For method card, onPay receives the raw card number, expiry and CVC, and posting them to your server puts you in PCI DSS scope. In production, replace the card inputs with your provider's hosted or tokenized fields, or use this block only as a design and validation reference.
+
+#### How do promo codes and the order total work?
+
+Provide onApplyPromo(code). Resolve a CheckoutLine with a negative amount to apply the discount, or null to reject the code. Applied and removed codes are announced through a status region, and the total updates. Amounts use Intl formatting driven by the currency and locale props.
+
+#### How do the card and UPI tabs behave with the keyboard?
+
+The method tabs are built on the Tabs component, so Left and Right switch between them and Tab moves into the fields. Numeric inputs raise the numeric keyboard and carry autocomplete hints (cc-number, cc-exp, cc-csc). With a single entry in methods, the tabs are hidden.
+
+
+### Related pages
+
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Dashboard stats](https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats)
+- [AI chat](https://lokendra-builds.github.io/sheenui/blocks/ai-chat)
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## Dashboard Stat Cards for React with Sparklines
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats
+Sidebar name: Dashboard stats
+
+Glass KPI stat cards for React dashboards: numbers count up, sparklines draw in and periods switch with a sliding pill. Tailwind CSS v4 + Motion. MIT.
+
+What it is: Dashboard stat cards for React are glass KPI cards whose numbers count up, sparklines draw in and periods switch with a sliding pill.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dashboard-stats.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Dashboard stats
+
+Files to copy from `theme/src/`:
+
+- `blocks/{dashboard-stats.tsx, icons.tsx}`
+- `components/charts/{chart-utils.ts, sparkline.tsx}`
+- `components/glass-card/`
+- `components/status-icons/`
+- `components/tabs/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, math.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: dashboard-stats. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { DashboardStats } from "@/components/sheenui/blocks/dashboard-stats";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { DashboardStats } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | Record<string, Stat[]> | demoData | Stats per period (Record<string, Stat[]>). Keys become the period tabs. Default: built-in demo numbers for 7d, 30d and 90d. The default is sample content for demos and prototypes: pass your own in production. |
+| title | string | "Overview" | The section heading (string, default "Overview"); it also names the section for screen readers. |
+| headingLevel | HeadingLevelOption | 2 | Level of the section heading (1 to 5, default 2); the stat labels sit one level below. "none" renders paragraphs with no heading role (for an example). |
+| currency | string | "USD" | ISO 4217 currency for "currency" stats (string, default "USD"). |
+| locale | string | "en-US" | BCP 47 locale used to format every number (string, default "en-US"). |
+| labels | Partial<DashboardStatsLabels> | defaultDashboardStatsLabels | Every other string, for translation: labels={{ period: "…" }}; omitted keys keep the English of defaultDashboardStatsLabels. All 4 keys of DashboardStatsLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer <section> (string). |
+| Stat | { label, value, change, trend, format?, goodWhen? } | optional, no default | change is a % vs the previous period; goodWhen: "down" suits churn or response time. |
+
+### Example 1 of 2: Stat cards
+
+Overview
+
+```tsx
+import { DashboardStats } from "@/components/sheenui/blocks/dashboard-stats";
+// Package build (after the first npm release, or a packed tarball): import { DashboardStats } from "@sheenui/theme";
+
+<DashboardStats
+  title="Overview"
+  currency="USD"
+  data={{
+    "7d":  [{ label: "Revenue", value: 48250, change: 12.4, trend: [30, 34, 31, 38, 42, 40, 48], format: "currency" } /* … */],
+    "30d": [/* … */],
+  }}
+/>
+```
+
+### Example 2 of 2: Your numbers, periods and currency
+
+The keys of data become the period tabs (“4w” reads as “Last 4 weeks”). goodWhen: “down” turns a falling churn rate green; currency and locale format every figure.
+
+```tsx
+import { DashboardStats } from "@/components/sheenui/blocks/dashboard-stats";
+// Package build (after the first npm release, or a packed tarball): import { DashboardStats } from "@sheenui/theme";
+
+<DashboardStats
+  title="Team health"
+  currency="EUR"
+  locale="de-DE"
+  data={{
+    "4w": [
+      { label: "Revenue", value: 18400, change: 6.2, trend: [11, 12, 14, 13, 16, 18], format: "currency" },
+      { label: "Churn", value: 2.1, change: -0.4, trend: [3, 2.8, 2.6, 2.4, 2.2, 2.1], format: "percent", goodWhen: "down" },
+    ],
+    "12m": [
+      { label: "Revenue", value: 212000, change: 18.9, trend: [90, 110, 130, 160, 190, 212], format: "currency" },
+      { label: "Churn", value: 2.4, change: 0.3, trend: [2.1, 2.0, 2.2, 2.3, 2.3, 2.4], format: "percent", goodWhen: "down" },
+    ],
+  }}
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Reach the period tabs. |
+| ← / → | Previous / next period. |
+| Home / End | First / last period. |
+
+### Accessibility
+
+- A labeled <section>; each period tab shows “7d” and is named “7d, Last 7 days”, so the visible text is part of the name.
+- The change badge reads “Up 12.4% vs previous period”, and the animated count is hidden from screen readers, which get the final figure at once.
+- Each sparkline has a text name.
+
+### All exports on this page
+
+- DashboardStats — A row of KPI cards (value, change badge, sparkline) with a period switcher.
+- defaultDashboardStatsLabels — The English DashboardStatsLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the dashboard stat cards
+
+- Use DashboardStats as a row of KPI cards with sparklines at the top of an analytics overview, where four cards for revenue, active users, conversion and signups each show a value, change badge and sparkline.
+- Use it for a product or ops dashboard with a 7d, 30d and 90d switcher, passing one Stat array per period key in the data prop and letting the keys become tabs.
+- Use it for metrics where lower is better, such as churn or response time, by setting goodWhen to "down" so a falling number reads as good news.
+- Skip it when you need to explore one metric in depth with axes, tooltips and a legend; a full chart component fits better than a KPI card with a sparkline.
+- Pair it with Sparkline for custom trend visuals, Tabs if you want a second switcher elsewhere, and the chart components lower on the page for the detail behind each figure.
+
+
+### Frequently asked questions
+
+#### How do I add React dashboard stat cards with period tabs?
+
+Pass data as a Record where each key (like 7d or 30d) maps to an array of Stat objects with label, value, change and trend. The keys become the period tabs. Set currency and locale for number formatting, and use format: "currency" or "percent" on a stat when needed.
+
+#### How do the values count up, and what about reduced motion?
+
+The figure animates from zero on first show using a Motion value. With reduced motion enabled it appears immediately. Screen readers do not hear the animated count; they receive the final figure at once, and the change badge reads as "Up 12.4% vs previous period".
+
+#### Why is the period tab named "7d, Last 7 days"?
+
+The visible text is 7d, and the accessible name begins with that same text before adding the long form. That keeps voice control working (WCAG 2.5.3) while screen readers get a clearer description. Override periodName in labels to change the spoken form, and use arrow, Home and End keys to move between tabs.
+
+#### How many columns do the cards use, and how do I theme them?
+
+The grid follows the block's own width rather than the viewport, using 1, 2 or 4 columns, so it behaves inside a narrow sidebar layout too. Each card is a level-2 glass card. Add className to the outer section, and use the title prop to rename the heading from Overview.
+
+
+### Related pages
+
+- [Sparkbar](https://lokendra-builds.github.io/sheenui/charts/sparkbar)
+- [Web analytics](https://lokendra-builds.github.io/sheenui/dashboards/web-analytics)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [AI chat](https://lokendra-builds.github.io/sheenui/blocks/ai-chat)
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## AI Chat UI for React with Streaming Replies
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/ai-chat
+Sidebar name: AI chat
+
+A glass AI chat UI for React: streaming replies, thinking shimmer, Markdown and code, attachments, model picker, stop and regenerate. Tailwind v4.
+
+What it is: An AI chat UI for React with replies that stream in word by word, a “thinking” shimmer, Markdown with code blocks and a model picker.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/ai-chat.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > AI chat
+
+Files to copy from `theme/src/`:
+
+- `blocks/ai-chat.tsx`
+- `components/button/`
+- `components/code-block/tokenize.ts`
+- `components/drawer/parts/sheet.tsx`
+- `components/glass-card/`
+- `components/select/`
+- `components/spinner/`
+- `components/status-icons/`
+- `components/tooltip/`
+- `blocks/ai-chat/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts, use-virtual-window.ts}`
+- `motion/{gate.ts, light-follower.ts, presets.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, glide-highlight.tsx, group-segments.ts, heading.ts, ime.ts, page-size.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, uid.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: ai-chat. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { AiChat } from "@/components/sheenui/blocks/ai-chat";
+import { type AiChatMessage } from "@/components/sheenui/blocks/ai-chat/types";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AiChat, type AiChatMessage } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| respond | AiChatRespond | demoRespond | Produces the reply (AiChatRespond). Returns a string (typed out for you), a promise of one, or an async iterable of chunks (real streaming). Defaults to canned demo replies. The default is sample content for demos and prototypes: pass your own in production. |
+| defaultMessages | AiChatMessage[] | [] | Conversation to start with (shown without animation). |
+| messages | AiChatMessage[] | optional, no default | The conversation (controlled). Passing a new array replaces what is shown (load history, switch threads) without animation and stops a reply in progress. Keep it in sync with onMessagesChange; leave it out to let the chat own it. |
+| isTyping | boolean | false | Show the assistant's "thinking" row although no reply is running here, for chats whose replies come from your own backend (controlled messages). |
+| onMessagesChange | ((messages: AiChatMessage[]) => void) | optional, no default | Called with the whole conversation whenever it settles: a reply ends, stops or fails, or the chat is cleared. |
+| onSend | ((message: AiChatMessage) => void) | optional, no default | Called when the person sends a message. |
+| onFeedback | ((message: AiChatMessage, feedback: AiChatFeedback) => void) | optional, no default | Called when a reply is rated (null = rating removed). |
+| models | AiChatModel[] | defaultModels | Models for the picker; the picker hides with fewer than two. The default is sample content for demos and prototypes: pass your own in production. |
+| model | string | optional, no default | Sets the selected model's value when controlled. |
+| defaultModel | string | optional, no default | The model selected at first when model is not controlled; the first of models when omitted. |
+| onModelChange | ((model: string) => void) | optional, no default | Called when another model is picked. |
+| suggestions | string[] | defaultSuggestions | Prompts offered as chips while the chat is empty. |
+| allowAttachments | boolean | true | Show the attach button and accept dropped files. |
+| accept | string | optional, no default | accept for the file picker, e.g. "image/*,.pdf". |
+| maxAttachments | number | 4 | Most files one message can carry. |
+| simulateStreaming | boolean | true | Type out string replies word by word (turn it off to show them whole). Streams are never delayed. |
+| typingSpeed | number | 160 | Characters per second for the typed-out reply. |
+| thinkingDelay | number | 900 | Shortest "thinking" time (ms) before a string reply starts, so it never flashes. |
+| maxRows | number | 8 | Tallest the message field grows, in lines, before it scrolls. |
+| headingLevel | HeadingLevelOption | 2 | Heading level of the assistant name; message headings are one level below. "none" renders them all as paragraphs with no heading role (for an example). |
+| autoFocus | boolean | false | Focus the message field on mount. Off by default: only use it when the chat is the page's main task. |
+| locale | string | "en-US" | BCP 47 locale for file sizes. |
+| labels | Partial<AiChatLabels> | defaultAiChatLabels | Every other string, for translation: labels={{ assistant: "…" }}; omitted keys keep the English of defaultAiChatLabels. All 46 keys of AiChatLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Classes for the outer glass panel (set its height here). |
+
+### AiChatRequest
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| prompt | string | optional, no default | The text of the message being answered. |
+| attachments | AiChatAttachment[] | optional, no default | { id, name, size, type, previewUrl, file } for files sent with it. |
+| messages | AiChatMessage[] | optional, no default | The conversation so far, oldest first, ending with this prompt. |
+| model | string | optional, no default | Holds the value of the model the person chose. |
+| attempt | number | optional, no default | 0 for a new prompt; 1, 2… for each regenerate or retry. |
+| signal | AbortSignal | optional, no default | Aborted by Stop, New chat or unmount. Pass it to fetch. |
+
+### AiChatMessage
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | string | optional, no default | Stable identifier of the message, used as the React key and in callbacks. |
+| role | "user" \| "assistant" | optional, no default | Says who wrote the message: the person ("user") or the model ("assistant"). |
+| content | string | optional, no default | Light Markdown: **bold**, code, fenced code blocks, - and 1. lists, [links](https://…). User messages show as plain text. |
+| attachments | AiChatAttachment[] | optional, no default | Lists the files shown above a user message. |
+| model | string | optional, no default | Sets the model value shown under an assistant reply. |
+| status | "thinking" \| "streaming" \| "done" \| "stopped" \| "error" | "done" | Progress of an assistant reply; user messages have no status. |
+| error | string | optional, no default | Shown when status is error. |
+
+### Example 1 of 3: Assistant
+
+Pick a suggestion or type a message. Press Stop (or Escape) while it writes, regenerate the last reply, attach or drop a file, and scroll up mid-reply to see the jump button.
+
+```tsx
+import { AiChat } from "@/components/sheenui/blocks/ai-chat";
+// Package build (after the first npm release, or a packed tarball): import { AiChat } from "@sheenui/theme";
+
+// Your analytics call
+function track(event: string, properties: Record<string, unknown>) {
+  void fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, properties }),
+  });
+}
+
+export function Example() {
+  return (
+    <AiChat
+      respond={async ({ messages, model, signal }) => {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          body: JSON.stringify({ model, messages }),
+          signal, // Stop aborts the request
+        });
+        return res.text(); // a string is typed out word by word
+      }}
+      onFeedback={(message, rating) => track("feedback", { id: message.id, rating })}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Real streaming and history
+
+Return an async iterable to stream tokens as they arrive. This one continues an earlier conversation, uses its own assistant name and models, and turns attachments off.
+
+```tsx
+import { AiChat } from "@/components/sheenui/blocks/ai-chat";
+import { type AiChatMessage } from "@/components/sheenui/blocks/ai-chat/types";
+// Package build (after the first npm release, or a packed tarball): import { AiChat, type AiChatMessage } from "@sheenui/theme";
+
+// An earlier conversation, e.g. loaded from your database
+const savedMessages: AiChatMessage[] = [
+  { id: "h1", role: "user", content: "How do I debounce a search field in React?" },
+  {
+    id: "h2",
+    role: "assistant",
+    model: "nova-large",
+    content: "Keep the input instant and debounce the **value** you search with, then fetch with the debounced value instead of the raw one.",
+  },
+];
+
+export function Example() {
+  return (
+    <AiChat
+      defaultMessages={savedMessages}
+      models={[
+        { value: "nova-large", label: "Nova Large", description: "Most capable" },
+        { value: "nova-small", label: "Nova Small", description: "Fastest" },
+      ]}
+      allowAttachments={false}
+      labels={{ assistant: "Nova", placeholder: "Ask Nova…" }}
+      respond={async function* ({ messages, model, signal }) {
+        const res = await fetch("/api/chat/stream", { method: "POST", body: JSON.stringify({ model, messages }), signal });
+        const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+        for (;;) {
+          const { value, done } = await reader.read();
+          if (done) return;
+          yield value; // each chunk is appended as it arrives
+        }
+      }}
+    />
+  );
+}
+```
+
+### Example 3 of 3: Errors and retry
+
+Throw from respond to show an error under the reply. This one fails the first time and works on Try again. Give each chat on a page its own assistant name: it names the chat for screen readers.
+
+```tsx
+import { AiChat } from "@/components/sheenui/blocks/ai-chat";
+// Package build (after the first npm release, or a packed tarball): import { AiChat } from "@sheenui/theme";
+
+<AiChat
+  labels={{ assistant: "Atlas" }}
+  suggestions={["Summarize my week"]}
+  respond={async ({ attempt }) => {
+    if (attempt === 0) throw new Error("The model is busy right now (429).");
+    return "Back online…";
+  }}
+/>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter | Send the message (on touch keyboards Enter adds a line and the send button sends). |
+| Shift + Enter | Add a line. |
+| Escape | Stop a reply. |
+| Tab | The conversation (a scrollable region), the suggestion chips, the attach button, the model picker, then send. |
+
+### Accessibility
+
+- Every message starts with a visually hidden heading (“You said:”), so the conversation can be navigated by heading.
+- Streaming text is not read piece by piece: one polite live region reports thinking, then the finished reply, a stop or an error.
+- The key hint is linked to the field with aria-describedby. Give each chat on a page its own assistant name: it names the chat for screen readers.
+
+### All exports on this page
+
+- AiChat — An assistant chat panel: a message list with streaming replies, a composer, attachments and a model picker.
+- defaultAiChatLabels — The English strings used when the labels prop is omitted (an AiChatLabels); the block merges a partial labels over them.
+
+
+### When to use the AI chat block
+
+- Use AiChat as a streaming chat UI for an assistant panel inside a product, such as a help sidebar or docs search, where you supply a respond function that calls your model API and returns text or an async iterable of chunks. Use it as a chatbot UI in React and Tailwind that you connect to your own model.
+- Use it for a prompt playground with a model picker, passing models and onModelChange, plus suggestion chips so first-time visitors have a starting prompt. It is a ChatGPT UI clone in React in layout only: you bring the model and the streaming.
+- Use it when users need to attach screenshots or files, since allowAttachments defaults to true and accept and maxAttachments (default 4) limit what the composer takes.
+- Skip it when the conversation is between people rather than a person and a model; ChatApp has conversation lists, presence, read state and message actions that AiChat does not.
+- Pair it with useSheenReducedMotion if the rest of your page animates around the panel, and Toast for notices outside the chat. Give the panel a fixed height through className.
+
+
+### Frequently asked questions
+
+#### How do I build an AI chat UI in React with AiChat?
+
+Render AiChat with a className that sets a height, then provide respond({ prompt, signal }). Return a string for a finished reply or an async iterable to stream it. The signal aborts when the user presses Escape. Use messages and onMessagesChange for controlled state.
+
+#### Which keyboard shortcuts does the chat composer support?
+
+Enter sends and Shift plus Enter adds a new line. On touch keyboards Enter adds a line and the send button sends. Escape stops a reply in progress. Tab reaches the scrollable conversation, suggestion chips, attach button, model picker and send button in that order.
+
+#### How does AiChat stay accessible while text streams in?
+
+Streaming text is not read piece by piece. One polite live region reports thinking, then the finished reply, a stop or an error. Each message begins with a visually hidden heading like "You said:", and the key hint is linked to the field with aria-describedby.
+
+#### What formatting do assistant replies support, and can I turn off the typing effect?
+
+Message text accepts light Markdown: bold, inline code, fenced code blocks, bulleted and numbered lists, and links. The typing animation comes from simulateStreaming, which defaults to true; set it to false to show replies whole. typingSpeed and thinkingDelay tune the timing. Reduced motion shows replies whole automatically.
+
+
+### Related pages
+
+- [Chat view](https://lokendra-builds.github.io/sheenui/chat/thread)
+- [Code block](https://lokendra-builds.github.io/sheenui/components/code-block)
+- [Sign-up page](https://lokendra-builds.github.io/sheenui/blocks/signup-page)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+- [Chat app](https://lokendra-builds.github.io/sheenui/blocks/chat-app)
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## Split-Screen Sign-Up Page for React & Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/signup-page
+Sidebar name: Sign-up page
+
+A split-screen React sign-up page: aurora brand panel with testimonials beside a glass form with social sign-up and a live password-strength meter. MIT.
+
+What it is: A split-screen sign-up page for React: an animated brand panel beside a glass form with social sign-up and a live password-strength meter.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/auth-split.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Sign-up page
+
+Files to copy from `theme/src/`:
+
+- `blocks/{auth-split.tsx, icons.tsx}`
+- `components/button/`
+- `components/checkbox/`
+- `components/glass-card/`
+- `components/input/`
+- `components/logo/`
+- `components/spinner/`
+- `components/status-icons/`
+- `blocks/auth-split/`
+- `hooks/{use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, tokens.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, heading.ts, state-light.tsx}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: auth-split. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { AuthSplit } from "@/components/sheenui/blocks/auth-split";
+import { type AuthSplitValues } from "@/components/sheenui/blocks/auth-split/model";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { AuthSplit, type AuthSplitValues } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | from labels | Sets the card heading (ReactNode, default from labels). |
+| subtitle | ReactNode | from labels | The line under the card heading (ReactNode, default from labels). |
+| headline | ReactNode | optional, no default | Shows a big line on the brand panel. |
+| description | ReactNode | optional, no default | Shows a paragraph under the headline (ReactNode). |
+| features | ReactNode[] | [ "Forty-plus glass components, copy-paste ready", "Motion that bows out for reduced-motion users", "AA contrast in light and dark, measured", ] | Short selling points with check marks. Pass [] to hide. |
+| stats | AuthSplitStat[] | [ { value: "12,400+", label: "teams building" }, { value: "4.9/5", label: "average rating" }, { value: "99.99%", label: "uptime last year" }, ] | A few numbers under the features. Pass [] to hide. |
+| testimonials | AuthSplitTestimonial[] | defaultAuthSplitTestimonials | One or more quotes; several rotate. Pass [] to hide. The default is sample content for demos and prototypes: pass your own in production. |
+| rotateEvery | number | 7 | Seconds between testimonials; 0 turns auto-rotation off (number, default 7). |
+| brand | ReactNode | optional, no default | Logo on the panel and above the form on narrow screens. |
+| onSubmit | ((values: AuthSplitValues) => void \| Promise<void>) | optional, no default | Called with the values once they are valid. Return a promise for the loading state; throw to show an error. |
+| onSocial | ((provider: "github" \| "google") => void) | optional, no default | Shows the GitHub / Google buttons. |
+| onResend | ((email: string) => void \| Promise<void>) | optional, no default | Runs when the user clicks "Resend email" on the success screen. |
+| termsHref | string | "#" | Target of the terms link (string, default "#"). |
+| privacyHref | string | "#" | Target of the privacy link (string, default "#"). |
+| signInHref | string \| null | "#" | Hide the sign-in line with null. |
+| minPasswordLength | number | 8 | Minimum password length, the first checklist rule (number, default 8). |
+| reverse | boolean | false | Put the form on the left and the brand panel on the right (boolean, default false). |
+| headingLevel | HeadingLevelOption | 1 | Level of the card heading (1 \| 2 \| 3, default 1). "none" renders it, and the brand panel's quote heading, as paragraphs with no heading role (for an example). |
+| labels | Partial<AuthSplitLabels> | defaultAuthSplitLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultAuthSplitLabels. All 44 keys of AuthSplitLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element (string). |
+
+### Example 1 of 2: Sign up
+
+Type a password and watch the meter and checklist; try “password1”. Submit empty to see the errors, then fill it in for the success state. Hover the testimonial to hold it.
+
+```tsx
+import { AuthSplit } from "@/components/sheenui/blocks/auth-split";
+// Package build (after the first npm release, or a packed tarball): import { AuthSplit } from "@sheenui/theme";
+
+// Your API; each call throws on failure so the form shows the message
+async function post(path: string, body: unknown) {
+  const res = await fetch("/api/" + path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Request failed");
+}
+
+const api = {
+  signUp: (values: { name: string; email: string; password: string }) => post("sign-up", values),
+  resendConfirmation: (email: string) => post("resend-confirmation", { email }),
+};
+
+const signInWith = (provider: "github" | "google") => window.location.assign("/auth/" + provider);
+
+export function Example() {
+  return (
+    <AuthSplit
+      onSubmit={async ({ name, email, password }) => {
+        await api.signUp({ name, email, password }); // throw to show the message in the form
+      }}
+      onSocial={(provider) => signInWith(provider)}
+      onResend={(email) => api.resendConfirmation(email)}
+      termsHref="/terms"
+      privacyHref="/privacy"
+      signInHref="/login"
+      className="min-h-dvh"
+    />
+  );
+}
+```
+
+### Example 2 of 2: Reversed, with your own story
+
+Form on the left, one testimonial (no rotation controls), your headline and features, no numbers.
+
+```tsx
+import { AuthSplit } from "@/components/sheenui/blocks/auth-split";
+import { type AuthSplitValues } from "@/components/sheenui/blocks/auth-split/model";
+// Package build (after the first npm release, or a packed tarball): import { AuthSplit, type AuthSplitValues } from "@sheenui/theme";
+
+async function joinWaitlist({ name, email }: AuthSplitValues) {
+  const res = await fetch("/api/waitlist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email }),
+  });
+  if (!res.ok) throw new Error("Could not join the waitlist");
+}
+
+export function Example() {
+  return (
+    <AuthSplit
+      reverse
+      title="Join the beta"
+      subtitle="We’re letting in a few teams each week."
+      headline="Your design system, minus the busywork."
+      description="Tokens, components and docs that stay in sync."
+      features={["Design tokens to code in one click", "Every component AA in both themes"]}
+      stats={[]}
+      testimonials={[{ quote: "Our handoff meetings are gone.", name: "Ines Duarte", role: "Design lead, Fieldnote", rating: 5 }]}
+      signInHref={null}
+      onSubmit={joinWaitlist}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Name, email, password (with its reveal button and strength checklist), the terms checkbox, submit, then the social buttons. |
+| Enter | Submit the form. A failed check moves focus to the first invalid field. |
+| Enter / Space on the pause button or a dot | Pause the testimonials / show that one. |
+
+### Accessibility
+
+- A real <form> with linked error text (role="alert" for a failed submit) and polite status regions; the success screen takes focus.
+- The password-strength bar is a role="meter" and the checklist is text, so strength never rests on color.
+- Testimonials rotate with a pause button and dots, both reachable by keyboard; rotation is manual-only with reduced motion.
+
+### All exports on this page
+
+- AuthSplit — Props (see AuthSplitProps): title, subtitle, headline, description, features, stats, testimonials (defaultAuthSplitTestimonials).
+- defaultAuthSplitLabels — The English AuthSplitLabels used when labels is omitted; a partial labels prop is merged over them.
+- passwordStrength — Scores a password from 1 (weak) to 4 (strong) by length (minLength, default 8), mixed case, a digit and a symbol.
+
+
+### When to use the sign-up page
+
+- Use AuthSplit as a split-screen sign up page where a glass form with name, email, password and a terms checkbox sits beside a dark brand panel with a headline, feature list and testimonials.
+- Use it for a marketing site's registration route, filling stats and testimonials to show social proof and setting reverse to put the brand panel on the other side.
+- Use it when you want live password guidance, since it renders a strength meter with a text checklist, and a confirmation screen that asks the person to check their email.
+- Skip it when you only need a compact returning-user form inside a modal; GlassLogin is smaller and has no brand panel, strength checklist or resend flow.
+- Pair it with OtpVerification for a code step after submit, Checkbox and Input for any extra consent or profile fields you add, and SheenLogo if you supply your own brand mark.
+
+
+### Frequently asked questions
+
+#### How do I build a sign up page in React with AuthSplit?
+
+Render AuthSplit with onSubmit({ name, email, password }) and optionally onSocial(provider) and onResend(email). Throw inside onSubmit to show an error above the button. Set headline, description, features, stats and testimonials to fill the brand panel, plus termsHref and privacyHref for the consent line.
+
+#### How does the password strength meter work for assistive tech?
+
+The strength bar uses role="meter", and the same requirements appear as a text checklist, so the state does not depend on color. The minimum comes from minPasswordLength (default 8). Failed submits show linked error text, with role="alert" for the submit failure, and focus moves to the first invalid field.
+
+#### Do the testimonials rotate, and can users stop them?
+
+Testimonials rotate every rotateEvery seconds (default 7), with a pause button and dots reachable by keyboard. Under reduced motion there is no auto-rotation and no aurora drift; people use the dots instead. Pass your own testimonials array to replace defaultAuthSplitTestimonials.
+
+#### Which heading level and layout options can I change?
+
+headingLevel defaults to 1, so lower it if the page already has an h1. reverse swaps the form and brand panel, signInHref defaults to "#" and null hides the sign-in link, and labels translates the strings. The success screen takes focus when the account is created.
+
+
+### Related pages
+
+- [Glass login](https://lokendra-builds.github.io/sheenui/blocks/glass-login)
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Bento grid](https://lokendra-builds.github.io/sheenui/blocks/bento-grid)
+- [Chat app](https://lokendra-builds.github.io/sheenui/blocks/chat-app)
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## Bento Grid for React: Glass Feature Section
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/bento-grid
+Sidebar name: Bento grid
+
+An animated bento grid for React: asymmetric glass cells with live mini-demos (charts, toasts, OTP, switches) that mount as they scroll in. Tailwind v4.
+
+What it is: A glassmorphism bento grid for React whose cells run live mini-demos built from real SheenUI components.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/bento-grid.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Bento grid
+
+Files to copy from `theme/src/`:
+
+- `blocks/bento-grid.tsx`
+- `components/avatar/`
+- `components/badge/`
+- `components/button/`
+- `components/charts/{chart-utils.ts, sparkline.tsx}`
+- `components/glass-card/`
+- `components/otp-input/`
+- `components/spinner/`
+- `components/switch/`
+- `blocks/bento-grid/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, light-follower.ts, presets.ts, tokens.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, form.ts, heading.ts, initials.ts, math.ts, motion-props.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: bento-grid. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { BentoCell, BentoGrid, FeatureBento } from "@/components/sheenui/blocks/bento-grid";
+import { BentoAvatarDemo, BentoChartDemo, BentoOtpDemo, BentoSwitchDemo } from "@/components/sheenui/blocks/bento-grid/demos";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { BentoAvatarDemo, BentoCell, BentoChartDemo, BentoGrid, BentoOtpDemo, BentoSwitchDemo, FeatureBento } from "@sheenui/theme";
+```
+
+### FeatureBento
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | optional, no default | Section heading (ReactNode); leave out for none. |
+| description | ReactNode | optional, no default | Shows text under the heading (ReactNode). |
+| headingLevel | HeadingLevelOption | 2 | Heading level of title; cell titles are one level below (2 \| 3, default 2). "none" renders them all as paragraphs with no heading role (for an example). |
+| labels | Partial<FeatureBentoLabels> | defaultFeatureBentoLabels | Every other string, for translation: labels={{ chartTitle: "…" }}; omitted keys keep the English of defaultFeatureBentoLabels. All 15 keys of FeatureBentoLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer <section>. |
+
+### BentoGrid
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | Holds the cells (ReactNode, required): usually BentoCells. |
+| className | string | optional, no default | Classes for the outer element (the size container). |
+| gridClassName | string | optional, no default | Classes for the grid itself (gap, row height...). |
+
+### BentoCell
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| title | ReactNode | required | Sets the cell's heading (ReactNode, required). |
+| description | ReactNode | optional, no default | Shows the text under the heading (ReactNode). |
+| icon | ReactNode | optional, no default | Shows a small icon before the title. |
+| visual | ReactNode | optional, no default | Live preview or artwork. Mounted the first time the cell scrolls into view. |
+| colSpan | 2 \| 1 \| 3 | 1 | Columns spanned on the widest grid (3 columns); spans shrink with the grid. |
+| rowSpan | 2 \| 1 | 1 | Sets how many rows the cell spans from 2 columns up. |
+| orientation | "horizontal" \| "vertical" | "vertical" | "horizontal" puts the text beside the visual once the cell is wide enough. |
+| href | string | optional, no default | Adds a "learn more" link under the description. |
+| cta | string | "Learn more" | Text of the link (string, default "Learn more"). |
+| index | number | 0 | Sets the position in the grid: staggers the entrance. |
+| headingLevel | HeadingLevelOption | 3 | Heading level of the title (1 to 6, default 3), or "none" for a paragraph with no heading role (for an example). |
+| className | string | optional, no default | Adds extra classes to the glass card (string). |
+| visualClassName | string | optional, no default | Adds extra classes to the visual area. |
+
+### Demos
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| BentoChartDemo | { data?, currency?, locale?, labels? } | optional, no default | Sparkline with a period picker and a count-up total. data maps a period key ("7d") to { total, change, values }. |
+| BentoToastDemo | { notifications?, labels? } | optional, no default | Three toasts arrive on their own, then a button sends more. Hover, focus or tap fans the stack out. |
+| BentoOtpDemo | { code?, labels? } | "2468" | OTP field that verifies against code and shakes on a miss. |
+| BentoSwitchDemo | { labels? } | optional, no default | Switches that frost, tint and float a glass tile over crisp shapes. |
+| BentoAvatarDemo | { people?, extra?, labels? } | optional, no default | Avatar group with presence and an invite button; extra shows a “+N” chip. |
+| useBentoCellVisible | () => boolean | optional, no default | Inside a cell: false while it is off screen, so your own loops can pause. |
+
+### BentoAvatarDemo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| people | string[] | ["Maya Chen", "Leo Park", "Ava Singh", "Noah Kim", "Iris Patel", "Omar Haddad"] | Names of the people who can join (string[], default: sample names). |
+| extra | number | 12 | People beyond the list, shown as "+N" (number, default 12). |
+| labels | Partial<BentoAvatarLabels> | defaultBentoAvatarLabels | Every other string, for translation: labels={{ invite: "…" }}; omitted keys keep the English of defaultBentoAvatarLabels. All 5 keys of BentoAvatarLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### BentoChartDemo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| data | Record<string, BentoChartPeriod> | defaultChartData (The default per-period series of the chart tile) | Figures per period (Record<string, BentoChartPeriod>, default: sample revenue); the keys become the period buttons. |
+| currency | string | "USD" | Sets the ISO 4217 currency (string, default "USD"). |
+| locale | string | "en-US" | Sets the BCP 47 locale (string, default "en-US"). |
+| labels | Partial<BentoChartLabels> | defaultBentoChartLabels | Every other string, for translation: labels={{ metric: "…" }}; omitted keys keep the English of defaultBentoChartLabels. All 6 keys of BentoChartLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### BentoOtpDemo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| code | string | "2468" | The code that verifies (string, default "2468"). Its length sets the number of slots. |
+| labels | Partial<BentoOtpLabels> | defaultBentoOtpLabels | Every other string, for translation: labels={{ label: "…" }}; omitted keys keep the English of defaultBentoOtpLabels. All 5 keys of BentoOtpLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### BentoSwitchDemo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<BentoSwitchLabels> | defaultBentoSwitchLabels | Every other string, for translation: labels={{ preview: "…" }}; omitted keys keep the English of defaultBentoSwitchLabels. All 5 keys of BentoSwitchLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### BentoToastDemo props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| notifications | BentoToast[] | defaultToasts (The default notifications of the toast-stack tile) | Notifications to cycle through. The first three play on their own when the cell appears. |
+| labels | Partial<BentoToastLabels> | defaultBentoToastLabels | Every other string, for translation: labels={{ region: "…" }}; omitted keys keep the English of defaultBentoToastLabels. All 2 keys of BentoToastLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 2: Feature bento
+
+The ready-made block. Every cell is interactive: pick a period, hover or focus the toasts to fan them out, type 2468, flip the switches, invite a teammate.
+
+```tsx
+import { FeatureBento } from "@/components/sheenui/blocks/bento-grid";
+// Package build (after the first npm release, or a packed tarball): import { FeatureBento } from "@sheenui/theme";
+
+<FeatureBento
+  title="Everything you need, already moving"
+  description="Live components, not screenshots. Try them."
+/>
+```
+
+### Example 2 of 2: Compose your own
+
+BentoGrid lays cells out by its own width (1, 2, then 3 columns); spans shrink with it, so nothing overflows. Put any visual in a cell, built-in demos included.
+
+```tsx
+import { BentoGrid, BentoCell } from "@/components/sheenui/blocks/bento-grid";
+import { BentoChartDemo, BentoOtpDemo, BentoSwitchDemo, BentoAvatarDemo } from "@/components/sheenui/blocks/bento-grid/demos";
+// Package build (after the first npm release, or a packed tarball): import { BentoGrid, BentoCell, BentoChartDemo, BentoOtpDemo, BentoSwitchDemo, BentoAvatarDemo } from "@sheenui/theme";
+
+<BentoGrid>
+  <BentoCell index={0} colSpan={2} title="Revenue at a glance" description="…" visual={<BentoChartDemo />} href="#demo-analytics" cta="Open analytics" />
+  <BentoCell index={1} title="Passwordless" description="…" visual={<BentoOtpDemo code="1357" />} />
+  <BentoCell index={2} title="Tune the glass" visual={<BentoSwitchDemo />} />
+  <BentoCell index={3} title="Your team, live" visual={<BentoAvatarDemo />} />
+  <BentoCell index={4} title="Any visual" visual={<img src="/artwork.svg" alt="" className="size-full object-cover" />} />
+</BentoGrid>
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Visit the controls inside each demo cell in reading order; a cell's optional link is the only tab stop the cell itself adds. |
+| Space | Toggle a switch in the switch demo. |
+| 0–9 / Backspace | Type or step back in the OTP demo; “Try again” is a button. |
+
+### Accessibility
+
+- BentoGrid is a plain layout <div> with no semantics; each cell carries its own heading and text.
+- The avatar group has a text name and “+N” has a long form for screen readers; changes are announced.
+- The switch demo uses real switches with visible labels.
+
+### All exports on this page
+
+- BentoAvatarDemo — A bento visual: an avatar group where an "Invite teammate" button adds people one by one and a sentence says who is editing.
+- BentoCell — Use it inside a BentoGrid.
+- BentoChartDemo — A bento visual: a revenue total that counts up beside a sparkline, with period buttons that change both.
+- BentoGrid — Props (see BentoGridProps): children (required), className (the size container) and gridClassName (the grid itself: gap, row height).
+- BentoOtpDemo — A bento visual: a working one-time-code field with a hint, a success state and a wrong-code shake.
+- BentoSwitchDemo — A bento visual: three switches (frosted glass, accent tint, float) that change a live glass tile over coloured shapes, so the blur is easy to see.
+- BentoToastDemo — A bento visual: a stack of glass notifications that plays three on its own, spreads on hover or focus, and has a button to send another.
+- FeatureBento — The ready-made feature section: a heading and a BentoGrid of cells, each with a live mini-demo (chart, toasts, OTP, switches, avatars).
+- defaultBentoAvatarLabels — The English strings of the avatar tile; pass labels to override any of them.
+- defaultBentoChartLabels — The English strings of the chart tile; pass labels to override any of them.
+- defaultBentoOtpLabels — The English strings of the one-time-code tile; pass labels to override any of them.
+- defaultBentoSwitchLabels — The English strings of the glass-switch tile; pass labels to override any of them.
+- defaultBentoToastLabels — The English strings of the toast tile; pass labels to override any of them.
+- defaultFeatureBentoLabels — The English strings of FeatureBento; pass labels to override any of them.
+- useBentoCellVisible — True while the surrounding BentoCell is on screen: pause loops and timers when it's false.
+
+
+### When to use the bento grid
+
+- Use BentoGrid as a glassmorphism bento grid for a landing page feature section, where cells of different sizes show a chart, a notification stack, an OTP field and a switch preview instead of a plain three-column list. Use it as a bento features section in Tailwind on a landing page.
+- Use it for a product overview inside a documentation site, giving big cells colSpan 2 or rowSpan 2 and letting the grid collapse to one column on narrow containers.
+- Use BentoCell with a visual prop to mount heavy demos lazily, since the visual only appears the first time its cell scrolls into view.
+- Skip it when the items are uniform records that people scan or sort, such as team members or invoices; a simple card grid or a data table is clearer than a bento layout.
+- Pair it with Sparkline, Avatar, Badge and Switch inside cells, and with the ready-made BentoChartDemo, BentoToastDemo and BentoOtpDemo visuals when you want a quick start.
+
+
+### Frequently asked questions
+
+#### How do I make a bento grid in React with BentoGrid and BentoCell?
+
+Wrap BentoCell children in BentoGrid. Each cell takes a required title, plus description, icon, visual, colSpan, rowSpan, href and cta. Use className for the container and gridClassName for gap and row height. The cells carry their own headings, and the grid adds no semantics.
+
+#### How many columns does the grid use on small screens?
+
+It follows its own width, not the viewport: one column by default, two from 36rem and three from 56rem. Cell spans shrink on the way down so nothing overflows. That means a grid placed in a narrow sidebar also stacks correctly without media queries on your side.
+
+#### Does a bento cell load its visual before the user scrolls to it?
+
+No. The visual prop is mounted the first time the cell scrolls into view, so cells nobody reaches cost nothing. Decorative visuals should be aria-hidden. The card itself rises in with a stagger set by index, and reduced motion only fades.
+
+#### Which keyboard stops does a bento cell add?
+
+Only the optional link. When you pass href and cta, that link is the single tab stop the cell adds. The demo visuals have their own controls: the chart's period pills are a radio group with arrow-key navigation, and the switch demo uses Space to toggle each switch.
+
+
+### Related pages
+
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [Chat app](https://lokendra-builds.github.io/sheenui/blocks/chat-app)
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+- [Settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## React Chat App Template: Full Messenger UI
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/chat-app
+Sidebar name: Chat app
+
+A complete React chat app template: chat list and conversation side by side, stacking on narrow screens, with contact info in a side drawer. Tailwind v4.
+
+What it is: A complete React chat app template: the chat list and the open chat side by side, stacking into list then chat on narrow screens.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/chat-app.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Chat app
+
+Files to copy from `theme/src/`:
+
+- `blocks/chat-app.tsx`
+- `components/chat/{chat-thread.tsx, conversation-list.tsx, chat-parts.tsx, composer.tsx, emoji-picker.tsx, emoji.ts, format.ts, hooks.ts, icons.tsx, labels.ts, message-parts.tsx, message-row.tsx, toolbar-store.ts, types.ts}`
+- `components/alert-dialog/`
+- `components/avatar/`
+- `components/button/`
+- `components/chat/conversation-list/`
+- `components/chat/thread/`
+- `components/context-menu/`
+- `components/description-list/`
+- `components/dialog/`
+- `components/drawer/`
+- `components/empty-state/`
+- `components/file-upload/file-utils.ts`
+- `components/input/`
+- `components/kbd/`
+- `components/menu/`
+- `components/popover/`
+- `components/segmented/`
+- `components/side-drawer/{icons.tsx, side-drawer.tsx}`
+- `components/side-drawer/parts/{body.tsx, content.tsx, header.tsx, model.ts, resize.tsx}`
+- `components/skeleton/`
+- `components/spinner/`
+- `components/status-icons/`
+- `components/switch/`
+- `components/tooltip/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, presets.ts, tokens.ts}`
+- `lib/{cn.ts, field-control-shell.tsx, field-size.ts, form.ts, glide-highlight.tsx, heading.ts, ime.ts, initials.ts, math.ts, modal-flag.ts, motion-props.ts, popup-a11y.ts, popup-motion.ts, state-light.tsx, uid.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: chat-app. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ChatApp } from "@/components/sheenui/blocks/chat-app";
+import { type ChatConversation, type ChatConversationAction, type ChatDraft, type ChatMessage, type ChatParticipant } from "@/components/sheenui/chat/types";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ChatApp, type ChatConversation, type ChatConversationAction, type ChatDraft, type ChatMessage, type ChatParticipant } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| conversations | ChatConversation[] | required | Lists the chats to show (ChatConversation[]). |
+| participants | ChatParticipant[] | required | Everyone who appears in the chats, including the current user (ChatParticipant[]). |
+| currentUserId | string | required | The id of the signed-in participant: their messages sit on the right. |
+| messages | Record<string, ChatMessage[] \| undefined> | required | Messages per chat id, oldest first (load a chat's messages when it is selected). |
+| selectedId | string \| null | optional, no default | The open chat (controlled); null shows the list on phones and "Pick a chat" on wide screens. |
+| defaultSelectedId | string \| null | null | The chat open at first when selectedId is not controlled (string \| null, default null). |
+| onSelectedIdChange | ((conversationId: string \| null) => void) | optional, no default | Called when a chat is opened or closed: keep it in the URL to deep-link a chat. |
+| loading | boolean | false | Shows skeleton rows in the conversation list while it loads. |
+| hasOlder | ((conversationId: string) => boolean) | optional, no default | Whether a chat has earlier messages to load. |
+| loadingOlderId | string \| null | null | The chat whose earlier messages are loading. |
+| onLoadOlder | ((conversationId: string) => void) | optional, no default | Load a chat's earlier messages (the thread asks when its top is reached). |
+| onSend | ((conversationId: string, draft: ChatDraft) => void) | optional, no default | A message (text, attachments, reply) was sent from the composer. |
+| onEdit | ((conversationId: string, messageId: string, text: string) => void) | optional, no default | A sent message's text was edited. |
+| onDelete | ((conversationId: string, message: ChatMessage) => void) | optional, no default | A message was deleted. |
+| onReact | ((conversationId: string, message: ChatMessage, emoji: string, add: boolean) => void) | optional, no default | A reaction was added (add: true) or removed. |
+| onRetry | ((conversationId: string, message: ChatMessage) => void) | optional, no default | "Retry" was pressed on a message that failed to send. |
+| onRead | ((conversationId: string) => void) | optional, no default | The newest message of a chat was seen: clear its unread count. |
+| onTyping | ((conversationId: string, typing: boolean) => void) | optional, no default | The current user started or stopped typing: send it on to the other side. |
+| onDraftChange | ((conversationId: string, text: string) => void) | optional, no default | Store a chat's unsent text (shown as "Draft: …" in the list). Without it, drafts are kept in memory. |
+| onConversationAction | ((conversation: ChatConversation, action: ChatConversationAction) => void) | optional, no default | Pin, mute, archive, mark read… (list and info panel). |
+| onCall | ((conversation: ChatConversation) => void) | optional, no default | Shows a call button in the chat header. |
+| onVideoCall | ((conversation: ChatConversation) => void) | optional, no default | Shows a video-call button in the chat header. |
+| onBlock | ((participant: ChatParticipant) => void) | optional, no default | Shows "Block" in a person's info panel. |
+| onLeaveGroup | ((conversation: ChatConversation) => void) | optional, no default | Shows "Leave group" in a group's info panel. |
+| listProps | Partial<ConversationListProps> | optional, no default | Extra props for the list and the chat view. |
+| threadProps | Partial<ChatThreadProps> | optional, no default | Passes extra props to the chat view (Partial<ChatThreadProps>). |
+| stackBelow | number | 640 | Container width (px) below which the panes stack (list, then chat). |
+| now | Date | the real clock, refreshed every 30 seconds | The current time for "5m" and "last seen" labels. On a prerendered or server-rendered page pass a fixed date, so the HTML matches what the browser renders when it hydrates (and move it forward yourself after mounting). |
+| locale | string | the browser's | Sets the BCP 47 locale for times and dates. |
+| labels | Partial<ChatLabels> | defaultChatLabels | Every other string, for translation: labels={{ you: "…" }}; omitted keys keep the English of defaultChatLabels. All 140 keys of ChatLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Classes for the outer element (give it a height). |
+
+### Example: Messenger
+
+Open chats, send messages (replies arrive with typing and read receipts), pin or archive from a row's menu, and open the info panel from a chat's header. Narrow your window (or open this on a phone) to see the stacked layout.
+
+```tsx
+import { useState } from "react";
+import { ChatApp } from "@/components/sheenui/blocks/chat-app";
+import { type ChatConversation, type ChatConversationAction, type ChatDraft, type ChatMessage, type ChatParticipant } from "@/components/sheenui/chat/types";
+// Package build (after the first npm release, or a packed tarball): import { ChatApp, type ChatConversation, type ChatConversationAction, type ChatDraft, type ChatMessage, type ChatParticipant } from "@sheenui/theme";
+
+// Your data layer: replace these with real data and handlers.
+declare const chats: ChatConversation[];
+declare const people: ChatParticipant[];
+declare const messagesById: Record<string, ChatMessage[]>;
+declare const cursors: Record<string, string | null>;
+declare function loadOlder(chatId: string): void;
+declare const api: {
+  send(chatId: string, draft: ChatDraft): void;
+  edit(messageId: string, text: string): void;
+  delete(messageId: string): void;
+  react(messageId: string, emoji: string, add: boolean): void;
+  markRead(chatId: string): void;
+  updateChat(chatId: string, action: ChatConversationAction): void;
+  block(personId: string): void;
+};
+
+export function Example() {
+  // Keep the open chat in the URL (?chat=c-riya) so it can be linked to.
+  const [chatId, setChatId] = useState<string | undefined>(() => new URLSearchParams(location.search).get("chat") ?? undefined);
+
+  return (
+    <ChatApp
+      conversations={chats}
+      participants={people}
+      currentUserId="me"
+      messages={messagesById}
+      selectedId={chatId}
+      onSelectedIdChange={(id) => setChatId(id ?? undefined)}
+      hasOlder={(id) => cursors[id] !== null}
+      onLoadOlder={(id) => loadOlder(id)}
+      onSend={(id, draft) => api.send(id, draft)}
+      onEdit={(id, messageId, text) => api.edit(messageId, text)}
+      onDelete={(id, message) => api.delete(message.id)}
+      onReact={(id, message, emoji, add) => api.react(message.id, emoji, add)}
+      onRead={(id) => api.markRead(id)}
+      onConversationAction={(chat, action) => api.updateChat(chat.id, action)}
+      onBlock={(person) => api.block(person.id)}
+      className="h-[44rem]"
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Moves between the chat list, the open chat and the composer. The list is one tab stop; the search field, filters and message actions are ordinary tab stops. |
+| Arrow Up / Arrow Down, Home / End | In the list: move between chats. Type a name to jump to that chat. |
+| Enter / Space | In the list: open the focused chat. On a wide layout focus moves to the composer; on a narrow one it moves to the chat's name. |
+| Shift + F10 / Menu key | Open a chat's actions (pin, mute, archive, mark read). |
+| Arrow Up / Arrow Down, Enter, R, E | In the chat: move between messages, open a message's actions, reply, edit your own message. |
+| Enter / Shift + Enter | Composer: send / add a line (on touch keyboards Return adds a line). Arrow Up in an empty composer edits your last message. |
+| Escape | Closes the contact or group info drawer and returns focus to the control that opened it. |
+| Back button | On a narrow block, returns to the list and puts focus back on the chat's row. |
+
+### Accessibility
+
+- The list and the chat are labeled regions. Focus is managed on every pane change: opening a chat on a phone moves it to the chat's name, going back returns it to the row, and a keyboard open on a wide layout lands in the composer.
+- New messages and typing are announced politely (aria-live); message status (sending, sent, delivered, read, failed) is written text, not color alone, and presence is written in words.
+- The info panel is a side drawer (a modal dialog with a focus trap); swipe and hover actions all have keyboard and menu equivalents, so nothing is gesture-only.
+- Reduced motion makes the pane slide a jump; reduced transparency makes the glass panes solid; the message area never uses blur, so scrolling stays fast.
+
+### When to use the chat app
+
+- Use ChatApp as a messenger UI for a messaging screen in a marketplace or support tool, where a conversation list sits beside the open chat on wide containers and stacks on narrow ones.
+- Use it for a team inbox with direct messages and groups, wiring onSend, onEdit, onDelete, onReact and onRetry to your backend while you hold the messages map in state.
+- Use it when contact info matters, since opening a chat's info drawer shows avatar, about, phone, email, members, shared photos, and mute and block or leave actions.
+- Skip it when you only need a floating help bubble on a marketing page; ChatWidget is lighter, and AiChat fits a person talking to a model rather than to other people.
+- Pair it with ConversationList and ChatThread when you want a custom layout from the same parts, and with EmptyState and SideDrawer for screens around the chat.
+
+
+### Frequently asked questions
+
+#### How do I get a React chat app template running with ChatApp?
+
+Pass conversations, participants, currentUserId and a messages map from chat id to message array; all four are required. Give the block a height with className, and handle onSend(conversationId, draft) to store the message. selectedId or defaultSelectedId chooses the open chat.
+
+#### When does ChatApp switch from two panes to one?
+
+It stacks below a container width set by stackBelow, 640 by default, measured on the block itself and not the screen. On narrow widths the chat slides over the list with a back button. Reduced motion turns the slide into a jump, and reduced transparency makes the glass solid.
+
+#### How is keyboard focus handled when opening and closing chats?
+
+In the list, arrow keys move between chats and Enter opens one. On a wide layout, opening a chat with the keyboard moves focus to the composer; on a phone it moves to the chat name, and going back returns it to the chat's row. Escape closes the info drawer, and Enter sends while Shift plus Enter adds a line.
+
+#### Why is the message area not blurred glass?
+
+The list, chat header and composer are glass panes, but the scrolling message area is deliberately not, because blur is kept off scrolling content. Message status such as sent, delivered or failed is shown as text rather than color alone, and new messages and typing are announced politely.
+
+
+### Related pages
+
+- [Chat list](https://lokendra-builds.github.io/sheenui/chat/list)
+- [Chat view](https://lokendra-builds.github.io/sheenui/chat/thread)
+- [Popover chat](https://lokendra-builds.github.io/sheenui/chat/widget)
+- [Notification center](https://lokendra-builds.github.io/sheenui/blocks/notification-center)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+- [Settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+
+## Notification Center for React: Glass Inbox
+
+URL: https://lokendra-builds.github.io/sheenui/blocks/notification-center
+Sidebar name: Notification center
+
+A React notification center: a bell with a live unread count, a glass inbox with tabs, day groups, inline actions, mark read and swipe to dismiss. MIT.
+
+What it is: A React notification center: a bell with a live unread count that opens a glass inbox with tabs, day groups and inline actions.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/notification-center.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Blocks](https://lokendra-builds.github.io/sheenui/blocks/) > Notification center
+
+Files to copy from `theme/src/`:
+
+- `blocks/notification-center.tsx`
+- `components/avatar/`
+- `components/button/`
+- `components/empty-state/`
+- `components/kbd/`
+- `components/spinner/`
+- `components/tabs/`
+- `components/tooltip/`
+- `blocks/notification-center/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, heading.ts, initials.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: notification-center. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { NotificationCenter, NotificationPanel } from "@/components/sheenui/blocks/notification-center";
+import { type NotificationItem } from "@/components/sheenui/blocks/notification-center/model";
+import { Button } from "@/components/sheenui/button/button";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, NotificationCenter, type NotificationItem, NotificationPanel } from "@sheenui/theme";
+```
+
+### NotificationCenter
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| notifications | NotificationItem[] | optional, no default | The notifications to show, when you control the list yourself (pair it with the change callbacks). |
+| defaultNotifications | NotificationItem[] | optional, no default | Sets the starting list when uncontrolled. |
+| onNotificationsChange | ((next: NotificationItem[]) => void) | optional, no default | Called with the whole new list after any change (read, unread, dismiss, undo). |
+| onSelect | ((item: NotificationItem) => void) | optional, no default | Called when a notification is opened (it is marked as read first). |
+| onDismiss | ((item: NotificationItem) => void) | optional, no default | Called as soon as a notification is dismissed (button, Delete key or swipe). Undo can still bring it back: see onRestore. |
+| onRestore | ((item: NotificationItem) => void) | optional, no default | Called when Undo brings a dismissed notification back. |
+| onDismissCommit | ((item: NotificationItem) => void) | optional, no default | Called once a dismissal can no longer be undone: the undo bar timed out, another notification was dismissed, or the inbox closed. Delete it on your server here. |
+| viewAllHref | string | optional, no default | Shows a "View all notifications" link at the bottom. |
+| headerActions | ReactNode | optional, no default | Extra controls in the header, after "Mark all as read" (e.g. a settings link). |
+| defaultTab | NotificationTab | "all" | The tab that is selected when the panel first renders. |
+| now | Date | the real clock, refreshed every 30 seconds | The current time for "5m ago" and the day groups. On a prerendered or server-rendered page pass a fixed date, so the HTML matches what the browser renders when it hydrates. |
+| locale | string | the browser's | Sets the BCP 47 locale for day headings and times. |
+| labels | Partial<NotificationCenterLabels> | defaultNotificationCenterLabels | Every other string, for translation: labels={{ trigger: "…" }}; omitted keys keep the English of defaultNotificationCenterLabels. All 30 keys of NotificationCenterLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Heading level of the panel title (2 \| 3 \| 4, default 2); day groups sit one level below. "none" renders paragraphs with no heading role (for an example). |
+| open | boolean | optional, no default | Whether the panel is open (controlled). |
+| defaultOpen | boolean | false | Whether the panel is open at first when open is not controlled (boolean, default false). |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the panel opens or closes. |
+| side | "top" \| "bottom" \| "left" \| "right" | "bottom" | Which side of the bell the panel opens on ("top" \| "bottom" \| "left" \| "right", default "bottom"). |
+| align | "center" \| "end" \| "start" | "end" | Sets the alignment against the bell ("start" \| "center" \| "end", default "end"). |
+| max | number | 99 | Counts above this show as "99+" (number, default 99). |
+| className | string | optional, no default | Classes for the bell button (the outer element; the panel is portaled). |
+| panelClassName | string | optional, no default | Adds extra classes to the glass panel. |
+
+### NotificationItem
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| id | string | optional, no default | Stable identifier of the notification, used as the React key and in callbacks. |
+| title | ReactNode | optional, no default | The sentence; wrap names in <b>. Also the row’s accessible name. |
+| time | Date \| string \| number | optional, no default | When it happened. An unreadable value never breaks the inbox: the item is listed last, under “Undated”. |
+| actor | { name, avatar? } | optional, no default | Shown as an avatar (initials without an image). Leave out for system notices. |
+| kind | "mention" \| "comment" \| "reaction" \| "invite" \| "assign" \| "system" \| "success" \| "warning" | optional, no default | Badge on the avatar, or the icon of a system notice. |
+| description | ReactNode | optional, no default | A quote or detail, clamped to two lines. |
+| read | boolean | false | Read rows lose the dot and tint. |
+| mention | boolean | kind === "mention" | Lists the notification under the Mentions tab. |
+| href | string | optional, no default | Opening the row follows this link. |
+| actions | ReactNode | optional, no default | Buttons under the text (Accept / Decline …). |
+
+### NotificationPanel
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| notifications | NotificationItem[] | optional, no default | The notifications to show, when you control the list yourself (pair it with the change callbacks). |
+| defaultNotifications | NotificationItem[] | optional, no default | Sets the starting list when uncontrolled. |
+| onNotificationsChange | ((next: NotificationItem[]) => void) | optional, no default | Called with the whole new list after any change (read, unread, dismiss, undo). |
+| onSelect | ((item: NotificationItem) => void) | optional, no default | Called when a notification is opened (it is marked as read first). |
+| onDismiss | ((item: NotificationItem) => void) | optional, no default | Called as soon as a notification is dismissed (button, Delete key or swipe). Undo can still bring it back: see onRestore. |
+| onRestore | ((item: NotificationItem) => void) | optional, no default | Called when Undo brings a dismissed notification back. |
+| onDismissCommit | ((item: NotificationItem) => void) | optional, no default | Called once a dismissal can no longer be undone: the undo bar timed out, another notification was dismissed, or the inbox closed. Delete it on your server here. |
+| viewAllHref | string | optional, no default | Shows a "View all notifications" link at the bottom. |
+| headerActions | ReactNode | optional, no default | Extra controls in the header, after "Mark all as read" (e.g. a settings link). |
+| defaultTab | NotificationTab | "all" | The tab that is selected when the panel first renders. |
+| now | Date | the real clock, refreshed every 30 seconds | The current time for "5m ago" and the day groups. On a prerendered or server-rendered page pass a fixed date, so the HTML matches what the browser renders when it hydrates. |
+| locale | string | the browser's | Sets the BCP 47 locale for day headings and times. |
+| labels | Partial<NotificationCenterLabels> | defaultNotificationCenterLabels | Every other string, for translation: labels={{ trigger: "…" }}; omitted keys keep the English of defaultNotificationCenterLabels. All 30 keys of NotificationCenterLabels are listed in the key table under the props table. |
+| headingLevel | HeadingLevelOption | 2 | Heading level of the panel title (2 \| 3 \| 4, default 2); day groups sit one level below. "none" renders paragraphs with no heading role (for an example). |
+| className | string | 32rem | Classes for the glass card (set its height here; it defaults to 32rem). |
+
+### Example 1 of 3: Bell and inbox
+
+Open the bell, then try “Simulate a notification”: the bell rings, the count pops and the new row glows once. Hover a row for its actions, accept the invite, or press Delete on a focused row (Undo or ⌘Z / Ctrl+Z brings it back). On a phone the inbox opens as a sheet from the bottom of the screen.
+
+```tsx
+import { useState } from "react";
+
+import { NotificationCenter } from "@/components/sheenui/blocks/notification-center";
+import { type NotificationItem } from "@/components/sheenui/blocks/notification-center/model";
+// Package build (after the first npm release, or a packed tarball): import { NotificationCenter, type NotificationItem } from "@sheenui/theme";
+
+const router = { push: (to: string) => window.location.assign(to) };
+
+const api = {
+  deleteNotification: (id: string) => fetch("/api/notifications/" + id, { method: "DELETE" }),
+};
+
+export function Example() {
+  const [items, setItems] = useState<NotificationItem[]>([
+    {
+      id: "n1",
+      kind: "mention",
+      actor: { name: "Ada Lovelace", avatar: "/ada.jpg" },
+      title: <><b>Ada Lovelace</b> mentioned you in <b>Q3 roadmap</b></>,
+      description: "“@you could you sanity-check the contrast numbers?”",
+      time: "2026-10-30T09:41:00Z",
+      href: "#demo-q3-roadmap-c12",
+    },
+    // …
+  ]);
+
+  return (
+    <NotificationCenter
+      notifications={items}
+      onNotificationsChange={setItems}
+      onSelect={(n) => {
+        if (n.href) router.push(n.href);
+      }}
+      // Delete on the server once Undo is no longer possible.
+      onDismissCommit={(n) => api.deleteNotification(n.id)}
+      viewAllHref="/notifications"
+    />
+  );
+}
+```
+
+### Example 2 of 3: Inline panel
+
+NotificationPanel is the same inbox without the bell, as a glass card for a notifications page, a drawer or a dashboard column. Add your own header controls next to “Mark all as read”.
+
+```tsx
+import { NotificationPanel } from "@/components/sheenui/blocks/notification-center";
+import { type NotificationItem } from "@/components/sheenui/blocks/notification-center/model";
+import { Button } from "@/components/sheenui/button/button";
+// Package build (after the first npm release, or a packed tarball): import { NotificationPanel, Button, type NotificationItem } from "@sheenui/theme";
+
+const items: NotificationItem[] = [
+  {
+    id: "n1",
+    kind: "mention",
+    actor: { name: "Ada Lovelace" },
+    title: <><b>Ada Lovelace</b> mentioned you in <b>Q3 roadmap</b></>,
+    description: "“@you could you sanity-check the contrast numbers?”",
+    time: "2026-10-30T09:41:00Z",
+  },
+  { id: "n2", kind: "success", title: "Deploy finished", time: "2026-10-30T08:12:00Z", read: true },
+];
+
+export function Example() {
+  return (
+    <NotificationPanel
+      defaultNotifications={items}
+      defaultTab="unread"
+      viewAllHref="/notifications"
+      headerActions={
+        <Button variant="ghost" size="icon" aria-label="Notification settings" render={<a href="#demo-settings-notifications" />}>
+          <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+          </svg>
+        </Button>
+      }
+      className="h-[30rem]"
+    />
+  );
+}
+```
+
+### Example 3 of 3: Any language
+
+Every string is a label, and day headings and times come from Intl for the locale: Heute, Gestern, then weekdays. Mark everything read on the Ungelesen tab to reach the empty state.
+
+```tsx
+import { NotificationPanel } from "@/components/sheenui/blocks/notification-center";
+import { type NotificationItem } from "@/components/sheenui/blocks/notification-center/model";
+// Package build (after the first npm release, or a packed tarball): import { NotificationPanel, type NotificationItem } from "@sheenui/theme";
+
+const items: NotificationItem[] = [
+  {
+    id: "n1",
+    kind: "mention",
+    actor: { name: "Ada Lovelace" },
+    title: <><b>Ada Lovelace</b> hat Sie in <b>Q3-Fahrplan</b> erwähnt</>,
+    description: "“@you kannst du die Kontrastwerte prüfen?”",
+    time: "2026-10-30T09:41:00Z",
+  },
+  { id: "n2", kind: "success", title: "Deployment abgeschlossen", time: "2026-10-30T08:12:00Z", read: true },
+];
+
+export function Example() {
+  return (
+    <NotificationPanel
+      defaultNotifications={items}
+      locale="de-DE"
+      labels={{
+        title: "Mitteilungen",
+        markAllRead: "Alle gelesen",
+        all: "Alle", unread: "Ungelesen", mentions: "Erwähnungen",
+        today: "Heute", yesterday: "Gestern",
+        emptyUnreadTitle: "Alles erledigt",
+        // …every other string
+      }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space on the bell | Open the panel. |
+| Escape | Close the panel and return focus to the bell. |
+| Tab | Enter the tabs, then the list. |
+| ↑ / ↓ | Previous / next notification. |
+| Home / End | First / last notification. |
+| Enter | Open the notification (it is marked read first). |
+| Delete | Dismiss it; focus moves on. |
+| Ctrl / Cmd + Z | Undo the dismissal. |
+
+### Accessibility
+
+- The bell is named “Notifications, 3 unread” and the count is text; the panel is a labeled popover.
+- Dismissals (with the undo shortcut), arrivals and “all read” are announced politely.
+- Swipe-to-dismiss on touch always has the dismiss button as an alternative.
+
+### All exports on this page
+
+- NotificationCenter — Props (see NotificationCenterProps): the shared inbox props (notifications / defaultNotifications / onNotificationsChange, onSelect, onDismiss, onRestore, onDismissCommit, viewAllHref, headerActions, defaultTab ("all"), now, locale, labels, headingLevel (2)) plus open / defaultOpen (false) / onOpenChange, side ("bottom"), align ("end"), max (99), className (the bell) and panelClassName.
+- NotificationPanel — The inbox as an inline glass card (no bell): for a page, a drawer or a dashboard column.
+- defaultNotificationCenterLabels — The English NotificationCenterLabels used when labels is omitted; a partial labels prop is merged over them.
+- defaultNotificationLabels — The former name of defaultNotificationCenterLabels, kept as an alias for one release.
+
+
+### When to use the notification center
+
+- Use NotificationCenter as a notification dropdown for the bell in an app header, where an unread count badge opens a popover inbox with All, Unread and Mentions tabs and, with viewAllHref, a link to view everything.
+- Use NotificationPanel for a dashboard column or a drawer that shows the inbox inline, giving it a height with className because it defaults to 32rem.
+- Use it when dismissals need a safety net, since Delete removes a notification, an undo bar appears, and Ctrl or Cmd plus Z restores it.
+- Skip it when you only need a brief confirmation such as "Saved"; a Toast fits transient messages better than a persistent inbox with read state and tabs.
+- Pair it with Avatar for sender images, Tooltip for the header actions, and KbdShortcut to teach the undo shortcut, passing items through notifications or defaultNotifications.
+
+
+### Frequently asked questions
+
+#### How do I build a notification center in React with this block?
+
+Render NotificationCenter with defaultNotifications, or notifications plus onNotificationsChange for controlled state. Handle onSelect for opening an item and onDismiss for removal. Use NotificationPanel instead when you want the same inbox inline without the bell. Each item needs an id, title and time; kind, actor and description are optional.
+
+#### What does the bell announce to screen readers?
+
+The bell button is named something like "Notifications, 3 unread", and the count is real text. The count caps at max, which defaults to 99. Arrivals, dismissals, the undo shortcut and "all read" are announced politely, and the panel itself is a labeled popover that returns focus on Escape.
+
+#### Which keys work inside the notification list?
+
+Tab enters the tabs and then the list. Up, Down, Home and End move between notifications, Enter opens one, and Delete dismisses it while focus moves on. Ctrl or Cmd plus Z undoes a dismissal. Swipe-to-dismiss on touch always has a dismiss button as an alternative.
+
+#### Can I control where the popover opens and whether it is open?
+
+Yes. Use open, defaultOpen and onOpenChange for control, side (default bottom) and align (default end) for placement, and panelClassName to style the portaled glass card. The bell rings when something new arrives, except when the visitor prefers reduced motion.
+
+
+### Related pages
+
+- [Toast](https://lokendra-builds.github.io/sheenui/components/toast)
+- [Badge](https://lokendra-builds.github.io/sheenui/components/badge)
+- [Pricing](https://lokendra-builds.github.io/sheenui/blocks/pricing)
+- [Settings page](https://lokendra-builds.github.io/sheenui/blocks/settings-page)
+- [Hero section](https://lokendra-builds.github.io/sheenui/blocks/hero-section)
+- [Feature grid](https://lokendra-builds.github.io/sheenui/blocks/feature-grid)
+
+20 blocks pages in all: browse them on [All blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+

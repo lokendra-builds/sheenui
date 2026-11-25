@@ -1,0 +1,1 @@
+export{t as COLOR_SWATCHES,n as default}from"./ShowcaseStage.color-picker-D8BxOVDH.js";

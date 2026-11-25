@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(900),e(`working`),t({view:`board`}),await n(1200),t({view:`calendar`}),e(`lit`)};export{e as default};

@@ -1,0 +1,2557 @@
+# SheenUI: Forms (part 1 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## React Calendar Component, Localized with Intl
+
+URL: https://lokendra-builds.github.io/sheenui/forms/calendar
+Sidebar name: Calendar
+
+A glass React calendar built on Intl: locale-aware week start, translated names, full keyboard navigation and a month/year jump. Tailwind CSS v4, MIT.
+
+What it is: A glass React calendar built on Intl, so the week starts and the month names read the way the user's locale expects.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/calendar.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Calendar
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/calendar/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: calendar. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Calendar } from "@/components/sheenui/calendar/calendar";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Calendar, type DateRange, GlassCard } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Field name, used for native form submission and by form libraries. |
+| locale | string | the browser's | BCP 47 locale for names, digits and week start. When the page is prerendered or server-rendered, pass one (e.g. "en-US") so the HTML matches what the browser renders when it hydrates. |
+| today | Date | the current date | What counts as "today" (the highlighted day, the default month, the Today shortcut). |
+| weekStartsOn | Weekday | optional, no default | Override the locale's first day of the week (0 = Sunday). |
+| min | Date \| null | optional, no default | The earliest day that can be selected. |
+| max | Date \| null | optional, no default | The latest day that can be selected. |
+| isDateDisabled | ((date: Date) => boolean) | optional, no default | Mark days unavailable (still focusable, never selectable), e.g. weekends or booked days. |
+| month | Date | optional, no default | Sets the first visible month when controlled. |
+| defaultMonth | Date | the selection, or today | The first visible month on mount (uncontrolled). |
+| onMonthChange | ((month: Date) => void) | optional, no default | Called with the first visible month when the person pages to another month. |
+| numberOfMonths | number | 1 | Months shown side by side (they wrap on narrow screens). |
+| showOutsideDays | boolean | only with one month | Show the neighbouring months' days in the first and last rows. |
+| fixedWeeks | boolean | true | Always 6 rows, so the height never jumps between months. |
+| fluid | boolean | false | Stretch to the container's width (cells share it) instead of a fixed cell size. |
+| autoFocus | boolean | false | Focus the selected day (or today) on mount. |
+| aria-label | string | optional, no default | Sets the accessible name of the whole calendar. |
+| labels | Partial<CalendarLabels> | defaultCalendarLabels | UI strings (translate these). Every other string, for translation: labels={{ previousMonth: "…" }}; omitted keys keep the English of defaultCalendarLabels. All 11 keys of CalendarLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+| mode (= "single") | "single" | "single" | Selection mode: one date at a time, so value is a single Date and clicking a day replaces it. |
+| mode (= "range") | "range" | required | Pick a start and an end date. |
+| value (mode = "single") | Date \| null | optional, no default | The selected date (controlled). null is no selection. |
+| value (mode = "range") | DateRange | optional, no default | { start, end }. While picking, end is null. |
+| defaultValue (mode = "single") | Date \| null | optional, no default | The selected date on mount (uncontrolled). |
+| defaultValue (mode = "range") | DateRange | optional, no default | The range on mount (uncontrolled). |
+| onValueChange (mode = "single") | (value: Date \| null) => void | optional, no default | Called with the new date when one is picked. |
+| onValueChange (mode = "range") | (value: DateRange) => void | optional, no default | Called with { start, end } as the range is picked; end is null until the second click. |
+| allowUnavailableInRange (mode = "range") | boolean | false | Let a range span unavailable days. |
+
+### Example 1 of 3: Single date
+
+The selected-day pill glides to the new day; months slide in the direction you travel. Click the caption for the month and year grids.
+
+```tsx
+import { useState } from "react";
+import { Calendar } from "@/components/sheenui/calendar/calendar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { Calendar, GlassCard } from "@sheenui/theme";
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+export function Example() {
+  const [date, setDate] = useState<Date | null>(startOfDay(new Date()));
+
+  return (
+    <GlassCard className="max-w-full rounded-sheen-xl p-2 sm:p-3">
+      <Calendar value={date} onValueChange={setDate} aria-label="Pick a date" />
+    </GlassCard>
+  );
+}
+```
+
+### Example 2 of 3: Range, two months, unavailable days
+
+Pick a start, then hover (or arrow) to preview the range; a range can't cross a booked day (every 9th and 10th here). Past days are off limits. Each caption opens the month grid for its own panel.
+
+```tsx
+import { useState } from "react";
+import { Calendar } from "@/components/sheenui/calendar/calendar";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+// Package build (after the first npm release, or a packed tarball): import { Calendar, GlassCard, type DateRange } from "@sheenui/theme";
+
+export function Example() {
+  const today = new Date();
+  const [range, setRange] = useState<DateRange>({ start: null, end: null });
+
+  const booked = (d: Date) => d.getDate() % 9 === 0 || d.getDate() % 10 === 0;
+
+  return (
+    <GlassCard className="max-w-full rounded-sheen-xl p-2 sm:p-4">
+      <Calendar
+        mode="range"
+        numberOfMonths={2}
+        min={today}
+        isDateDisabled={booked}
+        value={range}
+        onValueChange={setRange}
+        aria-label="Stay dates"
+      />
+    </GlassCard>
+  );
+}
+```
+
+### Example 3 of 3: Locales
+
+Same component, different locale: week start, names and digits all change. Arabic also runs right to left (arrow keys follow).
+
+```tsx
+import { useState } from "react";
+import { Calendar } from "@/components/sheenui/calendar/calendar";
+// Package build (after the first npm release, or a packed tarball): import { Calendar } from "@sheenui/theme";
+
+export function Example() {
+  const today = new Date();
+  const [locale, setLocale] = useState("ar-EG");
+  const rtl = ["ar", "he", "fa"].includes(locale.split("-")[0] ?? locale);
+
+  return (
+    <div dir={rtl ? "rtl" : undefined} lang={locale}>
+      <button onClick={() => setLocale(locale === "ar-EG" ? "de-DE" : "ar-EG")}>Switch language</button>
+      <Calendar key={locale} locale={locale} defaultValue={today} aria-label="Localised calendar" />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow keys | Move by one day (left, right) or one week (up, down); right-to-left flips left and right. |
+| Home / End | Jump to the start or end of the week. |
+| Page Up / Page Down | Previous or next month. |
+| Shift + Page Up / Page Down | Previous or next year. |
+| Enter / Space | Select the focused day (in range mode, the first press sets the start and the second the end). |
+
+### Accessibility
+
+- A WAI-ARIA date grid: role="grid" per month, one day in the tab order (roving tabindex), each day named with its full date.
+- Today, selected, range start and end, and unavailable days are all in the name. Unavailable days stay focusable but cannot be selected.
+- A polite live region announces month changes. Selection never relies on color alone.
+
+### When to use Calendar
+
+- Use it as an accessible calendar for a booking page where the month grid stays on screen, such as picking a check-in and check-out range for a rental, with range mode previewing the span as the pointer or keyboard focus moves.
+- Use it inside an admin scheduler or a reporting filter where people jump between months and years often, since the caption opens a month grid and then a year grid for long jumps.
+- Use it for a localized product: week start, month names, weekday names and even digits come from Intl, so locale="ar-EG" or "en-GB" needs no extra configuration or translation files for the grid itself.
+- Skip it when the calendar should hide behind a field in a compact form; DatePicker wraps the same grid in a popover on desktop and a bottom sheet on phones, so it fits better there.
+- Pair it with Popover to build your own trigger, with Field and Label for naming the grid in a form, and with Badge or Button to show the chosen range and a clear action beside it.
+
+
+### Frequently asked questions
+
+#### How do I select a date range in a React calendar?
+
+Pass mode="range" and read value or onValueChange as an object with start and end. While the person is picking, end is null until the second click. By default a range cannot cross an unavailable day; set allowUnavailableInRange to let it span booked or disabled days.
+
+#### Which keys work inside the Calendar?
+
+It follows the WAI-ARIA date grid: arrows move by day or week, Home and End go to the week's edges, Page Up and Page Down change the month, and Shift with them changes the year. Enter or Space selects. Only one day is in the tab order, and right-to-left flips Left and Right.
+
+#### How do I block weekends or already booked days?
+
+Give isDateDisabled a function that returns true for those dates, and use min and max for outer limits. Unavailable days stay focusable so keyboard users can still land on them, and they are named as unavailable for screen readers, but they can never be selected.
+
+#### Why does my server-rendered Calendar cause a hydration mismatch?
+
+Both locale and today default to the browser's values, which differ between server and client. Pass an explicit locale such as en-US and a fixed today date on prerendered pages, tests and screenshots, and the HTML will match what hydrates. The component is marked use client.
+
+
+### Related pages
+
+- [Color picker](https://lokendra-builds.github.io/sheenui/forms/color-picker)
+- [Date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker)
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field)
+- [File upload](https://lokendra-builds.github.io/sheenui/forms/file-upload)
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Color Picker: Hex, RGB, HSL & Eyedropper
+
+URL: https://lokendra-builds.github.io/sheenui/forms/color-picker
+Sidebar name: Color picker
+
+A glass React color picker: saturation area, hue and opacity sliders, hex/RGB/HSL inputs, swatches and the eyedropper. Keyboard-accessible, Tailwind v4.
+
+What it is: A glass React color picker with a saturation area, hue and opacity sliders, typed hex, RGB and HSL values, swatches and the screen eyedropper.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/color-picker.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Color picker
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/color-picker/`
+- `components/date-picker/picker-surface.tsx`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, field-size.ts, form.ts, math.ts, popup-motion.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: color-picker. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { ColorField, ColorPicker } from "@/components/sheenui/color-picker/color-picker";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { ColorField, ColorPicker } from "@sheenui/theme";
+```
+
+### ColorPicker props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Field name, used for native form submission and by form libraries. |
+| disabled | boolean | false | Disables every control in the picker. |
+| value | string | optional, no default | The colour (controlled): any hex, rgb() or hsl() string. |
+| defaultValue | string | a violet | The colour on mount (uncontrolled). |
+| onValueChange | ((value: string) => void) | optional, no default | Called while the colour changes (dragging, typing), with hex. |
+| onValueCommit | ((value: string) => void) | optional, no default | Called once a change is done (pointer up, Enter, blur), with hex. |
+| alpha | boolean | true | Show the opacity slider and channel. |
+| format | ColorFormat | optional, no default | The channel format shown under the sliders (controlled): "hex", "rgb" or "hsl". |
+| defaultFormat | ColorFormat | "hex" | The channel format on mount (uncontrolled). |
+| onFormatChange | ((format: ColorFormat) => void) | optional, no default | Called with the new format when the format switch changes. |
+| formats | ColorFormat[] | ["hex", "rgb", "hsl"] | Formats offered by the switch. |
+| swatches | ColorSwatch[] | [] | Sets the preset colours, as strings or { value, label }. |
+| eyeDropper | boolean | true | Offer the screen eyedropper (only shown where window.EyeDropper exists). |
+| copyButton | boolean | true | Show the copy button. |
+| variant | "card" \| "plain" | "card" | "card": its own glass card. "plain": no surface, for popovers and your own layouts. |
+| aria-label | string | optional, no default | Accessible name of the whole picker group. |
+| labels | Partial<ColorPickerLabels> | defaultColorPickerLabels | Every other string, for translation: labels={{ area: "…" }}; omitted keys keep the English of defaultColorPickerLabels. All 25 keys of ColorPickerLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### ColorField props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| defaultValue | string | "#7c5cff" | The colour on mount (uncontrolled). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| format | ColorFormat | optional, no default | The channel format shown under the sliders (controlled): "hex", "rgb" or "hsl". |
+| disabled | boolean | false | Disables every control in the picker. |
+| value | string | optional, no default | The colour (controlled): any hex, rgb() or hsl() string. |
+| onValueChange | ((value: string) => void) | optional, no default | Called while the colour changes (dragging, typing), with hex. |
+| onValueCommit | ((value: string) => void) | optional, no default | Called once a change is done (pointer up, Enter, blur), with hex. |
+| alpha | boolean | true | Show the opacity slider and channel. |
+| defaultFormat | ColorFormat | "hex" | The channel format on mount (uncontrolled). |
+| onFormatChange | ((format: ColorFormat) => void) | optional, no default | Called with the new format when the format switch changes. |
+| formats | ColorFormat[] | ["hex", "rgb", "hsl"] | Formats offered by the switch. |
+| swatches | ColorSwatch[] | optional, no default | Sets the preset colours, as strings or { value, label }. |
+| eyeDropper | boolean | true | Offer the screen eyedropper (only shown where window.EyeDropper exists). |
+| copyButton | boolean | true | Show the copy button. |
+| labels | Partial<ColorPickerLabels> | defaultColorPickerLabels | Every other string, for translation: labels={{ area: "…" }}; omitted keys keep the English of defaultColorPickerLabels. All 25 keys of ColorPickerLabels are listed in the key table under the props table. |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the hex value with a form. |
+| required | boolean | required | Marks the field as required. |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| label | ReactNode | optional, no default | Visible label above the field. Without one, pass aria-label. |
+| description | ReactNode | optional, no default | Helper text under the field; replaced by error when there is one. |
+| error | ReactNode | optional, no default | Shows an error message under the field. |
+| id | string | optional, no default | Sets the id of the text input. |
+| aria-label | string | optional, no default | Accessible name of the text input when there is no label. |
+| placeholder | string | "#000000" | Sets the placeholder of the text input. |
+| className | string | optional, no default | Adds extra classes to the outer wrapper. |
+
+### Example 1 of 3: Picker
+
+Drag the area or use the arrow keys on it (Shift for bigger steps). The value is always emitted as hex.
+
+```tsx
+import { useState } from "react";
+import { ColorPicker } from "@/components/sheenui/color-picker/color-picker";
+// Package build (after the first npm release, or a packed tarball): import { ColorPicker } from "@sheenui/theme";
+
+export function Example() {
+  const [color, setColor] = useState("#6d4aff");
+
+  return (
+      <ColorPicker
+        value={color}
+        onValueChange={setColor}
+        swatches={[{ value: "#6d4aff", label: "Violet" }, "#3b82f6", "#10b981", "#f59e0b"]}
+        aria-label="Accent color"
+      />
+  );
+}
+```
+
+### Example 2 of 3: Color field
+
+A hex field with a swatch that opens the picker in a glass popover (a bottom sheet on phones). Type a hex straight into the field, or submit it with name.
+
+```tsx
+import { useState } from "react";
+import { ColorField } from "@/components/sheenui/color-picker/color-picker";
+// Package build (after the first npm release, or a packed tarball): import { ColorField } from "@sheenui/theme";
+
+const SWATCHES = ["#6d4aff", "#3b82f6", "#06b6d4", "#10b981", "#84cc16", "#f59e0b", "#ef4444", "#ec4899"];
+
+export function Example() {
+  const [brand, setBrand] = useState("#6d4aff");
+
+  return (
+    <ColorField
+      label="Brand color"
+      value={brand}
+      onValueChange={setBrand}
+      swatches={SWATCHES.slice(0, 8)}
+      alpha={false}
+      name="brand"
+      description="Used for buttons and links."
+    />
+  );
+}
+```
+
+### Example 3 of 3: Hex only, no opacity
+
+Trim it down: one format, no opacity, no swatches.
+
+```tsx
+import { ColorPicker } from "@/components/sheenui/color-picker/color-picker";
+// Package build (after the first npm release, or a packed tarball): import { ColorPicker } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <ColorPicker defaultValue="#22c55e" formats={["hex"]} alpha={false} />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Arrow Left / Arrow Right | Color area: change saturation. Hue and opacity sliders: change the value. |
+| Arrow Up / Arrow Down | Color area: change brightness (Shift for steps of 10). |
+| Page Up / Page Down | Change brightness (or slider value) by 10. |
+| Home / End | Saturation 0 / 100 in the area; the ends of a slider. |
+| Enter / Space / Arrow Down | ColorField: open the picker from the swatch button. Escape closes it. |
+
+### Accessibility
+
+- The color area is a 2-D slider; the area, hue and opacity sliders and each channel input have a name and a spoken value ("Saturation 64%, brightness 100%").
+- In ColorField, type a hex value and press Enter or leave the field to apply it (Escape discards); description and error are linked with aria-describedby.
+- Copying announces the copied value politely. The color graphics opt out of forced colors (they are content, like an image); the controls around them keep system colors.
+
+### All exports on this page
+
+- ColorField — A hex text field with a swatch button that opens the full ColorPicker (a glass popover from 640px up, a bottom sheet on phones).
+- ColorPicker — A colour picker: a saturation / brightness area, hue and opacity sliders, typed values (hex, RGB or HSL), swatches, copy.
+- defaultColorPickerLabels — The English strings of ColorPicker.
+
+
+### When to use the color picker
+
+- Use it as a hex, RGB and HSL color picker in a theme editor or brand settings screen where people tune an accent color with the saturation and brightness area, a hue slider and an opacity slider, then copy the result.
+- Use it for design-tool style inputs such as a highlight color for a note, a chart series color or a label color, where presets via the swatches prop give one-click choices beside free selection.
+- Use ColorField when the picker belongs in a form: it shows a swatch plus a hex text field and opens the picker as a popover from 640px up, or as a bottom drawer on phones.
+- Skip it when users only choose from five or six fixed brand colors; a RadioGroup with swatch cards or a SegmentedControl is simpler and needs no continuous color space or typed values.
+- Pair it with Popover for custom trigger layouts, the label, description and error props of ColorField for the name and message, and Slider or Switch next to it for related theme settings like contrast.
+
+
+### Frequently asked questions
+
+#### What format does the React color picker return?
+
+The value is always emitted as hex, like #7c5cff, or an eight-digit hex such as #7c5cff80 when the opacity is below 100%. Any hex, rgb() or hsl() string is accepted as input. The format prop only changes which channel inputs are shown under the sliders, from hex, rgb or hsl.
+
+#### How do I use the color picker with the keyboard?
+
+The saturation and brightness area is a two-dimensional slider: Left and Right change saturation, Up and Down change brightness, and Shift makes steps of 10. Page Up and Down adjust brightness by 10, and Home and End set saturation to 0 or 100. Hue and opacity are sliders.
+
+#### Can users pick a color from anywhere on the screen?
+
+Yes, where the browser supports it. The eyedropper button only appears when window.EyeDropper exists, so it is hidden in browsers without it. Turn it off with eyeDropper={false}. A copy button is also on by default, and copyButton={false} removes it.
+
+#### How do I disable transparency or reword the labels?
+
+Set alpha={false} to hide the opacity slider and channel. Every UI string, including the accessible names of the area, sliders and inputs, can be replaced by passing a partial labels object. Use variant="plain" to drop the glass card surface when placing it inside your own popover.
+
+
+### Related pages
+
+- [Date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker)
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field)
+- [File upload](https://lokendra-builds.github.io/sheenui/forms/file-upload)
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Date Picker & Range Picker for Tailwind
+
+URL: https://lokendra-builds.github.io/sheenui/forms/date-picker
+Sidebar name: Date picker
+
+A glass React date picker and range picker: popover on desktop, swipe-to-close bottom sheet on phones, locale-aware and keyboard-friendly. Free, MIT.
+
+What it is: A glass React date picker that opens a calendar in a popover, or in a bottom sheet on phones, for single dates and ranges.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/date-picker.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Date picker
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/calendar/`
+- `components/date-picker/`
+- `components/button/`
+- `components/spinner/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, field-size.ts, form.ts, popup-motion.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: date-picker. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { DatePicker, DateRangePicker, type DateRangePreset } from "@/components/sheenui/date-picker/date-picker";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, DatePicker, type DateRange, DateRangePicker, type DateRangePreset } from "@sheenui/theme";
+```
+
+### DatePicker props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the day as YYYY-MM-DD with a form. |
+| required | boolean | optional, no default | Mark the field as required (the label shows an asterisk and "Required" is read). |
+| disabled | boolean | optional, no default | Disables the whole field and its picker. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| label | ReactNode | optional, no default | Text above the field, linked to it as its accessible name (the chosen value is read after it). |
+| description | ReactNode | optional, no default | Muted helper text under the field. Hidden while an error shows. |
+| error | ReactNode | optional, no default | Shows an error message under the field. Marks it invalid and is announced. |
+| locale | string | the browser's | BCP 47 locale for the field text and the calendar. |
+| today | Date | the current date | What counts as "today" (highlighted day, Today button). |
+| weekStartsOn | Weekday | the locale's | First day of the week: 0 is Sunday, 1 Monday. |
+| min | Date \| null | optional, no default | The earliest day that can be selected. |
+| max | Date \| null | optional, no default | The latest day that can be selected. |
+| isDateDisabled | ((date: Date) => boolean) | optional, no default | Return true for days that cannot be picked (holidays, booked days). |
+| formatOptions | Intl.DateTimeFormatOptions | { dateStyle: "medium" } | How the field shows the value. |
+| clearable | boolean | true | Show the × button once there is a value. |
+| closeOnSelect | boolean | true | Close as soon as a date (or a full range) is picked. |
+| open | boolean | optional, no default | Whether the calendar is open (controlled). |
+| defaultOpen | boolean | false | Open on first render (uncontrolled). |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the calendar opens or closes. |
+| id | string | optional, no default | Sets the id of the field button. |
+| aria-label | string | optional, no default | Accessible name when there is no visible label (the value is read after it). |
+| calendarLabels | Partial<CalendarLabels> | defaultCalendarLabels | Calendar UI strings (month navigation, captions). Every other string, for translation: calendarLabels={{ previousMonth: "…" }}; omitted keys keep the English of defaultCalendarLabels. All 11 keys of CalendarLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Class for the outer wrapper (label + field + helper text). |
+| triggerClassName | string | optional, no default | Adds extra classes to the field button. |
+| value | Date \| null | optional, no default | Sets the chosen day when controlled. null means none. |
+| defaultValue | Date \| null | null | Sets the starting day when uncontrolled. |
+| onValueChange | ((value: Date \| null) => void) | optional, no default | Called with the picked day, or null when cleared. |
+| showFooter | boolean | true | Show the Today / Clear footer. |
+| labels | Partial<DatePickerLabels> | defaultDatePickerLabels | Every other string, for translation: labels={{ placeholder: "…" }}; omitted keys keep the English of defaultDatePickerLabels. All 7 keys of DatePickerLabels are listed in the key table under the props table. |
+
+### DateRangePicker props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Field name, used for native form submission and by form libraries. |
+| required | boolean | optional, no default | Mark the field as required (the label shows an asterisk and "Required" is read). |
+| disabled | boolean | optional, no default | Disables the whole field and its picker. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| label | ReactNode | optional, no default | Text above the field, linked to it as its accessible name (the chosen value is read after it). |
+| description | ReactNode | optional, no default | Muted helper text under the field. Hidden while an error shows. |
+| error | ReactNode | optional, no default | Shows an error message under the field. Marks it invalid and is announced. |
+| locale | string | the browser's | BCP 47 locale for the field text and the calendar. |
+| today | Date | the current date | What counts as "today" (highlighted day, Today button). |
+| weekStartsOn | Weekday | the locale's | First day of the week: 0 is Sunday, 1 Monday. |
+| min | Date \| null | optional, no default | The earliest day that can be selected. |
+| max | Date \| null | optional, no default | The latest day that can be selected. |
+| isDateDisabled | ((date: Date) => boolean) | optional, no default | Return true for days that cannot be picked (holidays, booked days). |
+| formatOptions | Intl.DateTimeFormatOptions | { month: "short", day: "numeric", year: "numeric" } | How the field shows the value. |
+| clearable | boolean | true | Show the × button once there is a value. |
+| closeOnSelect | boolean | true | Close as soon as a date (or a full range) is picked. |
+| open | boolean | optional, no default | Whether the calendar is open (controlled). |
+| defaultOpen | boolean | false | Open on first render (uncontrolled). |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the calendar opens or closes. |
+| id | string | optional, no default | Sets the id of the field button. |
+| aria-label | string | optional, no default | Accessible name when there is no visible label (the value is read after it). |
+| calendarLabels | Partial<CalendarLabels> | defaultCalendarLabels | Calendar UI strings (month navigation, captions). Every other string, for translation: calendarLabels={{ previousMonth: "…" }}; omitted keys keep the English of defaultCalendarLabels. All 11 keys of CalendarLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Class for the outer wrapper (label + field + helper text). |
+| triggerClassName | string | optional, no default | Adds extra classes to the field button. |
+| value | DateRange \| null | optional, no default | The chosen range { start, end } (controlled). null means none. |
+| defaultValue | DateRange \| null | null | Sets the starting range when uncontrolled. |
+| onValueChange | ((value: DateRange \| null) => void) | optional, no default | Called with the range once both ends are picked, or null when cleared. |
+| numberOfMonths | number | 2 | Months side by side when the screen has room (fewer on tablets, one on phones). |
+| presets | DateRangePreset[] | [] | One-click ranges shown beside the calendar (above it on phones). |
+| allowUnavailableInRange | boolean | false | Let a range run across unavailable days. |
+| startName | string | optional, no default | Submit the start / end as YYYY-MM-DD with a form. |
+| endName | string | optional, no default | Sets the form field name for the end day. |
+| labels | Partial<DateRangePickerLabels> | defaultDateRangePickerLabels | Every other string, for translation: labels={{ placeholder: "…" }}; omitted keys keep the English of defaultDateRangePickerLabels. All 10 keys of DateRangePickerLabels are listed in the key table under the props table. |
+
+### Example 1 of 4: Single date
+
+Today / Clear in the footer, × in the field. Resize below 640px to get the bottom sheet.
+
+```tsx
+import { useState } from "react";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+// Package build (after the first npm release, or a packed tarball): import { DatePicker } from "@sheenui/theme";
+
+export function Example() {
+  const [due, setDue] = useState<Date | null>(null);
+
+  return (
+    <DatePicker label="Due date" value={due} onValueChange={setDue} description="We'll remind you the day before." />
+  );
+}
+```
+
+### Example 2 of 4: Bounds and unavailable days
+
+Weekdays in the next 60 days only. The month arrows stop at the bounds.
+
+```tsx
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+// Package build (after the first npm release, or a packed tarball): import { DatePicker } from "@sheenui/theme";
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+
+export function Example() {
+  const today = startOfDay(new Date());
+
+  return (
+    <DatePicker
+      label="Delivery date"
+      min={today}
+      max={addDays(today, 60)}
+      isDateDisabled={(d) => d.getDay() === 0 || d.getDay() === 6}
+      formatOptions={{ weekday: "short", day: "numeric", month: "long" }}
+    />
+  );
+}
+```
+
+### Example 3 of 4: Date range with presets
+
+Two months side by side where they fit beside the presets, one on tablets and phones (there the presets become a swipeable row). Hover previews the range; nothing after today.
+
+```tsx
+import { useState } from "react";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { DateRangePicker, type DateRangePreset } from "@/components/sheenui/date-picker/date-picker";
+// Package build (after the first npm release, or a packed tarball): import { DateRangePicker, type DateRange, type DateRangePreset } from "@sheenui/theme";
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const today = () => startOfDay(new Date());
+
+const PRESETS: DateRangePreset[] = [
+  { label: "Today", range: () => ({ start: today(), end: today() }) },
+  { label: "Last 7 days", range: () => ({ start: addDays(today(), -6), end: today() }) },
+  { label: "Last 30 days", range: () => ({ start: addDays(today(), -29), end: today() }) },
+  { label: "This month so far", range: () => ({ start: new Date(new Date().getFullYear(), new Date().getMonth(), 1), end: today() }) },
+];
+
+export function Example() {
+  const [period, setPeriod] = useState<DateRange | null>(null);
+
+  return (
+    <DateRangePicker label="Reporting period" value={period} onValueChange={setPeriod} max={today()} presets={PRESETS} />
+  );
+}
+```
+
+### Example 4 of 4: In a form
+
+name submits YYYY-MM-DD; a range submits startName / endName. Errors show under the field.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+// Package build (after the first npm release, or a packed tarball): import { Button, DatePicker } from "@sheenui/theme";
+
+export function Example() {
+  const missing = false; // set from your validation
+
+  return (
+      <form onSubmit={(event) => { event.preventDefault(); /* validate, then submit */ }}>
+        <DatePicker name="checkIn" label="Check-in" required error={missing && "Pick a check-in date."} />
+        <Button type="submit">Book</Button>
+      </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space / Arrow Down | Open the calendar from the field; focus moves to the selected day. |
+| Arrow keys, Page Up / Page Down | Move inside the calendar (see the Calendar page). |
+| Enter / Space | Select the focused day. A range commits only after both ends are picked. |
+| Escape | Close the calendar and return focus to the field. |
+
+### Accessibility
+
+- The trigger is a labeled button showing the chosen date; the calendar opens in a popover, or as a swipe-to-close bottom sheet on phones.
+- Focus lands on the selected day (or today) and returns to the field on close; the sheet keeps the field above the software keyboard.
+- name submits an ISO date with a form; error is announced politely. Pass locale and today on prerendered pages so server and browser text match.
+
+### All exports on this page
+
+- DatePicker — DatePicker: a glass field that opens a Calendar to pick one day.
+- DateRangePicker — DateRangePicker: a glass field that opens a Calendar to pick a start and an end day (bookings, reports).
+- defaultDatePickerLabels — Default English strings of DatePickerLabels; spread it and override single keys to reword.
+- defaultDateRangePickerLabels — Default English strings of DateRangePickerLabels; spread it and override single keys to reword.
+
+
+### When to use the date picker
+
+- Use it as a mobile-friendly date picker, a popover on desktop and a bottom sheet on phones, for a check-in field on a hotel or rental form where people type nothing and instead open a calendar from a labeled button, with min set to today so past dates are unavailable.
+- Use DateRangePicker when you need a start and an end, for example a reporting period, where its presets such as Next 7 days let people skip the grid entirely.
+- Use it in a form posted to a server: the name prop submits the chosen day as YYYY-MM-DD, so a plain form action or FormData read gets a predictable string.
+- Skip it when the calendar should be permanently visible on the page, as in a scheduling sidebar; Calendar on its own does that, without the field, popover or sheet around it.
+- Pair it with its own description and error props for helper text and the message, Button for a custom reset action beside it, and the calendarLabels prop when translating the grid inside the popup.
+
+
+### Frequently asked questions
+
+#### How does the React date picker behave on a phone?
+
+From 640px up it opens as a glass popover under the field. On phones it becomes a full-width bottom sheet built on Base UI Drawer that you can swipe down to close, with larger finger-sized days. Both fade instead of springing when reduced motion is on.
+
+#### Which keys open the date picker and move around it?
+
+Enter, Space or the Down arrow on the field opens it. Inside, arrows move by day and week, Page Up and Page Down change month, and Shift with them changes year. Enter or Space picks, Escape closes and returns focus to the field, and Tab stays inside the popup.
+
+#### How do I control the open state or keep the popup open after picking?
+
+Use open, defaultOpen and onOpenChange for the popup. By default it closes when a date is picked; set closeOnSelect={false} to keep it open. clearable (on by default) shows a clear button once there is a value, and showFooter (also on by default) controls the Today and Clear buttons.
+
+#### Why does my prerendered date picker mismatch on hydration?
+
+A changing today causes hydration mismatches, so pass today a fixed date on prerendered pages. Also set locale explicitly so server and browser format the field the same way. formatOptions takes Intl.DateTimeFormatOptions to control how the chosen date is displayed in the field.
+
+
+### Related pages
+
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field)
+- [File upload](https://lokendra-builds.github.io/sheenui/forms/file-upload)
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Form Field with Label, Hint & Error
+
+URL: https://lokendra-builds.github.io/sheenui/forms/field
+Sidebar name: Field and Label
+
+A React form field component: label, description and error wired to any control with aria-describedby and aria-invalid. Works with react-hook-form.
+
+What it is: A composable React form field that wires a label, a description and an error message to any control, ready for react-hook-form.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/field.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Field and Label
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/field/`
+- `hooks/use-latest.ts`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: field. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+import { ColorField } from "@/components/sheenui/color-picker/color-picker";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+import { DatePicker, DateRangePicker } from "@/components/sheenui/date-picker/date-picker";
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+import { type FileUploadItem } from "@/components/sheenui/file-upload/parts/model";
+import { Input } from "@/components/sheenui/input/input";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { Rating } from "@/components/sheenui/rating/rating";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+import { Select } from "@/components/sheenui/select/select";
+import { Slider } from "@/components/sheenui/slider/slider";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
+```
+
+These examples also use button, calendar, checkbox, color-picker, combobox, date-picker, file-upload, input, number-field, otp-input, radio-group, rating, segmented, select, slider, switch, tags-input: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/calendar.json https://lokendra-builds.github.io/sheenui/r/checkbox.json https://lokendra-builds.github.io/sheenui/r/color-picker.json https://lokendra-builds.github.io/sheenui/r/combobox.json https://lokendra-builds.github.io/sheenui/r/date-picker.json https://lokendra-builds.github.io/sheenui/r/file-upload.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/number-field.json https://lokendra-builds.github.io/sheenui/r/otp-input.json https://lokendra-builds.github.io/sheenui/r/radio-group.json https://lokendra-builds.github.io/sheenui/r/rating.json https://lokendra-builds.github.io/sheenui/r/segmented.json https://lokendra-builds.github.io/sheenui/r/select.json https://lokendra-builds.github.io/sheenui/r/slider.json https://lokendra-builds.github.io/sheenui/r/switch.json https://lokendra-builds.github.io/sheenui/r/tags-input.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Checkbox, ColorField, Combobox, DatePicker, type DateRange, DateRangePicker, Field, FieldControl, FieldDescription, FieldError, FieldLabel, FileUpload, type FileUploadItem, Input, NumberField, OtpInput, RadioGroup, Rating, SegmentedControl, Select, Slider, Switch, TagsInput } from "@sheenui/theme";
+```
+
+### Field props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| invalid | boolean | false | Marks the field invalid: the control gets aria-invalid and FieldError is shown. |
+| disabled | boolean | false | Disables the control inside the field. |
+| required | boolean | false | Marks the control required and adds an asterisk to the label. |
+| controlId | string | generated | Id of the control; a generated one is used when omitted. |
+
+### Other parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| FieldDescription | p props | optional, no default | Helper text under the control; listed in aria-describedby. |
+| useField() | FieldContextValue \| null | optional, no default | The ids and state of the surrounding Field, for building your own parts. |
+
+### FieldControl props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactElement<Partial<FieldControlRenderProps>, string \| JSXElementConstructor<any>> \| ((props: FieldControlRenderProps) => ReactNode) | required | One control element, or a function that gets the wiring props and returns the control. |
+
+### FieldError props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| forceMatch | boolean | false | Show it even when the field is not marked invalid (for example a server error you render yourself). |
+
+### FieldLabel props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| hint | ReactNode | optional, no default | Text shown after the label, such as "(optional)", muted. |
+
+### Label props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| required | boolean | false | Adds an asterisk after the text. It is decorative: mark the control required for assistive tech. |
+| hint | ReactNode | optional, no default | Text shown after the label, such as "(optional)", muted. |
+
+### Example 1 of 5: Label, description and error
+
+The error shows after the field has been visited and is invalid. Type a bad address and tab away.
+
+```tsx
+import { useState } from "react";
+import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Field, FieldControl, FieldDescription, FieldError, FieldLabel, Input } from "@sheenui/theme";
+
+export function Example() {
+  const [email, setEmail] = useState("");
+  const [touched, setTouched] = useState(false);
+  const invalid = touched && !/^\S+@\S+\.\S+$/.test(email);
+
+  return (
+    <Field required invalid={invalid} className="max-w-sm">
+      <FieldLabel>Email</FieldLabel>
+      <FieldControl>
+        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => setTouched(true)} />
+      </FieldControl>
+      <FieldDescription>We only use it to send receipts.</FieldDescription>
+      <FieldError>Enter a valid email address.</FieldError>
+    </Field>
+  );
+}
+```
+
+### Example 2 of 5: Any control
+
+Base UI controls such as Switch join the field on their own. FieldControl wires a native element or your own component and merges with its props (its own disabled, required, aria-invalid and id win). Pass a function to place the props yourself.
+
+```tsx
+import { Field, FieldControl, FieldDescription, FieldLabel } from "@/components/sheenui/field/field";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { Field, FieldControl, FieldDescription, FieldLabel, Switch } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-5">
+      <Field>
+        <FieldLabel hint="(optional)">Notifications</FieldLabel>
+        <Switch />
+        <FieldDescription>Email me about new features.</FieldDescription>
+      </Field>
+      <Field disabled>
+        <FieldLabel>Sound volume</FieldLabel>
+        <FieldControl>
+          {(props) => <input type="range" {...props} />}
+        </FieldControl>
+      </Field>
+    </div>
+  );
+}
+```
+
+### Example 3 of 5: With react-hook-form
+
+Field takes the error from the form library: Controller hands the control its ref, name, value and onBlur, and the message becomes FieldError's children. The preview below runs the same markup on plain state.
+
+```tsx
+import { useForm, Controller } from "react-hook-form";
+import { Button } from "@/components/sheenui/button/button";
+import { Field, FieldControl, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { Button, Field, FieldControl, FieldError, FieldLabel, Input } from "@sheenui/theme";
+
+type Values = { name: string };
+
+export function Example() {
+  const { control, handleSubmit } = useForm<Values>({ defaultValues: { name: "" } });
+
+  return (
+    <form onSubmit={handleSubmit((values) => console.log(values))} className="flex max-w-sm flex-col gap-4">
+      <Controller
+        name="name"
+        control={control}
+        rules={{ required: "Name is required." }}
+        render={({ field, fieldState }) => (
+          <Field required invalid={fieldState.invalid}>
+            <FieldLabel>Full name</FieldLabel>
+            <FieldControl>
+              <Input {...field} />
+            </FieldControl>
+            <FieldError>{fieldState.error?.message}</FieldError>
+          </Field>
+        )}
+      />
+      <Button type="submit">Save</Button>
+    </form>
+  );
+}
+```
+
+### Example 4 of 5: One size scale for buttons and fields
+
+Input, Select, Combobox, NumberField, DatePicker, TagsInput, Textarea, OtpInput and the color field take size sm (32px), md (40px, default) or lg (48px), and so does Button: one height scale, so a button beside a field lines up at every size. On touch screens (any coarse pointer) sm and md grow to 44px.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+import { DatePicker } from "@/components/sheenui/date-picker/date-picker";
+import { Input } from "@/components/sheenui/input/input";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+import { Select } from "@/components/sheenui/select/select";
+// Package build (after the first npm release, or a packed tarball): import { Button, Combobox, DatePicker, Input, NumberField, Select } from "@sheenui/theme";
+
+const fruit = [{ value: "apple", label: "Apple" }, { value: "pear", label: "Pear" }];
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-4">
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <div key={size} className="flex flex-wrap items-center gap-3">
+          <Button size={size}>{size}</Button>
+          <Input size={size} aria-label={`Input ${size}`} placeholder="Input" className="w-36" />
+          <Select size={size} aria-label={`Select ${size}`} items={fruit} placeholder="Select" className="w-44" />
+          <Combobox size={size} aria-label={`Combobox ${size}`} options={fruit} placeholder="Combobox" className="w-44" />
+          <NumberField size={size} aria-label={`Number ${size}`} defaultValue={3} className="w-36" />
+          <DatePicker size={size} aria-label={`Date ${size}`} className="w-44" />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Example 5 of 5: Every control with react-hook-form
+
+One Row helper, one line per control. Each control takes ref, name, onBlur and aria-invalid from the Controller field, so a failed validation focuses the right control; the value prop and the change handler are the only things that differ (checked and onCheckedChange for Checkbox and Switch, a Date or a DateRange for the pickers, an array for TagsInput and FileUpload).
+
+```tsx
+import type { ReactNode } from "react";
+import { Controller, useForm, type Control, type ControllerFieldState, type ControllerRenderProps } from "react-hook-form";
+import { Button } from "@/components/sheenui/button/button";
+import { type DateRange } from "@/components/sheenui/calendar/date-utils";
+import { Checkbox } from "@/components/sheenui/checkbox/checkbox";
+import { ColorField } from "@/components/sheenui/color-picker/color-picker";
+import { Combobox } from "@/components/sheenui/combobox/combobox";
+import { DatePicker, DateRangePicker } from "@/components/sheenui/date-picker/date-picker";
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+import { type FileUploadItem } from "@/components/sheenui/file-upload/parts/model";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+import { OtpInput } from "@/components/sheenui/otp-input/otp-input";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { Rating } from "@/components/sheenui/rating/rating";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+import { Select } from "@/components/sheenui/select/select";
+import { Slider } from "@/components/sheenui/slider/slider";
+import { Switch } from "@/components/sheenui/switch/switch";
+import { TagsInput } from "@/components/sheenui/tags-input/tags-input";
+// Package build (after the first npm release, or a packed tarball): import { Button, Checkbox, ColorField, Combobox, DatePicker, DateRangePicker, FileUpload, NumberField, OtpInput, RadioGroup, Rating, SegmentedControl, Select, Slider, Switch, TagsInput, type DateRange, type FileUploadItem } from "@sheenui/theme";
+
+// The value each control holds. Every control takes ref, name, onBlur and aria-invalid, so the Controller
+// field spreads on without wrappers; only the change handler and the value prop differ.
+type Values = {
+  fruit: string | null;
+  city: string | null;
+  size: string | null;
+  plan: string;
+  volume: number;
+  quantity: number | null;
+  stars: number | null;
+  code: string;
+  tags: string[];
+  day: Date | null;
+  stay: DateRange | null;
+  brand: string;
+  files: FileUploadItem[];
+  terms: boolean;
+  news: boolean;
+};
+
+const options = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+];
+
+type RowProps<K extends keyof Values> = {
+  name: K;
+  control: Control<Values>;
+  render: (field: ControllerRenderProps<Values, K>, state: ControllerFieldState) => ReactNode;
+};
+
+function Row<K extends keyof Values>({ name, control, render }: RowProps<K>) {
+  return <Controller name={name} control={control} render={({ field, fieldState }) => <>{render(field, fieldState)}</>} />;
+}
+
+export function Example() {
+  const { control, handleSubmit } = useForm<Values>({
+    defaultValues: { fruit: null, city: null, size: null, plan: "month", volume: 30, quantity: null, stars: null, code: "", tags: [], day: null, stay: null, brand: "#7c5cff", files: [], terms: false, news: false },
+  });
+
+  return (
+    <form onSubmit={handleSubmit((values) => console.log(values))} className="grid max-w-xl gap-4">
+      <Row name="fruit" control={control} render={(f, s) => <Select label="Fruit" items={options} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="city" control={control} render={(f, s) => <Combobox label="City" options={options} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="size" control={control} render={(f, s) => <RadioGroup label="Size" items={options} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="plan" control={control} render={(f, s) => <SegmentedControl aria-label="Billing" items={[{ value: "month", label: "Monthly" }, { value: "year", label: "Yearly" }]} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="volume" control={control} render={(f, s) => <Slider label="Volume" name={f.name} value={f.value} onValueChange={(v) => f.onChange(v)} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="quantity" control={control} render={(f, s) => <NumberField label="Quantity" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="stars" control={control} render={(f, s) => <Rating label="Rating" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="code" control={control} render={(f, s) => <OtpInput length={4} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="tags" control={control} render={(f, s) => <TagsInput label="Tags" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="day" control={control} render={(f, s) => <DatePicker label="Day" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="stay" control={control} render={(f, s) => <DateRangePicker label="Stay" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="brand" control={control} render={(f, s) => <ColorField label="Brand color" alpha={false} name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="files" control={control} render={(f, s) => <FileUpload label="Attachments" name={f.name} value={f.value} onValueChange={f.onChange} onBlur={f.onBlur} ref={f.ref} aria-invalid={s.invalid} />} />
+      <Row name="terms" control={control} render={(f, s) => <Checkbox label="I accept the terms" name={f.name} checked={f.value} onCheckedChange={f.onChange} onBlur={f.onBlur} ref={f.ref} error={s.error?.message} />} />
+      <Row name="news" control={control} render={(f, s) => <Switch label="Send me news" name={f.name} checked={f.value} onCheckedChange={f.onChange} onBlur={f.onBlur} ref={f.ref} error={s.error?.message} />} />
+      <Button type="submit">Save</Button>
+    </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Click the label | Focuses (or toggles) the control it names. |
+| Tab | Field adds no tab stops; focus order is the control's own. |
+
+### Accessibility
+
+- FieldLabel is a real <label for> pointing at the control, so the control has an accessible name and a larger click target.
+- FieldDescription and FieldError ids are added to the control's aria-describedby only while they are rendered, merged with any aria-describedby the control already has.
+- FieldError is role="alert", so an error that appears after a submit or a blur is announced; it renders only while the field is invalid.
+- The required asterisk is aria-hidden; the control itself gets required, so assistive tech says it once.
+- Form libraries: every SheenUI input forwards ref, onBlur, name, required, disabled, aria-invalid and aria-describedby, so Field works with react-hook-form's Controller (pass invalid={fieldState.invalid} and the message as FieldError's children).
+
+### All exports on this page
+
+- Field — A form field wrapper that wires a label, a description and an error message to any control.
+- FieldControl — Wires the one control inside it to its Field: the element gets id, aria-describedby, aria-invalid, required and disabled.
+- FieldDescription — Muted helper text under the control; its id is added to the control's aria-describedby while it is rendered.
+- FieldError — The error message of a Field.
+- FieldLabel — The label of a Field: Label already pointing at the field's control, with the required asterisk.
+- Label — A text label for a control.
+- groupBlur — Wraps onBlur for a control made of several focusable parts: it fires only when focus leaves the whole group.
+- mergeRefs — Combine refs (callback or object) into one callback ref; undefined entries are skipped.
+- useField — The state of the surrounding Field (invalid, required, disabled, controlId).
+- useFocusProxyRef — A ref for a control made of several focusable parts (a radio group, a rating, an OTP field).
+- useMergedRef — mergeRefs as a hook: returns one stable callback ref that forwards the node to every ref passed in, always the latest ones.
+
+
+### When to use the Field and Label
+
+- Use it as a react-hook-form field wrapper around a native input, a Slider or a Switch that does not draw its own label, so the label names the control and the description and error are read together with it.
+- Use it with react-hook-form: pass invalid={fieldState.invalid} to Field and put the validation message inside FieldError, and the control gets aria-invalid automatically.
+- Use it to build a settings row such as a webhook URL with helper text, where a FieldDescription explains the format and a FieldError appears only after a failed save.
+- Skip it when the control already takes label, description and error props; Input, Select and the other SheenUI form components wire those themselves, so wrapping them adds nothing.
+- Pair it with FieldControl around a native input or your own component, with Slider or Switch, which join the field on their own, and with the useField hook when writing your own field parts.
+
+
+### Frequently asked questions
+
+#### How do I build an accessible React form field with a label and error?
+
+Nest FieldLabel, one control inside FieldControl, and optional FieldDescription and FieldError in a Field. It generates the ids, so the label's for points at the control and aria-describedby lists the description and the error, but only while they are rendered.
+
+#### What does the invalid prop actually change?
+
+Setting invalid shows FieldError and puts aria-invalid on the control. FieldError has role="alert", so the message is announced when it appears, and it rises into place by 6px unless reduced motion is on. The required and disabled props reach the control too.
+
+#### Does Field add extra tab stops or change focus?
+
+No. Field adds no tab stops; it only wires ids and state. Clicking the label focuses the control. The required asterisk is hidden from screen readers because the control itself carries the required attribute, so it is not announced twice.
+
+#### How can I read the field state inside my own component?
+
+Call useField inside a Field. It returns controlId, invalid, required and disabled, or null outside a Field. The ids and aria wiring themselves are handled by Base UI Field, or by FieldControl for a native element. That lets you build a custom hint or counter that reacts to the invalid state.
+
+
+### Related pages
+
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Select](https://lokendra-builds.github.io/sheenui/components/select)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [File upload](https://lokendra-builds.github.io/sheenui/forms/file-upload)
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React File Upload: Drag & Drop with Progress
+
+URL: https://lokendra-builds.github.io/sheenui/forms/file-upload
+Sidebar name: File upload
+
+A glass drag-and-drop file upload for React: validates type, size and count, with thumbnails, per-file progress, cancel and retry. Tailwind CSS v4, MIT.
+
+What it is: A glass drag-and-drop file upload for React that validates files on drop and lists each one with a thumbnail, progress bar, cancel and retry.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/file-upload.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > File upload
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/file-upload/`
+- `components/status-icons/`
+- `hooks/{use-controllable.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: file-upload. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+import { type FileUploadHandler, type FileUploadItem } from "@/components/sheenui/file-upload/parts/model";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, FileUpload, type FileUploadHandler, type FileUploadItem } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the files with a form (multipart). |
+| disabled | boolean | false | Disables the drop zone and its browse button. |
+| value | FileUploadItem[] | optional, no default | The file list (controlled). Use toFileUploadItems(files) to wrap existing Files. |
+| defaultValue | FileUploadItem[] | [] | Sets the starting list when uncontrolled. |
+| onValueChange | ((items: FileUploadItem[]) => void) | optional, no default | Called with the new list whenever files are added, removed or their upload state changes. |
+| upload | FileUploadHandler | optional, no default | Uploads one file. Report progress (0–100) and stop when the signal aborts. Throw to fail. |
+| onFilesAccepted | ((files: File[]) => void) | optional, no default | Called with the files that passed validation. |
+| onFilesRejected | ((rejections: FileRejection[]) => void) | optional, no default | Called with the files that didn't, and why. |
+| accept | string | optional, no default | Like the input's accept: "image/*,.pdf". |
+| maxSize | number | optional, no default | Sets the largest file size accepted, in bytes. |
+| minSize | number | optional, no default | Sets the smallest file size accepted, in bytes. |
+| maxFiles | number | 0 | Most files at once. With 1 (or multiple={false}), a new file replaces the old one. |
+| multiple | boolean | true | Allows adding several files at once. |
+| capture | "user" \| "environment" | optional, no default | Phones: open the camera directly. |
+| previews | boolean | true | Shows a thumbnail for each image file. |
+| variant | "default" \| "compact" | "default" | "default": tall zone with an icon. "compact": one row, for dense forms. |
+| label | ReactNode | optional, no default | Text above the zone; part of the zone's accessible name. |
+| description | ReactNode | optional, no default | Muted helper text under the label. |
+| error | ReactNode | optional, no default | Error message from outside (e.g. "Add at least one file"). |
+| locale | string | optional, no default | Locale for sizes and lists. |
+| actionsRef | RefObject<FileUploadActions \| null> | optional, no default | Receives an object of imperative actions, { addFiles, browse, clear }. |
+| preventDropOnDocument | boolean | true | Stop a file dropped just outside the zone from opening in the browser tab. |
+| labels | Partial<FileUploadLabels> | defaultFileUploadLabels | Every other string, for translation: labels={{ title: "…" }}; omitted keys keep the English of defaultFileUploadLabels. All 29 keys of FileUploadLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer wrapper. |
+
+### Example 1 of 3: Upload with progress
+
+Drop files, click the zone (or press Enter / Space on it), or paste. Images and PDFs up to 5 MB, six at most. A file with “error” in its name fails halfway so you can try Retry. No files handy? Add the samples: two are rejected on purpose.
+
+```tsx
+import { useState } from "react";
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+import { type FileUploadHandler, type FileUploadItem } from "@/components/sheenui/file-upload/parts/model";
+// Package build (after the first npm release, or a packed tarball): import { FileUpload, type FileUploadHandler, type FileUploadItem } from "@sheenui/theme";
+
+// Your uploader: report progress, honor the abort signal, throw to fail.
+async function uploadWithProgress(
+  url: string,
+  file: File,
+  { onProgress, signal }: { onProgress: (percent: number) => void; signal: AbortSignal },
+) {
+  // XMLHttpRequest (or fetch + a stream) goes here; call onProgress(0..100) as bytes leave.
+  onProgress(100);
+  await fetch(url, { method: "POST", body: file, signal });
+}
+
+export function Example() {
+  const [files, setFiles] = useState<FileUploadItem[]>([]);
+  const uploaded = files.filter((item) => item.status === "done").length;
+  const upload: FileUploadHandler = async (file, { onProgress, signal }) => {
+    await uploadWithProgress("/api/files", file, { onProgress, signal });
+  };
+
+  return (
+    <>
+      <FileUpload
+        label="Attachments"
+        accept="image/*,.pdf"
+        maxSize={5 * 1024 * 1024}
+        maxFiles={6}
+        upload={upload}
+        onValueChange={setFiles}
+      />
+      <p>{uploaded} uploaded</p>
+    </>
+  );
+}
+```
+
+### Example 2 of 3: Compact, one file
+
+variant="compact" fits dense forms. With maxFiles={1} a new file replaces the old one; capture opens the camera on phones.
+
+```tsx
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+import { type FileUploadHandler } from "@/components/sheenui/file-upload/parts/model";
+// Package build (after the first npm release, or a packed tarball): import { FileUpload, type FileUploadHandler } from "@sheenui/theme";
+
+export function Example() {
+  const upload: FileUploadHandler = async (file, { onProgress }) => {
+    onProgress(100); // send the file to your server here
+  };
+
+  return (
+    <FileUpload
+      variant="compact"
+      label="Profile photo"
+      accept="image/png,image/jpeg,image/webp"
+      maxFiles={1}
+      maxSize={2 * 1024 * 1024}
+      capture="user"
+      upload={upload}
+    />
+  );
+}
+```
+
+### Example 3 of 3: In a form, no upload step
+
+Without upload, files are only collected. With name they submit as multipart form data like a native file input.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { FileUpload } from "@/components/sheenui/file-upload/file-upload";
+// Package build (after the first npm release, or a packed tarball): import { Button, FileUpload } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      const files = new FormData(e.currentTarget)
+        .getAll("documents")
+        .filter((f): f is File => f instanceof File && f.size > 0);
+      console.log(files.map((f) => f.name).join(", ") || "No files yet");
+    }}>
+      <FileUpload name="documents" label="Documents" accept=".pdf,.doc,.docx" maxFiles={3} />
+      <Button type="submit">Send</Button>
+    </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focus the drop zone (it is a button). |
+| Enter / Space | Open the file dialog. |
+| Ctrl / Cmd + V | Paste files while the zone is focused. |
+| Tab, then Enter / Space | Cancel, Retry or Remove a file: each row's buttons are normal tab stops. |
+
+### Accessibility
+
+- Dragging is never required: the zone is a real button, and pasting works too.
+- Each file row has a progress bar with a name; added, failed and removed files are announced politely.
+- Rejected files (type, size, count) show a message linked to the zone. Every string is translatable through labels.
+- The zone is named by the label, the prompt and the limits hint together (“Attachments Drop files here, or browse Images, up to 5 MB”), so the visible text is part of its name.
+
+### All exports on this page
+
+- FileUpload — File upload: a glass dropzone plus a live file list.
+- defaultFileUploadLabels — Default English strings of FileUploadLabels; spread it and override single keys to reword.
+- toFileUploadItems — Wrap Files as idle items, e.g.
+
+
+### When to use the file upload field
+
+- Use it as a React dropzone for an attachments area on a support ticket or a CSV import screen, where people drop files, click to browse or paste from the clipboard and see a live list with per-file status.
+- Use it for uploads with real progress: pass an upload function and each file gets its own progress bar, a cancel button that aborts the signal, a retry button after failure and a done tick.
+- Use it for image uploads such as a gallery or avatar picker, where previews gives image files thumbnails and everything else gets a tinted icon with its extension.
+- Skip it when you only need a single bare file picker inside a native form; an Input with type="file" is lighter and needs no dropzone, list or upload handling.
+- Pair it with its own label, description and error props for labeling, Progress or Toast for wider upload feedback, and Button next to it to open the file dialog or clear the list through actionsRef.
+
+
+### Frequently asked questions
+
+#### How do I limit file types and sizes in a React drag and drop upload?
+
+Use accept, maxSize, minSize and maxFiles, which are checked on drop. Rejected files are listed with the reason, type, too-large, too-small, too-many or duplicate, and announced to screen readers; onFilesRejected gives you the details. While dragging, the zone turns red when the MIME type will not be accepted.
+
+#### How does the upload function work?
+
+Pass upload(file, { onProgress, signal }). Call onProgress with a percentage, stop when the signal aborts, resolve on success and reject to mark the file failed. Without it, files are just collected: read them from onValueChange, or submit them with the name prop.
+
+#### Is the dropzone usable with a keyboard?
+
+Yes. The zone is a button: Tab focuses it, Enter or Space opens the file dialog, and Ctrl or Cmd plus V pastes files while focused. Each row has Cancel, Retry and Remove buttons as normal tab stops, and additions, removals and results are announced politely.
+
+#### Can I control the list or trigger the dialog from code?
+
+Yes. Use value with onValueChange for a controlled list, or defaultValue otherwise. The actionsRef gives you addFiles, browse and clear. variant="compact" renders one row for dense forms, error shows an external message, and labels translates every string.
+
+
+### Related pages
+
+- [Input group](https://lokendra-builds.github.io/sheenui/forms/input-group)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating)
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Input Group: Prefix, Suffix & Button
+
+URL: https://lokendra-builds.github.io/sheenui/forms/input-group
+Sidebar name: Input group
+
+A React input group that attaches a prefix, suffix, unit or button to a field inside one glass edge with a shared focus ring. Tailwind CSS v4, MIT.
+
+What it is: A React input group that attaches text, icons or buttons to a field and shares one focus ring. Use InputGroup when one field needs things attached to it: an https:// prefix, a .com suffix, a currency or unit, or a button such as Apply inside the same edge.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/input-group.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Input group
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/input-group/`
+- `lib/{cn.ts, field-size.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: input-group. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Field, FieldControl, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/sheenui/input-group/input-group";
+```
+
+These examples also use button, field: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/field.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Field, FieldControl, FieldError, FieldLabel, InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@sheenui/theme";
+```
+
+### InputGroup props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | InputGroupAddons and one InputGroupInput, in reading order. |
+| size | FieldSize | "md" | Height, the same scale as Button and every field: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens). |
+| invalid | boolean | false | Mark the group invalid (danger edge). Pair it with aria-invalid on the input. |
+| disabled | boolean | false | Dim the group; disable the input yourself. |
+
+### InputGroupAddon props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| align | "end" \| "start" | "start" | Which end of the field it sits on: "start" (before the input, default) or "end". It only changes the divider side: put the addon where you want it in the markup (DOM order is the reading order and the visual order). |
+
+### Other parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| InputGroupText | span props | optional, no default | Shows plain text inside an addon. |
+| InputGroupInput | input props | optional, no default | The text field, as tall as the group, forwarding ref. |
+
+### Example 1 of 2: Prefix, suffix, unit and button
+
+Compose InputGroupAddon and InputGroupInput in reading order. Use Input's leading and trailing for a single icon.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/sheenui/input-group/input-group";
+// Package build (after the first npm release, or a packed tarball): import { Button, InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-4">
+      <InputGroup>
+        <InputGroupAddon>
+          <InputGroupText>https://</InputGroupText>
+        </InputGroupAddon>
+        <InputGroupInput aria-label="Domain" placeholder="example" />
+        <InputGroupAddon align="end">
+          <InputGroupText>.com</InputGroupText>
+        </InputGroupAddon>
+      </InputGroup>
+      <InputGroup size="lg">
+        <InputGroupInput aria-label="Amount" inputMode="decimal" placeholder="0.00" />
+        <InputGroupAddon align="end">USD</InputGroupAddon>
+      </InputGroup>
+      <InputGroup size="sm" invalid>
+        <InputGroupInput aria-label="Coupon" aria-invalid defaultValue="SPRING" />
+        <InputGroupAddon align="end">
+          <Button variant="ghost" size="sm">Apply</Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: Inside a Field
+
+Field wires the label, the description and the error to the input: wrap the InputGroupInput in FieldControl, and set invalid on both the Field and the group so the danger edge and the message agree.
+
+```tsx
+import { useState } from "react";
+import { Field, FieldControl, FieldError, FieldLabel } from "@/components/sheenui/field/field";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/sheenui/input-group/input-group";
+// Package build (after the first npm release, or a packed tarball): import { Field, FieldControl, FieldError, FieldLabel, InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@sheenui/theme";
+
+export function Example() {
+  const [slug, setSlug] = useState("");
+  const invalid = slug.length > 0 && !/^[a-z0-9-]+$/.test(slug);
+
+  return (
+    <Field invalid={invalid} className="max-w-sm">
+      <FieldLabel>Workspace address</FieldLabel>
+      <InputGroup invalid={invalid}>
+        <InputGroupAddon>
+          <InputGroupText>example.com/</InputGroupText>
+        </InputGroupAddon>
+        <FieldControl>
+          <InputGroupInput value={slug} onChange={(event) => setSlug(event.target.value)} />
+        </FieldControl>
+      </InputGroup>
+      <FieldError>Use lowercase letters, numbers and dashes.</FieldError>
+    </Field>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Focuses the input, then any button inside an addon. |
+| Typing | Works as in any text input; the addons are not focusable text. |
+
+### Accessibility
+
+- The group is role="group". Name the input with aria-label or a Field label: addon text is read as part of the page but is not the input's name unless you link it with aria-describedby.
+- invalid shows the danger edge; set aria-invalid on the input too, so the state is not carried by colour alone.
+- Icons in an addon should be aria-hidden; text such as https:// is read in order with the field.
+- Height follows the shared control scale (sm 32px, md 40px, lg 48px; 44px for sm and md on touch screens).
+
+### When to use the input group
+
+- Use InputGroup for a URL field with an https:// prefix, a price with a currency symbol and a unit, or a search box with an Apply button on its right edge, all sharing one focus ring.
+- Compose InputGroupAddon and InputGroupInput in reading order. Use align end on an addon that follows the input, and put it after the input in the markup.
+- Wrap the input in Field with FieldControl when it needs a label, a description or an error message, and set invalid on the Field and the group together.
+- Skip it for a single icon inside a plain field. Input has leading and trailing slots for that.
+- Pair it with Button for an inline action, Tooltip on an icon-only addon, and Select when the addon is a currency or unit picker.
+
+
+### Frequently asked questions
+
+#### How do I put a prefix or a suffix on a React input?
+
+Wrap InputGroupAddon with InputGroupText around the prefix, put InputGroupInput next, and add a second InputGroupAddon with align end for the suffix. All of it shares one glass edge and one focus ring.
+
+#### How does the invalid state work?
+
+invalid on the group draws the danger edge. Also set aria-invalid on the input, or put the group inside a Field with invalid, so the state is not carried by color alone.
+
+#### How tall is the group?
+
+It follows the shared control scale: sm 32px, md 40px, lg 48px, and 44px for sm and md on touch screens.
+
+#### Is the addon text part of the input's name?
+
+No. Name the input with aria-label or a Field label. Addon text such as https:// is read in page order but is not the input's accessible name.
+
+
+### Related pages
+
+- [Input](https://lokendra-builds.github.io/sheenui/components/input)
+- [Number field](https://lokendra-builds.github.io/sheenui/forms/number-field)
+- [Field and Label](https://lokendra-builds.github.io/sheenui/forms/field)
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating)
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Number Input with Steppers & Formatting
+
+URL: https://lokendra-builds.github.io/sheenui/forms/number-field
+Sidebar name: Number field
+
+A glass React number input with hold-to-repeat steppers, a drag-to-scrub label and Intl formatting for currency, percent and units. Base UI, Tailwind v4.
+
+What it is: A glass React number input with steppers you can hold, a scrub label you can drag, and Intl formatting for currency, percentages and units.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/number-field.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Number field
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/number-field/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, field-size.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: number-field. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+```
+
+These examples also use button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, NumberField } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Id of extra describing text, merged with the description and error. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the input invalid without an error message. |
+| aria-label | string | optional, no default | Name for screen readers when there is no visible label. |
+| onBlur | FocusEventHandler<HTMLInputElement> | optional, no default | Called when the input loses focus (react-hook-form: marks the field touched). |
+| onValueChange | ((value: number \| null, eventDetails: BaseNumberField.Root.ChangeEventDetails) => void) | optional, no default | Called with the new value (null when cleared). Base UI's change details come second. |
+| label | ReactNode | optional, no default | Text above the field, linked to the input as its accessible name. |
+| description | ReactNode | optional, no default | Muted helper text under the field. |
+| error | ReactNode | optional, no default | Error message; marks the field invalid and is announced politely to screen readers when it appears. |
+| steppers | "none" \| "split" \| "stacked" | "split" | Where the − / + buttons go: "split" (default), "stacked" or "none". "stacked" falls back to "split" on touch screens (bigger targets). |
+| scrub | boolean | false | Drag the label sideways to change the value. |
+| animated | boolean | true | Slide changed digits when the value steps. Off with reduced motion. |
+| size | FieldSize | "md" | Height, consistent across every form control: "sm" 32px, "md" 40px, "lg" 48px (sm and md are 44px on touch screens), the same scale as Button. |
+| placeholder | string | optional, no default | Hint shown while the field is empty. |
+| labels | Partial<NumberFieldLabels> | defaultNumberFieldLabels | Every string, for translation: { increment: "Increase", decrement: "Decrease" } (accessible names of the + and − buttons). Every other string, for translation: labels={{ increment: "…" }}; omitted keys keep the English of defaultNumberFieldLabels. All 2 keys of NumberFieldLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Class for the outer wrapper (label + field + messages). |
+| inputClassName | string | optional, no default | Adds extra classes to the native <input>. |
+| ...props | Base UI props | optional, no default | Every other prop of Base UI's NumberField.Root is passed through, for example form, id, inputRef, allowOutOfRange, allowWheelScrub and snapOnStep. |
+
+### Example 1 of 3: Steppers
+
+Hold a button to repeat. Arrow keys step by 1, Shift by 10; Home and End jump to the limits. The buttons switch off at min and max. Reset sets the value from outside, and the digits still roll the right way.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+// Package build (after the first npm release, or a packed tarball): import { Button, NumberField } from "@sheenui/theme";
+
+export function Example() {
+  const [quantity, setQuantity] = useState<number | null>(2);
+
+  return (
+    <>
+      <NumberField
+        label="Quantity"
+        value={quantity}
+        onValueChange={setQuantity}
+        min={1}
+        max={20}
+        description="Up to 20 per order."
+      />
+      {/* A change from outside rolls the digits the right way too. */}
+      <Button variant="ghost" size="sm" onClick={() => setQuantity(1)}>
+        Reset
+      </Button>
+    </>
+  );
+}
+```
+
+### Example 2 of 3: Formatting
+
+Pass any Intl.NumberFormat options. Typing is parsed back in the same format and locale.
+
+```tsx
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+// Package build (after the first npm release, or a packed tarball): import { NumberField } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <NumberField
+        label="Price"
+        defaultValue={49}
+        step={0.5}
+        min={0}
+        format={{ style: "currency", currency: "USD", currencyDisplay: "narrowSymbol" }}
+      />
+      <NumberField
+        label="Discount"
+        defaultValue={0.15}
+        step={0.05}
+        min={0}
+        max={1}
+        steppers="stacked"
+        format={{ style: "percent" }}
+      />
+      <NumberField
+        label="Weight"
+        defaultValue={2.5}
+        step={0.1}
+        min={0}
+        steppers="stacked"
+        format={{ style: "unit", unit: "kilogram", maximumFractionDigits: 1 }}
+      />
+    </>
+  );
+}
+```
+
+### Example 3 of 3: Scrub and validation
+
+With scrub, drag the label sideways to change the value (the pointer is captured, so you can keep dragging). Errors are linked to the input and announced politely when they appear.
+
+```tsx
+import { useState } from "react";
+import { NumberField } from "@/components/sheenui/number-field/number-field";
+// Package build (after the first npm release, or a packed tarball): import { NumberField } from "@sheenui/theme";
+
+export function Example() {
+  const [guests, setGuests] = useState<number | null>(2);
+
+  return (
+    <>
+      <NumberField
+        label="Opacity"
+        scrub
+        defaultValue={0.8}
+        step={0.01}
+        min={0}
+        max={1}
+        format={{ style: "percent" }}
+      />
+      <NumberField
+        label="Guests"
+        value={guests}
+        onValueChange={setGuests}
+        min={1}
+        error={guests !== null && guests > 10 ? "The room seats 10 people at most." : undefined}
+      />
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Focus the input; the - and + buttons are not tab stops. |
+| Arrow Up / Arrow Down | Step the value (Shift: large step, Alt: small step). |
+| Home / End | Jump to min or max. |
+| Type, paste, clear | Work as in any text field; the typed value is committed when the field loses focus. |
+
+### Accessibility
+
+- A text input with inputmode and aria-roledescription="Number field"; the - and + buttons are named by labels.decrement and labels.increment.
+- An error is announced politely. Buttons are 44 px targets on touch screens.
+- The odometer motion is decorative; under reduced motion digits change in place.
+
+### All exports on this page
+
+- NumberField — A glass number field on Base UI's NumberField, for quantities, prices and settings where people nudge a number or type an exact one.
+- defaultNumberFieldLabels — The English NumberFieldLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the number field
+
+- Use it as a number stepper for a quantity picker in a cart or a guest count on a booking form, where the minus and plus buttons repeat while held and min and max clamp the value.
+- Use it for a price or percentage input that must show currency formatting: the format prop takes Intl.NumberFormat options, and typed text is parsed back in the same locale format.
+- Use it in a settings panel or design tool where scrub lets people drag the label sideways to change the value, like the numeric fields of an editor.
+- Skip it when a rough value on a scale is enough, such as volume or opacity; a Slider fits that better, and plain Input fits free text like a postal code or a phone number.
+- Pair it with its description and error props for helper text and the message, SegmentedControl for a unit switch beside the number, and Button for an apply action after editing several values.
+
+
+### Frequently asked questions
+
+#### How do I step a React number input with the keyboard?
+
+Focus the input and use Up and Down to step by step. Shift uses largeStep and Alt uses smallStep. Home and End jump to min and max. The stepper buttons are not tab stops, because the input already offers the same keys, and they repeat when held with a pointer.
+
+#### Is the number field a spinbutton for screen readers?
+
+No, deliberately. Base UI renders a text input with a decimal inputMode, announced as a Number field through aria-roledescription, so phones show a numeric keypad. There are no aria-valuenow, min or max attributes; the value is the text itself, and min and max clamp it.
+
+#### How do I show currency, percent or units?
+
+Pass format with any Intl.NumberFormat options, for example style currency with currency USD. It uses the visitor's locale unless you set locale. Typing and pasting are parsed back using the same format, and name submits the value with a form.
+
+#### What is the odometer effect, and can I turn it off?
+
+When the value steps through buttons, arrow keys, the wheel or scrub, the changing digits slide up or down like an odometer. While you type, the plain input shows. It is a decorative overlay and never animates with reduced motion or in high contrast mode.
+
+
+### Related pages
+
+- [Radio group](https://lokendra-builds.github.io/sheenui/forms/radio-group)
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating)
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Radio Group & Radio Cards with Motion
+
+URL: https://lokendra-builds.github.io/sheenui/forms/radio-group
+Sidebar name: Radio group
+
+A glass React radio group with classic radio buttons or rich radio cards where the selection glides with Motion. Arrow keys from Base UI. Tailwind v4.
+
+What it is: A React radio group in two styles: glass dots whose pip springs out, or rich option cards where the selection glides from card to card.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/radio-group.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Radio group
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/radio-group/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: radio-group. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { RadioCard, RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use badge, button, toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Badge, Button, RadioCard, RadioGroup, useToast } from "@sheenui/theme";
+```
+
+### RadioGroup
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the value with a form. |
+| required | boolean | optional, no default | Marks the group as required for form validation. |
+| disabled | boolean | false | Disables every option of the group. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| items | RadioItem[] | optional, no default | The options. Leave out to compose <Radio> or <RadioCard> children instead. |
+| children | ReactNode | optional, no default | Radio or RadioCard options, when you do not pass items. |
+| variant | "card" \| "classic" | "classic" | "classic" dots or rich "card" options (used for items; also sets the layout for children). |
+| value | string \| null | optional, no default | Sets the chosen value when controlled. null means nothing chosen. |
+| defaultValue | string \| null | optional, no default | Sets the starting value when uncontrolled. |
+| onValueChange | ((value: string) => void) | optional, no default | Called with the chosen option's value. |
+| label | ReactNode | optional, no default | Visible group label (a legend). Use aria-label when there is none. |
+| description | ReactNode | optional, no default | Shows helper text under the label. |
+| error | ReactNode | optional, no default | Error message; marks every radio invalid and is announced politely when it appears. |
+| orientation | "horizontal" \| "vertical" | "vertical" | Classic variant: stack the options or lay them out in a row (wraps on small screens). |
+| columns | 2 \| 1 \| 3 \| 4 | 2 | Card variant: columns once the group is wide enough (always one column when narrow). |
+| cardLayout | RadioCardLayout | optional, no default | Card variant: "row" (side by side), "stack" (pricing-card style), or "auto": stacked once a 3- or 4-column group shows several columns, rows otherwise (e.g. one column on phones). |
+| form | string | optional, no default | Id of a form outside of which the group is rendered. |
+| readOnly | boolean | optional, no default | Show the choice but do not allow changes. |
+| aria-label | string | optional, no default | Accessible name of the group when there is no visible label. |
+| aria-labelledby | string | optional, no default | Id of an element that names the group. |
+| className | string | optional, no default | Class for the outer wrapper (label + options + messages). |
+| listClassName | string | optional, no default | Class for the element that lays out the options (list or grid). |
+
+### Radio / RadioCard
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | string | required | Sets the value this option stands for. |
+| label | ReactNode | required | Sets the option's visible text and accessible name. |
+| description | ReactNode | optional, no default | Second line under the label (linked to the radio as its description). |
+| disabled | boolean | optional, no default | Makes this radio unselectable: it is dimmed and skipped by arrow-key navigation and the tab order. |
+| className | string | optional, no default | Adds extra classes to the option row (a <label>). |
+| icon | ReactNode | optional, no default | Icon or illustration at the start of the card. |
+| meta | ReactNode | optional, no default | Trailing content such as a price or a badge. Read with the label ("Pro, $12/mo"). |
+| children | ReactNode | optional, no default | Extra content under the description (feature list, preview). Read as part of the description. |
+| layout | RadioCardLayout | "row" | "row": icon, label and meta side by side, description underneath. "stack": icon and dot on top, text below, meta pinned to the bottom (pricing-card style). "auto" (the group's default): stack once a 3- or 4-column group shows several columns, row otherwise. |
+
+### Example 1 of 4: Classic
+
+Each option can carry a description; the legend names the group for screen readers.
+
+```tsx
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+// Package build (after the first npm release, or a packed tarball): import { RadioGroup } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <RadioGroup
+      label="Email digest"
+      description="How often we send a summary of activity."
+      defaultValue="weekly"
+      items={[
+        { value: "daily", label: "Daily", description: "Every morning at 8:00." },
+        { value: "weekly", label: "Weekly", description: "Mondays, with the week's highlights." },
+        { value: "never", label: "Never", description: "You can still find everything in the app." },
+        { value: "hourly", label: "Hourly", description: "Available on Pro.", disabled: true },
+      ]}
+    />
+  );
+}
+```
+
+### Example 2 of 4: Option cards
+
+Cards take an icon, a description and meta such as a price. The selection tint slides to the chosen card (it jumps with reduced motion). Columns follow the group's own width: pricing-style cards side by side when there's room, compact rows on phones.
+
+```tsx
+import { useState } from "react";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+// Package build (after the first npm release, or a packed tarball): import { RadioGroup } from "@sheenui/theme";
+import { Building2 as BuildingIcon, Rocket as RocketIcon, Sparkles as SparkleIcon } from "lucide-react";
+
+export function Example() {
+  const [plan, setPlan] = useState("pro");
+
+  return (
+    <RadioGroup
+      variant="card"
+      columns={3}
+      label="Plan"
+      value={plan}
+      onValueChange={setPlan}
+      items={[
+        { value: "starter", label: "Starter", description: "For side projects…", icon: <SparkleIcon />, meta: "Free" },
+        { value: "pro", label: "Pro", description: "For growing teams…", icon: <RocketIcon />, meta: "$12/mo" },
+        { value: "enterprise", label: "Enterprise", description: "SSO, audit logs…", icon: <BuildingIcon />, meta: "Custom" },
+      ]}
+    />
+  );
+}
+```
+
+### Example 3 of 4: Composed cards
+
+Compose RadioCard children for custom content, such as a badge or a delivery estimate.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { RadioCard, RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+// Package build (after the first npm release, or a packed tarball): import { Badge, RadioCard, RadioGroup } from "@sheenui/theme";
+import { Zap as BoltIcon, Store as StoreIcon, Truck as TruckIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <RadioGroup variant="card" columns={1} label="Delivery" defaultValue="standard">
+      <RadioCard value="standard" label="Standard" description="3–5 working days" icon={<TruckIcon />} meta="Free" />
+      <RadioCard value="express" label="Express" description="Next working day" icon={<BoltIcon />} meta="$9">
+        <Badge tone="accent">Order within 4 h 12 min</Badge>
+      </RadioCard>
+      <RadioCard value="pickup" label="Pick up in store" description="Out of stock nearby" icon={<StoreIcon />} disabled />
+    </RadioGroup>
+  );
+}
+```
+
+### Example 4 of 4: Horizontal, with validation
+
+A required choice in a row (it wraps on small screens). The error is linked to every radio and announced politely when it appears; focus moves to the group so the fix is one key press away.
+
+```tsx
+import { useState, type FormEvent } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { RadioGroup } from "@/components/sheenui/radio-group/radio-group";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Button, RadioGroup, useToast } from "@sheenui/theme";
+
+export function Example() {
+  const [size, setSize] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
+  const toast = useToast();
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!size) {
+      setError("Choose a size to continue.");
+      // Take keyboard and screen-reader users straight to the choice.
+      event.currentTarget.querySelector<HTMLElement>("[role=radio]")?.focus();
+      return;
+    }
+    setError(undefined);
+    toast.success("Added to bag", `Size ${size.toUpperCase()}`);
+  }
+
+  return (
+    <form onSubmit={submit} noValidate className="flex flex-col items-start gap-4">
+      <RadioGroup
+        label="Size"
+        orientation="horizontal"
+        name="size"
+        required
+        value={size}
+        onValueChange={(v) => {
+          setSize(v);
+          setError(undefined);
+        }}
+        error={error}
+        items={["xs", "s", "m", "l", "xl"].map((v) => ({ value: v, label: v.toUpperCase() }))}
+      />
+      <Button type="submit">Add to bag</Button>
+    </form>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Enter or leave the group once, landing on the chosen option (or the first). |
+| Arrow keys | Move the choice and select it. |
+| Space | Select the focused option. |
+
+### Accessibility
+
+- role="radiogroup" named by label; each radio is linked to its label and description. error is announced politely and linked to the group.
+- RadioCard shows the focus ring on the whole card although the dot holds focus.
+- The unchecked ring keeps 3:1 contrast; the touch hit area is 44 px.
+
+### When to use the radio group
+
+- Use it as a radio card group for a pricing step where the user must pick exactly one plan, with variant="card" showing an icon, a description and a price in meta for each option.
+- Use it for a checkout shipping choice such as Standard or Express, where each option needs a second line of text that a plain dropdown could not show next to the label.
+- Use it for a short survey answer or a notification preference, with the classic variant giving a compact dot per option and a legend from the label prop.
+- Skip it when the list is long or the choices are many; Select is better, Checkbox suits many-of-many answers, and SegmentedControl suits a few view modes rather than form answers.
+- Pair it with Field-style helper text through description and error props, Badge in the meta slot for labels like Popular, and Button to submit the chosen value after name posts it.
+
+
+### Frequently asked questions
+
+#### How do I make selectable cards in a React radio group?
+
+Set variant="card" and pass items with value, label, description, icon and meta, or compose RadioCard children yourself. The columns prop (1 to 4) and cardLayout (row, stack or auto) shape the grid, and the selection tint glides between cards using transform only.
+
+#### Which keys move the selection in the radio group?
+
+Tab enters the group once, on the chosen option or the first one. The arrow keys move the choice and select it, and Space selects the focused option. The group is role="radiogroup" named by the legend or aria-label, and each option is role="radio" with aria-checked.
+
+#### Does it work as a controlled component?
+
+Yes. Use value with onValueChange, or defaultValue for uncontrolled use. The label is the legend, error marks every radio invalid, and name submits the value with a form. It is built on Base UI RadioGroup inside Field and Fieldset, so description and error link to each radio.
+
+#### Is there a limit on how many cards I can show?
+
+Classic dots and cards are glass-1 surfaces, and the component docs advise that card groups should stay within a budget of 8 backdrop-filter surfaces in view. For longer lists, use Select instead. In forced colors a checked card gets a thick Highlight edge.
+
+
+### Related pages
+
+- [Rating](https://lokendra-builds.github.io/sheenui/forms/rating)
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle)
+- [Calendar](https://lokendra-builds.github.io/sheenui/forms/calendar)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## React Star Rating Component with Half Stars
+
+URL: https://lokendra-builds.github.io/sheenui/forms/rating
+Sidebar name: Rating
+
+An animated React star rating with hover preview, half steps and any icon. It's a radio group underneath, so keyboards and screen readers work. MIT.
+
+What it is: An animated React star rating with hover preview and half steps, built as a radio group so arrow keys and screen readers just work.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/rating.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Rating
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/rating/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: rating. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Rating } from "@/components/sheenui/rating/rating";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Rating } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the value with a form. |
+| required | boolean | optional, no default | Marks the field as required for form validation. |
+| disabled | boolean | false | Disables the rating so it cannot be changed. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| value | number \| null | optional, no default | The rating (controlled): a number from 0 to max, or null for none. |
+| defaultValue | number \| null | null | Sets the starting rating when uncontrolled. |
+| onValueChange | ((value: number \| null) => void) | optional, no default | Called with the new value, or null when cleared. |
+| max | number | 5 | Number of icons the rating shows. |
+| allowHalf | boolean | false | Allows half-star steps (0.5, 1, 1.5 …). |
+| clearable | boolean | true | Click the current value (or press Backspace / Delete) to clear it. |
+| readOnly | boolean | false | Show the value as an image only: not focusable, no hover. |
+| size | "sm" \| "md" \| "lg" | "md" | Icon size: "sm" (16px), "md" (24px, default) or "lg" (32px). |
+| tone | "accent" \| "success" \| "warning" \| "danger" | "warning" | Colour of the filled icons: "warning" (gold, default), "accent", "danger" or "success". |
+| icon | ReactNode | a star | Sets a custom filled icon (an SVG using currentColor). |
+| emptyIcon | ReactNode | icon drawn as a faint outline | Sets a custom empty icon. |
+| valueLabels | string[] | optional, no default | Words for each whole value, shown next to the icons, e.g. ["Poor", …, "Excellent"]. |
+| showValue | boolean | false | Show the number (e.g. "4.5") next to the icons. |
+| locale | string | optional, no default | Locale used to format the number. |
+| label | ReactNode | optional, no default | Visible text above the icons; it names the group. |
+| description | ReactNode | optional, no default | Muted helper text under the icons. |
+| aria-label | string | optional, no default | Accessible name when there is no visible label. |
+| aria-labelledby | string | optional, no default | Id of an element that names the rating. |
+| labels | Partial<RatingLabels> | defaultRatingLabels | Every other string, for translation: labels={{ item: "…" }}; omitted keys keep the English of defaultRatingLabels. All 3 keys of RatingLabels are listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the outer element. |
+
+### Example 1 of 4: Basic
+
+Hover to preview, click to rate, click the same star again to clear (or press Backspace).
+
+```tsx
+import { Rating } from "@/components/sheenui/rating/rating";
+// Package build (after the first npm release, or a packed tarball): import { Rating } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <Rating label="Rate your stay" defaultValue={4} />
+  );
+}
+```
+
+### Example 2 of 4: Half stars with words
+
+allowHalf gives every star a left and a right half (on touch screens, tap a star again for its half). valueLabels and showValue echo the hovered or chosen value.
+
+```tsx
+import { useState } from "react";
+import { Rating } from "@/components/sheenui/rating/rating";
+// Package build (after the first npm release, or a packed tarball): import { Rating } from "@sheenui/theme";
+
+export function Example() {
+  const [value, setValue] = useState<number | null>(3.5);
+
+  return (
+    <Rating
+      label="Overall"
+      allowHalf
+      value={value}
+      onValueChange={setValue}
+      valueLabels={["Poor", "Fair", "Good", "Great", "Excellent"]}
+      showValue
+      size="lg"
+    />
+  );
+}
+```
+
+### Example 3 of 4: Read-only and sizes
+
+Read-only ratings are one image with a full label (“Rated 4.5 out of 5”), not a set of controls.
+
+```tsx
+import { Rating } from "@/components/sheenui/rating/rating";
+// Package build (after the first npm release, or a packed tarball): import { Rating } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <>
+      <Rating readOnly value={4.5} size="sm" showValue />
+      <Rating readOnly value={4.5} size="md" showValue />
+      <Rating readOnly value={4.5} size="lg" showValue />
+    </>
+  );
+}
+```
+
+### Example 4 of 4: Custom icon and tone
+
+Any SVG that uses currentColor. Labels are yours to translate.
+
+```tsx
+import { Rating } from "@/components/sheenui/rating/rating";
+// Package build (after the first npm release, or a packed tarball): import { Rating } from "@sheenui/theme";
+import { Heart as HeartIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Rating
+      aria-label="Favorite level"
+      icon={<HeartIcon fill="currentColor" />}
+      emptyIcon={<HeartIcon />}
+      tone="danger"
+      max={6}
+      defaultValue={3}
+      labels={{ item: (v) => `${v} ${v === 1 ? "heart" : "hearts"}` }}
+    />
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Enter or leave the group once. |
+| Arrow keys | Change the value (and select it). |
+| Backspace / Delete | Clear the value. |
+
+### Accessibility
+
+- A radiogroup of stars named by aria-label; each item has a spoken name ("3 of 5 stars", customisable through labels).
+- readOnly shows a score as an image (role="img") whose label states the value (translate it with labels.readOnly).
+- Pointer, touch and keyboard all select; the group announces how to clear the value.
+
+### All exports on this page
+
+- Rating — Rating: stars (or any icon) you can pick with the pointer, touch or keyboard.
+- defaultRatingLabels — Default English strings of RatingLabels; spread it and override single keys to reword.
+
+
+### When to use Rating
+
+- Use it as a star rating for a review form where a buyer picks one to five stars, with valueLabels showing words such as Poor to Excellent while hovering and once selected.
+- Use it for a feedback prompt in the corner of a help article, with allowHalf off and clearable on so a person can take their answer back by clicking the same star.
+- Use it with readOnly to display an average on a product card, where it renders a single image labeled like Rated 4.5 out of 5 and shows half stars.
+- Skip it when you need a long scale or a bipolar choice such as a 0 to 10 satisfaction score; a Slider or a SegmentedControl reads better for that.
+- Pair it with Textarea for the written review under the stars, Field for outer labeling and errors, and Badge or DescriptionList to show review counts next to a read-only score.
+
+
+### Frequently asked questions
+
+#### How do I build a half star rating in React?
+
+Set allowHalf. Each star then holds two radios, its left and right half, for assistive tech. On touch screens every icon stays one 44px target: tap for the whole icon, tap the same icon again for the half, and once more to clear when clearable is on.
+
+#### How is the star rating exposed to screen readers?
+
+The interactive version is a Base UI radio group with one radio per step, so a reader hears something like 4 stars, radio, 4 of 5. A readOnly rating is a single image with a label like Rated 4.5 out of 5. The labels prop translates both.
+
+#### Which keys change the rating?
+
+Tab enters the group once. The Left, Right, Up and Down arrows change the value and select it, and Backspace or Delete clears it. The group announces how to clear. With the pointer, hovering previews the value, and clicking the same value again clears it when clearable.
+
+#### Can I use hearts or another icon, and set the max?
+
+Yes. Use icon and emptyIcon to swap the star, max to set how many icons appear, and tone and size to style it. Controlled use takes value and onValueChange, which receives null when cleared. With reduced motion the pop animation is dropped and the fill just changes.
+
+
+### Related pages
+
+- [Segmented control](https://lokendra-builds.github.io/sheenui/forms/segmented-control)
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle)
+- [Calendar](https://lokendra-builds.github.io/sheenui/forms/calendar)
+- [Color picker](https://lokendra-builds.github.io/sheenui/forms/color-picker)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+
+
+## Segmented Control for React with Sliding Pill
+
+URL: https://lokendra-builds.github.io/sheenui/forms/segmented-control
+Sidebar name: Segmented control
+
+An iOS-style segmented control for React: a glass pill slides to the chosen segment with Motion and arrow keys move between options. Tailwind v4, MIT.
+
+What it is: An iOS-style segmented control for React where a glass pill slides to the chosen segment and the arrow keys move between segments.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/segmented.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Segmented control
+
+Using it in a form? [See the react-hook-form and zod recipe](https://lokendra-builds.github.io/sheenui/docs/forms).
+
+Files to copy from `theme/src/`:
+
+- `components/segmented/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{cn.ts, form.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: segmented. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { SegmentedControl } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| aria-describedby | string | optional, no default | Ids of elements that describe the field, merged with the control's own description and error ids. |
+| aria-invalid | boolean \| "true" \| "false" | optional, no default | Marks the field as invalid (also set automatically when error is shown). |
+| onBlur | FocusEventHandler<HTMLElement> | optional, no default | Called when focus leaves the control (not when it moves between the control's own parts). |
+| name | string | optional, no default | Submits the chosen value with a form (a hidden input). |
+| disabled | boolean | false | Disables every segment of the control. |
+| items | SegmentedControlItem[] | required | The segments to show, in order. |
+| value | string | optional, no default | Sets the chosen value when controlled. |
+| defaultValue | string | the first enabled item | Sets the starting value when uncontrolled. |
+| onValueChange | ((value: string) => void) | optional, no default | Called with the new value when a different segment is chosen. |
+| size | "sm" \| "md" \| "lg" | "md" | Height and text size: "sm" (28px), "md" (32px, default) or "lg" (40px). |
+| fullWidth | boolean | false | Stretch to the container's width; segments share it equally. |
+| iconOnly | boolean | false | Show only the icons. Each item's label (or aria-label) becomes its accessible name and tooltip. |
+| adaptive | boolean | true | When the container is too narrow: tighten the padding, then (if every segment has an icon) show icons only, then truncate labels. Off: labels truncate straight away. |
+| aria-label | string | optional, no default | Name of the control for screen readers, when no visible label points at it. |
+| aria-labelledby | string | optional, no default | Id of an element that names the control. |
+| className | string | optional, no default | Adds extra classes to the glass track. |
+
+### Example 1 of 3: With icons
+
+When its container gets narrow, the control tightens its padding, then shows icons only (each label stays the segment's accessible name and becomes its tooltip). Labels only truncate as a last resort. Resize the window to see it.
+
+```tsx
+import { useState } from "react";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+// Package build (after the first npm release, or a packed tarball): import { SegmentedControl } from "@sheenui/theme";
+import { LayoutDashboard as BoardIcon, Calendar as CalendarIcon, List as ListIcon } from "lucide-react";
+
+export function Example() {
+  const [view, setView] = useState("board");
+
+  return (
+    <SegmentedControl
+      aria-label="View"
+      value={view}
+      onValueChange={setView}
+      items={[
+        { value: "list", label: "List", icon: <ListIcon /> },
+        { value: "board", label: "Board", icon: <BoardIcon /> },
+        { value: "calendar", label: "Calendar", icon: <CalendarIcon /> },
+      ]}
+    />
+  );
+}
+```
+
+### Example 2 of 3: Sizes
+
+sm, md and lg. On touch screens every size is at least 44px tall.
+
+```tsx
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+// Package build (after the first npm release, or a packed tarball): import { SegmentedControl } from "@sheenui/theme";
+
+export function Example() {
+  const ranges = [
+    { value: "day", label: "Day" },
+    { value: "week", label: "Week" },
+    { value: "month", label: "Month" },
+  ];
+
+  return (
+    <div className="flex w-full min-w-0 flex-col items-center gap-4">
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <SegmentedControl key={size} size={size} aria-label={`Range (${size})`} defaultValue="week" items={ranges} />
+      ))}
+    </div>
+  );
+}
+```
+
+### Example 3 of 3: Full width and icon only
+
+fullWidth shares the row equally, which suits phones and narrow cards. iconOnly hides the labels; each one becomes the segment's accessible name and tooltip.
+
+```tsx
+import { useState } from "react";
+import { SegmentedControl } from "@/components/sheenui/segmented/segmented";
+// Package build (after the first npm release, or a packed tarball): import { SegmentedControl } from "@sheenui/theme";
+import { Monitor as MonitorIcon, Moon as MoonIcon, Sun as SunIcon } from "lucide-react";
+
+const ranges = [
+  { value: "day", label: "Day" },
+  { value: "week", label: "Week" },
+  { value: "month", label: "Month" },
+];
+
+export function Example() {
+  const [range, setRange] = useState("week");
+  const [theme, setTheme] = useState("system");
+
+  return (
+    <div className="glass-2 flex w-full max-w-sm flex-col gap-4 rounded-sheen-lg p-4">
+      <SegmentedControl fullWidth aria-label="Range" value={range} onValueChange={setRange} items={ranges} />
+      <div className="flex items-center justify-between gap-3">
+        <span id="theme-label" className="text-sm font-medium">Theme</span>
+        <SegmentedControl
+          iconOnly
+          size="sm"
+          aria-labelledby="theme-label"
+          value={theme}
+          onValueChange={setTheme}
+          items={[
+            { value: "light", label: "Light", icon: <SunIcon /> },
+            { value: "dark", label: "Dark", icon: <MoonIcon /> },
+            { value: "system", label: "System", icon: <MonitorIcon /> },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Enter or leave the control once, on the chosen segment. |
+| Arrow Left / Arrow Right (or Up / Down) | Move between segments. |
+| Home / End | Jump to the first or last segment. |
+| Enter / Space | Pick the focused segment. |
+
+### Accessibility
+
+- A group of toggle buttons with aria-pressed: name the group with aria-label or aria-labelledby.
+- iconOnly segments keep their label as the accessible name. Segments are 44 px tall on touch screens.
+- In forced colors the chosen segment is outlined and underlined, since the pill's fill is dropped.
+
+### When to use the segmented control
+
+- Use it as a toggle button group for a chart toolbar that switches between Day, Week and Month, where the choice changes how the same data is shown and a sliding glass pill marks the current one. It gives you an iOS segmented control look in CSS without custom styling, with one glass pill that slides to the chosen segment.
+- Use it for a List or Grid view toggle above a gallery, with icons on each item and iconOnly for narrow headers where labels become accessible names and tooltips.
+- Use it inside a narrow sidebar or a mobile header, since the adaptive default tightens padding first, then switches to icons only if every segment has one, and only then truncates labels.
+- Skip it when each choice swaps a whole panel of content; Tabs gives the right semantics there, and RadioGroup fits a form answer with longer labels and descriptions.
+- Pair it with a visible label that points at it through aria-labelledby (or aria-label), Button or Badge elsewhere in the same toolbar, and the chart or DataTable you are filtering by the chosen value.
+
+
+### Frequently asked questions
+
+#### How do I make a segmented control in React with Tailwind?
+
+Pass items as objects with value, label, optional icon, disabled and aria-label, then use value with onValueChange or defaultValue. It is a Base UI ToggleGroup with one pressed item, styled with Tailwind v4 and the SheenUI glass track.
+
+#### Can the selection be empty?
+
+No. It never ends up empty: pressing the chosen segment again keeps it chosen. That makes it suited to a required view mode. Use name to submit the value with a form, and size sm, md or lg and fullWidth to share the row equally.
+
+#### Which keys and ARIA does the segmented control use?
+
+Tab enters once on the chosen segment. The arrow keys move between segments, Home and End jump to the ends, and Enter or Space picks. Segments are toggle buttons with aria-pressed, so name the group with aria-label or aria-labelledby. Segments are 44px tall on touch screens.
+
+#### Why does my segmented control overflow in a flex layout?
+
+Like any shrinkable content, it needs a width-constrained parent. In a flex row or column that sizes to its content, give the parent min-w-0 and w-full so the adaptive steps can run. Without that, the container never gets narrower and nothing needs to adapt.
+
+
+### Related pages
+
+- [Tags input](https://lokendra-builds.github.io/sheenui/forms/tags-input)
+- [Textarea](https://lokendra-builds.github.io/sheenui/forms/textarea)
+- [Toggle](https://lokendra-builds.github.io/sheenui/forms/toggle)
+- [Calendar](https://lokendra-builds.github.io/sheenui/forms/calendar)
+- [Color picker](https://lokendra-builds.github.io/sheenui/forms/color-picker)
+- [Date picker](https://lokendra-builds.github.io/sheenui/forms/date-picker)
+
+67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).
+

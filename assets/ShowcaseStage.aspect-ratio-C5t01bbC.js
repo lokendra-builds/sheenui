@@ -1,0 +1,1 @@
+import{t as e}from"./ShowcaseStage.tween-PkcdU3yP.js";var t=async({state:t,scene:n,wait:r,reduced:i})=>{await r(900),t(`working`),await e(r,i,16/9,1,700,e=>n({ratio:e})),await r(700),await e(r,i,1,4/5,700,e=>n({ratio:e})),t(`lit`),await r(1500)};export{t as default};

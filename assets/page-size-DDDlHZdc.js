@@ -1,0 +1,1 @@
+function e(e,t,n=8){if(!e||e.clientHeight===0||t<=0)return n;let r=getComputedStyle(e),i=e.clientHeight-(parseFloat(r.paddingTop)||0)-(parseFloat(r.paddingBottom)||0);return Math.max(1,Math.floor(i/t))}export{e as t};

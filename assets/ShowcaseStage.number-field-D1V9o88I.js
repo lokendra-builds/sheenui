@@ -1,0 +1,1 @@
+var e=24,t=async({state:e,scene:t,wait:n})=>{await n(900),e(`working`);for(let e of[2,3,4])t({quantity:e}),await n(650);e(`warning`)};export{t as n,e as t};

@@ -1,0 +1,1 @@
+import{a as e}from"./vendor-core-DFpXCaZU.js";import{i as t}from"./stateAttributesMapping-CAwJzHsr.js";var n=e(function(e){return t(`dialog`,e)});export{n as t};

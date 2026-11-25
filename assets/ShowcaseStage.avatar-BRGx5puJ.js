@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(700),e(`working`);for(let e=1;e<=4;e+=1)t({online:e}),await n(900);e(`idle`),await n(500)};export{e as default};

@@ -1,0 +1,1 @@
+var e=`Loved the quiet room and the late checkout. Breakfast was lovely too, thank you!`,t=async({state:t,scene:n,wait:r})=>{await r(800),t(`working`);let i=e.split(` `);for(let e=1;e<=i.length;e+=1)n({text:i.slice(0,e).join(` `)}),await r(150);await r(400),t(`warning`)};export{e as NOTE,t as default};

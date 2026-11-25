@@ -1,0 +1,1 @@
+var e=0;function t(t=`id`){return e+=1,`${t}-${Date.now().toString(36)}-${e.toString(36)}`}export{t};

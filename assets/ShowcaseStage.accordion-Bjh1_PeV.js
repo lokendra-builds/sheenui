@@ -1,0 +1,1 @@
+var e=async({state:e,scene:t,wait:n})=>{await n(1e3),t({open:`returns`}),await n(1700),t({open:`warranty`}),e(`lit`),await n(1500)};export{e as default};

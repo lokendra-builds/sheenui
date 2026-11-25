@@ -1,0 +1,2539 @@
+# SheenUI: Effects (part 1 of 2)
+
+> SheenUI is a free, MIT-licensed library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Copy the source into a React 19.2+ app and own the code.
+
+Facts and the page index: https://lokendra-builds.github.io/sheenui/llms.txt
+
+## Animated React Components & Effects with Motion
+
+URL: https://lokendra-builds.github.io/sheenui/effects/
+Sidebar name: All effects
+
+Animated React components made with Motion (formerly Framer Motion): Liquid Glass, border beam, dock, number ticker and text effects. Reduced-motion safe.
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > All effects
+
+Animated React components built with Motion, with React animations like Liquid Glass, border beam, dock and text effects.
+
+### Effects (19)
+
+- [Blur in](https://lokendra-builds.github.io/sheenui/effects/blur-in): A blur text animation for React where words sharpen out of a soft blur one after another: the classic hero-headline reveal.
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam): Border beam is an animated gradient border for React: a comet of light that runs around a rounded edge at one steady speed.
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock): A macOS dock for React with magnification: icons near the pointer swell and push their neighbors apart, with labels riding on top.
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass): A Liquid Glass UI effect for React in the style of Apple's iOS 26 design: a lens that refracts the page behind it through an SVG displacement map, with a specular rim.
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee): A React marquee for an endless, seamless strip of logos or testimonials that eases to a stop under the mouse or keyboard focus.
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog): A morphing dialog for React where a card grows into a modal: its image, title and surface fly into place with Motion's shared layout animation.
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker): A number ticker for React where every digit is a little wheel that rolls to its new value, formatted with Intl.NumberFormat.
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text): A shimmer text animation for React: a band of light sweeps across the letters while the real text stays whole and selectable.
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card): A spotlight card for React: a glass card lit by a soft glow that follows the pointer, written straight to CSS variables.
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card): A 3D tilt card for React that leans toward the pointer, up to 8°, with a glare sliding across its glass surface on springs.
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter): A typewriter effect for React that types each phrase with a human rhythm, holds it, deletes it and types the next.
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate): A rotating text animation for React: one slot in a sentence cycles through words, each sliding up through a clipped window.
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam): An animated beam for React that sends a light along a path between two elements, measured from refs, for integration diagrams.
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti): A confetti effect for React: a one-shot burst fired from an event handler with useConfetti, for success moments.
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors): A meteors effect for React where occasional streaks of light cross a card or section background.
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles): Orbiting circles for React: items that circle a centre on rings, for integration and works-with sections.
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles): A particles background for React: a capped canvas field of small drifting lights that lean softly away from the pointer.
+- [Scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress): A scroll progress bar for React: a thin bar that fills with the page or container scroll through a scaleX transform.
+- [Text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal): A scroll text reveal for React where the words of a statement light up one after another as the reader scrolls.
+
+
+### About effects
+
+#### Overview
+
+These are the animated React components in SheenUI: glassy, classy effects you drop onto a page to make it feel alive. Each of the 19 pages below has a live demo, the props, the keyboard and reduced-motion behavior, and the files to copy. They are built with Motion (formerly Framer Motion), the same engine that powers the rest of the library, so one provider sets the spring and the pace for everything.
+
+The set mixes surface effects and text effects. [Liquid Glass for React](https://lokendra-builds.github.io/sheenui/effects/liquid-glass) bends the background behind a panel, the way iOS 26 does, with a frosted fallback for Safari and Firefox. A [border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam) sends light around a card, a [spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card) follows the pointer, and the [macOS-style dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock) magnifies icons as you move across them. For text there are a [number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker), a [typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter), [shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text) and a [blur-in](https://lokendra-builds.github.io/sheenui/effects/blur-in) reveal.
+
+Which effect for which job: for text, [typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter), [word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate), [shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text) and [text reveal](https://lokendra-builds.github.io/sheenui/effects/text-reveal); for a background, [particles](https://lokendra-builds.github.io/sheenui/effects/particles) and [meteors](https://lokendra-builds.github.io/sheenui/effects/meteors); for a card, [3D tilt](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card), [spotlight](https://lokendra-builds.github.io/sheenui/effects/spotlight-card) and [border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam); for a diagram, [animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam) and [orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles); for a success moment, [confetti](https://lokendra-builds.github.io/sheenui/effects/confetti).
+
+By how they move: [particles](https://lokendra-builds.github.io/sheenui/effects/particles), [meteors](https://lokendra-builds.github.io/sheenui/effects/meteors), [marquee](https://lokendra-builds.github.io/sheenui/effects/marquee) and [orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles) loop on their own; [spotlight](https://lokendra-builds.github.io/sheenui/effects/spotlight-card), [3D tilt](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card) and the [dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock) answer the pointer; [scroll progress](https://lokendra-builds.github.io/sheenui/effects/scroll-progress) answers the page scroll; [confetti](https://lokendra-builds.github.io/sheenui/effects/confetti) and [morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog) play once when you trigger them. Pick the least continuous motion that does the job, because a loop is the only kind that keeps running while someone reads.
+
+What every effect shares. One SheenMotionProvider at the root of your app wraps Motion’s config: it makes Motion follow the operating system’s reduced-motion setting and SheenUI’s own switch, sets the default spring, pauses looping CSS animations while they are off screen and pauses decorative loops in a hidden tab. Timing comes from shared tokens, with durations between 0.1 and 0.6 seconds, an exit that is always shorter than the entrance and never overshoots, so a toast and a dialog feel like one product.
+
+To use one, open its page and copy the files it lists, which include the motion tokens that effect imports, or install it through the shadcn registry as the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) shows, after the [Tailwind CSS v4 setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4). The effects are plain React source in your repository, so you can change a spring or a duration without waiting for a release.
+
+Motion that ignores people is a bug, so every effect respects reduced motion and pauses when it leaves the screen. Learn the patterns in [12 Framer Motion examples](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples), or read why the package was renamed in [Framer Motion is now Motion](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion). For the static building blocks see [all glass UI components](https://lokendra-builds.github.io/sheenui/components/), and for full screens the [React blocks](https://lokendra-builds.github.io/sheenui/blocks/).
+
+#### Frequently asked questions
+
+#### Which animation library do the effects use?
+
+Motion, the library formerly called Framer Motion, imported from motion/react. Springs and durations come from shared motion tokens so every effect feels the same.
+
+#### What happens with reduced motion?
+
+Each effect has a still fallback: movement turns into a short fade or the final state is shown at once, whether the setting comes from the operating system or from SheenUI's own toggle.
+
+#### Can I use one effect without the rest of SheenUI?
+
+Yes. Each effect page lists the files to copy; they need Motion (motion/react), Tailwind CSS v4 and the SheenUI tokens and motion presets they import. Add SheenMotionProvider at the root as well: without it Motion ignores the operating system's reduced-motion setting.
+
+#### Do the effects hurt performance?
+
+They animate transform and opacity, pause when off screen or in a hidden tab, and a page keeps to a budget of 8 blurred surfaces in view. See the backdrop-filter performance guide for the glass cost.
+
+
+## Blur Text Animation for React with Motion
+
+URL: https://lokendra-builds.github.io/sheenui/effects/blur-in
+Sidebar name: Blur in
+
+A blur-in text animation for React: words sharpen out of a blur one by one with Motion. Screen readers get the full sentence; reduced motion shows text.
+
+What it is: A blur text animation for React where words sharpen out of a soft blur one after another: the classic hero-headline reveal.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/text-effects.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Blur in
+
+Files to copy from `theme/src/`:
+
+- `components/text-effects/{blur-in.tsx, text-utils.ts}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: text-effects. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { BlurIn } from "@/components/sheenui/text-effects/blur-in";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { BlurIn } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| text | string | required | The text to reveal. |
+| by | "word" \| "character" | "word" | Reveal word by word (default), or character by character (also the choice for languages written without spaces). |
+| delay | number | 0 | Seconds before the first piece starts. |
+| stagger | number | 0.07 for words, 0.025 for characters | Sets the seconds between pieces. |
+| duration | number | durations.slower | Seconds each piece takes to arrive. |
+| blur | number | 10 | Starting blur in px. 0 for a plain fade-up. |
+| offset | string | "0.35em" | How far each piece rises, as a CSS length. "0" for none. |
+| animateOnView | boolean | true | Wait until the text is on screen. Off: play on mount. |
+| once | boolean | true | Play only the first time it enters the view. Off: replay every time it comes back. |
+| onComplete | (() => void) | optional, no default | Called when the last piece has landed. |
+| pieceClassName | string | optional, no default | Classes for each animated piece (e.g. a gradient per word). |
+| render | ReactElement \| function | <span /> | Render as another element: an h1, a p… |
+
+### Example 1 of 2: Hero headline
+
+Render it as any element with render (here paragraphs styled as a headline; use render={<h1 />} for the page's real heading). It plays once, when it scrolls into view.
+
+```tsx
+import { BlurIn } from "@/components/sheenui/text-effects/blur-in";
+// Package build (after the first npm release, or a packed tarball): import { BlurIn } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex max-w-2xl flex-col items-center gap-4 text-center">
+      <BlurIn
+        render={<p />}
+        text="Interfaces you can see through."
+        className="text-4xl leading-[1.08] font-semibold tracking-tight text-balance sm:text-5xl"
+      />
+      <BlurIn
+        render={<p />}
+        text="Glass components with motion that stays readable, accessible and fast."
+        delay={0.45}
+        stagger={0.03}
+        blur={6}
+        className="max-w-lg text-base text-pretty text-sheen-fg-muted sm:text-lg"
+      />
+    </div>
+  );
+}
+```
+
+### Example 2 of 2: Character by character
+
+by="character" reveals each letter (emoji and accents stay whole). Words never break apart mid-line. It is also the mode for languages written without spaces.
+
+```tsx
+import { BlurIn } from "@/components/sheenui/text-effects/blur-in";
+// Package build (after the first npm release, or a packed tarball): import { BlurIn } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <div className="flex flex-col items-center gap-3 text-center">
+      <BlurIn
+        by="character"
+        render={<p />}
+        text="Ship it ✨"
+        blur={12}
+        offset="0.5em"
+        className="text-5xl font-bold tracking-tight sm:text-6xl"
+      />
+      <BlurIn
+        by="character"
+        render={<p />}
+        text="こんにちは、世界"
+        delay={0.5}
+        stagger={0.05}
+        lang="ja"
+        className="text-xl font-medium text-sheen-fg-muted"
+      />
+    </div>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: this is text. |
+
+### Accessibility
+
+- The text is in the DOM from the start, so screen readers and search engines read it once, whether or not it has animated.
+- Under reduced motion it is plain static text, with nothing to wait for.
+
+### When to use the blur in effect
+
+- Use it as a text reveal animation on the one hero headline of a landing page, where each word sharpens out of a soft blur as it rises into place and gives the page a deliberate first impression.
+- Use it for an empty-state or onboarding welcome line, such as a first-run greeting in a dashboard, where one short sentence should arrive with a little ceremony instead of simply appearing.
+- Switch to by="character" for a short tagline or for languages written without spaces, each word stays one unbreakable box, so letters never wrap on their own.
+- Skip it when the text is body copy, a list or anything people scan quickly; animated paragraphs slow reading, so keep plain text there or use Typewriter for a phrase that changes over time.
+- Pair it with ShimmerText for a subtitle that lights up after the headline lands, a Button for the call to action, and the useSheenReducedMotion hook if you gate other motion yourself.
+
+
+### Frequently asked questions
+
+#### How do I make a blur text animation in React with BlurIn?
+
+Pass the string as the text prop and choose the element with render, for example render={<h1 />}. Tune it with by, delay, stagger, duration, blur (starting px, default 10) and offset (default 0.35em). It plays once when the text scrolls into view.
+
+#### Will screen readers hear the headline word by word?
+
+No. A visually hidden copy of the whole string is read once, and the animated pieces are aria-hidden. That hidden copy is unselectable, so copying the headline gives exactly what is on screen, once, instead of duplicated text.
+
+#### How do I replay the animation or run it on mount?
+
+Set animateOnView={false} to play on mount instead of waiting for the viewport, and once={false} to replay each time it scrolls back in. To trigger it from a button, change the component key so it remounts. onComplete fires after the last piece lands.
+
+#### What happens with reduced motion, and does it leave a filter on the text?
+
+With the OS setting or the in-app toggle on, you get plain static text with nothing to wait for. When each piece lands its filter is removed, so finished text is ordinary text. Use pieceClassName to style every word, such as a gradient.
+
+
+### Related pages
+
+- [Border beam](https://lokendra-builds.github.io/sheenui/effects/border-beam)
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Border Beam: Animated Gradient Border for React
+
+URL: https://lokendra-builds.github.io/sheenui/effects/border-beam
+Sidebar name: Border beam
+
+An animated border beam for React: a comet of light runs around any rounded border at one steady speed, rests off-screen, stops for reduced motion. MIT.
+
+What it is: Border beam is an animated gradient border for React: a comet of light that runs around a rounded edge at one steady speed. Use it as a glowing border animation to mark the recommended plan in a pricing table, so one GlassCard carries a comet of light around its edge while the other tiers stay calm.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/border-beam.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Border beam
+
+Files to copy from `theme/src/`:
+
+- `components/border-beam/`
+- `hooks/{use-intersection.ts, use-media-query.ts, use-preferences.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: border-beam. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { BorderBeam } from "@/components/sheenui/border-beam/border-beam";
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Input } from "@/components/sheenui/input/input";
+import { Switch } from "@/components/sheenui/switch/switch";
+```
+
+These examples also use button, glass-card, input, switch: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/input.json https://lokendra-builds.github.io/sheenui/r/switch.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { BorderBeam, Button, GlassCard, Input, Switch } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| duration | number | 8 | Seconds one lap around the border takes. |
+| delay | number | 0 | Seconds before the first lap (lets several beams run out of step). |
+| length | number | 120 | Length of the beam in px, measured along the border. |
+| width | number | 1.5 | Sets the thickness of the ring in px. |
+| colorFrom | string | "var(--sheen-accent)" | Sets the tail colour (any CSS colour). |
+| colorTo | string | "var(--sheen-accent-2)" | Colour of the beam's bright head, any CSS colour; the tail fades in from colorFrom. |
+| reverse | boolean | false | Runs the beam anticlockwise instead of clockwise. |
+| double | boolean | false | Draws two beams on opposite sides. |
+| glow | boolean | true | Soft halo around the beam (skipped for lite glass and reduced transparency). It moves by transform; nothing is blurred per frame. |
+| track | boolean | true | Faint, static rim under the beam, so the border reads as lit even between laps. |
+| offset | number | -1 | Distance from the parent's padding edge in px. -1 sits on a 1px border. |
+| paused | boolean | false | Hold the beam where it is (it carries on from there when unpaused). |
+| className | string | optional, no default | Adds extra classes to the beam element. |
+| style | CSSProperties | optional, no default | Inline style for the beam element (for example custom properties). |
+
+### Example 1 of 2: On a glass card
+
+Drop it inside any positioned, rounded element: it takes the parent's radius and sits on its border. paused holds the beam exactly where it is.
+
+```tsx
+import { useState } from "react";
+import { BorderBeam } from "@/components/sheenui/border-beam/border-beam";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Switch } from "@/components/sheenui/switch/switch";
+// Package build (after the first npm release, or a packed tarball): import { BorderBeam, GlassCard, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause the beam" checked={paused} onCheckedChange={setPaused} />
+      <GlassCard className="relative w-full max-w-sm p-6">
+        <h3 id="deploying-to-production" className="font-semibold">Deploying to production</h3>
+        <p className="text-sm text-sheen-fg-muted">Build 2f9c1a · 14 of 18 steps</p>
+        <BorderBeam paused={paused} />
+      </GlassCard>
+    </>
+  );
+}
+```
+
+### Example 2 of 2: Wide bars, two beams, any color
+
+On a wide search bar the beam keeps its pace along the long sides. double runs two beams on opposite sides; colors take any CSS color (here the warning and danger tokens).
+
+```tsx
+import { BorderBeam } from "@/components/sheenui/border-beam/border-beam";
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Input } from "@/components/sheenui/input/input";
+// Package build (after the first npm release, or a packed tarball): import { BorderBeam, Button, GlassCard, Input } from "@sheenui/theme";
+import { Search as SearchIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <div className="relative w-full max-w-xl rounded-sheen-md">
+        <Input aria-label="Ask anything" placeholder="Ask anything…" leading={<SearchIcon />} />
+        <BorderBeam length={160} duration={6} />
+      </div>
+
+      <Button variant="glass" size="lg" className="rounded-sheen-full">
+        Upgrade
+        <BorderBeam double duration={5} />
+      </Button>
+
+      <GlassCard className="relative p-5">
+        2 alerts need attention
+        <BorderBeam reverse duration={7} colorFrom="var(--sheen-warning)" colorTo="var(--sheen-danger)" />
+      </GlassCard>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: the beam is decoration. |
+
+### Accessibility
+
+- Purely decorative: aria-hidden, no focus, no pointer events, and hidden in forced colors.
+- It sits on a card you provide, so contrast is that of the card. Under reduced motion it is a still beam lit on the top-left corner.
+
+### When to use the border beam effect
+
+- Use it on the recommended plan of a pricing table or one featured card in a grid, so a single comet of light circles that edge while its neighbours stay still.
+- Use it on a focused input wrapper or a primary call-to-action button to show an AI prompt box is live or that a card is selected, without adding a heavy glow.
+- Use double and reverse to make a featured tile look different from its neighbors, and delay to stagger several beams so they never run in lockstep.
+- Skip it when the surface is not a rounded element you control or you need a static highlight; a plain border, or SpotlightCard for a hover-driven glow, fits better than a looping animation.
+- Pair it with GlassCard as the parent, Badge for a Recommended label, and Button inside the card so the beam draws attention to the action rather than competing with it.
+
+
+### Frequently asked questions
+
+#### How do I add a border beam in React?
+
+Place BorderBeam as a child of a positioned, rounded element, such as a GlassCard with relative and a radius class. It fills its parent, takes the parent's border radius and is masked to a thin ring, so it never covers content or touches the parent's blur.
+
+#### Which props change the beam's speed, size and colors?
+
+duration is seconds per lap (default 8), length is the beam length in px (120), and width is the ring thickness (1.5). colorFrom is the tail and colorTo the head, defaulting to the accent and teal. Also available: reverse, double, glow, track, offset and delay.
+
+#### Is it accessible, and does it hurt performance?
+
+It is purely decorative: aria-hidden, not focusable, no pointer events, and hidden in forced colors. It pauses while off screen, and the halo moves by transform with nothing blurred per frame. The paused prop holds it in place until you release it.
+
+#### What does the border beam do with reduced motion, and how does it handle a wide bar?
+
+Under reduced motion it shows a still beam lit on the top-left corner. The keyframes follow the real outline, so on a wide bar the beam keeps one speed and one length all the way round instead of racing along the long sides like a spinning gradient.
+
+
+### Related pages
+
+- [macOS dock](https://lokendra-builds.github.io/sheenui/effects/macos-dock)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## macOS Dock for React with Magnification
+
+URL: https://lokendra-builds.github.io/sheenui/effects/macos-dock
+Sidebar name: macOS dock
+
+A macOS-style dock for React: icons swell near the pointer and push neighbors apart, transform-only with no re-renders. A plain bar on touch screens. MIT.
+
+What it is: A macOS dock for React with magnification: icons near the pointer swell and push their neighbors apart, with labels riding on top.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/dock.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > macOS dock
+
+Files to copy from `theme/src/`:
+
+- `components/dock/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: dock. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Dock, DockItem, DockSeparator } from "@/components/sheenui/dock/dock";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Dock, DockItem, DockSeparator, useToast } from "@sheenui/theme";
+```
+
+### Dock props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | Holds the dock items and separators. |
+| label | string | "Dock" | Sets the accessible name of the toolbar. |
+| labels | Partial<DockLabels> | defaultDockLabels | Translatable strings: labels.active ("open") is added to the accessible name of active button items, e.g. "Finder, open". Links use aria-current instead. Every other string, for translation: labels={{ active: "…" }}; omitted keys keep the English of defaultDockLabels. Its only key is listed in the key table under the props table. |
+| size | "sm" \| "md" \| "lg" | "md" | Icon size at rest: sm 40px, md 48px or lg 56px (never below 44px on touch screens). |
+| magnification | number | 1.6 | How much the icon under the pointer grows: 1 (off) to 2. Reduced to fit when there is little room beside the dock. |
+| distance | number | 2.75 × size | How far the swell reaches either side of the pointer, in px. |
+| side | DockSide | "bottom" | Which edge the dock sits on. Icons grow away from it, labels show on the far side. |
+| notch | boolean | false | The active item lifts out of a round notch cut into the glass bar (the notch is part of the bar's own surface, not an overlay) and glides to the next active item with the snappy spring. Needs an active item; without one the bar is plain. Reduced motion: the notch and the lift jump. |
+| className | string | optional, no default | Adds extra classes to the dock bar. |
+
+### DockItem props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| label | string | required | Accessible name, and the label shown above the icon. |
+| icon | ReactNode | required | The icon (an svg or an image). Sized to ~46% of the tile unless you size it. |
+| href | string | optional, no default | Address to open on click: the tile then renders as a link (an anchor) instead of a button. |
+| target | string | optional, no default | Link target, e.g. "_blank". |
+| rel | string | optional, no default | Link relationship, e.g. "noopener". |
+| render | ReactElement<unknown, string \| JSXElementConstructor<any>> | optional, no default | Render the link as another element, e.g. your router's <Link to="…" />. |
+| onClick | ((event: MouseEvent<HTMLElement>) => void) | optional, no default | Called when the item is pressed or activated with Enter / Space. |
+| active | boolean | false | Open app / current page: a dot under the icon. Links get aria-current="page"; buttons add labels.active of the Dock to their accessible name ("Finder, open"). |
+| activeLabel | string | optional, no default | Overrides the Dock's labels.active for this item (i18n). |
+| badge | ReactNode | optional, no default | A count or short text on the corner of the icon. |
+| badgeLabel | string | the badge text | What screen readers hear for the badge, e.g. "3 unread". |
+| bounce | boolean | false | Bounce like a launching app when activated (never with reduced motion). |
+| disabled | boolean | false | Disable the item. It stays focusable, as in any toolbar. A disabled link item renders as a disabled button (a link cannot be disabled). |
+| className | string | optional, no default | Classes for the item's outer slot (layout, margins). |
+| tileClassName | string | optional, no default | Adds extra classes to the icon tile (background, colour). |
+
+### DockSeparator props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| className | string | optional, no default | Adds extra classes to the separator slot. |
+
+### Example 1 of 3: App dock
+
+Move the pointer along it. Click an app to see it bounce. Keyboard: Tab into it, then arrow keys, Home and End; the focused app swells too, and Escape hides its label. Open apps (the dot) say so to screen readers: “Finder, open”. In a narrow window it turns into a plain bar that scrolls inside itself, with the label drawn above the bar.
+
+```tsx
+import type { ReactNode } from "react";
+import { Dock, DockItem, DockSeparator } from "@/components/sheenui/dock/dock";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Dock, DockItem, DockSeparator, useToast } from "@sheenui/theme";
+import {
+  Calendar as CalendarIcon,
+  MessageCircle as ChatIcon,
+  Download as DownloadIcon,
+  Smile as FaceIcon,
+  Flower as FlowerIcon,
+  Mail as MailIcon,
+  Music as MusicIcon,
+  Settings as GearIcon,
+  Trash2 as TrashIcon,
+} from "lucide-react";
+
+type App = { label: string; icon: ReactNode; tile: string; active?: boolean; badge?: number; badgeLabel?: string };
+
+const apps: App[] = [
+  { label: "Finder", icon: <FaceIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-7),var(--sheen-chart-1))]", active: true },
+  { label: "Mail", icon: <MailIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-7),var(--sheen-chart-3))]", badge: 3, badgeLabel: "3 unread" },
+  { label: "Calendar", icon: <CalendarIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-8),var(--sheen-chart-2))]" },
+  { label: "Music", icon: <MusicIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-5),var(--sheen-chart-8))]", active: true },
+  { label: "Photos", icon: <FlowerIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-4),var(--sheen-chart-2))]" },
+  { label: "Messages", icon: <ChatIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-chart-3),var(--sheen-chart-6))]" },
+  { label: "Settings", icon: <GearIcon />, tile: "[background:linear-gradient(160deg,var(--sheen-ink-500),var(--sheen-ink-700))]" },
+];
+
+export function Example() {
+  const toast = useToast();
+
+  return (
+    <Dock label="Apps" labels={{ active: "open" }}>
+      {apps.map((app) => (
+        <DockItem
+          key={app.label}
+          label={app.label}
+          icon={app.icon}
+          active={app.active}
+          badge={app.badge}
+          badgeLabel={app.badgeLabel}
+          bounce
+          onClick={() => toast.info(`Opening ${app.label}`)}
+          tileClassName={`${app.tile} text-sheen-accent-fg`}
+        />
+      ))}
+      <DockSeparator />
+      <DockItem label="Downloads" icon={<DownloadIcon />} onClick={() => toast.info("Opening Downloads")} />
+      <DockItem label="Trash" icon={<TrashIcon />} onClick={() => toast.info("Trash is empty")} />
+    </Dock>
+  );
+}
+```
+
+### Example 2 of 3: Navigation links, at the top
+
+Items with href are links (aria-current marks the active one). side="top" grows the icons downward with labels underneath. Smaller icons, a gentler swell.
+
+```tsx
+import { Dock, DockItem } from "@/components/sheenui/dock/dock";
+// Package build (after the first npm release, or a packed tarball): import { Dock, DockItem } from "@sheenui/theme";
+import { Folder as FolderIcon, House as HomeIcon, Search as SearchIcon, User as UserIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <Dock label="Sections" side="top" size="sm" magnification={1.45}>
+      <DockItem label="Home" icon={<HomeIcon />} href="#home" active />
+      <DockItem label="Search" icon={<SearchIcon />} href="#search" />
+      <DockItem label="Library" icon={<FolderIcon />} href="#library" />
+      <DockItem label="Profile" icon={<UserIcon />} href="#profile" />
+    </Dock>
+  );
+}
+```
+
+### Example 3 of 3: Notch
+
+With notch, the active item lifts out of a round notch cut into the glass bar and glides to the next active item. Click an icon to move it. Needs an active item.
+
+```tsx
+import { useState } from "react";
+import { Dock, DockItem } from "@/components/sheenui/dock/dock";
+// Package build (after the first npm release, or a packed tarball): import { Dock, DockItem } from "@sheenui/theme";
+import { Folder as FolderIcon, House as HomeIcon, Search as SearchIcon, User as UserIcon } from "lucide-react";
+
+export function Example() {
+  const [active, setActive] = useState("Home");
+  const items = [
+    { label: "Home", icon: <HomeIcon /> },
+    { label: "Search", icon: <SearchIcon /> },
+    { label: "Library", icon: <FolderIcon /> },
+    { label: "Profile", icon: <UserIcon /> },
+  ];
+
+  return (
+    <Dock label="Sections" notch>
+      {items.map((item) => (
+        <DockItem
+          key={item.label}
+          label={item.label}
+          icon={item.icon}
+          active={active === item.label}
+          onClick={() => setActive(item.label)}
+        />
+      ))}
+    </Dock>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab / Shift + Tab | Enter or leave the dock once (one tab stop). |
+| Arrow Left / Arrow Right | Move between items; the focused item is magnified with its label above. |
+| Home / End | Jump to the first or last item. |
+| Enter / Space | Press the focused item. |
+| Escape | Hide the labels (WCAG 1.4.13); moving the pointer brings them back. |
+
+### Accessibility
+
+- A Base UI toolbar: roving focus, with aria-label on the dock and a name on each item (the label is also its accessible name).
+- Magnification is decorative.
+- Under reduced motion items do not scale; the label still shows on focus.
+
+### All exports on this page
+
+- Dock — Dock: a macOS-style launcher bar.
+- DockItem — One icon in a Dock: a button, or a link when you give it an href (or render your router's <Link>).
+- DockSeparator — A thin divider between groups of items (e.g.
+- defaultDockLabels — The English strings of Dock.
+
+
+### When to use the macOS dock effect
+
+- Use it as a floating dock with magnification for an app launcher or quick-action bar in a desktop-style web app, where icons near the pointer swell and push neighbors apart like the macOS Dock.
+- Use it as a floating bottom bar in a portfolio or a docs playground, with DockItem links to sections, a DockSeparator before utility items and a badge on an inbox icon.
+- Set side="top" to pin the bar to the top edge instead of the default bottom; icons grow away from that edge and labels appear on the far side. Only top and bottom are supported, so use VerticalNav for a vertical rail.
+- Skip it when you need editor controls or primary site navigation: use Toolbar for formatting controls and Navbar for site navigation, since magnification adds nothing to a menu of text links.
+- Pair it with Dialog or MorphingDialog so an item opens a window-like panel, Badge for status elsewhere in the shell, and DockItem badge for counts; no Tooltip is needed because the dock draws its own labels.
+
+
+### Frequently asked questions
+
+#### How do I build a macOS dock in React with SheenUI?
+
+Wrap DockItem children in Dock and give the dock a label. Each DockItem needs a label and an icon, plus onClick or href. Use size for the resting icon size (default 48), magnification from 1 to 2 (default 1.6) and distance for how far the swell reaches.
+
+#### How do keyboard users and screen readers work with the dock?
+
+It is a Base UI toolbar: one Tab stop, with arrow keys, Home and End moving between items. The focused item magnifies and shows its label; Escape hides the label. Each control carries its label as its accessible name, and active links get aria-current="page".
+
+#### What happens on touch screens or when there is no room to magnify?
+
+The dock falls back to a plain bar on touch screens and coarse pointers, under reduced motion, and when there is too little room beside it. With limited room the swell is scaled down to fit. If the bar is wider than its container it scrolls inside itself.
+
+#### How do I mark an item as open or show a badge?
+
+Set active on a DockItem to draw a dot under the icon. Links get aria-current, and buttons add labels.active to their name, such as Finder, open. The badge prop shows a count on the corner, and badgeLabel sets what screen readers hear, like 3 unread.
+
+
+### Related pages
+
+- [Navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar)
+- [Liquid glass](https://lokendra-builds.github.io/sheenui/effects/liquid-glass)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Liquid Glass UI for React (iOS 26 Style)
+
+URL: https://lokendra-builds.github.io/sheenui/effects/liquid-glass
+Sidebar name: Liquid glass
+
+Apple Liquid Glass for React: real SVG refraction in Chrome and Edge, frosted fallback in Safari and Firefox. Tailwind v4 + Motion. Copy the source.
+
+What it is: A Liquid Glass effect for React in the style of Apple's iOS 26 design: a lens that refracts the page behind it through an SVG displacement map, with a specular rim.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/liquid-glass.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Liquid glass
+
+In this browser:Frosted fallback
+
+Files to copy from `theme/src/`:
+
+- `components/liquid-glass/`
+- `hooks/{use-intersection.ts, use-media-query.ts, use-preferences.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx tailwind-merge
+```
+
+Registry item: liquid-glass. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { LiquidGlass } from "@/components/sheenui/liquid-glass/liquid-glass";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { LiquidGlass } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| shape | "circle" \| "rect" \| "pill" | "rect" | Outline of the lens. "rect" uses the element's own border radius (rounded-sheen-xl by default, override with className); "pill" and "circle" are fully rounded. |
+| variant | "regular" \| "clear" | "regular" | "regular": frosted and tinted, for text and controls (legible on anything). "clear": barely tinted, most see-through. For icons and bold labels over media. |
+| refraction | number | 1 | How strongly the rim bends the backdrop. 0 = flat glass, 1 = default, up to 2. |
+| bezel | number | most of the corner radius (capped at 40) | Sets the width of the curved rim in px. |
+| frost | number | 12 (regular) or 1 (clear) | Sets the frost inside the lens, in px. |
+| saturation | number | 1.5 | Colour boost of the backdrop seen through the lens (1 = none). |
+| aberration | number | 0 | Splits the refracted edge into its colours, like a prism (0 to 1). |
+| specular | boolean | true | Adds a bright specular rim along the edge. |
+| interactive | boolean | false | Grows slightly on hover and presses in on tap (scale only; none with reduced motion). |
+| render | ReactElement \| function | <div /> | Render as another element: a button, a nav, a motion.div… |
+
+### Example 1 of 3: Drag the lens
+
+A clear circle lens over crisp artwork. Drag it (or focus it and use the arrow keys) and watch the lines bend and split into color at the rim.
+
+```tsx
+import { useRef, type KeyboardEvent } from "react";
+import { LiquidGlass } from "@/components/sheenui/liquid-glass/liquid-glass";
+// Package build (after the first npm release, or a packed tarball): import { LiquidGlass } from "@sheenui/theme";
+import { motion, useMotionValue } from "motion/react";
+
+const moves: Partial<Record<string, [number, number]>> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+// Written out here on purpose: the library's clamp is internal, and this example has to run on its own.
+const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
+
+export function Example() {
+  const areaRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Arrow keys move the lens (Shift for bigger steps), kept inside the artwork.
+  function nudge(event: KeyboardEvent<HTMLDivElement>) {
+    const move = moves[event.key];
+    const area = areaRef.current;
+    if (!move || !area) return;
+    event.preventDefault();
+    const lens = event.currentTarget;
+    const step = event.shiftKey ? 64 : 16;
+    x.set(clamp(x.get() + move[0] * step, -lens.offsetLeft, area.clientWidth - lens.offsetLeft - lens.offsetWidth));
+    y.set(clamp(y.get() + move[1] * step, -lens.offsetTop, area.clientHeight - lens.offsetTop - lens.offsetHeight));
+  }
+
+  return (
+    <div ref={areaRef} className="relative h-96 overflow-hidden rounded-sheen-xl bg-gradient-to-br from-fuchsia-500 via-violet-500 to-sky-400">
+      <LiquidGlass
+        shape="circle"
+        variant="clear"
+        aberration={0.6}
+        render={
+          <motion.div
+            drag
+            dragConstraints={areaRef}
+            dragElastic={0.12}
+            whileDrag={{ scale: 1.06 }}
+            style={{ x, y }}
+          />
+        }
+        tabIndex={0}
+        role="group"
+        aria-roledescription="movable lens"
+        aria-label="Lens. Drag it, or use the arrow keys to move it."
+        onKeyDown={nudge}
+        className="absolute top-1/2 left-1/2 -mt-20 -ml-20 size-40 cursor-grab touch-none"
+      />
+    </div>
+  );
+}
+```
+
+### Example 2 of 3: Floating tab bar
+
+A pill of regular liquid glass over scrolling content, the way iOS 26 floats its tab bars. Its tint thins out towards the rim, so the tiles visibly bend at the edge while the labels keep a solid backplate.
+
+```tsx
+import { useState } from "react";
+import { LiquidGlass } from "@/components/sheenui/liquid-glass/liquid-glass";
+// Package build (after the first npm release, or a packed tarball): import { LiquidGlass } from "@sheenui/theme";
+
+const tabs = [
+  { id: "all", label: "All", icon: null },
+  { id: "albums", label: "Albums", icon: null },
+  { id: "shared", label: "Shared", icon: null },
+];
+
+export function Example() {
+  const [active, setActive] = useState("all");
+
+  return (
+    <div className="relative h-[26rem] overflow-hidden">
+      <div role="region" aria-label="Photo library" tabIndex={0} className="h-full overflow-y-auto p-3 pb-28">
+        {/* tiles */}
+      </div>
+      <LiquidGlass
+        shape="pill"
+        render={<nav aria-label="Library sections" />}
+        className="absolute inset-x-3 bottom-3 mx-auto flex max-w-md justify-between gap-1 p-1.5"
+      >
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            aria-current={active === tab.id ? "page" : undefined}
+            onClick={() => setActive(tab.id)}
+            className="flex min-h-12 flex-1 flex-col items-center justify-center rounded-sheen-full text-2xs font-semibold aria-[current=page]:text-sheen-accent"
+          >
+            {tab.icon}
+            <span className="truncate">{tab.label}</span>
+          </button>
+        ))}
+      </LiquidGlass>
+    </div>
+  );
+}
+```
+
+### Example 3 of 3: Shapes and variants
+
+Pill, circle and rounded rectangle, each with its own displacement map. Interactive glass grows a touch on hover and presses in on tap: only its scale ever animates.
+
+```tsx
+import { LiquidGlass } from "@/components/sheenui/liquid-glass/liquid-glass";
+// Package build (after the first npm release, or a packed tarball): import { LiquidGlass } from "@sheenui/theme";
+import { Play as PlayIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <LiquidGlass shape="pill" interactive render={<button type="button" />} className="h-12 px-6 text-sm font-semibold">
+        Get started
+      </LiquidGlass>
+
+      <LiquidGlass
+        shape="circle"
+        interactive
+        render={<button type="button" aria-label="Play" />}
+        className="grid size-14 place-items-center [&>svg]:size-6"
+      >
+        <PlayIcon />
+      </LiquidGlass>
+
+      <LiquidGlass className="flex w-full max-w-72 flex-col gap-1 p-5">
+        <p className="font-semibold">Now playing</p>
+        <p className="text-sm text-sheen-fg-muted">Glass Animals · Heat Waves</p>
+      </LiquidGlass>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: LiquidGlass is decoration. Give it role, tabIndex and handlers when it is a control; interactive adds a solid focus ring. |
+
+### Accessibility
+
+- Pure decoration around your content: text on a regular lens keeps 4.5:1 contrast on any backdrop, and the rim is decorative.
+- The lens is Chromium only: Safari and Firefox keep the frosted blur. Reduced transparency, more contrast and forced colors give a solid surface; forced colors drop the rim.
+- A draggable lens needs a keyboard alternative: the example moves with the arrow keys (Shift for bigger steps).
+
+### All exports on this page
+
+- LiquidGlass — Liquid glass: a lens that bends the page behind it, like Apple's Liquid Glass.
+- MAX_REFRACTION_SURFACES — Refraction budget: SVG refraction on at most MAX_REFRACTION_SURFACES lenses at once, page-wide.
+- supportsLiquidGlass — Whether this browser renders SVG filters in backdrop-filter (backdrop-filter: url(#id)).
+
+
+### When to use the liquid glass effect
+
+- Use it as a liquid glass effect for a few hero surfaces that sit over photos or video, such as a floating media control, a caption overlay or a navigation pill that visibly bends the page behind it in Chromium.
+- Use shape="pill" for a floating action bar and shape="circle" for a round play button, with variant="clear" when the content is only an icon or a bold label over imagery.
+- Add interactive when the lens is a control, so it grows slightly on hover and presses in on tap, and give it role, tabIndex and handlers yourself.
+- Skip it when you have more than a handful of surfaces or ordinary cards: refraction is limited to three lenses per page, so GlassCard is the right tool for lists, grids and panels.
+- Pair it with Button for the action inside the lens, GlassCard for everything else on the page, and the supportsLiquidGlass helper when you want to adjust copy or layout by engine.
+
+
+### Frequently asked questions
+
+#### How do I use liquid glass in React, and does it work in every browser?
+
+Render LiquidGlass with a shape and your content. The real refraction runs in Chromium through an SVG filter on backdrop-filter. Safari and Firefox draw nothing for that filter, so they get SheenUI frosted glass instead. supportsLiquidGlass() tells you which one you got.
+
+#### Why do only some of my lenses bend the background?
+
+Refraction has a page-wide budget of three lenses near the viewport at once; the rest render as frosted glass until a slot frees up, and a lens that scrolls away hands over its slot. Treat it as an accent for hero surfaces, not a card style.
+
+#### Which props tune the look of the lens?
+
+variant is regular (tinted, for text) or clear. refraction runs from 0 to 2 with a default of 1, bezel sets the rim width, frost the blur, saturation the color boost (1.5), aberration splits edge colors from 0 to 1, and specular toggles the bright rim.
+
+#### Is text on a lens readable, and what about reduced transparency?
+
+Text on a regular lens is designed to keep 4.5:1 contrast on any backdrop. With reduced transparency, more contrast or no backdrop-filter support you get a solid surface, forced colors use system colors, and no displacement map is drawn. Only scale ever animates.
+
+
+### Related pages
+
+- [Glass card](https://lokendra-builds.github.io/sheenui/components/glass-card)
+- [Foundations](https://lokendra-builds.github.io/sheenui/foundations)
+- [Marquee](https://lokendra-builds.github.io/sheenui/effects/marquee)
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+
+#### Guides that cover it
+
+- [Apple Liquid Glass in CSS and React](https://lokendra-builds.github.io/sheenui/guides/liquid-glass-css-react)
+- [Accessible Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/accessible-glassmorphism)
+- [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass)
+- [backdrop-filter Performance: Fast Glassmorphism](https://lokendra-builds.github.io/sheenui/guides/backdrop-filter-performance)
+- [Best Glassmorphism React Libraries (2026)](https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries)
+- [shadcn Alternatives with Animation: Nine Libraries Compared (2026)](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives)
+- [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## React Marquee: Infinite Logo & Testimonial Scroll
+
+URL: https://lokendra-builds.github.io/sheenui/effects/marquee
+Sidebar name: Marquee
+
+A seamless infinite marquee for React logos and testimonials: eases to a stop on hover and focus, has a Pause button, supports RTL and reduced motion. MIT.
+
+What it is: A React marquee for an endless, seamless strip of logos or testimonials that eases to a stop under the mouse or keyboard focus. Use it as an infinite logo carousel for a trusted-by strip under a landing page hero, where customer logos scroll in a seamless loop at a steady speed in pixels per second.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/marquee.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Marquee
+
+Files to copy from `theme/src/`:
+
+- `components/marquee/`
+- `components/button/`
+- `components/spinner/`
+- `hooks/{use-controllable.ts, use-direction.ts, use-intersection.ts, use-latest.ts, use-magnetic.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/{cn.ts, form.ts, state-light.tsx, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: marquee. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { Marquee } from "@/components/sheenui/marquee/marquee";
+```
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Button, Marquee } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | The items: each child is one item (a logo, a card…). |
+| speed | number | 40 | Sets the speed in px per second. |
+| reverse | boolean | false | Move towards the end (right in LTR, or down when vertical) instead of the start. |
+| vertical | boolean | false | Scroll vertically. Give the marquee a height with className (default h-96). |
+| gap | number | 24 | Sets the space between items, in px. |
+| pauseOnHover | boolean | true | Ease to a stop while the mouse is over it. |
+| fade | boolean | true | Fades out the two edges of the strip. |
+| fadeSize | number | 64 | Length of each faded edge, in px (at most 12% of the strip, so narrow strips stay readable). |
+| controls | boolean | true | Show the Pause / Play button. Keep it unless you provide your own control (WCAG 2.2.2). |
+| paused | boolean | optional, no default | Paused (controlled). Use with onPausedChange, e.g. to drive several marquees from one button. |
+| defaultPaused | boolean | false | Starts in the paused state (uncontrolled). |
+| onPausedChange | ((paused: boolean) => void) | optional, no default | Called when the Pause / Play button is pressed. |
+| listLabel | string | optional, no default | Accessible name for the list of items, e.g. "Customers". |
+| itemClassName | string | optional, no default | Classes for every item (<li>). Put a glass class here to make each item a glass card. |
+| labels | Partial<MarqueeLabels> | defaultMarqueeLabels | Text of the Pause / Play button; a partial object over the English defaults, so pass only the keys you translate. Every other string, for translation: labels={{ pause: "…" }}; omitted keys keep the English of defaultMarqueeLabels. All 2 keys of MarqueeLabels are listed in the key table under the props table. |
+
+### Example 1 of 3: Logo cloud
+
+The list is read once by screen readers and is in the tab order once. The copies that fill the strip are hidden from both, but stay clickable. Tab to a logo that is off to the side and it glides into the middle. The Pause button sits below the strip and comes first in the tab order.
+
+```tsx
+import { Marquee } from "@/components/sheenui/marquee/marquee";
+// Package build (after the first npm release, or a packed tarball): import { Marquee } from "@sheenui/theme";
+
+const brands = [
+  { name: "Acme", href: "https://example.com/acme", Logo: (props: { className?: string }) => <svg viewBox="0 0 24 24" aria-hidden {...props}><circle cx="12" cy="12" r="10" fill="currentColor" /></svg> },
+  { name: "Globex", href: "https://example.com/globex", Logo: (props: { className?: string }) => <svg viewBox="0 0 24 24" aria-hidden {...props}><rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor" /></svg> },
+  { name: "Initech", href: "https://example.com/initech", Logo: (props: { className?: string }) => <svg viewBox="0 0 24 24" aria-hidden {...props}><path d="M12 2l10 18H2z" fill="currentColor" /></svg> },
+];
+
+export function Example() {
+  return (
+    <Marquee listLabel="Customers" speed={36} gap={48}>
+      {brands.map((brand) => (
+        <a
+          key={brand.name}
+          href={brand.href}
+          className="flex min-h-11 items-center gap-2 rounded-sheen-sm px-2 text-lg font-semibold text-sheen-fg-muted hover:text-sheen-fg"
+        >
+          <brand.Logo className="size-6" />
+          {brand.name}
+        </a>
+      ))}
+    </Marquee>
+  );
+}
+```
+
+### Example 2 of 3: Testimonials in glass
+
+Level-1 glass items (tint, rim and light, no blur of their own) keep a moving strip cheap: a blurred card re-blurs its backdrop on every frame it moves, and a dozen in view would blow the glass budget. Put a blurred level (glass-2) on the items and the edges fade card by card instead, each card masked on its own glass element so its blur keeps working (a mask on the strip would switch it off). Both rows share one Pause button.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Marquee } from "@/components/sheenui/marquee/marquee";
+// Package build (after the first npm release, or a packed tarball): import { Button, Marquee } from "@sheenui/theme";
+
+const reviews = [
+  { name: "Asha", text: "Best docs I have read this year." },
+  { name: "Ravi", text: "Dropped into our app in an afternoon." },
+  { name: "Meera", text: "The glass looks great in dark mode." },
+];
+
+function Review({ name, text }: (typeof reviews)[number]) {
+  return (
+    <figure>
+      <blockquote className="text-sm">{text}</blockquote>
+      <figcaption className="mt-2 text-xs text-sheen-fg-muted">{name}</figcaption>
+    </figure>
+  );
+}
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Marquee
+        listLabel="What people say"
+        paused={paused}
+        controls={false}
+        itemClassName="glass-1 w-64 self-stretch rounded-sheen-lg p-5 sm:w-72"
+      >
+        {reviews.map((review) => <Review key={review.name} {...review} />)}
+      </Marquee>
+      <Marquee
+        reverse
+        speed={30}
+        listLabel="More reviews"
+        paused={paused}
+        controls={false}
+        itemClassName="glass-1 w-64 self-stretch rounded-sheen-lg p-5 sm:w-72"
+      >
+        {reviews.map((review) => <Review key={review.name} {...review} />)}
+      </Marquee>
+      <Button variant="glass" size="sm" onClick={() => setPaused(!paused)}>
+        {paused ? "Play reviews" : "Pause reviews"}
+      </Button>
+    </>
+  );
+}
+```
+
+### Example 3 of 3: Vertical
+
+Columns scroll at different speeds and directions. Give a vertical marquee a height; with reduced motion it keeps that height and scrolls instead.
+
+```tsx
+import { useState } from "react";
+import { Button } from "@/components/sheenui/button/button";
+import { Marquee } from "@/components/sheenui/marquee/marquee";
+// Package build (after the first npm release, or a packed tarball): import { Button, Marquee } from "@sheenui/theme";
+
+const items = ["Fast", "Accessible", "Themeable", "Typed", "Small"];
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Marquee vertical speed={28} paused={paused} controls={false} className="h-[28rem]" itemClassName="glass-1 w-full rounded-sheen-lg p-5">
+          {items.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </Marquee>
+        <Marquee vertical reverse speed={22} paused={paused} controls={false} className="hidden h-[28rem] sm:flex" itemClassName="glass-1 w-full rounded-sheen-lg p-5">
+          {items.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </Marquee>
+        <Marquee vertical speed={34} paused={paused} controls={false} className="hidden h-[28rem] sm:flex" itemClassName="glass-1 w-full rounded-sheen-lg p-5">
+          {items.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </Marquee>
+      </div>
+      <Button variant="glass" size="sm" onClick={() => setPaused(!paused)}>
+        {paused ? "Play columns" : "Pause columns"}
+      </Button>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Reach the Pause / Play button first, then the real items. |
+| Enter / Space | Pause or resume the strip. |
+
+### Accessibility
+
+- Mouse over it, or keyboard focus inside it, eases it to a stop (and back up after); focusing an off-screen item glides it into view.
+- The strip has a Pause / Play button (WCAG 2.2.2). The list is rendered once for assistive tech; the repeated copies are aria-hidden and out of the tab order. listLabel names the list.
+- Under reduced motion it does not move, and the copies, the edge fade and the button are dropped.
+
+### All exports on this page
+
+- Marquee — Marquee: an endless, seamless row (or column) of logos, testimonials, anything.
+- defaultMarqueeLabels — The English MarqueeLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the marquee effect
+
+- Use it for a Trusted by strip of customer logos below a landing page hero, or a row of short testimonials, that scrolls on its own at a steady pace.
+- Use it for a review wall or testimonial rows, running two marquees in opposite directions with reverse, or a vertical column with vertical and a fixed height for a sidebar of quotes.
+- Pass itemClassName with a glass class to turn every item into a glass card; the edge fade is then applied item by item so the backdrop blur keeps working.
+- Skip it when the content is long, must be read carefully or contains important actions; moving content competes for attention, so use a static grid where users control the pace.
+- Pair it with Avatar and Badge for testimonial cards, GlassCard for each item, and a Switch or your own button wired to the paused prop to control several marquees at once.
+
+
+### Frequently asked questions
+
+#### How do I make a react marquee that never jumps?
+
+Give Marquee children, one per item, and set speed in px per second (default 40). The list is copied as many times as needed to fill the strip, and the loop distance is one copy plus one gap, so it repeats seamlessly. gap, reverse and fade adjust spacing, direction and edges.
+
+#### Is a moving marquee accessible?
+
+A Pause / Play button sits below the strip and comes first in the tab order, which covers WCAG 2.2.2; Enter or Space toggles it. The list is rendered once for assistive tech, named by listLabel, while the copies are aria-hidden and out of the tab order.
+
+#### How do I pause it on hover or from my own control?
+
+Hover or keyboard focus inside eases the strip to a stop, and pauseOnHover={false} keeps it running under the mouse. For external control use paused with onPausedChange, which lets one button drive several marquees. defaultPaused starts it stopped.
+
+#### What happens with reduced motion or right-to-left layouts?
+
+With reduced motion it does not move: a row wraps onto as many lines as it needs, a column keeps its height and scrolls, and there are no copies, fade or button. In right-to-left pages the row starts from the right and moves the other way.
+
+
+### Related pages
+
+- [Morphing dialog](https://lokendra-builds.github.io/sheenui/effects/morphing-dialog)
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Morphing Dialog for React: Card-to-Modal Motion
+
+URL: https://lokendra-builds.github.io/sheenui/effects/morphing-dialog
+Sidebar name: Morphing dialog
+
+A morphing dialog for React: a card grows into a modal with Motion shared layout animation, on top of Base UI's accessible Dialog. Tailwind CSS v4, MIT.
+
+What it is: A morphing dialog for React where a card grows into a modal: its image, title and surface fly into place with Motion's shared layout animation.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/morphing-dialog.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Morphing dialog
+
+Files to copy from `theme/src/`:
+
+- `components/morphing-dialog/`
+- `hooks/{use-controllable.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/{presets.ts, tokens.ts}`
+- `lib/{cn.ts, warn-once.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: morphing-dialog. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Button } from "@/components/sheenui/button/button";
+import { MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogMedia, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger } from "@/components/sheenui/morphing-dialog/morphing-dialog";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use avatar, button, toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Button, MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogMedia, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger, useToast } from "@sheenui/theme";
+```
+
+### MorphingDialog props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | required | The trigger card and the dialog content. |
+| open | boolean | optional, no default | Whether the dialog is open (controlled); pair it with onOpenChange. |
+| defaultOpen | boolean | false | Open on first render (uncontrolled). |
+| onOpenChange | ((open: boolean) => void) | optional, no default | Called when the dialog opens or closes. |
+
+### MorphingDialogTrigger props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The card's content: usually MorphingDialogMedia, MorphingDialogTitle and MorphingDialogSubtitle. |
+| level | 2 \| 1 \| 3 | 2 | Glass level of the card: 1 = subtle, 2 = cards (default), 3 = most opaque. |
+| tint | boolean | false | Tints the card with the accent colour. |
+| radius | number | the theme's --sheen-radius-lg | Sets the corner radius in px. |
+| style | CSSProperties | optional, no default | Inline styles for the card (the corner radius is added). |
+
+### MorphingDialogContent props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The dialog's content: media, title, subtitle, description and actions. |
+| level | 2 \| 1 \| 3 | 3 | Sets the glass level of the dialog: 1 to 3. |
+| radius | number | the theme's --sheen-radius-xl | Sets the corner radius in px. |
+| showClose | boolean | true | Show the × button in the top-right corner. |
+| labels | Partial<MorphingDialogLabels> | defaultMorphingDialogLabels | Every string, for translation: { close: "Close" } (accessible name of the × button). Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultMorphingDialogLabels. Its only key is listed in the key table under the props table. |
+| initialFocus | boolean \| RefObject<HTMLElement \| null> \| ((openType: InteractionType) => boolean \| HTMLElement \| null \| void) | the first control (the popup itself on touch) | Where focus goes when it opens (Base UI): a ref, false, or a function of the interaction type. |
+| finalFocus | boolean \| RefObject<HTMLElement \| null> \| ((closeType: InteractionType) => boolean \| HTMLElement \| null \| void) | back to the card | Where focus goes when it closes (Base UI). |
+| style | CSSProperties | optional, no default | Inline styles for the dialog (the corner radius is added). |
+
+### Parts
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| MorphingDialogMedia | radius?: number | --sheen-radius-md | The picture that flies between card and dialog. Same aspect ratio in both. |
+| MorphingDialogTitle | children | optional, no default | Moves between card and dialog; in the dialog it is the h2 that names it. |
+| MorphingDialogSubtitle | children | optional, no default | A line under the title that moves too. |
+| MorphingDialogDescription | children | optional, no default | Dialog-only text that rises in after the flight; describes the dialog. Keep controls out of it. |
+| MorphingDialogActions | children, className | optional, no default | The dialog's buttons: the row rises in and each control fades itself, so glass buttons keep their blur. |
+| MorphingDialogClose | labels?: Partial<MorphingDialogLabels> | { close: "Close" } | The × button, if you place it yourself (showClose={false}); labels.close is its accessible name. |
+
+### MorphingDialogActions props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The dialog's buttons and other controls. |
+| className | string | optional, no default | Adds extra classes to the row. |
+
+### MorphingDialogClose props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| labels | Partial<MorphingDialogLabels> | defaultMorphingDialogLabels | Every string, for translation: close is the button's accessible name (default "Close"). Every other string, for translation: labels={{ close: "…" }}; omitted keys keep the English of defaultMorphingDialogLabels. Its only key is listed in the key table under the props table. |
+| className | string | optional, no default | Adds extra classes to the button. |
+
+### MorphingDialogDescription props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | Holds the description text (and non-glass figures). |
+| className | string | optional, no default | Adds extra classes to the description. |
+
+### MorphingDialogMedia props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The picture: an <img>, a video poster or artwork. |
+| radius | number | the theme's --sheen-radius-md | Sets the corner radius in px. |
+| className | string | optional, no default | Extra classes (set the aspect ratio here, the same in the card and the dialog). |
+| style | CSSProperties | optional, no default | Inline styles for the media box (the corner radius is added). |
+
+### MorphingDialogSubtitle props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The text to show; it moves with the card while the dialog opens and closes. |
+| className | string | optional, no default | Adds extra classes to the text element. |
+
+### MorphingDialogTitle props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| children | ReactNode | optional, no default | The text to show; it moves with the card while the dialog opens and closes. |
+| className | string | optional, no default | Adds extra classes to the text element. |
+
+### Example 1 of 2: Gallery
+
+Open a card, then close it with Escape, the × button or a click outside: everything flies back. Keep the media's aspect ratio the same in card and dialog.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogMedia, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger } from "@/components/sheenui/morphing-dialog/morphing-dialog";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Button, MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogMedia, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger, useToast } from "@sheenui/theme";
+
+const place = {
+  name: "Lisbon",
+  region: "Portugal",
+  gradient: "from-amber-300 to-rose-500",
+  body: "Seven hills, trams and pastel de nata.",
+  facts: [
+    ["Best month", "May"],
+    ["Flight from Delhi", "12 h"],
+  ],
+};
+
+export function Example() {
+  const toast = useToast();
+  // One card per place, in a <ul className="grid gap-4 sm:grid-cols-3">.
+
+  return (
+    <MorphingDialog>
+      <MorphingDialogTrigger className="w-full p-2 pb-4">
+        <MorphingDialogMedia className="aspect-[4/3]">
+          <div aria-hidden className={`size-full bg-gradient-to-br ${place.gradient}`} />
+        </MorphingDialogMedia>
+        <MorphingDialogTitle className="px-2 pt-2">{place.name}</MorphingDialogTitle>
+        <MorphingDialogSubtitle className="px-2">{place.region}</MorphingDialogSubtitle>
+      </MorphingDialogTrigger>
+
+      <MorphingDialogContent className="p-3 pb-6">
+        <MorphingDialogMedia className="aspect-[4/3]">
+          <div aria-hidden className={`size-full bg-gradient-to-br ${place.gradient}`} />
+        </MorphingDialogMedia>
+        <div className="px-3 pt-4">
+          <MorphingDialogTitle>{place.name}</MorphingDialogTitle>
+          <MorphingDialogSubtitle>{place.region}</MorphingDialogSubtitle>
+        </div>
+        <MorphingDialogDescription className="flex flex-col gap-4 px-3 pt-3">
+          <p>{place.body}</p>
+          <dl className="grid grid-cols-2 gap-3">
+            {place.facts.map(([term, value]) => (
+              <div key={term} className="rounded-sheen-md bg-sheen-hover px-3 py-2">
+                <dt className="text-xs text-sheen-fg-muted">{term}</dt>
+                <dd className="font-medium text-sheen-fg">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </MorphingDialogDescription>
+        {/* Controls go here, not in the description: each one fades itself in. */}
+        <MorphingDialogActions className="px-3 pt-4">
+          <Button onClick={() => toast.success(`${place.name} saved to your trips`)}>Plan a trip</Button>
+        </MorphingDialogActions>
+      </MorphingDialogContent>
+    </MorphingDialog>
+  );
+}
+```
+
+### Example 2 of 2: Compact card
+
+No picture: just the surface and the text morph. The dialog takes any content, and its glass level and radius are props. Buttons go in MorphingDialogActions, where each one (glass included) fades itself in.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Button } from "@/components/sheenui/button/button";
+import { MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger } from "@/components/sheenui/morphing-dialog/morphing-dialog";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, Button, MorphingDialog, MorphingDialogActions, MorphingDialogContent, MorphingDialogDescription, MorphingDialogSubtitle, MorphingDialogTitle, MorphingDialogTrigger, useToast } from "@sheenui/theme";
+
+export function Example() {
+  const toast = useToast();
+
+  return (
+    <MorphingDialog>
+      <MorphingDialogTrigger className="flex-row items-center gap-3 p-3 pe-5">
+        <Avatar name="Grace Hopper" />
+        <span className="flex flex-col">
+          <MorphingDialogTitle>Grace Hopper</MorphingDialogTitle>
+          <MorphingDialogSubtitle>Rear admiral · Compilers</MorphingDialogSubtitle>
+        </span>
+      </MorphingDialogTrigger>
+      <MorphingDialogContent className="max-w-md gap-1 p-6 pe-14">
+        <MorphingDialogTitle>Grace Hopper</MorphingDialogTitle>
+        <MorphingDialogSubtitle>Rear admiral · Compilers</MorphingDialogSubtitle>
+        <MorphingDialogDescription className="mt-3">
+          Wrote the first compiler and helped design COBOL, so programs could be written in words
+          instead of machine code. She kept a moth taped in her logbook: the first actual bug.
+        </MorphingDialogDescription>
+        <MorphingDialogActions className="mt-4">
+          <Button size="sm" onClick={() => toast.success("Following Grace Hopper")}>Follow</Button>
+          <Button size="sm" variant="glass" onClick={() => toast.info("Message drafted")}>Message</Button>
+        </MorphingDialogActions>
+      </MorphingDialogContent>
+    </MorphingDialog>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Enter / Space | Open the dialog from the card. |
+| Tab / Shift + Tab | Cycle inside; focus is trapped. |
+| Escape | Close it; focus returns to the card. |
+
+### Accessibility
+
+- The card is a native button with aria-haspopup="dialog"; the dialog is role="dialog", labeled by MorphingDialogTitle and described by MorphingDialogDescription. Always render a title.
+- Controls go in MorphingDialogActions, which fades each one in after the flight.
+- Under reduced motion the flight is removed and the dialog only fades; describe informative media with alt.
+
+### All exports on this page
+
+- MorphingDialog — Morphing dialog: a card that grows into a dialog.
+- MorphingDialogActions — The dialog's buttons and other controls (a row by default).
+- MorphingDialogClose — The × button (added automatically by MorphingDialogContent unless showClose={false}).
+- MorphingDialogContent — The dialog.
+- MorphingDialogDescription — Text that only exists in the dialog.
+- MorphingDialogMedia — The picture (an <img>, a video poster, artwork) that flies from the card into the dialog.
+- MorphingDialogSubtitle — A line under the title (place, author, price) that also moves from the card into the dialog.
+- MorphingDialogTitle — The title.
+- MorphingDialogTrigger — The card.
+- defaultMorphingDialogLabels — The English MorphingDialogLabels used when labels is omitted; a partial labels prop is merged over it.
+
+
+### When to use the morphing dialog effect
+
+- Use it as a card to modal animation for gallery and product cards that open into detail, where the picture, title and subtitle fly from the card into the dialog instead of a modal appearing from nowhere.
+- Use it for a portfolio grid, a travel destination list or a recipe index, composing MorphingDialogTrigger with MorphingDialogContent and the shared Media, Title, Subtitle, Description and Actions pieces.
+- Keep the media's aspect ratio the same in the card and in the dialog, otherwise the shared image stretches during the flight and the morph looks unclean.
+- Skip it when the dialog is a form or a confirmation with no card to grow from; use Dialog for those, since a morph only makes sense when the trigger visibly becomes the content.
+- Pair it with Button inside MorphingDialogActions so each control fades itself, Badge for a category label on the card, and GlassCard grids to lay the triggers out.
+
+
+### Frequently asked questions
+
+#### How do I build a morphing dialog in React?
+
+Wrap MorphingDialogTrigger and MorphingDialogContent in MorphingDialog. Put the same MorphingDialogMedia, Title and Subtitle in both so they share layout ids and fly into place, then add Description and Actions in the content. Use open and onOpenChange for control, or defaultOpen.
+
+#### How do focus and the keyboard work?
+
+Enter or Space on the card opens it; focus moves in and is trapped, Escape closes, and focus returns to the card. Tab and Shift+Tab are handled by the dialog through every control, which keeps the trap exact in Safari. It is built on the Base UI Dialog.
+
+#### What does the trigger render, and how do I style it?
+
+The trigger is a native button with aria-haspopup="dialog", named by its text. It accepts level (1 to 3, default 2) for the glass, tint for an accent surface and radius in px, which defaults to the theme's --sheen-radius-lg. Radii are scale-corrected so corners stay round mid-flight.
+
+#### What happens with reduced motion, and why use MorphingDialogActions?
+
+With reduced motion nothing flies: the dialog simply fades in over the card and out again. Controls belong in MorphingDialogActions because each one fades itself; wrapping a glass button in a faded wrapper would switch its backdrop blur off while it appears.
+
+
+### Related pages
+
+- [Number ticker](https://lokendra-builds.github.io/sheenui/effects/number-ticker)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+- [Framer Motion Is Now Motion](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Number Ticker: Animated Counter for React
+
+URL: https://lokendra-builds.github.io/sheenui/effects/number-ticker
+Sidebar name: Number ticker
+
+A number ticker for React: an animated counter whose digits roll like an odometer. Intl formats currency, percent and locales; screen readers hear it once.
+
+What it is: A number ticker for React where every digit is a little wheel that rolls to its new value, formatted with Intl.NumberFormat. Use it as an animated counter for KPI tiles and dashboard totals that change when a date range or filter changes, so each digit rolls to its new value like an odometer.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/number-ticker.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Number ticker
+
+Files to copy from `theme/src/`:
+
+- `components/number-ticker/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/tokens.ts`
+- `lib/{canvas-effects.ts, cn.ts}`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: number-ticker. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { NumberTicker } from "@/components/sheenui/number-ticker/number-ticker";
+```
+
+These examples also use glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { GlassCard, NumberTicker } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| value | number | required | The number to show. |
+| from | number | 0 | Where the first roll starts from. Set it to value to skip the intro roll. |
+| locales | Intl.LocalesArgument | the browser's | Sets the BCP 47 locale(s) for Intl.NumberFormat. |
+| format | Intl.NumberFormatOptions | {} | Intl.NumberFormat options, e.g. { style: "currency", currency: "EUR" }. |
+| prefix | string | optional, no default | Text before the number (read by screen readers too). |
+| suffix | string | optional, no default | Text after the number (read by screen readers too). |
+| animateOnView | boolean | true | Wait until the ticker is on screen before the first roll. |
+| delay | number | 0 | Sets the number of seconds before the first roll. |
+| duration | number | 0.6 | Seconds a roll takes, capped at 0.9 (longer values are clamped so digits are never unreadable for long). |
+| trend | "auto" \| "up" \| "down" | "auto" | Which way digits roll: with the change ("auto", default), or always up / down. |
+| live | "off" \| "assertive" \| "polite" | "polite" | How screen readers hear later changes: "polite" (default), "assertive", or "off" for numbers that change constantly. |
+
+### Example 1 of 3: Live stats
+
+Digits roll up when a value rises and down when it falls; new places slide in. Places that went through a full cycle spin an extra turn, like an odometer.
+
+```tsx
+import { NumberTicker } from "@/components/sheenui/number-ticker/number-ticker";
+// Package build (after the first npm release, or a packed tarball): import { NumberTicker } from "@sheenui/theme";
+
+export function Example() {
+  const revenue = 128400;
+  const users = 18250;
+  const rate = 0.043;
+  const count = 42;
+
+  return (
+    <>
+      <NumberTicker value={revenue} locales="en-US" format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }} />
+      <NumberTicker value={users} locales="en-US" format={{ notation: "compact", maximumFractionDigits: 1 }} />
+      <NumberTicker value={rate} locales="en-US" format={{ style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }} />
+      <NumberTicker value={count} from={count} locales="en-US" />
+    </>
+  );
+}
+```
+
+### Example 2 of 3: Any locale, any numbering system
+
+The same value through Intl.NumberFormat: separators, symbols and even the digits themselves follow the locale. In right-to-left locales the digits still read left to right, and the currency sits where the browser puts it.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { NumberTicker } from "@/components/sheenui/number-ticker/number-ticker";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, NumberTicker } from "@sheenui/theme";
+
+const rows = [
+  ["German, euro", "de-DE", { style: "currency", currency: "EUR" }, 1234567.89],
+  ["Indian grouping, rupee", "en-IN", { style: "currency", currency: "INR" }, 1234567.89],
+  ["Japanese, yen", "ja-JP", { style: "currency", currency: "JPY", currencyDisplay: "narrowSymbol" }, 1234567],
+  ["Arabic-Indic digits", "ar-EG", {}, 1234567],
+  ["Devanagari digits", "hi-IN-u-nu-deva", {}, 1234567],
+  ["Compact, French", "fr-FR", { notation: "compact", compactDisplay: "long" }, 1234567],
+  ["Egyptian pound, right to left", "ar-EG", { style: "currency", currency: "EGP" }, 1234567.89],
+  ["Shekel, right to left", "he-IL", { style: "currency", currency: "ILS" }, 1234.5],
+] as const;
+
+export function Example() {
+  return (
+    <dl className="grid w-full max-w-2xl gap-3 sm:grid-cols-2">
+      {rows.map(([label, locale, format, value]) => (
+        <GlassCard key={label} level={1} sheen={false} className="flex flex-col gap-1 px-4 py-3">
+          <dt className="text-xs text-sheen-fg-muted">{label}</dt>
+          <dd className="text-xl font-semibold">
+            <NumberTicker value={value} locales={locale} format={format} />
+          </dd>
+        </GlassCard>
+      ))}
+    </dl>
+  );
+}
+```
+
+### Example 3 of 3: Counts up when it comes into view
+
+It starts from `from` (0 by default) and rolls the first time it is on screen. Pass from={value} to skip that.
+
+```tsx
+import { NumberTicker } from "@/components/sheenui/number-ticker/number-ticker";
+// Package build (after the first npm release, or a packed tarball): import { NumberTicker } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <p className="text-6xl font-semibold tracking-tight sm:text-7xl">
+      <NumberTicker value={2400000} locales="en-US" format={{ notation: "compact" }} suffix="+" delay={0.2} />
+    </p>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: this is text. |
+
+### Accessibility
+
+- The digit wheels are aria-hidden; the final value is in a visually hidden live region (live="polite" by default), so it is read once, correctly formatted, not digit by digit.
+- Under reduced motion the value appears at once.
+
+### When to use the number ticker effect
+
+- Use it for the headline figure of a KPI tile or a totals row that is recalculated when someone picks another date range or filter, so the change reads as motion instead of a jump.
+- Use it for a price or revenue figure with currency formatting, such as 48,250 dollars with no decimals, or a stat row on a landing page that counts up when it scrolls into view.
+- Use prefix and suffix for units like a plus sign or a percent, and locales with format for compact numbers or other numbering systems; right-to-left locales are laid out correctly.
+- Skip it when the number is static or updates many times a second; plain text is better, and live="off" or a non-animated figure suits values that change constantly and would spam screen readers.
+- Pair it with GlassCard for a stat tile, Sparkline for the trend beside it, and SegmentedControl so switching the period makes the digits roll to the new values.
+
+
+### Frequently asked questions
+
+#### How do I build a number ticker in React with currency formatting?
+
+Pass value and a format object, for example format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}. Formatting is Intl.NumberFormat, so locales, percent, compact and unit styles all work. from sets the starting number, and setting it equal to value skips the intro roll.
+
+#### Which direction do the digits roll?
+
+By default they roll up when the value rises and down when it falls. trend="up" or "down" forces a direction. Each digit keeps its place when the number grows or shrinks, so new places slide in instead of everything jumping, and large changes spin an extra turn.
+
+#### How do screen readers hear the changing number?
+
+The wheels are aria-hidden, and the final value sits in a visually hidden live region, read once and correctly formatted rather than digit by digit. live defaults to "polite", can be "assertive", and "off" suits numbers that change constantly. prefix and suffix are read too.
+
+#### When does the first roll start, and what about reduced motion?
+
+It rolls from from to value the first time it scrolls into view; animateOnView={false} rolls on mount, and delay and duration tune that first roll. With reduced motion the value simply changes with no rolling. It uses transforms and fades, with no backdrop blur.
+
+
+### Related pages
+
+- [Dashboard stats](https://lokendra-builds.github.io/sheenui/blocks/dashboard-stats)
+- [Sparkbar](https://lokendra-builds.github.io/sheenui/charts/sparkbar)
+- [Shimmer text](https://lokendra-builds.github.io/sheenui/effects/shimmer-text)
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+- [Framer Motion Is Now Motion](https://lokendra-builds.github.io/sheenui/guides/framer-motion-to-motion)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Shimmer Text Animation for React & CSS
+
+URL: https://lokendra-builds.github.io/sheenui/effects/shimmer-text
+Sidebar name: Shimmer text
+
+A shimmer text animation for React: a band of light sweeps across the letters once, on hover or on a loop, with transforms only. Text stays readable.
+
+What it is: A shimmer text animation for React: a band of light sweeps across the letters while the real text stays whole and selectable.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/text-effects.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Shimmer text
+
+Files to copy from `theme/src/`:
+
+- `components/text-effects/{shimmer-text.tsx, text-utils.ts}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/{gate.ts, tokens.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: text-effects. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { Button } from "@/components/sheenui/button/button";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ShimmerText } from "@/components/sheenui/text-effects/shimmer-text";
+```
+
+These examples also use avatar, button, glass-card: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/button.json https://lokendra-builds.github.io/sheenui/r/glass-card.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, Button, GlassCard, ShimmerText } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| color | string | the accent, which keeps AA contrast | Highlight colour, any CSS colour. |
+| children | ReactNode | required | Text (and inline icons). Avoid interactive content: it is copied for the highlight layer. |
+| trigger | "view" \| "hover" \| "loop" \| "mount" | "view" | When the light sweeps: "view" once, the first time the text scrolls into view (default) "hover" each time a pointer enters it, or keyboard focus reaches the control around it "loop" continuously while on screen (status lines); pauses off screen and in hidden tabs "mount" once, right away. |
+| duration | number | 1.6 | Seconds one sweep takes. |
+| delay | number | 0 | Sets the number of seconds before the first sweep. |
+| repeatDelay | number | 1 | Sets the number of seconds between sweeps when looping. |
+| spread | number | 5 | Sets the width of the light band, in em. |
+| paused | boolean | false | Stop a looping shimmer. |
+
+### Example 1 of 2: Status line
+
+trigger="loop" for work in progress. It only runs while on screen, and stops with reduced motion.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { ShimmerText } from "@/components/sheenui/text-effects/shimmer-text";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, GlassCard, ShimmerText } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard className="flex w-full max-w-md flex-col gap-4 p-5">
+      <p className="ms-auto max-w-[85%] rounded-sheen-lg rounded-ee-sheen-sm bg-sheen-accent-soft px-4 py-2.5 text-sm">
+        Which plan fits a team of twelve?
+      </p>
+      <div className="flex items-center gap-3">
+        <Avatar name="Sheen Assistant" size="sm" />
+        <ShimmerText trigger="loop" className="text-sm font-medium text-sheen-fg-muted">
+          Thinking through your question…
+        </ShimmerText>
+      </div>
+    </GlassCard>
+  );
+}
+```
+
+### Example 2 of 2: On view and on hover
+
+The headline sweeps once as it scrolls in. In a link or button, hover (or keyboard focus) anywhere on the control replays it.
+
+```tsx
+import { Button } from "@/components/sheenui/button/button";
+import { ShimmerText } from "@/components/sheenui/text-effects/shimmer-text";
+// Package build (after the first npm release, or a packed tarball): import { Button, ShimmerText } from "@sheenui/theme";
+import { ArrowRight as ArrowIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <>
+      <ShimmerText className="text-4xl font-semibold tracking-tight sm:text-5xl">
+        Meet the new glass
+      </ShimmerText>
+
+      {/* ArrowIcon: any 16px svg icon */}
+      <Button variant="glass" render={<a href="#changelog" />} trailing={<ArrowIcon />}>
+        <ShimmerText trigger="hover" duration={1.1}>See what's new</ShimmerText>
+      </Button>
+    </>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: this is text. With "hover", keyboard focus reaching the control around it triggers the sweep too. |
+
+### Accessibility
+
+- The highlight copy is aria-hidden, so the text is read once. The default highlight is the accent, which keeps AA contrast.
+- Under reduced motion there is no overlay at all, just the text; in forced colors the overlay is hidden.
+
+### When to use the shimmer text effect
+
+- Use it as a text shine effect for a Thinking or Generating your report status line, with trigger="loop" so a band of light keeps sweeping while the work is pending.
+- Use it to draw the eye to a badge or announcement link once, with trigger="view" (the default) so the light passes the first time the text scrolls into view.
+- Use trigger="hover" inside a link or button so the sweep runs when a pointer enters the control or keyboard focus reaches it, padding included.
+- Skip it when you want a text reveal rather than a highlight: BlurIn arrives word by word on a headline, Typewriter types phrases, and neither fits a status that should simply stay readable.
+- Pair it with Badge for an announcement pill, Button for a hover-triggered label, and the paused prop plus your own loading state to stop the loop when work finishes.
+
+
+### Frequently asked questions
+
+#### How do I add a shimmer text animation in React?
+
+Wrap your text in ShimmerText and choose a trigger: view, hover, loop or mount. duration (default 1.6 seconds), delay, repeatDelay (1 second between loop sweeps), color and spread (band width in em, default 5) shape the sweep. children can include inline icons.
+
+#### Does shimmer text change what screen readers read?
+
+No. The real text is untouched and stays the accessible text, nothing is split or hidden. The highlight is an aria-hidden copy in the highlight color seen through a soft-edged band. The default color is the accent, which keeps AA contrast.
+
+#### Why is it cheap to run, and does it stop when off screen?
+
+The sweep is transform only, using native Web Animations on two transforms, with no per-frame paint. A looping shimmer pauses off screen and in hidden tabs, and paused stops it from outside. The overlay is clipped sideways so it can never widen the page.
+
+#### What happens with reduced motion or forced colors?
+
+With reduced motion there is no overlay at all, just the text. In forced colors the overlay is hidden. Avoid interactive content in children, because the content is copied for the highlight layer and a duplicate control would be confusing.
+
+
+### Related pages
+
+- [Spotlight card](https://lokendra-builds.github.io/sheenui/effects/spotlight-card)
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate)
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam)
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Spotlight Card: Cursor Glow Effect for React
+
+URL: https://lokendra-builds.github.io/sheenui/effects/spotlight-card
+Sidebar name: Spotlight card
+
+A React spotlight card: a soft glow follows the pointer across glass, with a rim that catches the light, via CSS variables and no re-renders. Tailwind v4.
+
+What it is: A spotlight card for React: a glass card lit by a soft glow that follows the pointer, written straight to CSS variables.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/spotlight.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Spotlight card
+
+Files to copy from `theme/src/`:
+
+- `components/spotlight/`
+- `hooks/{use-latest.ts, use-media-query.ts, use-preferences.ts}`
+- `motion/light-follower.ts`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: spotlight. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { SpotlightCard, SpotlightGroup } from "@/components/sheenui/spotlight/spotlight";
+```
+
+These examples also use badge, button: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json https://lokendra-builds.github.io/sheenui/r/button.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Badge, Button, SpotlightCard, SpotlightGroup } from "@sheenui/theme";
+```
+
+### SpotlightCard props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| color | string | a soft accent | Colour of the glow inside the card (any CSS colour). |
+| level | 2 \| 1 \| 3 | 2 | Sets the glass level: 1 = subtle, 2 = cards (default), 3 = most opaque. |
+| tint | boolean | false | Tints the surface with the accent colour. |
+| diameter | number | the card's width, at most 380px | Sets the diameter of the glow in px. |
+| rimColor | string | the accent | Sets the colour of the light on the rim. |
+| rim | boolean | true | Makes the rim light up near the pointer. |
+
+### SpotlightGroup props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| ...props | div props | optional, no default | A plain div that shares one pointer with every SpotlightCard inside it. Lay the cards out with className. |
+
+### Example 1 of 2: Feature grid
+
+In a SpotlightGroup every card shares the pointer, so the rims of neighboring cards light up as you move between them. On touch screens the glow rests near the top of each card.
+
+```tsx
+import { SpotlightCard, SpotlightGroup } from "@/components/sheenui/spotlight/spotlight";
+// Package build (after the first npm release, or a packed tarball): import { SpotlightCard, SpotlightGroup } from "@sheenui/theme";
+
+const features = [
+  { title: "Fast", body: "Compositor-only animation.", icon: "⚡" },
+  { title: "Accessible", body: "Keyboard and screen reader tested.", icon: "♿" },
+  { title: "Themeable", body: "Tokens for every color.", icon: "🎨" },
+];
+
+export function Example() {
+  return (
+    <SpotlightGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {features.map((feature) => (
+        <SpotlightCard key={feature.title} className="p-6">
+          <span className="grid size-10 place-items-center rounded-sheen-md bg-sheen-accent-soft text-sheen-accent">
+            {feature.icon}
+          </span>
+          <h3 className="mt-4 font-semibold">{feature.title}</h3>
+          <p className="mt-1 text-sm text-pretty text-sheen-fg-muted">{feature.body}</p>
+        </SpotlightCard>
+      ))}
+    </SpotlightGroup>
+  );
+}
+```
+
+### Example 2 of 2: Custom colors, as a link
+
+Any CSS color works for the glow and the rim. Keyboard focus inside the card lights it too.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { Button } from "@/components/sheenui/button/button";
+import { SpotlightCard } from "@/components/sheenui/spotlight/spotlight";
+// Package build (after the first npm release, or a packed tarball): import { Badge, Button, SpotlightCard } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <SpotlightCard
+      tint
+      color="color-mix(in oklab, var(--sheen-accent-2) 18%, transparent)"
+      rimColor="var(--sheen-accent-2)"
+      className="flex w-full max-w-sm flex-col gap-4 p-6"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <h3 id="pro" className="text-lg font-semibold">Pro</h3>
+        <Badge tone="accent">Most popular</Badge>
+      </div>
+      <p className="text-4xl font-semibold tracking-tight">
+        $24<span className="text-sm font-normal text-sheen-fg-muted">/mo</span>
+      </p>
+      <ul className="flex flex-col gap-2 text-sm text-sheen-fg-muted">
+        <li>Unlimited projects</li>
+        <li>Preview deployments</li>
+        <li>Priority support</li>
+      </ul>
+      <Button render={<a href="#pricing" />} fullWidth>
+        Choose Pro
+      </Button>
+    </SpotlightCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a plain card is not focusable. Keyboard focus inside the card lights it too, so interactive children are never in the dark. |
+
+### Accessibility
+
+- No role of its own; reading order is the DOM order. SpotlightGroup shares one pointer listener across the cards.
+- The glow and rim are aria-hidden and hidden in forced colors. On touch screens the glow is static.
+
+### When to use the spotlight card effect
+
+- Use it as a cursor glow effect for a feature grid on a landing page, where a soft glow follows the pointer across each glass card and the rim lights up as the cursor nears an edge.
+- Use it for pricing tiles or integration cards in a dashboard, with tint to give one accent-colored tile more weight than its neighbors.
+- Wrap neighboring cards in SpotlightGroup so a card's rim picks up the light even while the pointer is still over the next card, as on Linear-style grids.
+- Skip it when you want a calm surface or a card that physically leans: use GlassCard for static panels and TiltCard for 3D movement toward the pointer, since glow adds noise to dense lists.
+- Pair it with SpotlightGroup for the grid, Badge for a plan label, and Button or Switch inside the cards, which keep their own focus rings while the glow reacts to focus.
+
+
+### Frequently asked questions
+
+#### How do I make a spotlight card in React?
+
+Render SpotlightCard like a div with padding. level (1 to 3, default 2) and tint pick the glass; size sets the glow diameter in px, defaulting to 90 percent of the card width up to 320px. color sets the glow, rimColor the edge light, and rim={false} removes the rim.
+
+#### How does it avoid re-rendering on every mouse move?
+
+The pointer position is handled at most once per frame, with no React state, and written straight to the glow layers. Those layers are pre-painted gradients moved with translate, so a pointer move never repaints the card or touches its backdrop blur.
+
+#### What happens on touch screens and with the keyboard?
+
+Tracking is mouse and pen only, because a finger dragging across a card is scrolling. Without hover the glow stays static near the top. A plain card is not focusable, but keyboard focus inside it lights it, so interactive children still get the glow.
+
+#### Is it accessible, and what about reduced motion?
+
+The glow and rim are aria-hidden and hidden in forced colors. Text contrast is measured against the glass, not the glow. Reduced motion removes the fades. The card is one backdrop-filter surface, and the glow layers sit inside it behind your content.
+
+
+### Related pages
+
+- [3D tilt card](https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card)
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate)
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam)
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## 3D Tilt Card for React with Glare Effect
+
+URL: https://lokendra-builds.github.io/sheenui/effects/3d-tilt-card
+Sidebar name: 3D tilt card
+
+A 3D tilt card for React that leans toward the pointer on Motion springs, with a glare sliding across real glass. Still on touch and for reduced motion.
+
+What it is: A 3D tilt card for React that leans toward the pointer, up to 8°, with a glare sliding across its glass surface on springs. Use it as a tilt effect for a hero tile or a featured product card that leans toward the pointer in 3D, with a glare and a rim light sliding across the glass.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/tilt-card.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > 3D tilt card
+
+Files to copy from `theme/src/`:
+
+- `components/tilt-card/`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add clsx motion tailwind-merge
+```
+
+Registry item: tilt-card. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { TiltCard, TiltCardLayer } from "@/components/sheenui/tilt-card/tilt-card";
+```
+
+These examples also use badge: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/badge.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Badge, TiltCard, TiltCardLayer } from "@sheenui/theme";
+```
+
+### TiltCard props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| level | 2 \| 1 \| 3 | 2 | Sets the glass level: 1 = subtle, 2 = cards (default), 3 = most opaque. |
+| tint | boolean | false | Tints the surface with the accent colour. |
+| maxTilt | number | 6 | Largest tilt in degrees, 0 to 8 (clamped). |
+| glare | boolean | true | Draws a light that slides across the surface. |
+| glareColor | string | a white light, stronger in light mode | Colour of the glare (any CSS colour, keep it translucent). |
+| hoverScale | number | 1.02 | Scale while the pointer is on the card (1 for none). |
+| perspective | number | 1000 | Distance to the "camera" in px: smaller is more dramatic. |
+| style | CSSProperties | optional, no default | Inline styles for the card (merged with the tilt transform, which wins). |
+
+### TiltCardLayer props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| depth | number | 10 | How far (px) the layer drifts toward the pointer at the card's edge. Negative drifts away. |
+| style | CSSProperties | optional, no default | Inline styles for the layer (the drift transform is added to them). |
+
+### Example 1 of 2: Membership card
+
+TiltCardLayer adds parallax: layers drift toward the pointer by their depth, so the card reads as layered without preserve-3d (which glass cannot use). A glare and a diagonal streak of light slide across the glass, and its edge catches the light nearest the pointer. Rest the pointer near a corner: the card holds still.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { TiltCard, TiltCardLayer } from "@/components/sheenui/tilt-card/tilt-card";
+// Package build (after the first npm release, or a packed tarball): import { Badge, TiltCard, TiltCardLayer } from "@sheenui/theme";
+import { Sparkles as SparkIcon } from "lucide-react";
+
+export function Example() {
+  return (
+    <TiltCard tint className="flex aspect-[1.586] w-full max-w-sm flex-col p-5 sm:p-6">
+      {/* Lights behind the content that drift the other way (negative depth). */}
+      <span aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[inherit]">
+        <TiltCardLayer
+          depth={-14}
+          className="absolute -top-1/3 -end-1/4 aspect-square w-3/4 rounded-full [background:radial-gradient(closest-side,color-mix(in_oklab,var(--sheen-accent)_30%,transparent),transparent)]"
+        />
+        <TiltCardLayer
+          depth={-8}
+          className="absolute -end-[15%] -bottom-1/2 aspect-square w-1/2 rounded-full [background:radial-gradient(closest-side,color-mix(in_oklab,var(--sheen-teal-500)_22%,transparent),transparent)]"
+        />
+      </span>
+      <TiltCardLayer depth={6} className="flex items-start justify-between gap-3">
+        <span className="flex items-center gap-2 font-semibold">
+          <span aria-hidden className="sheen-fill grid size-8 place-items-center rounded-sheen-sm text-sheen-accent-fg [background-image:var(--sheen-accent-fill)]">
+            <SparkIcon /> {/* any 16px svg icon */}
+          </span>
+          Sheen Pay
+        </span>
+        <Badge tone="accent">Pro</Badge>
+      </TiltCardLayer>
+      {/* The chip */}
+      <TiltCardLayer depth={10} className="mt-3 sm:mt-5">
+        <span aria-hidden className="block h-8 w-11 rounded-md border border-sheen-border [background:linear-gradient(135deg,var(--sheen-chart-4),var(--sheen-chart-2))] opacity-80" />
+      </TiltCardLayer>
+      <TiltCardLayer depth={16} className="mt-auto flex flex-col gap-1">
+        <p className="font-sheen-mono text-base tracking-wider sm:text-lg">
+          <span className="sr-only">Card ending in 0815</span>
+          <span aria-hidden>4921 ···· ···· 0815</span>
+        </p>
+        <p className="text-sm text-sheen-fg-muted">Ada Lovelace · 09/29</p>
+      </TiltCardLayer>
+    </TiltCard>
+  );
+}
+```
+
+### Example 2 of 2: Pricing cards
+
+A gentler tilt (maxTilt={5}) on cards that are links. The whole card is clickable through a stretched link, and keyboard focus shows a solid ring.
+
+```tsx
+import { Badge } from "@/components/sheenui/badge/badge";
+import { TiltCard } from "@/components/sheenui/tilt-card/tilt-card";
+// Package build (after the first npm release, or a packed tarball): import { Badge, TiltCard } from "@sheenui/theme";
+
+export function Example() {
+  const plans = [
+    { name: "Starter", price: "$0", note: "For side projects", href: "#starter" },
+    { name: "Pro", price: "$24", note: "For growing teams", href: "#pro", tint: true },
+    { name: "Scale", price: "$79", note: "For serious traffic", href: "#scale" },
+  ];
+
+  return (
+    <ul className="grid w-full gap-4 sm:grid-cols-3">
+      {plans.map((plan) => (
+        <li key={plan.name}>
+          <TiltCard
+            maxTilt={5}
+            tint={plan.tint}
+            className="relative flex flex-col gap-2 p-6 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sheen-focus"
+          >
+            <h3 className="flex items-center justify-between gap-2 font-semibold">
+              {/* A stretched link: the whole card is clickable. */}
+              <a href={plan.href} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+                {plan.name}
+              </a>
+              {plan.tint && <Badge tone="accent">Popular</Badge>}
+            </h3>
+            <p className="text-3xl font-semibold tracking-tight">
+              {plan.price}
+              <span className="text-sm font-normal text-sheen-fg-muted">/mo</span>
+            </p>
+            <p className="text-sm text-sheen-fg-muted">{plan.note}</p>
+          </TiltCard>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: a plain card is not focusable. Interactive children keep their own tab stops, and the tilt never moves them out of reach. |
+
+### Accessibility
+
+- A plain div that does not change reading order. The tilt is transform-only and reads the pointer, not focus.
+- It is off for touch (a finger on a card is scrolling) and under reduced motion; TiltCardLayer adds decorative depth.
+
+### When to use the 3D tilt card effect
+
+- Use it on a hero tile, a pricing card or a product card that should feel physical under the pointer: it tilts in 3D, and the glare and rim light slide across the glass as it moves.
+- Use it for a pricing card or a profile showcase, wrapping the title in TiltCardLayer with a depth so it drifts toward the pointer and appears to float above the surface.
+- Tune the motion with maxTilt (0 to 8 degrees), hoverScale and perspective, and set glare={false} when you want the lean without the light.
+- Skip it when the card is large, dense or full of controls; a flat glow from SpotlightCard or a calm GlassCard is easier to read, and tilting a form makes it harder to aim.
+- Pair it with TiltCardLayer for parallax, Badge for a Featured tag, and Button inside the card, whose tab stops and focus ring stay put while the card tilts.
+
+
+### Frequently asked questions
+
+#### How do I build a 3D tilt card in React?
+
+Render TiltCard with padding and optionally maxTilt, a value from 0 to 8 degrees with a default of 6. hoverScale defaults to 1.02, and perspective defaults to 1000 px, where a smaller number is more dramatic. level and tint choose the glass, like other cards.
+
+#### Does tilting break the glass blur?
+
+No. The tilt is applied to the glass element itself, as a perspective, rotateX and rotateY transform, never to a wrapper, so the backdrop blur keeps working. TiltCardLayer fakes depth without preserve-3d, which glass cannot use, by drifting toward the pointer.
+
+#### Why does the card not shake when the pointer rests near a corner?
+
+Whether the pointer is on the card is decided against the card's untilted box, not the tilted shape. A tilted corner pulls in a few pixels, and testing against the moving shape would make the card jitter. It also eases into the lean even when entering at an edge.
+
+#### What happens on touch and with reduced motion?
+
+Tilt is off for touch, since a finger on a card is scrolling, and under reduced motion; you then get a still glass card. The glare, streak and rim are aria-hidden and hidden in forced colors, and the glare sits behind your content so text stays crisp.
+
+
+### Related pages
+
+- [Typewriter](https://lokendra-builds.github.io/sheenui/effects/typewriter)
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate)
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam)
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+
+#### Guides that cover it
+
+- [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+
+
+## Typewriter Effect for React (Typing Animation)
+
+URL: https://lokendra-builds.github.io/sheenui/effects/typewriter
+Sidebar name: Typewriter
+
+A typewriter effect for React that types with a human rhythm, deletes and types the next phrase, reserving space so nothing shifts. Reduced-motion safe.
+
+What it is: A typewriter effect for React that types each phrase with a human rhythm, holds it, deletes it and types the next. Use it as a typing animation for a hero line that cycles through a few phrases, such as I build design systems, fast websites and accessible apps, typed and deleted one after another.
+
+Install:
+
+```bash
+npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/text-effects.json
+```
+
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+
+Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Effects](https://lokendra-builds.github.io/sheenui/effects/) > Typewriter
+
+Files to copy from `theme/src/`:
+
+- `components/text-effects/{text-utils.ts, typewriter.tsx}`
+- `hooks/{use-media-query.ts, use-preferences.ts}`
+- `motion/gate.ts`
+- `lib/cn.ts`
+- `styles/`
+
+Packages:
+
+```bash
+pnpm add @base-ui/react clsx motion tailwind-merge
+```
+
+Registry item: text-effects. The styles need the [Tailwind v4 glass UI setup](https://lokendra-builds.github.io/sheenui/docs/tailwind-v4).
+
+Import (after `shadcn add` or copying the files, use this today):
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Typewriter } from "@/components/sheenui/text-effects/typewriter";
+import { useToast } from "@/components/sheenui/toast/toast";
+```
+
+These examples also use avatar, glass-card, toast: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/avatar.json https://lokendra-builds.github.io/sheenui/r/glass-card.json https://lokendra-builds.github.io/sheenui/r/toast.json`
+
+Import from the package (after the first npm release, or a packed tarball):
+
+```tsx
+import { Avatar, GlassCard, Typewriter, useToast } from "@sheenui/theme";
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| words | string \| readonly string[] | required | A phrase, or phrases to type one after another. |
+| typeSpeed | number | 0.055 | Sets the seconds per typed character (on average). |
+| deleteSpeed | number | 0.028 | Sets the seconds per deleted character. |
+| hold | number | 1.8 | Seconds a finished phrase stays before it is deleted. |
+| startDelay | number | 0.2 | Sets the number of seconds before the first character. |
+| loop | boolean | true when there are several phrases | Start again after the last phrase. |
+| cursor | boolean | true | Show the caret. When typing ends (no loop), it blinks a few times and fades. |
+| cursorClassName | string | optional, no default | Adds extra classes to the caret (colour, width). |
+| reserveSpace | boolean | true | Reserve the space of the longest phrase so nothing around it moves. |
+| paused | boolean | false | Stop typing (e.g. from a pause button). |
+| pauseOnHover | boolean | true | Pause while a mouse or pen rests on the text. |
+| label | string | every phrase, in order | Sets what screen readers hear. |
+| onComplete | (() => void) | optional, no default | Called once the last phrase is typed (when not looping). |
+
+### Example 1 of 3: Rotating phrases
+
+Several phrases loop. It pauses while off screen, in a hidden tab, or under the pointer; paused, the caret holds still.
+
+```tsx
+import { Typewriter } from "@/components/sheenui/text-effects/typewriter";
+// Package build (after the first npm release, or a packed tarball): import { Typewriter } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <p className="text-center text-3xl leading-tight font-semibold tracking-tight sm:text-4xl">
+      I build{" "}
+      <Typewriter
+        words={["design systems.", "fast websites.", "accessible apps."]}
+        className="text-sheen-accent"
+      />
+    </p>
+  );
+}
+```
+
+### Example 2 of 3: Terminal
+
+Monospace, a block-ish caret, quicker keys. The reserved space keeps the card from jumping; in a flex row next to the prompt, a long command wraps inside its own column on narrow screens.
+
+```tsx
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Typewriter } from "@/components/sheenui/text-effects/typewriter";
+// Package build (after the first npm release, or a packed tarball): import { GlassCard, Typewriter } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard level={3} sheen={false} className="w-full max-w-md overflow-hidden">
+      {/* Window controls (decorative) */}
+      <div aria-hidden className="flex items-center gap-1.5 border-b border-sheen-border px-4 py-2.5">
+        <span className="size-2.5 rounded-full bg-sheen-danger" />
+        <span className="size-2.5 rounded-full bg-sheen-warning" />
+        <span className="size-2.5 rounded-full bg-sheen-success" />
+      </div>
+      <p className="flex gap-[1ch] p-5 font-sheen-mono text-sm">
+        <span aria-hidden className="text-sheen-fg-subtle">$</span>
+        <Typewriter
+          words={["pnpm add @sheenui/theme", "pnpm dev --open", "git push origin main"]}
+          typeSpeed={0.04}
+          hold={1.4}
+          cursorClassName="w-[0.6em] rounded-none bg-sheen-fg-muted"
+          className="min-w-0"
+        />
+      </p>
+    </GlassCard>
+  );
+}
+```
+
+### Example 3 of 3: Type once
+
+A single phrase types once (loop is off by default for one phrase); the caret blinks a few times, then fades. onComplete fires at the end. The paragraph is already full height before the first letter.
+
+```tsx
+import { Avatar } from "@/components/sheenui/avatar/avatar";
+import { GlassCard } from "@/components/sheenui/glass-card/glass-card";
+import { Typewriter } from "@/components/sheenui/text-effects/typewriter";
+import { useToast } from "@/components/sheenui/toast/toast";
+// Package build (after the first npm release, or a packed tarball): import { Avatar, GlassCard, Typewriter, useToast } from "@sheenui/theme";
+
+export function Example() {
+  const toast = useToast();
+
+  return (
+    <GlassCard className="flex w-full max-w-md gap-3 p-5">
+      <Avatar name="Sheen Assistant" size="sm" />
+      <p className="text-sm text-pretty">
+        <Typewriter
+          words="Your workspace is ready. We imported 24 components, set up dark mode and turned on reduced-motion support."
+          typeSpeed={0.025}
+          onComplete={() => toast.success("Setup complete")}
+        />
+      </p>
+    </GlassCard>
+  );
+}
+```
+
+### Keyboard
+
+| Keys | Action |
+| --- | --- |
+| Tab | Not focusable: this is text. |
+
+### Accessibility
+
+- Screen readers get every phrase once, as plain text (override it with label); the typing itself is aria-hidden.
+- That copy is unselectable, so copying gets only what is on screen. It waits until it is on screen and pauses in a hidden tab or while the pointer rests on it: a pointer convenience, not a WCAG 2.2.2 mechanism, since keyboard and touch users cannot hover. A loop that runs longer than 5 s needs a visible pause button wired to paused. Under reduced motion it shows the first phrase, complete, with no caret.
+
+### When to use the typewriter effect
+
+- Use it for the rotating tagline in a portfolio or landing page hero, where one line has to say several things in turn: each phrase is typed out, held long enough to read, then deleted.
+- Use it for a terminal-style intro or a demo of a search box suggestion, where one phrase types once with the caret blinking and fading at the end.
+- Use typeSpeed, deleteSpeed, hold and startDelay to tune the rhythm; typing already has uneven keystrokes and a beat after punctuation, so it reads as human.
+- Skip it when only a single word changes inside a sentence, where WordRotate slides words in a fixed slot, or when the text matters for scanning; BlurIn is better for a one-time headline reveal.
+- Pair it with Button for the call to action below the line, ShimmerText for a supporting status line, and reserveSpace so the layout under the text never moves.
+
+
+### Frequently asked questions
+
+#### How do I create a typewriter effect in React?
+
+Pass words as a string or an array to Typewriter. With several phrases, loop defaults to true; with one it types once and onComplete fires after the last phrase. typeSpeed defaults to 0.055 seconds per character, deleteSpeed to 0.028, hold to 1.8 and startDelay to 0.2.
+
+#### Does the text jump around while it types?
+
+Not by default. reserveSpace is true, so the space of the longest phrase is reserved up front and nothing around it moves. Characters are grapheme clusters through Intl.Segmenter, so emoji and accents never split in the middle of a character.
+
+#### What do screen readers read, and can people stop it?
+
+Screen readers get every phrase once as plain text, or whatever you pass in label; the typing itself is aria-hidden. It pauses while the tab is hidden or the pointer rests on it, and the paused prop pauses it from your own button, for WCAG 2.2.2.
+
+#### How does the caret behave, and what is the reduced-motion result?
+
+The caret is solid while typing and blinks while waiting, and solid and still when paused. Style it with cursorClassName or hide it with cursor={false}. With reduced motion you get the first phrase, complete, with no caret and nothing to wait for.
+
+
+### Related pages
+
+- [Word rotate](https://lokendra-builds.github.io/sheenui/effects/word-rotate)
+- [Animated beam](https://lokendra-builds.github.io/sheenui/effects/animated-beam)
+- [Confetti](https://lokendra-builds.github.io/sheenui/effects/confetti)
+- [Meteors](https://lokendra-builds.github.io/sheenui/effects/meteors)
+- [Orbiting circles](https://lokendra-builds.github.io/sheenui/effects/orbiting-circles)
+- [Particles](https://lokendra-builds.github.io/sheenui/effects/particles)
+
+19 effects pages in all: browse them on [All effects](https://lokendra-builds.github.io/sheenui/effects/).
+

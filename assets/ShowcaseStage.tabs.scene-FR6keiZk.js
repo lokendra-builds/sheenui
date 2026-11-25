@@ -1,0 +1,1 @@
+export{t as TabsScene}from"./ShowcaseStage.tabs.scene-D5PRx35_.js";

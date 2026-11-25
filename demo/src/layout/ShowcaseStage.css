@@ -1,0 +1,185 @@
+/* The showcase stage, second pass (imported by ShowcaseStage.tsx; the first pass lives in index.css).
+   A dim scene of the page's look behind the glass (aurora ribbons, light orbs, a watermark word the glass can refract), a
+   tinted lighter stage in the light themes, a floor that fades in instead of a hard seam, a larger plate, and a pause for the
+   stage's CSS animations while it is off screen. `html:root .x.x` out-ranks the index.css rules whatever the load order.
+   Structure of the stage sheets (all in layer `stage`, in this load order): this file is the base (scene, floor, plate size,
+   contrast); ShowcaseStage.glass.css holds the DARK looks' tokens and the rules that read them; ShowcaseStage.light.css the
+   light looks; ShowcaseStage.look.css mirrors light.css for an OS in light mode with no data-theme attribute.
+   Lights and scenes are sibling layers: nothing here puts opacity, filter or a mask on an element that contains glass. */
+
+html:root .sheen-showcase.sheen-showcase {
+  --stage-bg:
+    radial-gradient(ellipse 85% 65% at 50% 36%, #1a2038, transparent 72%),
+    linear-gradient(180deg, #080914 0%, #0a0b17 60%, #0f1020 100%);
+  --stage-scene-a: 62%;
+  --stage-scene-b: 46%;
+  --stage-scene-c: 48%;
+  --stage-ribbon: 0.07;
+  --stage-word: 0.1;
+  --stage-pool-a: 85%;
+  background: var(--stage-bg);
+  /* The studio rim stays, the black vignette softens so the corners keep colour. */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    inset 0 0 6rem 0.5rem rgb(0 0 0 / 0.5);
+  contain: layout paint;
+}
+/* Light themes: a lifted, tinted indigo stage with a bright pool, not a near-black slab on a pale page. */
+html:root[data-theme="light"] .sheen-showcase.sheen-showcase {
+  --stage-bg:
+    radial-gradient(ellipse 85% 65% at 50% 34%, #5a63b8, transparent 74%),
+    linear-gradient(165deg, #3a4390 0%, #2f3677 55%, #4b3a82 100%);
+  --stage-scene-a: 64%;
+  --stage-scene-b: 52%;
+  --stage-scene-c: 54%;
+  --stage-ribbon: 0.12;
+  --stage-word: 0.16;
+  --stage-pool-a: 100%;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.18),
+    inset 0 0 5rem 0 rgb(15 18 50 / 0.35);
+}
+@media (prefers-color-scheme: light) {
+  html:root:not([data-theme="dark"]):not([data-theme="light"]) .sheen-showcase.sheen-showcase {
+    --stage-bg:
+      radial-gradient(ellipse 85% 65% at 50% 34%, #5a63b8, transparent 74%),
+      linear-gradient(165deg, #3a4390 0%, #2f3677 55%, #4b3a82 100%);
+    --stage-scene-a: 64%;
+    --stage-scene-b: 52%;
+    --stage-scene-c: 54%;
+    --stage-ribbon: 0.12;
+    --stage-word: 0.16;
+    --stage-pool-a: 100%;
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.18),
+      inset 0 0 5rem 0 rgb(15 18 50 / 0.35);
+  }
+}
+
+/* The scene: coloured light fields, two soft ribbons and orbs; the watermark word is the ::after. Dim by design, so the
+   glass card in front stays the brightest thing on the stage. */
+.sheen-showcase .sheen-showcase-scene {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42% 58% at 12% 20%,
+      color-mix(in oklab, var(--sheen-accent, #7c5cff) var(--stage-scene-a), transparent),
+      transparent 72%
+    ),
+    radial-gradient(38% 52% at 90% 14%, color-mix(in oklab, #22d3ee var(--stage-scene-b), transparent), transparent 72%),
+    radial-gradient(44% 58% at 80% 94%, color-mix(in oklab, #ec4899 var(--stage-scene-c), transparent), transparent 72%),
+    radial-gradient(34% 48% at 6% 98%, color-mix(in oklab, #6366f1 var(--stage-scene-a), transparent), transparent 72%);
+  transition: opacity var(--sheen-duration-slower) var(--sheen-ease-out);
+}
+:root[data-sheen-style="aurora"] .sheen-showcase .sheen-showcase-scene {
+  background:
+    radial-gradient(
+      46% 60% at 14% 24%,
+      color-mix(in oklab, #34d399 var(--stage-scene-a), transparent),
+      transparent 72%
+    ),
+    radial-gradient(36% 52% at 88% 20%, color-mix(in oklab, #38bdf8 var(--stage-scene-b), transparent), transparent 72%),
+    radial-gradient(46% 56% at 70% 96%, color-mix(in oklab, #a78bfa var(--stage-scene-c), transparent), transparent 72%),
+    radial-gradient(30% 44% at 4% 96%, color-mix(in oklab, #22d3ee var(--stage-scene-b), transparent), transparent 72%);
+}
+.sheen-showcase .sheen-showcase-scene::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  /* Two diagonal ribbons and a scatter of bright orbs: edges and points for the glass to bend. */
+  background:
+    linear-gradient(
+      118deg,
+      transparent 28%,
+      rgb(255 255 255 / var(--stage-ribbon)) 40%,
+      transparent 52%,
+      rgb(255 255 255 / calc(var(--stage-ribbon) * 0.7)) 68%,
+      transparent 80%
+    ),
+    radial-gradient(circle at 24% 62%, rgb(255 255 255 / 0.55) 0 0.3rem, transparent 0.55rem),
+    radial-gradient(circle at 71% 30%, rgb(255 255 255 / 0.45) 0 0.45rem, transparent 0.75rem),
+    radial-gradient(circle at 83% 72%, rgb(255 255 255 / 0.4) 0 0.25rem, transparent 0.5rem),
+    radial-gradient(circle at 38% 18%, rgb(255 255 255 / 0.4) 0 0.2rem, transparent 0.45rem);
+}
+.sheen-showcase .sheen-showcase-scene::after {
+  content: "SHEENUI";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 18%;
+  text-align: center;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / var(--stage-word));
+  white-space: nowrap;
+  user-select: none;
+}
+/* Dimmed (a dialog or drawer is open) the scene recedes with the aura. */
+.sheen-showcase[data-state="dim"] .sheen-showcase-scene,
+.sheen-showcase[data-state="off"] .sheen-showcase-scene {
+  opacity: 0.72;
+}
+
+/* The floor fades in from above instead of a 1px line and a hard step: no seam across the stage. */
+html:root .sheen-showcase.sheen-showcase .sheen-showcase-floor {
+  height: calc(100% - var(--stage-floor-y) + 3.5rem);
+  background: linear-gradient(180deg, transparent 0, rgb(255 255 255 / 0.035) 38%, rgb(0 0 0 / 0.3) 100%);
+}
+html:root .sheen-showcase.sheen-showcase .sheen-showcase-pool {
+  opacity: 0.9;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--stage-aura) var(--stage-pool-a), transparent),
+    transparent
+  );
+}
+
+/* A larger component: the glass plate is a real card (up to 34rem wide) instead of a content-sized chip. */
+html:root .sheen-showcase.sheen-showcase .sheen-showcase-plate {
+  width: min(100%, 34rem);
+  justify-self: center;
+  padding: 2rem 1.5rem;
+}
+@media (max-width: 40rem) {
+  html:root .sheen-showcase.sheen-showcase .sheen-showcase-plate {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Off screen: the stage's own animations (breathing aura, sweep) stand still until it is back in view. */
+.sheen-showcase[data-offscreen],
+.sheen-showcase[data-offscreen] * {
+  animation-play-state: paused !important;
+}
+
+@media (forced-colors: active) {
+  .sheen-showcase .sheen-showcase-scene {
+    display: none;
+  }
+}
+
+/* Contrast on the stage: it is a dark surface in every look, so text on the plate uses the dark-surface tokens at full
+   strength (the muted grey a little brighter), the plate is a deeper glass, and text on an accent fill is dark. */
+html:root .sheen-showcase.sheen-showcase {
+  color-scheme: dark;
+  --sheen-fg: oklch(98.5% 0.004 280);
+  --sheen-fg-muted: oklch(93% 0.012 280);
+}
+html:root .sheen-showcase .sheen-showcase-plate {
+  background-color: oklch(0.13 0.035 285 / 0.84);
+}
+html:root .sheen-showcase .sheen-stage-badge {
+  background: oklch(84% 0.12 300);
+  color: oklch(18% 0.03 280);
+}
+html:root .sheen-showcase .sheen-stage-sub,
+html:root .sheen-showcase .sheen-stage-step em {
+  color: var(--sheen-fg-muted);
+}
+/* Replay sits over the scene, not the plate: its deeper glass (above 4.5:1 in every look) is set per look in ShowcaseStage.glass.css / .light.css. */

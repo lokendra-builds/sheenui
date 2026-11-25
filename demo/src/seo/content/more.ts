@@ -1,0 +1,562 @@
+import type { PageContent } from "../page-content";
+
+export const content: Record<string, PageContent> = {
+  "/showcase": {
+    when: [
+      "Use it to judge SheenUI at a glance before you install anything: each card plays the same story as the stage at the top of its component page, on the same lit glass stage, in whichever of the four looks you have chosen.",
+      "Use it to compare motion: the springs, the glass and the pacing are shared tokens, so a Dialog, a Toast and a Command palette move alike.",
+      "Open a card to reach the full docs page with live examples, props, keyboard table and the shadcn command that copies the source into your app.",
+      "Skip it when you need to test a component yourself: the cards are pictures of a story and take no input, so use the examples on the component page instead.",
+      "Share the page link when you want a team to see the library moving; it needs no sign-in and plays nothing it does not need to.",
+    ],
+    faq: [
+      {
+        q: "Why do only some cards move at a time?",
+        a: "At most three cards animate at once, the ones nearest the middle of the screen, so scrolling stays smooth. The rest rest on the last frame of their story and start when they reach the middle.",
+      },
+      {
+        q: "Do the animations pause when I leave the tab?",
+        a: "Yes. Cards stop when they scroll off screen and when the tab is hidden, and there is a Pause animations button on the page. Nothing runs in the background.",
+      },
+      {
+        q: "What happens with reduced motion turned on?",
+        a: "Every card shows the final frame of its story and does not loop. That follows the operating system setting and SheenUI's own reduce motion switch.",
+      },
+      {
+        q: "Are these real components or recordings?",
+        a: "They are the real components from @sheenui/theme, driven by small scripted stories. The Lamp login, Payment checkout and OTP verification cards type into the actual blocks.",
+      },
+    ],
+  },
+  "/navigation/navbar": {
+    when: [
+      "Use it as a floating navbar, the glass pill, for a marketing site header with four or five destinations, where the highlight morphing between Home, Work, Pricing and Blog gives the page a polished, app-like first impression.",
+      'Use variant="bar" for the top of a dashboard or documentation app, where a full-width header with a sliding underline and a Sign in action on the right is what users expect.',
+      "It suits sites that must work on phones without a second mobile menu, because items that no longer fit next to the brand and actions fold into a menu button on their own.",
+      "Skip it when your destinations open rich dropdown panels with descriptions and images; Navigation menu is built for that, while this component is a flat list of links or buttons.",
+      "Pair it with Button for the Sign in action, GlassCard for the page sections underneath, and Avatar in the actions slot to show the signed-in user.",
+    ],
+    faq: [
+      {
+        q: "How do I build a glassmorphism navbar in React with SheenUI?",
+        a: "Import Navbar from @sheenui/theme and pass brand, items, value and onValueChange. The default variant is a floating glass pill with a morphing highlight. Add actions for a Button on the right, and position it with className, for example sticky or fixed plus top margin.",
+      },
+      {
+        q: "What happens when the items do not fit on a small screen?",
+        a: "With collapsible left at its default of true, the navbar measures itself and folds the items into a menu button that opens a glass popover. The current item shows a checkmark, choosing one closes the popover, and ArrowDown, ArrowUp, Home and End move between items while Escape closes it. Set collapsible={false} to scroll the items sideways instead.",
+      },
+      {
+        q: "How do I use it with React Router or Next.js links?",
+        a: 'Give items an href and pass renderLink, a function that receives the link props and the item and returns your router\'s Link element. The same function renders the links inside the folded menu. Without renderLink, items with an href render as plain anchors. The component file starts with "use client".',
+      },
+      {
+        q: "Can the navbar hide or shrink while I scroll?",
+        a: "Yes. shrinkOnScroll tightens the bar after 24px of scrolling by default, or pass false to disable it. hideOnScroll slides it away while scrolling down and brings it back on any upward scroll or when focus enters it. Use scrollContainer to track an inner scrolling element instead of the window.",
+      },
+    ],
+  },
+
+  "/navigation/navigation-menu": {
+    when: [
+      "Use it as a mega menu for a product site header where Products, Solutions and Resources each open a panel of titled links with short descriptions, the kind of mega-menu pattern that a flat list of links cannot carry.",
+      "Use it for a documentation site whose top bar groups guides, API reference and examples, so visitors can scan every section from one shared glass panel without leaving the current page.",
+      "The shared panel resizes to each item's content and slides between items, so it suits menus with panels of different sizes, from a three-link list to a grid up to 36rem wide.",
+      "Skip it when you only have a handful of plain links with no dropdowns; Horizontal nav is simpler and folds into a menu on narrow screens, while Menu is the right tool for action lists.",
+      "Pair it with Button for a call to action beside the bar, Badge for a New label inside a panel link, and Drawer to hold the navigation on phones.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react navigation menu with dropdown panels?",
+        a: "Compose NavigationMenu, NavigationMenuList and one NavigationMenuItem per entry. Inside an item put a NavigationMenuTrigger and a NavigationMenuContent holding NavigationMenuLink elements, or use a link directly for items with no panel. Give the root an aria-label such as Main.",
+      },
+      {
+        q: "Is the dropdown a menu role? How does keyboard navigation work?",
+        a: "No. The panel is a region of ordinary links, which is what site navigation needs. Left and Right arrows move between bar items, Enter, Space or Down opens the focused item's panel and moves into it, Tab walks the panel's links, and Escape closes it and returns focus to the trigger.",
+      },
+      {
+        q: "Does it only open on hover?",
+        a: "No. Hover opens a panel after the delay prop, 120 ms by default, and closes it after closeDelay, 150 ms, so crossing the bar does not flicker. Clicking or using the keyboard opens it immediately, so touch and keyboard users never depend on hover.",
+      },
+      {
+        q: "How do I use my router's link component inside the panel?",
+        a: 'NavigationMenuLink accepts a render prop that swaps the anchor for your router link. Use the plain prop to skip the pill styling when the link sits inside a panel, and closeOnClick to control whether choosing it closes the panel. Active links get aria-current="page".',
+      },
+    ],
+  },
+
+  "/navigation/vertical-nav": {
+    when: [
+      "Use it as a React sidebar for an admin dashboard, with Workspace and Account sections, icons on every row and an unread badge on Inbox, so people can reach any screen in one click.",
+      "Use it for a settings page where Profile, Security, Notifications and Billing sit in a narrow column beside the form, with no icons or section titles needed.",
+      "The collapsed prop turns it into an icon-only rail, which suits apps where the content area needs the width on small laptops but power users still want one-click navigation.",
+      "Skip it when the navigation has only a few top-level destinations and lives across the top of the page; Horizontal nav fits there, and Tabs fits switching views inside a single page.",
+      "Pair it with Avatar in the footer slot for the signed-in user, SheenLogo in the header, and Tooltip behavior already built in for the collapsed rail.",
+    ],
+    faq: [
+      {
+        q: "How do I build a glass sidebar in React?",
+        a: "Render VerticalNav with sections, value and onValueChange. Each section takes an optional title and items shaped as value, label, icon, badge, href and disabled. Use header for a logo and footer for a user card. The nav fills its parent's height, so set one on className or the parent.",
+      },
+      {
+        q: "How does the collapsed icon rail stay accessible?",
+        a: 'Every item keeps its text as an accessible name when collapsed, and the label shows in a tooltip on hover and focus. The rail is a nav with a list, the current item carries aria-current="page", and under reduced motion the rail snaps open and shut in one frame.',
+      },
+      {
+        q: "Can items be real links with my router?",
+        a: "Yes. Give an item an href and pass renderLink, a function receiving the link props and the item that returns your router's Link element. Items without an href render as buttons. Tab moves between items, Enter follows a link, and Enter or Space presses a button item.",
+      },
+      {
+        q: "How do I name the sidebar when there are several navigations?",
+        a: "Pass aria-label, which defaults to Sidebar. Give each navigation landmark on the page its own name, for example Workspace for the sidebar and Main for a top bar, so screen reader users can tell the regions apart in the landmarks list.",
+      },
+    ],
+  },
+
+  "/layout/accordion": {
+    when: [
+      "Use it for an FAQ below a pricing table, or a settings screen with long sections, where only the answer you open takes space and every trigger stays a real button in the tab order.",
+      "Use the separated variant with multiple for a settings or filter panel, where each group is its own glass card and several can stay open while someone compares them.",
+      "Use the plain variant inside an existing card, such as a checkout summary or a sidebar, when the accordion should not add a surface of its own.",
+      "Skip it when a section is independent and should not close its neighbors; Collapsible is a single show and hide region, and Tabs is better when users compare parallel views.",
+      "Pair it with Badge in a trigger description, Field and Input for settings groups inside panels, and the Kbd component to show shortcuts in help content.",
+    ],
+    faq: [
+      {
+        q: "How do I build an accordion?",
+        a: 'Wrap AccordionItem elements in Accordion, each with an AccordionTrigger and an AccordionPanel. The panel height eases open in 220 ms and closes in a quicker 150 ms, and the chevron turns with it. The component is built on Base UI and the file starts with "use client".',
+      },
+      {
+        q: "How do I let several sections stay open?",
+        a: "Set multiple on Accordion. Control which items are open with value and onValueChange, which take arrays of item values, or seed them with defaultValue. Give items stable value props instead of the auto id, so the state survives reordering. A disabled item stays visible but cannot be toggled.",
+      },
+      {
+        q: "Does it work with the keyboard and Ctrl+F?",
+        a: "Each trigger is a native button inside a heading, with aria-expanded, and closed panels are removed from the page. Set hiddenUntilFound so the browser's find-in-page can open a matching panel, and use headingLevel, 3 by default, to fit your page outline.",
+      },
+      {
+        q: "Can I add icons, descriptions or a plus indicator?",
+        a: "AccordionTrigger takes icon for a leading tile that picks up the accent while open, description for a muted second line, and indicator set to chevron or plus, where the plus folds into a minus. Use contentClassName on AccordionPanel to adjust padding of the content box.",
+      },
+    ],
+  },
+
+  "/layout/breadcrumb": {
+    when: [
+      "Use it as a collapsible breadcrumb on a documentation or e-commerce page that sits several levels deep, such as Home, Products, Shoes, Running, so people can jump back to any ancestor without using the browser's Back button.",
+      "Use maxItems with itemsBefore and itemsAfter for deeply nested file or category trees, where you always want the root and the current page visible and the middle folded into a menu.",
+      "The collapse is measured before paint, so it suits responsive layouts where the same trail must fit a phone header and a wide desktop header without a flash of overflow.",
+      "Skip it for linear multi-step flows such as checkout; Stepper shows progress and state there, and breadcrumbs describe site hierarchy rather than the order of tasks.",
+      "Pair it with Navbar or Vertical nav for primary navigation, with Menu behavior already built in for the folded items, and with a page heading and Button actions below the trail.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react breadcrumb with SheenUI?",
+        a: 'Pass an items array, root first, to Breadcrumb. Each item has a label and an optional href, and the last item is treated as the current page with aria-current="page" and no link. Choose separator chevron, slash or dot, or supply your own node.',
+      },
+      {
+        q: "What happens when the trail is too long for the screen?",
+        a: "With collapse set to auto, the default, the middle items fold into a menu button, and they come back when the row widens. The hidden pages are listed as real links, and arrow keys, typeahead and Escape work in it. Set collapse to never to let the trail wrap instead.",
+      },
+      {
+        q: "How do I use my router's Link and translate the labels?",
+        a: "Pass renderLink, for example (item) => <Link to={item.href!} />, and it is used for every link, including those in the collapse menu. A single item can override it with render. The labels prop holds the accessible names, nav and more(count), so you can translate them.",
+      },
+      {
+        q: "Can I show an icon-only item such as a home icon?",
+        a: "Yes. Give an item in the items array an icon and set iconOnly, and only the icon is drawn while the label stays available to screen readers. When the label is not a plain string, add textValue so typeahead in the collapse menu has text to match.",
+      },
+    ],
+  },
+
+  "/layout/collapsible": {
+    when: [
+      "Use it for rarely needed settings at the end of a form, such as retry limits, timeouts and proxy fields behind an Advanced options toggle, so the common path stays short.",
+      "Use it for a Show more list in a file panel or a changelog, where twelve extra rows hide behind one trigger and the section can also be opened from a button elsewhere.",
+      "Use keepMounted when fields inside the section must keep their values while closed, or hiddenUntilFound when the hidden text should still be reachable with the browser's find-in-page.",
+      "Skip it when opening one section should close the others; Accordion manages that for a group, and Dialog or Popover is better when the content should not push the page down.",
+      "Pair it with Button to open it from outside using open and onOpenChange, with Switch and Field for the options inside the panel, and Badge to show a count in the trigger.",
+    ],
+    faq: [
+      {
+        q: "How do I make a react collapsible section with animated height?",
+        a: "Compose Collapsible, CollapsibleTrigger and CollapsiblePanel. The panel animates its height, the chevron turns, and closed content leaves the tab order. Use defaultOpen for an uncontrolled start, or open with onOpenChange to control it from state. The primitive underneath is Base UI Collapsible.",
+      },
+      {
+        q: "Are closed fields still submitted or focusable?",
+        a: "By default closed content is removed from the page, so its links and fields are not tabbable or read by screen readers. Set keepMounted on CollapsiblePanel to keep it in the DOM, hidden, so form fields inside retain their values and still take part in the form.",
+      },
+      {
+        q: "How do I use my own indicator instead of the chevron?",
+        a: "Set hideIcon on CollapsibleTrigger and style your indicator from the data-panel-open attribute that the trigger exposes. To change the trigger element, pass render with another element. The trigger is a real button with aria-expanded and aria-controls, 44px tall on touch screens, with a visible focus ring.",
+      },
+      {
+        q: "What does it do under prefers-reduced-motion?",
+        a: "The panel jumps straight to its open or closed height with no travel. Nothing else changes: the same keys apply, with Tab focusing the trigger and Enter or Space toggling the panel. The disabled prop locks the section while keeping it visible.",
+      },
+    ],
+  },
+
+  "/layout/scroll-area": {
+    when: [
+      "Use it as a React scroll area for a fixed-height list inside a card, such as a notification list or a long set of options, where you want slim glass scrollbars instead of the browser's chunky default. It draws a glass scrollbar in CSS that matches the theme, instead of the browser default.",
+      'Use orientation="horizontal" for a row of cards or chips that scrolls sideways, with fade="shadow" so the glass cards inside keep their backdrop blur.',
+      'Use orientation="both" for a wide table in a fixed box with scrollbars="always", when users must see at a glance that the content continues in both directions.',
+      "Skip it when the whole page scrolls; let the browser handle it. For a long list of thousands of rows, the windowed Chat list, which renders only the visible rows, or a paginated Data table is a better fit than scrolling a plain container.",
+      "Pair it with GlassCard as the container, Separator between sections of the scrolled content, and Skeleton to hold the layout while the content loads.",
+    ],
+    faq: [
+      {
+        q: "How do I add a custom scrollbar in React without breaking native scrolling?",
+        a: "Wrap the content in ScrollArea and give the root a height for vertical scrolling or a width for horizontal. Scrolling stays native, so wheel, touch, keyboard and find-in-page all work. Only the scrollbars are drawn by the component, and they show on hover, while scrolling and on focus.",
+      },
+      {
+        q: "How does the keyboard reach a scroll area?",
+        a: 'The viewport becomes focusable only while it can actually scroll, so Tab reaches it. Then the arrow keys, Page Up, Page Down, Home, End and Space scroll natively. Pass label to name the region for screen readers; the viewport gets role="region" and a focus ring inside its edge.',
+      },
+      {
+        q: "What are the edge fades, and when should I turn them off?",
+        a: "The fade prop shows there is more to see: mask, the default, fades the content at the edges only where it can scroll, shadow draws scroll shadows, and none removes it. Use shadow when glass cards sit inside, because a mask would stop their blur. fadeSize defaults to 32px.",
+      },
+      {
+        q: "How do I scroll to an item programmatically?",
+        a: "Pass a ref to viewportRef, which points at the scrolling element, and call scrollTo or scrollIntoView on it or on a child. Use viewportClassName and contentClassName to style the scroller and its content wrapper, and set the root's border radius so the keyboard focus ring matches.",
+      },
+    ],
+  },
+
+  "/layout/separator": {
+    when: [
+      "Use it to split a toolbar into clusters with a vertical hairline, or to divide Account from Notifications settings with a fading rule and a centered label, instead of nesting another card.",
+      'Use a labeled separator with the word or between a password form and social sign-in buttons, with labelVariant="pill" when the label should sit in a small glass chip.',
+      'Use orientation="vertical" between items in a row, such as a toolbar of stats or a footer\'s links, where the line stretches to the height of its row.',
+      "Skip it when the break is structural and a screen reader user should find it; use a real heading or landmark, because a decorative separator does not replace either.",
+      "Pair it with GlassCard to divide its sections, Toolbar, which has its own ToolbarSeparator for control groups, and Menu for dividing action groups in a dropdown.",
+    ],
+    faq: [
+      {
+        q: "How do I add a react separator with text in the middle?",
+        a: 'Pass label to Separator, for example "or". Choose where it sits with labelAlign, start, center or end, and its look with labelVariant, text or pill. The label also names the separator for screen readers, and labelClassName styles it. A line segment runs on each side of the label, and with labelAlign start or end the segment before or after it shrinks to a short lead-in.',
+      },
+      {
+        q: "Is a separator announced by screen readers?",
+        a: 'By default it has role="separator" with the matching orientation, and a labeled one keeps its text readable. If the line is purely visual, set decorative and it is hidden from assistive technology. It is not focusable, so Tab skips it either way.',
+      },
+      {
+        q: "What line styles are available?",
+        a: "The variant prop takes line, a plain hairline, fade, which fades toward the ends, or dashed. Orientation is horizontal or vertical. Line and dashed are drawn with borders, and the fade gradient falls back to a real border in forced colors, so the line survives Windows High Contrast mode, which would otherwise drop backgrounds.",
+      },
+      {
+        q: "Why is my vertical separator not showing?",
+        a: "A vertical separator stretches to the height of its row with self-stretch, which only works inside a flex or grid container. On its own it falls back to a minimum height of 16px, or 4rem with a label. Put it in a flex row that has a height, such as h-6 items-center, and it fills that height.",
+      },
+    ],
+  },
+
+  "/layout/stepper": {
+    when: [
+      "Use it as the progress steps of a multi-step form, such as a checkout with Cart, Shipping, Payment and Review, where completed steps can be revisited and a failed payment step can flag itself with an error state.",
+      'Use orientation="vertical" with per-step content for an onboarding or setup wizard, where the current step reveals its own form and optional steps are labeled as such.',
+      "Use it for a long application form on phones, where the automatic compact view shows Step 2 of 4 with a segmented bar instead of cramped titles.",
+      "Skip it when the user can move between views freely with no order; Tabs is the right pattern for parallel views, and Breadcrumb shows where a page sits in the site hierarchy.",
+      "Pair it with Button for Back and Next, Field and Input for each step's form, and Progress when you also want a continuous completion value.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react stepper for a multi-step form?",
+        a: "Pass steps, an array of objects with title and optional description, status, optional, icon, disabled and content, plus current, the zero-based index of the current step. Setting current to steps.length marks everything complete. Keep current in your own state and advance it from your Next button.",
+      },
+      {
+        q: "How do I let users go back to earlier steps?",
+        a: "Pass onStepClick, which turns steps into buttons. By default clickable is completed, so only finished steps respond; set it to all to allow jumping anywhere. Clickable steps are real buttons and normal tab stops, and Enter or Space goes to the focused step. The current step is a button too but does nothing when pressed, and non-clickable steps are not focusable.",
+      },
+      {
+        q: "How is the stepper announced to screen readers?",
+        a: 'It renders an ordered list inside a nav, the current step has aria-current="step", and each state, complete, current, upcoming or error, is also spoken. Give several steppers on one page their own nav label through the labels prop, which also translates every string.',
+      },
+      {
+        q: "When does it switch to the compact view?",
+        a: "With collapse set to auto, the horizontal stepper collapses to Step 2 of 4 with a segmented bar when each step has less than minStepWidth, 136px by default. Use always or never to force it. The vertical orientation does not collapse; it lists steps in a column.",
+      },
+    ],
+  },
+
+  "/layout/timeline": {
+    when: [
+      "Use it for a project activity feed or an audit log where each entry has an avatar, a time and an action badge, grouped under headings such as Today, and a new entry slides in at the top. Use it as a vertical timeline in Tailwind for an order history or release notes.",
+      'Use it for order tracking, with connector="accent" on completed steps, a current step that pulses softly, and a dashed line to what has not happened yet.',
+      'Use layout="alternate" for a changelog or company history, where a wide container zig-zags around a centered rail with dates opposite, and narrow ones fall back to a plain list.',
+      "Skip it when the user must act on each stage in sequence; Stepper handles progress through a flow, and Data table is better for dense, sortable records of the same kind.",
+      "Pair it with Avatar for people markers, Badge for statuses in an item's content, and Skeleton while older events load.",
+    ],
+    faq: [
+      {
+        q: "How do I make a react timeline for an activity feed?",
+        a: "Render Timeline with TimelineItem children, each with title, time, description, icon or avatar, and tone. Use TimelineHeading for group labels such as Today. Pass aria-label to name the list. Items reveal as they scroll into view, and new items push the feed down smoothly.",
+      },
+      {
+        q: "How do I mark the current step in order tracking?",
+        a: 'Set current on the live TimelineItem for a soft pulse and aria-current="step", and use connector to style the line to the next item: solid, dashed or accent. Because markers and lines are decorative, also describe state in words, for example in the title or description.',
+      },
+      {
+        q: "How should I format dates on timeline items?",
+        a: "Give time as the text you want shown and dateTime as a string or Date, so the item renders a real time element with a machine-readable value and a full date on hover. The locale prop sets the language of that full date and defaults to the browser's.",
+      },
+      {
+        q: "Does it animate for users who prefer reduced motion?",
+        a: "The marker pop and line draw do not run under reduced motion, and animate is always off in that case. You can also set animate to false yourself. The list is an ordered list, it is not focusable, and links or buttons inside items remain normal tab stops.",
+      },
+    ],
+  },
+
+  "/layout/toolbar": {
+    when: [
+      "Use it as an editor toolbar for a rich-text editor's formatting row, where Tab enters once and arrow keys move between Bold, Italic, alignment and menu buttons instead of tabbing through twenty controls. It is an accessible toolbar with roving tabindex: Tab enters it once and the arrow keys move between the controls.",
+      'Use variant="floating" for a selection toolbar over text or a canvas, a glass pill that appears next to the thing being edited.',
+      'Use orientation="vertical" for a tool palette in a design or whiteboard app, where Up and Down move between tools and tooltips open to the side.',
+      "Skip it for a handful of unrelated buttons in a page header; plain Buttons are simpler there, and Menubar fits an application's File and Edit menus with dropdowns.",
+      "Pair it with Menu through ToolbarButton's render prop, Tooltip text already built in through the tooltip prop, and Kbd to show a shortcut such as mod+b.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react toolbar with arrow key navigation?",
+        a: "Wrap controls in Toolbar and use ToolbarButton, ToolbarToggle, ToolbarLink and ToolbarInput. The toolbar is a single tab stop: arrow keys move focus, Home and End jump to the ends, and loopFocus, on by default, wraps from last to first. Give it an aria-label.",
+      },
+      {
+        q: "How do toggle groups differ for single and multiple choice?",
+        a: "ToolbarToggleGroup is single choice by default, with one accent pill gliding between options; add required to keep one pressed, as with alignment. With multiple, toggles are independent, such as bold, italic and underline, and each blooms its own tint. value takes an array of strings.",
+      },
+      {
+        q: "How do icon-only buttons get an accessible name and a shortcut?",
+        a: 'Set tooltip on ToolbarButton or ToolbarToggle. It shows the tooltip and, for an icon-only control, becomes the accessible name. Add shortcut, such as "mod+b", to show it in the tooltip and expose it as aria-keyshortcuts. A disabled control stays focusable so it can be discovered.',
+      },
+      {
+        q: "What happens on narrow screens?",
+        a: 'The default overflow="wrap" flows controls onto more rows. Set overflow="scroll" to keep one row that scrolls sideways inside the toolbar, styled through contentClassName. The scrolling row fades at the edges that hide more controls and scrolls a focused control into view, and controls grow to at least 44px on touch screens regardless of size.',
+      },
+    ],
+  },
+
+  "/components/carousel": {
+    when: [
+      "Use it as a React carousel with swipe for a product gallery with one slide per view, loop, overlay arrows and autoplay every five seconds, where users can also swipe, drag or use the dots. Use it as an image slider in Tailwind for a gallery or a row of testimonials, where children are the slides and swipe, arrows and dots come with it.",
+      "Use slidesPerView breakpoints for a row of testimonial or product cards, such as 1.15 on phones to peek at the next card and 2 or 3 as the carousel widens. Set loop for an infinite loop carousel in React, where the last slide wraps around to the first.",
+      'Use align="center" with effect="scale" for a featured showcase where neighbors peek on both sides and slides shrink as they leave the center.',
+      "Skip it when users need to compare all items at once or when the content is critical; a grid or a Tabs panel shows everything, and Scroll area suits a simple sideways list.",
+      "Pair it with GlassCard for slide content, Button for call-to-action links on slides, and Badge for labels over images.",
+    ],
+    faq: [
+      {
+        q: "How do I make a react carousel with loop and autoplay?",
+        a: "Render Carousel with one child per slide and a required aria-label. Set loop for an endless carousel that wraps without cloning slides, and autoplay to true for 5000 ms or a number of milliseconds. Autoplay pauses on hover, drag, a hidden tab or off screen, and stops when keyboard focus enters.",
+      },
+      {
+        q: "Is the carousel keyboard and screen reader friendly?",
+        a: 'It follows the WAI-ARIA carousel pattern: aria-roledescription="carousel", slides named like "3 of 8", and a polite live region announcing the slide after you navigate. On the pause button, dots and arrows, Left and Right move, and Home and End jump to the first or last slide. Off-screen slides are inert, so Tab cannot reach hidden content.',
+      },
+      {
+        q: "How do I control it from outside and translate it?",
+        a: "Use index with onIndexChange for a controlled carousel, or defaultIndex for an uncontrolled one. onIndexChange is not called on mount. The labels prop holds every string, including slide names, arrows, dots and play and pause, and right-to-left pages mirror the layout, with the arrow keys swapped.",
+      },
+      {
+        q: "What happens with reduced motion?",
+        a: "Autoplay never starts by itself under reduced motion and waits until the user presses Play, and slides snap into place instead of gliding, although dragging still follows the finger. Use arrows set to bottom, overlay or false to place or remove the buttons, and dots to show or hide the dots.",
+      },
+    ],
+  },
+
+  "/components/code-block": {
+    when: [
+      "Use it as a syntax highlighter in documentation and blog posts to show a file with a filename tab, line numbers and highlightLines for the two or three lines the paragraph is explaining.",
+      "Use addedLines and removedLines to show a migration or a diff, since the lines render as ins and del elements with plus and minus markers, so color is never the only signal.",
+      "Use CodeBlockTabs for an install command in npm, pnpm and yarn, or the same snippet in several languages, with one copy and wrap control acting on the active tab.",
+      "Skip it when users need to edit or run the code; it is a read-only display, so a real editor or sandbox fits, and Kbd is the right tool for a single key or short inline command.",
+      "Pair it with Tabs-style CodeBlockTabs for variants, Toast for your own copy confirmation through onCopy, and GlassCard or Accordion to group long examples.",
+    ],
+    faq: [
+      {
+        q: "How do I add a react code block with a copy button?",
+        a: "Render CodeBlock with the code string and a language. A copy button is shown by default, copyable controls it, and onCopy fires after a successful copy. A successful copy is announced politely, and if the clipboard and its fallback both fail, the code is selected so the user can copy it by hand.",
+      },
+      {
+        q: "Which languages does the syntax highlighting support?",
+        a: "A small built-in tokenizer covers ts, tsx, js, jsx, json, css, bash, python, html and text, with aliases such as typescript, sh and py. There is no highlighting dependency to install. Colors are CSS variables like --sheen-code-keyword that you can override on the block or any ancestor.",
+      },
+      {
+        q: "How are long lines and line numbers handled?",
+        a: "Unwrapped, a long line scrolls inside the block while the line numbers stay pinned, and the code area becomes keyboard-focusable only when it scrolls. The wrap toggle in the header, or defaultWrap, wraps lines. Line numbers are left out of copy and from screen readers.",
+      },
+      {
+        q: "Does it work in right-to-left pages?",
+        a: 'Code always reads left to right, and the block carries translate="no" so browsers do not translate it. The code area is a named region such as Code: button.tsx. Use the labels prop to translate the copy, wrap and region strings, and startLineNumber when showing an excerpt.',
+      },
+    ],
+  },
+
+  "/components/empty-state": {
+    when: [
+      "Use it as an empty state UI for a first-run dashboard or project list, with an icon, a title, one sentence of explanation, a primary Button to create the first item and a secondary action such as Import.",
+      "Use it for search and filter results that come back empty, with the neutral tone, a hint to check spelling and announce so screen readers hear that nothing matched.",
+      'Use variant="compact" inside tables, inboxes and sidebars, where a single row such as Inbox zero or Couldn\'t load invoices fits and the danger tone colors the icon and its tint.',
+      "Skip it for content that is still loading; Skeleton holds the layout while data arrives, and Alert is better for a persistent warning or error message above existing content.",
+      "Pair it with Button for the next step, Input in children for a search field, and Skeleton to show the loading state before the empty one.",
+    ],
+    faq: [
+      {
+        q: "How do I build an empty state component in React?",
+        a: "Render EmptyState with a required title and optionally description, icon, action and secondaryAction. The full variant is centered for pages and panels. Pick a surface of none, glass or dashed, and a tone of accent, neutral, success, warning or danger, which colors the icon and its tint while the words carry the meaning.",
+      },
+      {
+        q: "How do I make screen readers announce an empty search result?",
+        a: "Set announce to true to speak the title and description, or pass a string to speak that text. It uses one persistent polite status region, because a region that mounts together with its text is often skipped by screen readers. Do it when results change after a search or filter.",
+      },
+      {
+        q: "Which heading level should the title use?",
+        a: "The title renders as an h3 by default. Use headingLevel (1 to 6, or false for a paragraph) to fit the page outline, for instance p inside a small table cell. The icon is decorative and the markup is not focusable, but buttons in action and secondaryAction are normal tab stops.",
+      },
+      {
+        q: "Can I replace the glass orb or turn off the animation?",
+        a: "Pass illustration to use your own artwork instead of the orb, and animated={false} to skip the entrance, which is also always off under reduced motion. The icon should be a 24px currentColor icon. Extra content such as links goes in children, under the actions.",
+      },
+    ],
+  },
+
+  "/components/meter": {
+    when: [
+      "Use it as a storage usage bar, such as 41 GB of 64 GB, where lower is better and the bar turns amber past 70 percent and red past 90 percent using low, high and optimum.",
+      'Use it for a battery or signal read-out with variant="segmented", which draws cells like a battery icon, and for password strength with levelLabels renamed to Weak and Strong.',
+      "Use it for a live value such as CPU load, where the fill springs to the new level and the number counts with it.",
+      "Skip it when the value shows progress toward completion of a task; Progress is the right component for uploads and steps, because a meter describes a level in a range rather than how far along something is.",
+      "Pair it with Badge to repeat the level in words, Tooltip for the exact value, and GlassCard to group several meters in a dashboard.",
+    ],
+    faq: [
+      {
+        q: "What is the difference between a react meter and a progress bar?",
+        a: 'A meter shows a level in a known range, such as disk usage or battery, and can change color by region. A progress bar shows how far a task has come. This Meter is built on Base UI\'s Meter and exposes role="meter" with aria-valuenow, aria-valuemin and aria-valuemax.',
+      },
+      {
+        q: "How do the low, high and optimum props color the bar?",
+        a: "They follow the HTML meter element's rules. With low or high set, the fill is colored by level: green for optimum, amber for suboptimal, red for critical. optimum says where the best value lies, so storage with optimum 0 stays green up to low, turns amber between low and high, and goes red past high, while a battery with optimum at the maximum is the reverse.",
+      },
+      {
+        q: "Is color the only signal for the level?",
+        a: "No. The level is part of the spoken aria-valuetext, and showLevel also writes it next to the value. Rename the words through levelLabels, Good, Warning and Critical by default, or take full control with getAriaValueText. A meter is a read-out and is not focusable.",
+      },
+      {
+        q: "How do I change how the value is displayed?",
+        a: "valueText takes a node or a function of the formatted value and the number, and false hides it. format accepts Intl.NumberFormatOptions and locale picks the language, and both feed aria-valuetext. Add label for the visible name and description for help text linked by aria-describedby.",
+      },
+    ],
+  },
+
+  "/components/skeleton": {
+    when: [
+      "Use SkeletonCard as a skeleton loading state while a product or article card loads, so the 16:9 media block, avatar, text lines and button pills occupy the same space as the real card and nothing jumps.",
+      "Use SkeletonList for an inbox, a user table or a settings list, where each row has an avatar, two text lines and a trailing pill, and rows count is set to match the page size.",
+      "Compose your own layout from Skeleton shapes inside SkeletonGroup for a dashboard widget, so one beam of light crosses every shape in step and the region is named once.",
+      "Skip it for tiny waits or actions that start from a click; Spinner suits a button or inline wait, and Empty state is the right component once loading has finished with no data.",
+      "Pair it with GlassCard for the final content, Avatar for the loaded profile, and a persistent status region if you want a reliable spoken Loaded message.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react skeleton loader that matches my layout?",
+        a: "Use the presets SkeletonCard and SkeletonList, or compose Skeleton with shape rect, text, pill or circle, plus SkeletonText, SkeletonCircle and SkeletonRect. Text skeletons use the same line box as the real text, 20px for 14px text, so the content does not shift when it arrives.",
+      },
+      {
+        q: "How do screen readers know something is loading?",
+        a: 'Shapes are aria-hidden. Wrap a region in SkeletonGroup, or give a preset its own label, and it becomes a role="status" region that says Loading politely, once. Pass label={null} on a preset inside a group so it is not announced twice, and remove the skeleton when content arrives.',
+      },
+      {
+        q: "Does the shimmer run for users who prefer reduced motion?",
+        a: "No. The sweep of light is never drawn under reduced motion, so the shapes are simply still. Otherwise one band crosses a whole group in a single beam using transform only. Set shimmer={false} on a Skeleton, SkeletonText or a preset to turn the sweep off yourself.",
+      },
+      {
+        q: "How do I size the placeholders?",
+        a: 'Skeleton takes width and height as numbers in px or as strings such as "60%"; a circle\'s height defaults to its width. SkeletonText takes lines, 3 by default, size from xs to heading, and lastLineWidth, 62% by default. Use className, such as h-4 or rounded-sheen-lg, for the rest.',
+      },
+    ],
+  },
+
+  "/chat/list": {
+    when: [
+      "Use it as a messaging inbox UI, the sidebar of a messaging app or customer inbox, with search that filters and highlights, All, Unread, Groups and Archived tabs with counts, and Pinned and All chats sections.",
+      "Use it for a support dashboard with thousands of conversations, since above windowThreshold, 150 rows by default, only the visible rows are rendered while positions are still announced.",
+      "Use onAction for pin, mute, archive and mark as read, which appear in a menu, on right-click and long-press, and as swipe actions on touch screens.",
+      "Skip it for a short list of static links; Vertical nav is simpler, and a Data table fits when users need sortable columns and bulk actions instead of conversation previews.",
+      "Pair it with Chat view for the open conversation, Popover chat for a support widget, and Avatar presence dots, which the rows already use for online, away and offline.",
+    ],
+    faq: [
+      {
+        q: "How do I build a chat list UI in React with search and filters?",
+        a: "Render ConversationList with conversations, participants and currentUserId, all required. Search and the filter tabs are built in, and each can be controlled through query and filter, or turned off with showSearch and showFilters. Search matches names, members, the last message and drafts, and highlights them.",
+      },
+      {
+        q: "How does keyboard navigation work in the list?",
+        a: "The list is one tab stop and behaves as a single-select listbox. Arrow Up and Down, Home, End, Page Up and Page Down move between chats, typing a name jumps to it, Enter or Space opens it, and Shift+F10 or the Menu key opens that chat's actions.",
+      },
+      {
+        q: "Are the swipe and row actions gesture-only?",
+        a: "No. The swipe and the more button are shortcuts to the same menu, so nothing depends on a gesture. Provide onAction to enable the menu, right-click and swipe; leave it out and they are hidden. Set swipeActions to false to disable swipe on touch screens.",
+      },
+      {
+        q: "How do I handle translation, time and loading?",
+        a: "locale controls dates, times and numbers through Intl, labels holds every string, and now freezes the clock for tests and screenshots. Set loading for skeleton rows announced once as Loading chats. density is comfortable, 72px rows, or compact, 64px, and title can be false to hide the heading.",
+      },
+    ],
+  },
+
+  "/chat/thread": {
+    when: [
+      "Use it as a message thread for the main pane of a messaging app, with bubbles grouped by sender, day labels, a New messages line, replies, reactions, photos, files and delivery ticks.",
+      "Use it for a customer support console, where agents see typing indicators, failed messages with Retry and a message list that loads earlier messages when the reader reaches the top without losing their place.",
+      "Use onSend, onEdit, onDelete and onReact to connect your backend; append the new message at once with status sending so the ticks can move from sending to sent, delivered and read.",
+      "Skip it when you need a one-shot AI prompt and answer layout; AI chat block suits a streaming assistant, and Popover chat already wraps this view for a corner support widget.",
+      "Pair it with Chat list to pick conversations, Avatar for senders, and AlertDialog behavior already used for confirming delete.",
+    ],
+    faq: [
+      {
+        q: "How do I build a react chat UI with message replies and reactions?",
+        a: "Render ChatThread with conversation, messages oldest first, participants and currentUserId. Add onReact to enable reactions, onEdit for editing and onDelete for deleting, since controls without a handler are hidden. Reply is in each message's menu, or press R on a focused message, and clicking the quoted text jumps to the original message.",
+      },
+      {
+        q: "What keyboard shortcuts does the message list have?",
+        a: "The list is one tab stop. Arrow Up and Down, Home, End, Page Up and Page Down move between messages, Enter or Space opens the actions menu, R replies and E edits your own message. In the composer Enter sends, Shift+Enter adds a line, Up in an empty composer edits your last message, Escape cancels.",
+      },
+      {
+        q: "How do I load older messages and show unread ones?",
+        a: "Use onLoadOlder, hasOlder and loadingOlder: skeleton bubbles show while loading and the reader's place is kept. Set firstUnreadId to show a New messages line above that message and to open the chat there. onRead reports when the newest incoming message was seen.",
+      },
+      {
+        q: "Is it usable on phones and with screen readers?",
+        a: "Each row is an article named by a spoken summary of sender, text, time and delivery state. Delivery state and reactions are part of each row's spoken summary, and new incoming messages and actions like replying, editing, reacting and deleting go to one polite live region. Targets are 44px on touch screens, composer text is 16px so iOS does not zoom, and forced colors give bubbles real borders.",
+      },
+    ],
+  },
+
+  "/chat/widget": {
+    when: [
+      "Use it as an Intercom-style live chat widget in the bottom corner of a marketing site or web app, with a launcher, an unread badge and a panel that springs out of the launcher.",
+      "Use homeContent and helpLinks to add a status line and a Find an answer card with help articles, so visitors can self-serve before starting a conversation.",
+      'Use position="left" when another element already lives in the right corner, strategy="absolute" to keep it inside a positioned box, and translate every string through labels.',
+      "Skip it when chat is the main screen of your product; Chat list with Chat view gives a full-page messaging layout, and a Dialog is better for a one-off message form.",
+      "Pair it with the Chat view through threadProps, quickReplies for chips that send a ready-made message, and Toast for your own notification when the team replies.",
+    ],
+    faq: [
+      {
+        q: "How do I add a react chat widget to my site?",
+        a: "Render ChatWidget with conversations, messages as a record keyed by chat id, participants and currentUserId. Control it with open and onOpenChange, or let it manage itself with defaultOpen. onNewConversation creates a chat for Send us a message and returns its id. The default strategy is fixed to the window.",
+      },
+      {
+        q: "Is the panel modal? How does focus behave?",
+        a: "On wide screens it is a non-modal dialog, so the page behind stays usable. Escape or the minimize button returns focus to the launcher, and inside a menu or the emoji picker Escape closes only that. Below 640px it becomes a full-screen modal sheet, the page is inert and focus stays inside.",
+      },
+      {
+        q: "How do I keep it inside a container for previews or tests?",
+        a: "Set strategy to absolute so it positions inside a positioned box instead of the window. On prerendered pages, pass a fixed now date so the relative times in the HTML match what the browser renders. The unread badge defaults to the sum of unread counts, and unreadCount overrides it.",
+      },
+      {
+        q: "Can I show quick replies and help articles?",
+        a: "quickReplies shows chips that send a ready-made message until the visitor writes their own. helpLinks takes label, href, description and newTab for a Find an answer card under recent conversations, and homeContent adds a block above Send us a message. The home view shows the newest three chats.",
+      },
+    ],
+  },
+};

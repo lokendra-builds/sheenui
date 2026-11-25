@@ -1,0 +1,16 @@
+/* Review polish for single stages: the toast stage keeps its toasts clear of the plate. */
+
+/* Toast stage: the plate hugs its content at the top and the stage reserves a band below it, so a toast (and its coloured
+   rim) never sits on the card's edge. */
+.sheen-showcase.sheen-stage-toast {
+  align-content: start;
+}
+html:root .sheen-showcase.sheen-stage-toast .sheen-showcase-plate {
+  min-height: 0;
+  align-self: start;
+}
+/* The failed toast stacks over the one before it: the stage is tall enough that the stack's top (a red rim, a glow) stays
+   clear of the plate's lower edge. The height is fixed for the whole story, so nothing moves. */
+html:root .sheen-showcase.sheen-stage-toast {
+  min-height: max(var(--stage-min, 17rem), 29rem);
+}

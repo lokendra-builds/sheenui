@@ -1,0 +1,16 @@
+/** When each guide was first published and last changed (front matter `published` / `updated`). Kept apart from guides.ts so the app shell, which only needs the dates for the article head, does not carry the guide list. */
+export const guideDates: Record<string, { published: string; updated: string }> = {
+  "install-frameworks": { published: "2026-11-08", updated: "2026-11-16" },
+  "glassmorphism-react-tutorial": { published: "2026-11-08", updated: "2026-11-14" },
+  "liquid-glass-css-react": { published: "2026-11-08", updated: "2026-11-12" },
+  "accessible-glassmorphism": { published: "2026-11-08", updated: "2026-11-12" },
+  "glassmorphism-vs-liquid-glass": { published: "2026-11-08", updated: "2026-11-12" },
+  "backdrop-filter-performance": { published: "2026-11-08", updated: "2026-11-14" },
+  "accessible-react-charts": { published: "2026-11-08", updated: "2026-11-15" },
+  "framer-motion-examples": { published: "2026-11-08", updated: "2026-11-15" },
+  "framer-motion-to-motion": { published: "2026-11-08", updated: "2026-11-15" },
+  "base-ui-vs-radix": { published: "2026-11-08", updated: "2026-11-12" },
+  "best-glassmorphism-react-libraries": { published: "2026-11-08", updated: "2026-11-14" },
+  "shadcn-alternatives": { published: "2026-11-08", updated: "2026-11-15" },
+  "glassmorphism-ui-prompt": { published: "2026-11-08", updated: "2026-11-14" },
+};

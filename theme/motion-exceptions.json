@@ -1,0 +1,434 @@
+[
+  {
+    "component": "*",
+    "property": "color",
+    "reason": "Paint-only state feedback (hover, focus, selected): a colour cross-fade has no transform or opacity equivalent and never touches layout."
+  },
+  {
+    "component": "*",
+    "property": "background-color",
+    "reason": "Paint-only state feedback (hover, focus, selected): a colour cross-fade has no transform or opacity equivalent and never touches layout."
+  },
+  {
+    "component": "*",
+    "property": "border-color",
+    "reason": "Paint-only state feedback (hover, focus, selected): a colour cross-fade has no transform or opacity equivalent and never touches layout."
+  },
+  {
+    "component": "*",
+    "property": "outline-color",
+    "reason": "Paint-only state feedback (hover, focus, selected): a colour cross-fade has no transform or opacity equivalent and never touches layout."
+  },
+  {
+    "component": "*",
+    "property": "text-decoration-color",
+    "reason": "Link underline colour fades on hover: paint-only state feedback like the other colour entries."
+  },
+  {
+    "component": "demo",
+    "property": "--stage-aura",
+    "file": "demo/src/index.css",
+    "cap": "700 ms (duration.slower), docs stage only",
+    "reason": "A registered custom property that fades the stage's background aura colour: paint-only, docs site only."
+  },
+  {
+    "component": "demo",
+    "property": "box-shadow",
+    "file": "demo/src/index.css",
+    "cap": "700 ms (duration.slower), docs stage only",
+    "reason": "The showcase stage plate and its aura fade a box-shadow when the story dims: paint-only, docs site only, never shipped in the library."
+  },
+  {
+    "component": "demo",
+    "property": "clip-path",
+    "file": "demo/src/index.css",
+    "cap": "one-shot entrance, docs home only",
+    "reason": "home-in-wipe reveals a home-page headline with a clip-path wipe (MOTION 6.1(b)); it wraps no glass."
+  },
+  {
+    "component": "demo",
+    "property": "grid-template-rows",
+    "file": "demo/src/layout/Nav.tsx",
+    "cap": "220 ms (duration.base), docs site only",
+    "reason": "The docs sidebar group opens with the 0fr to 1fr grid-rows technique; the docs navigation is not part of the library."
+  },
+  {
+    "component": "demo",
+    "property": "box-shadow",
+    "file": "demo/src/pages/ChartsPage/gallery.tsx",
+    "cap": "220 ms (duration.base), docs site only",
+    "reason": "Gallery card hover ring: a box-shadow fade, paint-only, docs site only."
+  },
+  {
+    "component": "analytics-finance",
+    "property": "cy",
+    "file": "theme/src/blocks/analytics-finance/portfolio-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "analytics",
+    "property": "cx",
+    "file": "theme/src/blocks/analytics/trend-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "analytics",
+    "property": "cy",
+    "file": "theme/src/blocks/analytics/trend-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "bento-grid",
+    "property": "box-shadow",
+    "file": "theme/src/blocks/bento-grid/demos.tsx",
+    "cap": "220 ms (duration.base)",
+    "reason": "Card hover ring is a box-shadow fade: paint-only, nothing moves."
+  },
+  {
+    "component": "accordion",
+    "property": "box-shadow",
+    "file": "theme/src/components/accordion/accordion.tsx",
+    "cap": "220 ms (duration.base)",
+    "reason": "The trigger's hover and focus ring is a box-shadow fade: paint-only, nothing moves."
+  },
+  {
+    "component": "accordion",
+    "property": "height",
+    "file": "theme/src/components/accordion/accordion.tsx",
+    "cap": "220 ms open, 150 ms close",
+    "reason": "The panel opens to its natural, unknown content height; there is no compositor-only way to animate an auto size, so it is capped at the 250 ms limit."
+  },
+  {
+    "component": "button",
+    "property": "filter",
+    "file": "theme/src/components/button/button.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "Hover brightness lift on the small solid fill of a primary or danger button: paint-only, no layout, the button holds no glass children."
+  },
+  {
+    "component": "bar-chart",
+    "property": "x1",
+    "file": "theme/src/components/charts/bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "bar-chart",
+    "property": "x2",
+    "file": "theme/src/components/charts/bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "bar-chart",
+    "property": "y1",
+    "file": "theme/src/components/charts/bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "bar-chart",
+    "property": "y2",
+    "file": "theme/src/components/charts/bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "combo-chart",
+    "property": "cx",
+    "file": "theme/src/components/charts/combo-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "combo-chart",
+    "property": "cy",
+    "file": "theme/src/components/charts/combo-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "error-bar-chart",
+    "property": "cx",
+    "file": "theme/src/components/charts/error-bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "error-bar-chart",
+    "property": "cy",
+    "file": "theme/src/components/charts/error-bar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "funnel-chart",
+    "property": "points",
+    "file": "theme/src/components/charts/funnel-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "line-chart",
+    "property": "cx",
+    "file": "theme/src/components/charts/line-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "line-chart",
+    "property": "cy",
+    "file": "theme/src/components/charts/line-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "radar-chart",
+    "property": "r",
+    "file": "theme/src/components/charts/radar-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "range-area-chart",
+    "property": "cx",
+    "file": "theme/src/components/charts/range-area-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "range-area-chart",
+    "property": "cy",
+    "file": "theme/src/components/charts/range-area-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "scatter-chart",
+    "property": "r",
+    "file": "theme/src/components/charts/scatter-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "scatter-chart",
+    "property": "x1",
+    "file": "theme/src/components/charts/scatter-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "scatter-chart",
+    "property": "x2",
+    "file": "theme/src/components/charts/scatter-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "scatter-chart",
+    "property": "y1",
+    "file": "theme/src/components/charts/scatter-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "scatter-chart",
+    "property": "y2",
+    "file": "theme/src/components/charts/scatter-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "sparkline",
+    "property": "cx",
+    "file": "theme/src/components/charts/sparkline.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "sparkline",
+    "property": "cy",
+    "file": "theme/src/components/charts/sparkline.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "step-line-chart",
+    "property": "cx",
+    "file": "theme/src/components/charts/step-line-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "step-line-chart",
+    "property": "cy",
+    "file": "theme/src/components/charts/step-line-chart.tsx",
+    "cap": "350 ms (duration.slow)",
+    "reason": "SVG geometry attribute of one small mark, animated by Motion (no CSS layout: SVG marks never reflow siblings; paint-only). Reduced motion: instant."
+  },
+  {
+    "component": "chat",
+    "property": "filter",
+    "file": "theme/src/components/chat/chat-widget.tsx",
+    "cap": "350 ms max (duration.snappy)",
+    "reason": "Hover brightness lift on the small launcher button: paint-only, no layout, no glass inside it."
+  },
+  {
+    "component": "chat",
+    "property": "box-shadow",
+    "file": "theme/src/components/chat/composer.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "chat",
+    "property": "filter",
+    "file": "theme/src/components/chat/emoji-picker.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "Emoji glyph desaturation (grayscale) on hover: paint-only on one small cell, no layout."
+  },
+  {
+    "component": "checkbox",
+    "property": "stroke-dashoffset",
+    "file": "theme/src/components/checkbox/checkbox.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The check mark draws itself with stroke-dashoffset: paint-only on a 16 px SVG path, no layout and no compositor equivalent for a path draw."
+  },
+  {
+    "component": "collapsible",
+    "property": "height",
+    "file": "theme/src/components/collapsible/collapsible.tsx",
+    "cap": "220 ms open, 150 ms close",
+    "reason": "The panel opens to its natural, unknown content height; there is no compositor-only way to animate an auto size, so it is capped at the 250 ms limit."
+  },
+  {
+    "component": "color-picker",
+    "property": "box-shadow",
+    "file": "theme/src/components/color-picker/color-picker.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "color-picker",
+    "property": "box-shadow",
+    "file": "theme/src/components/color-picker/parts/fields.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "combobox",
+    "property": "box-shadow",
+    "file": "theme/src/components/combobox/combobox.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "data-table",
+    "property": "height",
+    "file": "theme/src/components/data-table/rows.tsx",
+    "cap": "220 ms open (duration.base), 150 ms close (duration.exit)",
+    "reason": "Expanded detail row (table and card layouts) opens to its unknown content height inside a clipped wrapper; no compositor equivalent for an auto size. Held at the 250 ms cap."
+  },
+  {
+    "component": "data-table",
+    "property": "height",
+    "file": "theme/src/components/data-table/selection.tsx",
+    "cap": "220 ms (duration.base)",
+    "reason": "The bulk-action bar's slot reserves its room by height only (the bar inside is glass and is never faded); capped at 250 ms."
+  },
+  {
+    "component": "input-group",
+    "property": "box-shadow",
+    "file": "theme/src/components/input-group/input-group.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "input",
+    "property": "box-shadow",
+    "file": "theme/src/components/input/input.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "number-field",
+    "property": "box-shadow",
+    "file": "theme/src/components/number-field/number-field.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "otp-input",
+    "property": "box-shadow",
+    "file": "theme/src/components/otp-input/otp-input.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "select",
+    "property": "box-shadow",
+    "file": "theme/src/components/select/select.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "side-drawer",
+    "property": "height",
+    "file": "theme/src/components/side-drawer/parts/resize.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The resize grip's indicator line grows on hover. It is absolutely positioned inside the handle, so nothing reflows."
+  },
+  {
+    "component": "tabs",
+    "property": "width",
+    "file": "theme/src/components/tabs/tabs.tsx",
+    "cap": "350 ms max (duration.snappy)",
+    "reason": "The active pill resizes to the new tab's width with the snappy spring. It is absolutely positioned behind the tabs, so nothing reflows; scaleX would distort the pill's radius."
+  },
+  {
+    "component": "tags-input",
+    "property": "box-shadow",
+    "file": "theme/src/components/tags-input/tags-input.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "textarea",
+    "property": "box-shadow",
+    "file": "theme/src/components/textarea/textarea.tsx",
+    "cap": "150 ms (duration.fast)",
+    "reason": "The focus / hover ring is a box-shadow cross-fade: paint-only, on one control, nothing is moved or resized."
+  },
+  {
+    "component": "textarea",
+    "property": "stroke-dashoffset",
+    "file": "theme/src/components/textarea/textarea.tsx",
+    "cap": "220 ms (duration.base)",
+    "reason": "The character-count ring is drawn with stroke-dashoffset: paint-only on a small SVG circle, no layout."
+  },
+  {
+    "component": "styles",
+    "property": "box-shadow",
+    "file": "theme/src/styles/motion.css",
+    "cap": "120 ms reduced rule; sheen-ripple one-shot (duration.gentle)",
+    "reason": "Two uses, both paint-only on one element: the reduced-motion allow-list may fade a box-shadow (never longer than 120 ms), and the sheen-ripple keyframes expand the payment success ring (a box-shadow spread) once. Nothing reflows and no glass is inside."
+  },
+  {
+    "component": "styles",
+    "property": "stroke-dashoffset",
+    "file": "theme/src/styles/motion.css",
+    "cap": "350 ms (duration.slow), one-shot",
+    "reason": "sheen-seal-draw draws the side-drawer seal's check with stroke-dashoffset: paint-only on one SVG path, once."
+  },
+  {
+    "component": "text-effects",
+    "property": "filter",
+    "file": "theme/src/components/text-effects/blur-in.tsx",
+    "cap": "duration.slow",
+    "usedBy": ["tooltip", "toast", "vertical-nav"],
+    "reason": "BlurIn: a blur(8px) to blur(0) entrance on a text label (also used by the tooltip, toast and vertical-nav labels). Paint-only on one small text element, no layout and no children moved; it never wraps glass."
+  }
+]

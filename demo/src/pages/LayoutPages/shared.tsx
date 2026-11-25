@@ -1,0 +1,98 @@
+import { type ComponentProps } from "react";
+import { useToast } from "@sheenui/theme";
+
+/* ---------- icons (24px grid, stroke) ---------- */
+
+export const icon = (d: string, className?: string) => (
+  <svg
+    aria-hidden
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d={d} />
+  </svg>
+);
+
+export const I = {
+  home: "M3 11l9-7 9 7M5 10v10h14V10",
+  folder: "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+  truck: "M3 6h11v10H3zM14 9h4l3 3v4h-7M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+  undo: "M9 14 4 9l5-5M4 9h11a5 5 0 0 1 0 10h-4",
+  redo: "M15 14l5-5-5-5M20 9H9a5 5 0 0 0 0 10h4",
+  shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",
+  message: "M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z",
+  card: "M3 6h18v12H3zM3 10h18M7 15h3",
+  bell: "M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4",
+  lock: "M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4",
+  user: "M20 21a8 8 0 0 0-16 0M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10z",
+  merge:
+    "M6 3v12M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 15V9a4 4 0 0 0-4-4H9M12 2 9 5l3 3",
+  pull: "M6 3v12M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 9a3 3 0 1 0 0-6M18 15V8a3 3 0 0 0-3-3h-4M13 2l-3 3 3 3M18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  rocket:
+    "M5 15c-1 1-1.5 3.5-1.5 5.5 2 0 4.5-.5 5.5-1.5M14 4c3-1 6-1 6-1s0 3-1 6l-6 6-5-5zM9 10H5l2-3h5M14 15v4l3-2v-5",
+  x: "M18 6 6 18M6 6l12 12",
+  check: "M5 12.5l4.5 4.5L19 7",
+  box: "M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8",
+  package: "M3 8l9-5 9 5-9 5zM3 8v8l9 5M21 8v8l-9 5M7.5 5.5l9 5",
+  map: "M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+  tag: "M3 12V4h8l10 10-8 8zM7.5 8.5h.01",
+  sparkle:
+    "M12 3l1.8 4.9L19 9.7l-4.9 1.8L12 16.4l-1.8-4.9L5.3 9.7l4.9-1.8zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z",
+  bold: "M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z",
+  italic: "M19 4h-9M14 20H5M15 4 9 20",
+  underline: "M6 4v7a6 6 0 0 0 12 0V4M4 21h16",
+  strike: "M16 6.5A4 4 0 0 0 12 4c-2.5 0-4 1.5-4 3.5 0 4.5 8 3 8 8.5 0 2-1.8 4-4.5 4A4.5 4.5 0 0 1 7 17M4 12h16",
+  alignLeft: "M4 6h16M4 10h10M4 14h16M4 18h10",
+  alignCenter: "M4 6h16M7 10h10M4 14h16M7 18h10",
+  alignRight: "M4 6h16M10 10h10M4 14h16M10 18h10",
+  alignJustify: "M4 6h16M4 10h16M4 14h16M4 18h16",
+  link: "M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1",
+  image: "M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15.5 9.5h.01",
+  chevron: "m6 9 6 6 6-6",
+  pointer: "M5 3l14 7-6 2-2 6z",
+  hand: "M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11.5v-7a1.5 1.5 0 0 1 3 0V12M14 11.5V6.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.6-2.2L3 15.5a1.6 1.6 0 0 1 2.4-2L8 16",
+  pen: "M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4",
+  square: "M5 5h14v14H5z",
+  type: "M5 6V4h14v2M12 4v16M9 20h6",
+  plus: "M12 5v14M5 12h14",
+  minus: "M5 12h14",
+  search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-3.5-3.5",
+  github:
+    "M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5a3 3 0 0 0-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.7 4.7 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.5 2.5 5.5 2.8 5.5 2.8a4.3 4.3 0 0 0-.1 3.2A4.7 4.7 0 0 0 4 9.2c0 4.6 2.8 5.7 5.5 6a3 3 0 0 0-.8 2.3V21",
+  google:
+    "M21 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h5a4.3 4.3 0 0 1-1.9 2.8v2.3h3A9 9 0 0 0 21 12.2zM12 21a8.9 8.9 0 0 0 6.2-2.3l-3-2.3a5.6 5.6 0 0 1-8.3-2.9H3.8v2.4A9 9 0 0 0 12 21zM6.9 13.5a5.4 5.4 0 0 1 0-3.4V7.7H3.8a9 9 0 0 0 0 8.2zM12 6.6a4.9 4.9 0 0 1 3.4 1.4l2.6-2.6A8.7 8.7 0 0 0 12 3a9 9 0 0 0-8.2 4.7l3.1 2.4A5.4 5.4 0 0 1 12 6.6z",
+  star: "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z",
+  eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  quote: "M7 7h4v6H5V9a2 2 0 0 1 2-2zM7 13c0 2-1 3.5-3 4M17 7h4v6h-6V9a2 2 0 0 1 2-2zM17 13c0 2-1 3.5-3 4",
+  comment: "M4 5h16v11H9l-5 4z",
+} as const;
+
+/**
+ * The href of a demo link: a fragment inside the page, never a root-relative path (which would leave the site's
+ * base path and 404 on the deployed site, and which crawlers would follow). "/acme/team" → "#demo-acme-team".
+ */
+export function demoHref(to: string) {
+  return `#demo-${to.replace(/^\/+/, "").replace(/[^a-z0-9]+/gi, "-") || "home"}`;
+}
+
+/* Links in these demos must not change the docs' hash route: they say where they would go. */
+export function DemoLink({ to, onClick, ...props }: ComponentProps<"a"> & { to: string }) {
+  const toast = useToast();
+  return (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content -- the link text arrives through the props spread (`children`)
+    <a
+      href={demoHref(to)}
+      {...props}
+      onClick={(event) => {
+        event.preventDefault();
+        onClick?.(event);
+        toast.info(`Navigate to ${to}`);
+      }}
+    />
+  );
+}

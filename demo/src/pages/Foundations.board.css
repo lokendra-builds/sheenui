@@ -1,0 +1,320 @@
+/* The /foundations token board and the section visuals (FoundationsTokenBoard.tsx, FoundationsGlassIntro.tsx). Tokens only. */
+  .fb {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 40rem;
+  }
+  .fb-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .fb-glass {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: end;
+    min-height: 14rem;
+    padding: 1.25rem;
+    padding-top: 5.5rem;
+    overflow: hidden;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-xl);
+  }
+  .fb-glass__back {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 90% at 12% 10%, var(--sheen-blob-1), transparent 70%),
+      radial-gradient(55% 80% at 55% 0%, var(--sheen-blob-2), transparent 70%),
+      radial-gradient(60% 90% at 95% 20%, var(--sheen-blob-3), transparent 70%), var(--sheen-bg-2);
+  }
+  /* Hard-edged stripes and discs behind the top of the chips, so the blur and tint steps between levels show. */
+  .fb-glass__back::before {
+    content: "";
+    position: absolute;
+    inset: 1rem 1rem auto;
+    height: 4.5rem;
+    border-radius: var(--sheen-radius-md);
+    background: repeating-linear-gradient(90deg, var(--sheen-accent) 0 0.75rem, transparent 0.75rem 1.5rem);
+    opacity: 0.85;
+  }
+  .fb-glass__back::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 42%;
+    width: 5rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--sheen-accent-fill);
+    box-shadow:
+      0 0 0 3px var(--sheen-focus),
+      -22rem 1.25rem 0 -0.5rem var(--sheen-spectrum-3),
+      19rem 1.25rem 0 -0.5rem var(--sheen-spectrum-5);
+  }
+  .fb-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    padding: 1rem 1.1rem;
+    border-radius: var(--sheen-radius-lg);
+  }
+  .fb-chip__name {
+    font-family: var(--sheen-font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sheen-accent);
+  }
+  .fb-chip__use {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .fb-chip__note {
+    font-size: 0.75rem;
+    color: var(--sheen-fg-muted);
+  }
+  .fb-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .fb-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 1.25rem;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-lg);
+    background: var(--sheen-hover);
+  }
+  .fb-card--wide {
+    grid-column: 1 / -1;
+  }
+  .fb-colour {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 1.5rem;
+  }
+  .fb-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sheen-fg-muted);
+  }
+  .fb-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--sheen-fg-muted);
+  }
+  .fb-card--wide > .fb-title + .fb-strip {
+    margin-top: 0;
+  }
+  .fb-ramp {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-sm);
+  }
+  .fb-ramp li {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 2.5rem;
+    display: flex;
+    align-items: flex-end;
+  }
+  .fb-fill {
+    height: 2.5rem;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-sm);
+  }
+  .fb-radii {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .fb-radii li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+  }
+  .fb-radii span {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--sheen-accent-border, var(--sheen-border));
+    background: var(--sheen-accent-soft);
+  }
+  .fb-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .fb-controls li {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 14rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--sheen-control-border, var(--sheen-border));
+    border-radius: var(--sheen-radius-md);
+    background: var(--sheen-accent-soft);
+    font-size: 0.75rem;
+  }
+  .fb-space {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .fb-space li {
+    height: 1rem;
+    padding-inline-start: 0.35rem;
+    border-radius: 0.25rem;
+    background: var(--sheen-accent-fill);
+    color: var(--sheen-accent-fg, var(--sheen-fg));
+    font-size: 0.625rem;
+    line-height: 1rem;
+    min-width: 1.5rem;
+  }
+  .fb-type {
+    margin: 0;
+    line-height: 1.2;
+  }
+  .fb-type--display {
+    font-family: var(--sheen-font-display);
+    font-size: 2.25rem;
+    font-weight: var(--sheen-display-weight, 600);
+    letter-spacing: var(--sheen-display-tracking, -0.02em);
+  }
+  .fb-type--sans {
+    font-family: var(--sheen-font-sans);
+    font-size: 1.125rem;
+  }
+  .fb-type--mono {
+    font-family: var(--sheen-font-mono);
+    font-size: 0.95rem;
+    color: var(--sheen-fg-muted);
+  }
+  .fb-scale {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    color: var(--sheen-accent);
+    font-weight: 600;
+  }
+  .fb-springs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .fb-springs li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+    font-size: 0.75rem;
+    color: var(--sheen-fg-muted);
+  }
+  .fb-springs svg {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-sm);
+    background: var(--sheen-accent-soft);
+  }
+  .fb-springs code {
+    font-family: var(--sheen-font-mono);
+    font-weight: 600;
+    color: var(--sheen-fg);
+  }
+  .fb-spring__target {
+    stroke: var(--sheen-fg-subtle);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .fb-spring__curve {
+    fill: none;
+    stroke: var(--sheen-accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  @media (max-width: 47.99rem) {
+    .fb {
+      min-height: 0;
+    }
+    .fb-glass {
+      grid-template-columns: 1fr;
+      padding-top: 6.5rem;
+    }
+    .fb-grid,
+    .fb-colour {
+      grid-template-columns: 1fr;
+    }
+    .fb-springs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Section visuals of the glass intro: blur ladder, plain-CSS snippet, solid fallback. */
+  .fv {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 48rem;
+  }
+  .fv-tile {
+    flex: 1 1 9rem;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-md);
+    background: var(--sheen-hover);
+    font-size: 0.75rem;
+    color: var(--sheen-fg-muted);
+  }
+  .fv-tile strong {
+    font-size: 1.25rem;
+    color: var(--sheen-fg);
+  }
+  .fv-bar {
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--sheen-accent-fill);
+  }
+  .fv-solid {
+    background: var(--sheen-surface-solid);
+    border: 2px solid var(--sheen-fg-subtle);
+    color: var(--sheen-fg);
+  }
+  .fv-snippet {
+    flex: 1 1 100%;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--sheen-border);
+    border-radius: var(--sheen-radius-md);
+    background: var(--sheen-hover);
+    font-family: var(--sheen-font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  .fv-snippet b {
+    font-weight: 500;
+    /* The property tint pulled toward the text colour: the bare token is 3.3:1 on this tinted plate, this is above 4.5:1. */
+    color: color-mix(in oklab, var(--sheen-code-property, var(--sheen-accent)) 45%, var(--sheen-fg));
+  }
+

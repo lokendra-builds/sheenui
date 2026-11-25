@@ -1,0 +1,87 @@
+import type { PageContent } from "../page-content";
+
+export const content: Record<string, PageContent> = {
+  "/charts/bump-chart": {
+    when: [
+      "Use it for league tables and leaderboards over time, such as sales regions ranked by revenue each quarter, where who is ahead matters more than by how much.",
+      "Use it for top-N lists that reshuffle: search rankings, product popularity, support channels by response time. Set higherIsBetter to false when a smaller number ranks higher.",
+      'Pass ready-made ranks with rankBy="rank" when your data already holds positions, and highlight one series to tell the story of a single climber or faller.',
+      "Skip it when the size of the values matters, where a Line chart shows the gap between series, or with more than about ten series, where the lines cross too often to follow.",
+      "Pair it with ChartCard, bumpLegend and BumpTable for the legend, the Chart / Table tabs and a text version of every rank.",
+    ],
+    faq: [
+      {
+        q: "How do I make a bump chart in React?",
+        a: "Pass data as one row per point in time with a number per series, index as the key that names the row, and series as { key, label } entries. Ranks are computed per row, so the highest value ranks first. aria-label is required.",
+      },
+      {
+        q: "Can I use ranks I already have?",
+        a: "Yes. Set rankBy to rank and the numbers are taken as positions, 1 being the best. With rankBy value, higherIsBetter decides whether a larger number ranks higher; ties keep the series order, so every rank is used once.",
+      },
+      {
+        q: "How are the lines told apart without colour?",
+        a: "The rank is written in each dot and the series name at the end of its line. From four series on, patterns gives every line its own dash style as well. Inside a ChartCard the legend hides a series and the rest are re-ranked.",
+      },
+      {
+        q: "How does keyboard use work?",
+        a: "Tab focuses the chart. Left and Right move through time, Up and Down move to the series one rank higher or lower, Home and End jump to the first and last point, Escape clears. Each move announces the series, period, rank and how far it moved.",
+      },
+    ],
+  },
+
+  "/charts/error-bar-chart": {
+    when: [
+      "Use it for A/B test results, survey estimates and model scores, where how sure a number is matters as much as the number: each bar or dot carries a whisker from the low to the high end of its interval.",
+      'Use variant="point" with a reference line for effect sizes in the forest-plot style, so any whisker that crosses the line reads as no clear difference.',
+      'Use variant="band" for a forecast or a measurement over time: a line of estimates with the confidence interval shaded around it, widening as the future gets less certain.',
+      "Skip it when you have the raw observations, where a Box plot or Beeswarm shows the whole distribution, or when every value is exact and there is no interval to draw.",
+      "Pair it with ChartCard, errorBarLegend and ErrorBarTable so the card gets a legend, a Chart / Table switch and a text version of every interval.",
+    ],
+    faq: [
+      {
+        q: "How do I add confidence intervals to a bar chart in React?",
+        a: "Pass data as items with label, value, low and high. Each bar gets a whisker with end caps from low to high, and the tooltip and table print both ends. Name the interval with intervalLabel, for example 95% CI. aria-label is required.",
+      },
+      {
+        q: "How do I draw a confidence band on a line?",
+        a: "Set variant to band. The items become the points of a line through value, with the area between low and high shaded and dashed at its edges. Use height to size it; categories sit evenly along the x axis, so keep them in order.",
+      },
+      {
+        q: "Can I show a no-effect line?",
+        a: "Yes. reference takes { value, label } and draws a dashed line with its label, for example 0 for no change. baseline sets where bars start, and the scale always covers every interval, the baseline and the reference.",
+      },
+      {
+        q: "How does keyboard use work?",
+        a: "Tab focuses the chart. Up and Down move between bars and points, Left and Right between the points of a band, Home and End jump to the first and last, Escape clears. Each move announces the estimate and both ends of the interval.",
+      },
+    ],
+  },
+
+  "/charts/population-pyramid": {
+    when: [
+      "Use it for demographics: a country, city or customer base by age group and sex, where the two halves sit back to back on one scale so their shapes compare honestly.",
+      "Use it for any two-sided split across ordered bands, such as customers by tenure on two plans, survey answers by age, or applicants against hires by seniority.",
+      "Set share to read each bar as a part of the whole population instead of a count, and firstAt to choose whether the first group sits at the base or at the top.",
+      "Skip it for more than two sides or for unordered categories, where a grouped Bar chart is clearer, and for a single series, where a Bar chart needs no mirror.",
+      "Pair it with ChartCard, populationPyramidLegend and PopulationPyramidTable for a legend that toggles a side, Chart / Table tabs and a text table.",
+    ],
+    faq: [
+      {
+        q: "How do I make a population pyramid in React?",
+        a: "Pass data as one item per age group with a label and the size of each side, start and end, from the first group to the last. The first group sits at the base. Rename the sides with the labels prop and set aria-label.",
+      },
+      {
+        q: "Which side is on the left?",
+        a: "start sits at the inline start, so on the left in left-to-right text and on the right in right-to-left text. Both halves share one scale. colors takes a palette slot for each side, and patterns hatches the end side for a non-colour cue.",
+      },
+      {
+        q: "Can it show shares instead of counts?",
+        a: "Yes. share shows every bar as a percentage of the whole population, with formatPercent and locale for the text. The tooltip and PopulationPyramidTable still give the group's total and, in count mode, its share of the whole.",
+      },
+      {
+        q: "How does keyboard use work?",
+        a: "Tab focuses the chart. Up and Down move between groups from top to bottom, Home and End jump to the top and bottom group, Escape clears. Each move announces the group, both sides, the total and its share.",
+      },
+    ],
+  },
+};

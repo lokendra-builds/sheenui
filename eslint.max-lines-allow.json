@@ -1,0 +1,11 @@
+{
+  "_comment": "Files over the 800-line max-lines limit (code lines: blank lines and comments not counted). Each entry is {lines, reason}: `lines` is its own ceiling, `reason` says why it is not split yet. THIS LIST MAY ONLY SHRINK: split a file, then delete its entry; never add a file or raise a count. Counts are updated by hand after a split.",
+  "limit": 800,
+  "files": [
+    {
+      "path": "theme/src/components/charts/geo/world-110m.ts",
+      "lines": 1937,
+      "reason": "Cannot be split: it is one generated coordinate table (Natural Earth 110m outlines as a single literal), with no logic, regenerated whole and never edited by hand; cutting it in files would only add import plumbing around the same data."
+    }
+  ]
+}

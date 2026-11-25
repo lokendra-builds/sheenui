@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-patterns",
+  "type": "registry:ui",
+  "title": "Chart patterns",
+  "description": "`<defs>` with one hatch pattern per series: the series colour with surface-coloured marks over it. Put it inside the chart's `<svg>`; use `patternFill` for the shapes.",
+  "author": "lokendra-builds <https://github.com/lokendra-builds>",
+  "registryDependencies": [
+    "https://lokendra-builds.github.io/sheenui/r/sheenui-theme.json"
+  ],
+  "files": [
+    {
+      "path": "theme/src/components/charts/chart-patterns.tsx",
+      "content": "import type { ReactNode } from \"react\";\n\n/**\n * Non-colour cues for chart series (WCAG 1.4.1): hatch fills for bars, slices and bands, dash styles\n * and marker shapes for lines. Series 0 stays solid; every later series gets its own cue.\n * Charts turn them on with `patterns`, and by default once there are more than 3 series.\n * @internal\n */\nexport const PATTERNS_AUTO_FROM = 4;\n\n/** Whether a chart draws non-colour cues: the `patterns` prop, else on for more than 3 series. @internal */\nexport function resolvePatterns(prop: boolean | undefined, seriesCount: number): boolean {\n  return prop ?? seriesCount >= PATTERNS_AUTO_FROM;\n}\n\n/** Id of the hatch pattern for series `index` (palette position). @internal */\nexport function patternId(id: string, index: number) {\n  return `${id}-pat${index}`;\n}\n\n/** Fill for series `index`: its hatch pattern, or the plain `fallback` for the first series or when off. @internal */\nexport function patternFill(on: boolean, id: string, index: number, fallback: string) {\n  return on && index > 0 ? `url(#${patternId(id, index)})` : fallback;\n}\n\n/** stroke-dasharray for a line series: solid first, then distinct dash rhythms. @internal */\nconst DASHES = [undefined, \"8 4\", \"2 4\", \"10 3 2 3\", \"5 5\", \"1 4\", \"12 4\", \"3 3\"] as const;\n\n/** Dash style of series `index` (undefined = solid). @internal */\nexport function dashFor(on: boolean, index: number): string | undefined {\n  return on ? DASHES[index % DASHES.length] : undefined;\n}\n\n/** Hatch strokes for pattern `k` inside a 8x8 tile. Eight distinct patterns; series 8 and up repeat them. */\nfunction hatch(k: number): ReactNode {\n  switch (k % 8) {\n    case 1:\n      return <path d=\"M-2 2l4-4M0 8l8-8M6 10l4-4\" />;\n    case 2:\n      return (\n        <>\n          <circle cx={2} cy={2} r={1} />\n          <circle cx={6} cy={6} r={1} />\n        </>\n      );\n    case 3:\n      return <path d=\"M-2 6l4 4M0 0l8 8M6 -2l4 4\" />;\n    case 4:\n      return <path d=\"M0 4h8M4 0v8\" />;\n    case 5:\n      return <path d=\"M0 2h8M0 6h8\" />;\n    case 6:\n      return <path d=\"M2 0v8M6 0v8\" />;\n    case 7:\n      return (\n        <>\n          <circle cx={4} cy={4} r={1.4} />\n          <path d=\"M0 0h2M6 8h2\" />\n        </>\n      );\n    default:\n      // k = 0: series 8, 16, ... (series 0 is drawn plain).\n      return <path d=\"M0 4h3M5 0v3M8 4h-3M3 8v-3\" />;\n  }\n}\n\n/**\n * `<defs>` with one hatch pattern per series: the series colour with surface-coloured marks over it.\n * Put it inside the chart's `<svg>`; use `patternFill` for the shapes.\n *\n * Keyboard: none, it is decorative paint inside an SVG.\n * Accessibility: purely visual; the series are still named by the legend, tooltip and table view.\n *\n * @internal Not part of the public barrel: the example documents the module's own helpers.\n * @example\n * ```tsx\n * import { ChartPatternDefs, patternFill } from \"./chart-patterns\";\n *\n * export function Bars({ id }: { id: string }) {\n *   return (\n *     <svg width={80} height={40} aria-hidden>\n *       <ChartPatternDefs id={id} entries={[{ index: 1, color: \"var(--sheen-chart-2)\" }]} />\n *       <rect width={40} height={40} fill={patternFill(true, id, 1, \"var(--sheen-chart-2)\")} />\n *     </svg>\n *   );\n * }\n * ```\n *\n * @see /charts\n */\nexport function ChartPatternDefs({\n  id,\n  entries,\n}: {\n  id: string;\n  entries: readonly { index: number; color: string }[];\n}) {\n  return (\n    <defs>\n      {entries\n        .filter((e) => e.index > 0)\n        .map(({ index, color }) => (\n          <pattern key={index} id={patternId(id, index)} width={8} height={8} patternUnits=\"userSpaceOnUse\">\n            <rect width={8} height={8} fill={color} />\n            <g\n              fill=\"var(--sheen-chart-surface)\"\n              stroke=\"var(--sheen-chart-surface)\"\n              strokeWidth={1.4}\n              strokeOpacity={0.6}\n              fillOpacity={0.6}\n            >\n              {hatch(index)}\n            </g>\n          </pattern>\n        ))}\n    </defs>\n  );\n}\n\n/** Outline path of marker shape `index` (circle, square, triangle, diamond…) centred on 0,0 with radius `r`. @internal */\nexport function markerPath(index: number, r: number): string {\n  const k = index % 4;\n  if (k === 1) return `M${-r} ${-r}h${2 * r}v${2 * r}h${-2 * r}z`;\n  if (k === 2) return `M0 ${-r * 1.2}L${r * 1.1} ${r * 0.8}H${-r * 1.1}z`;\n  if (k === 3) return `M0 ${-r * 1.3}L${r * 1.3} 0L0 ${r * 1.3}L${-r * 1.3} 0z`;\n  return \"\";\n}\n",
+      "type": "registry:ui",
+      "target": "@components/sheenui/charts/chart-patterns.tsx"
+    }
+  ],
+  "docs": "Chart patterns: https://lokendra-builds.github.io/sheenui/charts\n\nInstalled in components/sheenui/charts/. A helper module that the other items import; you rarely import it yourself.",
+  "categories": [
+    "charts"
+  ],
+  "meta": {
+    "kind": "chart",
+    "source": "https://github.com/lokendra-builds/sheenui/tree/main/theme/src",
+    "route": "/charts",
+    "docsUrl": "https://lokendra-builds.github.io/sheenui/charts"
+  }
+}

@@ -1,0 +1,14 @@
+/* Tile entrance: rise + fade, staggered across a row, paused until the tile is on screen.
+   Two identical keyframes so a new filter restarts it (the animation name changes). */
+@keyframes gallery-in-a { from { opacity: 0; transform: translateY(14px) scale(0.985); } }
+@keyframes gallery-in-b { from { opacity: 0; transform: translateY(14px) scale(0.985); } }
+/* A tile held back by "Show all" is hidden="until-found": the browser gives it content-visibility: hidden, which this
+   class's content-visibility: auto would override, and its intrinsic size would still fill a grid cell. Out of flow, it adds nothing. */
+.gallery-tile[hidden="until-found"] { position: absolute; width: 0; height: 0; content-visibility: hidden; contain-intrinsic-size: 0 0; }
+@media (prefers-reduced-motion: no-preference) {
+  /* Unseen tiles wait invisible with NO animation attached: a paused animation would still give
+     every off-screen tile its own compositor layer (a layer per tile taxing every frame on the page). */
+  html:not([data-motion="reduced"]) .gallery-tile:not([data-seen]) { opacity: 0; }
+  html:not([data-motion="reduced"]) .gallery-grid[data-pass="a"] .gallery-tile[data-seen] { animation: gallery-in-a var(--sheen-duration-slower) var(--sheen-ease-out) backwards; }
+  html:not([data-motion="reduced"]) .gallery-grid[data-pass="b"] .gallery-tile[data-seen] { animation: gallery-in-b var(--sheen-duration-slower) var(--sheen-ease-out) backwards; }
+}

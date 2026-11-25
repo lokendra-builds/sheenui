@@ -1,0 +1,5 @@
+/* Hub card miniatures: the small drawn kinds sit in the middle of the tile instead of hugging its start edge (the zoomed child is
+   narrower than the tile, so auto margins centre it). Imported from index.css (layer `stage`, after the page rules it adjusts). */
+html:root .hubp:not([data-kind="cover"]) > :not(.hubp-toast) {
+  margin-inline: auto;
+}

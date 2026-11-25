@@ -1,0 +1,19 @@
+/* The compact key on a chart stage: one line under the title, inside the reserved stage box (ChartStage reserves it). */
+.sheen-stage-chart-body > .sheen-stage-chart-legend {
+  flex-wrap: nowrap;
+  gap: 0 0.875rem;
+  height: 1.25rem;
+  margin-block-start: -0.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+/* On a phone-width plate the key wraps (it is there from the first frame, so nothing shifts once the chart mounts). */
+@container (max-width: 36rem) {
+  .sheen-stage-chart-body > .sheen-stage-chart-legend {
+    flex-wrap: wrap;
+    gap: 0.125rem 0.75rem;
+    height: auto;
+    overflow: visible;
+  }
+}

@@ -1,0 +1,318 @@
+/*
+ * ============================================================================
+ *  Style preset: AURORA NEON
+ * ============================================================================
+ * A premium developer-tool launch: slow curtains of violet, magenta and cyan light behind real
+ * frosted glass. Every panel has a glowing gradient rim (white-hot top-left, aurora picked up
+ * bottom-right) with a rim light and a 40 px hotspot that follow the pointer. Light mode is a
+ * bright daytime aurora on pearl. Display type: Geist, very tight, with ONE Instrument Serif
+ * italic accent word per heading.
+ *
+ * Applies when <html data-sheen-style="aurora">.
+ * Source: the approved aurora prototype (recipe: wow/aurora/final.json).
+ * Contrast: the prototype's rendered-pixel audit (min 4.93:1 body text, AA everywhere, 22 theme /
+ * width / scroll combinations); re-audited on the docs site, see the report.
+ */
+
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica");
+  font-weight: 100 549;
+  size-adjust: 102.6%;
+  ascent-override: 98.4%;
+  descent-override: 28.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold");
+  font-weight: 550 900;
+  size-adjust: 101%;
+  ascent-override: 100%;
+  descent-override: 28.7%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Instrument Serif Fallback";
+  font-style: italic;
+  src: local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"), local("Times Italic");
+  size-adjust: 85.5%;
+  ascent-override: 115.8%;
+  descent-override: 36.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Geist Mono Fallback";
+  src: local("Menlo"), local("Menlo-Regular"), local("Courier New");
+  size-adjust: 99.7%;
+  ascent-override: 101.4%;
+  descent-override: 29.1%;
+  line-gap-override: 0%;
+}
+@layer sheen {
+  :root[data-sheen-style="aurora"],
+  :root[data-sheen-style="aurora"] [data-theme] {
+    /* ---- Page ---- */
+    --sheen-bg: light-dark(oklch(98.2% 0.009 300), oklch(12% 0.03 282));
+    --sheen-bg-2: light-dark(oklch(96% 0.02 290), oklch(9.5% 0.03 285));
+    --sheen-fg: light-dark(oklch(17% 0.035 285), oklch(98.5% 0.006 285));
+    /* Night: muted 90 / subtle 86 (were 84 / 83): measured from pixels, muted text over a bright
+     curtain on the bare page and on glass fell to 3.4-4.4:1. */
+    --sheen-fg-muted: light-dark(oklch(31% 0.035 285), oklch(90% 0.02 285));
+    --sheen-fg-subtle: light-dark(oklch(35% 0.03 285), oklch(86% 0.025 285));
+    --sheen-border: light-dark(oklch(30% 0.06 290 / 0.12), oklch(100% 0 0 / 0.1));
+
+    /* ---- Spectrum: aurora light (decorative) ---- */
+    --sheen-spectrum-1: light-dark(oklch(60% 0.22 295), oklch(66% 0.25 295)); /* violet */
+    --sheen-spectrum-2: light-dark(oklch(64% 0.24 350), oklch(68% 0.27 345)); /* magenta */
+    --sheen-spectrum-3: light-dark(oklch(80% 0.13 55), oklch(84% 0.13 55)); /* peach (dark only in gradients) */
+    --sheen-spectrum-4: light-dark(oklch(72% 0.2 330), oklch(78% 0.19 330)); /* orchid */
+    --sheen-spectrum-5: light-dark(oklch(74% 0.14 210), oklch(86% 0.14 200)); /* cyan */
+    --sheen-spectrum-6: light-dark(oklch(62% 0.18 260), oklch(62% 0.2 262)); /* blue */
+    --sheen-spectrum-warm: var(--sheen-spectrum-2);
+
+    /* ---- Accent ---- */
+    /* Night: 86 % (was 82 %), so accent links on the bare aurora sky keep AA (measured 3.8-4.4:1 at 82 %). */
+    --sheen-accent: light-dark(oklch(38% 0.24 292), oklch(86% 0.11 295));
+    --sheen-accent-2: light-dark(oklch(48% 0.11 215), oklch(86% 0.14 200));
+    --sheen-accent-soft: light-dark(oklch(55% 0.24 292 / 0.12), oklch(72% 0.2 295 / 0.18));
+    --sheen-accent-border: light-dark(oklch(55% 0.24 292 / 0.32), oklch(78% 0.16 295 / 0.4));
+    /* Words in the aurora gradient, interpolated in oklch (no grey or brown midpoints).
+     Light: a cool ramp, every stop L 50-54% with chroma >= .17 (>= 5.1:1 on pearl).
+     Dark: cyan, violet, magenta, a peach flare between two magentas, all L >= 77% (>= 8.3:1). */
+    --sheen-text-gradient: linear-gradient(
+      100deg in oklch,
+      light-dark(oklch(50% 0.17 245), oklch(88% 0.13 200)) 0%,
+      light-dark(oklch(50% 0.25 295), oklch(77% 0.19 295)) 25%,
+      light-dark(oklch(54% 0.26 340), oklch(77% 0.21 345)) 45%,
+      light-dark(oklch(50% 0.24 305), oklch(86% 0.12 55)) 60%,
+      light-dark(oklch(54% 0.25 345), oklch(78% 0.2 350)) 75%,
+      light-dark(oklch(50% 0.17 245), oklch(88% 0.13 200)) 100%
+    );
+    --sheen-accent-gradient: var(--sheen-text-gradient);
+    /* Aurora fill for primary controls: white text >= 5.7:1 on every stop. */
+    --sheen-accent-fill: linear-gradient(
+      115deg in oklch,
+      oklch(48% 0.22 275) 0%,
+      oklch(50% 0.25 295) 35%,
+      oklch(52% 0.24 335) 75%,
+      oklch(54% 0.21 355) 100%
+    );
+    --sheen-accent-fg: oklch(100% 0 0);
+    --sheen-accent-glow: light-dark(oklch(55% 0.25 310 / 0.55), oklch(62% 0.27 320 / 0.75));
+    --sheen-accent-fill-shadow:
+      inset 0 1px 0 oklch(100% 0 0 / 0.38), inset 0 0 0 1px oklch(100% 0 0 / 0.1),
+      0 10px 28px -10px var(--sheen-accent-glow), 0 0 22px -8px oklch(70% 0.2 300 / 0.55);
+
+    /* ---- Interaction ---- */
+    --sheen-focus: light-dark(oklch(48% 0.24 292), oklch(88% 0.12 200));
+    --sheen-ring: light-dark(oklch(55% 0.24 292 / 0.32), oklch(86% 0.14 200 / 0.35));
+    --sheen-selection: light-dark(oklch(66% 0.2 330 / 0.3), oklch(70% 0.22 330 / 0.45));
+    --sheen-hover: light-dark(oklch(40% 0.1 290 / 0.07), oklch(100% 0 0 / 0.09));
+    --sheen-indicator: light-dark(oklch(100% 0 0 / 0.96), oklch(100% 0 0 / 0.17));
+
+    /* ---- Shape ---- */
+    --sheen-radius-sm: 0.75rem;
+    --sheen-radius-md: 1rem;
+    --sheen-radius-lg: 1.5rem;
+    --sheen-radius-xl: 1.75rem;
+
+    /* ---- Type ---- */
+    --sheen-font-sans:
+      "Geist Variable", "Geist", "Geist Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sheen-font-mono:
+      "Geist Mono Variable", "Geist Mono", "Geist Mono Fallback", ui-monospace, "SF Mono", Menlo, monospace;
+    --sheen-font-display: "Geist Variable", "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+    /* ONE accent word per heading in a serif italic, 1.18em, painted with the aurora. */
+    --sheen-font-accent: "Instrument Serif", "Instrument Serif Fallback", ui-serif, Georgia, serif;
+    --sheen-display-weight: 600;
+    --sheen-display-tracking: -0.04em;
+    --sheen-accent-style: italic;
+    --sheen-accent-weight: 400;
+    --sheen-accent-size: 1.18em;
+
+    /* ---- Glass (Aurora Neon recipe) ---- */
+    /* Dark glass-1 is a smoked tint, not a white frost: chips and inputs carry captions, and a 7%
+     white lift over a bright curtain put muted text at ~3.3:1 (measured on /foundations). */
+    --sheen-glass-1-bg: light-dark(oklch(97.5% 0.022 300 / 0.58), oklch(16% 0.04 285 / 0.64));
+    --sheen-glass-2-bg: light-dark(oklch(97% 0.03 300 / 0.58), oklch(17% 0.04 285 / 0.76));
+    --sheen-glass-3-bg: light-dark(oklch(97.5% 0.025 300 / 0.66), oklch(15% 0.04 285 / 0.72));
+    --sheen-glass-1-blur: 14px;
+    --sheen-glass-2-blur: 22px;
+    --sheen-glass-3-blur: 30px;
+    --sheen-glass-saturate: 190%;
+    --sheen-glass-brightness: 1;
+    --sheen-glass-border: light-dark(oklch(100% 0 0 / 0.75), oklch(100% 0 0 / 0.13));
+    --sheen-glass-highlight: light-dark(oklch(100% 0 0 / 1), oklch(100% 0 0 / 0.32));
+    --sheen-glass-highlight-side: light-dark(oklch(100% 0 0 / 0.6), oklch(100% 0 0 / 0.1));
+    --sheen-glass-lowlight: light-dark(oklch(100% 0 0 / 0.3), oklch(100% 0 0 / 0.04));
+    --sheen-glass-edge: light-dark(oklch(100% 0 0 / 0.85), oklch(0% 0 0 / 0.55));
+    --sheen-glass-glow: light-dark(oklch(80% 0.13 300 / 0.5), oklch(62% 0.24 305 / 0.2));
+    --sheen-glass-specular: linear-gradient(
+      180deg,
+      light-dark(oklch(100% 0 0 / 0.7), oklch(100% 0 0 / 0.075)),
+      transparent 42%
+    );
+    --sheen-glass-sheen: light-dark(oklch(60% 0.2 295 / 0.16), oklch(85% 0.12 295 / 0.16));
+    --sheen-shadow-near: light-dark(oklch(45% 0.18 295 / 0.18), oklch(0% 0 0 / 0.5));
+    --sheen-shadow-far: light-dark(oklch(45% 0.18 295 / 0.3), oklch(0% 0 0 / 0.7));
+    --sheen-shadow-cast: light-dark(oklch(70% 0.18 320 / 0.2), oklch(55% 0.25 300 / 0.3));
+    --sheen-glass-1-shadow: 0 0 0 1px var(--sheen-glass-edge), 0 10px 30px -14px var(--sheen-shadow-far);
+    --sheen-glass-2-shadow: 0 2px 6px -2px var(--sheen-shadow-far), 0 32px 70px -28px var(--sheen-shadow-far);
+    --sheen-glass-3-shadow:
+      0 2px 6px -2px var(--sheen-shadow-far), 0 32px 70px -28px var(--sheen-shadow-far),
+      0 24px 90px -40px var(--sheen-shadow-cast);
+    --sheen-glass-1-box: inset 0 1px 0 0 var(--sheen-glass-highlight), var(--sheen-glass-1-shadow);
+    --sheen-glass-2-box:
+      inset 0 1px 0 0 var(--sheen-glass-highlight), inset 0 -28px 48px -28px var(--sheen-glass-glow),
+      0 0 0 1px var(--sheen-glass-edge), var(--sheen-glass-2-shadow), 0 24px 90px -40px var(--sheen-shadow-cast);
+    --sheen-glass-3-box:
+      inset 0 1px 0 0 var(--sheen-glass-highlight), inset 0 -28px 48px -28px var(--sheen-glass-glow),
+      0 0 0 1px var(--sheen-glass-edge), var(--sheen-glass-3-shadow);
+    --sheen-surface-solid: light-dark(oklch(100% 0 0), oklch(19% 0.035 285));
+
+    /* ---- Rim: a gradient ring (white-hot top-left → violet → magenta → cyan), a 220 px rim
+     light and a sharp 40 px hotspot that follow the pointer. ---- */
+    --sheen-rim-width: 1.5px;
+    --sheen-rim-gradient: linear-gradient(
+      155deg,
+      light-dark(oklch(100% 0 0 / 1), oklch(100% 0 0 / 0.5)) 0%,
+      light-dark(oklch(60% 0.22 295 / 0.55), oklch(100% 0 0 / 0.12)) 30%,
+      light-dark(oklch(62% 0.22 330 / 0.4), oklch(100% 0 0 / 0.04)) 58%,
+      light-dark(oklch(64% 0.22 340 / 0.45), oklch(70% 0.22 330 / 0.4)) 82%,
+      light-dark(oklch(70% 0.14 210 / 0.6), oklch(86% 0.13 200 / 0.6)) 100%
+    );
+    --sheen-rim-hot: light-dark(oklch(58% 0.25 300 / 0.9), oklch(90% 0.1 200 / 0.95));
+    --sheen-rim-core: light-dark(oklch(66% 0.22 300), oklch(100% 0 0));
+    --sheen-glass-spot: light-dark(oklch(60% 0.2 295 / 0.12), oklch(85% 0.12 295 / 0.14));
+
+    /* ---- Backdrop colours (backgrounds.css blobs, preview stages) ---- */
+    --sheen-blob-1: light-dark(oklch(74% 0.17 300 / 0.7), oklch(50% 0.24 295 / 0.7));
+    --sheen-blob-2: light-dark(oklch(78% 0.14 210 / 0.7), oklch(56% 0.16 215 / 0.55));
+    --sheen-blob-3: light-dark(oklch(78% 0.16 350 / 0.62), oklch(50% 0.23 340 / 0.55));
+    --sheen-blob-4: light-dark(oklch(76% 0.14 260 / 0.6), oklch(44% 0.19 270 / 0.55));
+    --sheen-blob-5: light-dark(oklch(86% 0.09 262 / 0.7), oklch(24% 0.1 280 / 0.5));
+    --sheen-backdrop-grid: light-dark(oklch(40% 0.12 290 / 0.06), oklch(100% 0 0 / 0.04));
+    --sheen-backdrop-grid-size: 56px;
+
+    /* ---- Motion intensity: slow light, crisp UI ---- */
+    --sheen-motion-intensity: 1;
+    --sheen-duration-ambient: 28s;
+  }
+
+  /* Dark: glass saturates a little less (keeps light text readable over the brightest ribbons). */
+  :root[data-sheen-style="aurora"][data-theme="dark"] {
+    --sheen-glass-saturate: 160%;
+    --sheen-rim-width: 1px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root[data-sheen-style="aurora"]:not([data-theme="light"]) {
+      --sheen-glass-saturate: 160%;
+      --sheen-rim-width: 1px;
+    }
+  }
+
+  :root[data-sheen-style="aurora"][data-theme="light"] {
+    --sheen-glass-saturate: 190%;
+    --sheen-rim-width: 1.5px;
+  }
+
+  /* Phones: lower blur radii (smaller GPU kernels; the narrow sky needs less frosting anyway). */
+  @media (max-width: 639px) {
+    :root[data-sheen-style="aurora"] {
+      --sheen-glass-1-blur: 12px;
+      --sheen-glass-2-blur: 16px;
+      --sheen-glass-3-blur: 20px;
+    }
+  }
+
+  /*
+ * The Aurora rim, in each surface's ::after, drawn ONLY in its border stroke (no mask):
+ *   1. a sharp 40 px hotspot at the pointer (brightens with --sheen-lit)
+ *   2. a 220 px rim light at the pointer
+ *   3. the gradient rim
+ *   4. a soft spotlight inside the glass under the pointer, behind the content
+ * A fast flick flares the rim (filter on the rim layer only, never on the glass).
+ */
+  :root[data-sheen-style="aurora"] :is(.glass-1, .glass-2, .glass-3)::after {
+    background-image:
+      radial-gradient(
+        calc(40px * var(--sheen-flare)) circle at var(--sheen-mx) var(--sheen-my),
+        color-mix(in oklab, var(--sheen-rim-core) calc(var(--sheen-lit) * 100%), transparent),
+        transparent 100%
+      ),
+      radial-gradient(
+        calc(220px * var(--sheen-flare)) circle at var(--sheen-mx) var(--sheen-my),
+        var(--sheen-rim-hot),
+        transparent 70%
+      ),
+      var(--sheen-rim-gradient),
+      radial-gradient(360px circle at var(--sheen-mx) var(--sheen-my), var(--sheen-glass-spot), transparent 65%);
+    background-clip: border-area, border-area, border-area, padding-box;
+    opacity: calc(0.62 + var(--sheen-lit) * 0.38);
+  }
+
+  :root[data-sheen-style="aurora"][data-sheen-flare] [data-sheen-lit]::after {
+    --sheen-flare: 1.25;
+  }
+
+  :root[data-sheen-style="aurora"] .glass-1::after {
+    --sheen-rim-width: 1px;
+  }
+
+  /* Preview stages sit on a tinted sky (not pearl white), so light glass reads as glass over light. */
+  :root[data-sheen-style="aurora"] .sheen-stage-backdrop {
+    --sheen-stage-base: light-dark(oklch(93% 0.04 290), oklch(15% 0.05 285));
+  }
+
+  /*
+ * Neon on focus and hover. Plain controls get a double ring and an aurora halo; glass controls keep
+ * their own shadows (no filter on a backdrop-filter surface) and add the halo as an extra shadow
+ * layer, with the rim at full strength. The halo is a shadow colour change only: no layout, no motion.
+ */
+  :root[data-sheen-style="aurora"]
+    :is(
+      button,
+      a,
+      input,
+      select,
+      textarea,
+      summary,
+      [role="button"],
+      [role="tab"],
+      [role="switch"],
+      [role="checkbox"],
+      [role="slider"],
+      [tabindex]
+    ):focus-visible:not(.glass-1, .glass-2, .glass-3) {
+    box-shadow:
+      0 0 0 3px light-dark(oklch(100% 0 0 / 0.9), oklch(12% 0.03 282 / 0.9)),
+      0 0 0 5px var(--sheen-focus),
+      0 0 24px 2px var(--sheen-accent-glow);
+  }
+  :root[data-sheen-style="aurora"]
+    :is(.glass-1, .glass-2, .glass-3):is(button, a, [role="button"], [role="tab"], [tabindex]):focus-visible {
+    box-shadow:
+      var(--sheen-glass-2-box),
+      0 0 0 4px var(--sheen-ring),
+      0 0 28px 2px var(--sheen-accent-glow);
+  }
+  :root[data-sheen-style="aurora"]
+    :is(.glass-1, .glass-2, .glass-3):is(button, a, [role="button"], [role="tab"]):focus-visible::after,
+  :root[data-sheen-style="aurora"]
+    :is(.glass-1, .glass-2, .glass-3):is(button, a, [role="button"], [role="tab"]):hover::after {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    :root[data-sheen-style="aurora"]
+      :is(.glass-1, .glass-2, .glass-3):is(button, a, [role="button"], [role="tab"]):hover:not(:focus-visible) {
+      box-shadow:
+        var(--sheen-glass-2-box),
+        0 0 26px -4px var(--sheen-accent-glow);
+    }
+  }
+}

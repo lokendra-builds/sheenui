@@ -13,6 +13,7 @@ import {
 
 import { useFollow } from "./ShowcaseStage.follow";
 import { useStageLayer } from "./ShowcaseStage.layer";
+import { stageInitialFocus } from "./stage-focus";
 import type { StageContext } from "./ShowcaseStage";
 import type { DrawerScene } from "./ShowcaseStage.drawer";
 
@@ -40,7 +41,7 @@ export function DrawerScene({ scene, ctx }: { scene: DrawerScene; ctx: StageCont
         }}
       >
         <DrawerTrigger render={<Button variant="glass" />}>Filters</DrawerTrigger>
-        <DrawerContent container={layer} initialFocus={false} className="pointer-events-auto">
+        <DrawerContent container={layer} initialFocus={stageInitialFocus} className="pointer-events-auto">
           <DrawerHeader>
             <DrawerTitle>Filters</DrawerTitle>
             <DrawerDescription>Narrow the results.</DrawerDescription>

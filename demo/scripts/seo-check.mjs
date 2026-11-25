@@ -16,7 +16,8 @@ import { parse } from "node-html-parser";
 import sharp from "sharp";
 
 import { findDuplicatePages } from "./lib/duplicate-pages.mjs";
-import { panelItems, uncoveredItems } from "./lib/files-panel.mjs";
+import { commandedItems, hasAlsoGroup, hasAlsoLine, panelItems, uncoveredItems } from "./lib/files-panel.mjs";
+import { MANY_ITEMS } from "../sheen-closure.mjs";
 import { findDuplicatedRun, findRepeatedNumber, htmlTextContent } from "./lib/duplicate-run.mjs";
 import { headingOrderErrors } from "./lib/heading-order.mjs";
 import { visibleFaq } from "./lib/faq.mjs";
@@ -810,7 +811,7 @@ if (existsSync(join(DIST, "llms.txt")) && existsSync(join(DIST, "llms"))) {
     else {
       const twinText = readFileSync(join(DIST, twin), "utf8");
       // Every command widget of the page (a `$ command` field) is also in the twin, so the twin keeps what the page says to run.
-      for (const m of html.matchAll(/<code class="home-cta__cmd"[^>]*>([^<]*)<\/code>/g))
+      for (const m of html.matchAll(/<code class="home-cta__cmd"[^>]*>(?:<span[^>]*>)?([^<]*)(?:<\/span>)?<\/code>/g))
         if (!twinText.includes(unesc(m[1]).trim()))
           fail(route.path, `Markdown twin ${twin} drops the command "${unesc(m[1]).trim().slice(0, 60)}"`);
       // The install item named on the page is the item that owns the page's own source (its "shadcn CLI" line): its closure holds them.
@@ -853,6 +854,39 @@ if (existsSync(join(DIST, "llms.txt")) && existsSync(join(DIST, "llms"))) {
         for (const item of wanted)
           if (!twinText.includes(`/r/${item}.json`) || !/These examples also use /.test(twinText))
             fail(route.path, `Markdown twin ${twin} does not say to add "${item}", which the examples import`);
+      }
+      // The page's "The examples also use" group and its twin's "These examples also use" line are one fact: both or neither.
+      if (hasAlsoGroup(html) !== hasAlsoLine(twinText))
+        fail(
+          route.path,
+          hasAlsoGroup(html)
+            ? `the page lists "The examples also use" but Markdown twin ${twin} has no "These examples also use" line`
+            : `Markdown twin ${twin} has a "These examples also use" line but the page has no such group`,
+        );
+      // A page with no install item of its own (a hub, the foundations page) is held to the same rule: every component its code
+      // samples import is installed by the command its panel shows, or listed in the panel's "also use" group.
+      if (!installItem) {
+        const { own, also } = panelItems(html);
+        // Command widgets (`$ npx shadcn@latest add <url>.json ...`) install what they name.
+        const commanded = [
+          ...html.matchAll(/<code class="home-cta__cmd"[^>]*>(?:<span[^>]*>)?([^<]*)(?:<\/span>)?<\/code>/g),
+        ].flatMap((m) => [...unesc(m[1]).matchAll(/\/r\/([\w-]+)\.json/g)].map((x) => x[1]));
+        if (own.length || also.length || commanded.length) {
+          const covered = new Set();
+          for (const item of [...commandedItems(own, MANY_ITEMS), ...also, ...commanded])
+            for (const dep of itemClosure(installMap, item)) covered.add(dep);
+          const missing = new Set();
+          for (const m of html.matchAll(/<pre\b[^>]*><code>([\s\S]*?)<\/code><\/pre>/g))
+            for (const imp of unesc(m[1]).matchAll(/from "(@\/components\/sheenui\/[^"]+)"/g)) {
+              const item = installMap.owner.get(imp[1]);
+              if (item && !covered.has(item)) missing.add(item);
+            }
+          if (missing.size)
+            fail(
+              route.path,
+              `code samples import ${[...missing].sort().join(", ")}, which neither its panel's command nor its "The examples also use" group installs`,
+            );
+        }
       }
       // A prose code sample that imports from the package must show the copied-files import too (the Code tabs do).
       for (const m of html.matchAll(/<pre\b[^>]*><code>([\s\S]*?)<\/code><\/pre>/g)) {

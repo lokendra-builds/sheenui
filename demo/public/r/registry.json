@@ -128,6 +128,11 @@
           "target": "@components/sheenui/lib/modal-flag.ts"
         },
         {
+          "path": "theme/src/lib/modal-tab-trap.ts",
+          "type": "registry:lib",
+          "target": "@components/sheenui/lib/modal-tab-trap.ts"
+        },
+        {
           "path": "theme/src/lib/motion-props.ts",
           "type": "registry:lib",
           "target": "@components/sheenui/lib/motion-props.ts"

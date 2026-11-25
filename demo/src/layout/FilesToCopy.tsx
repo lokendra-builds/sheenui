@@ -1,15 +1,14 @@
 import { use } from "react";
 
+import { CommandField } from "./CommandField";
 import { useHeadingId } from "./heading-ids";
 import graph from "virtual:sheen-deps";
 
-import { resolveCopyList, type SheenGraph } from "../../sheen-closure.mjs";
+import { MANY_ITEMS, resolveCopyList, type SheenGraph } from "../../sheen-closure.mjs";
 import alsoMask from "../generated/also-routes";
 import { routes } from "../routes";
 import { href } from "../router";
 import { SITE_URL } from "../seo/site";
-
-const MANY_ITEMS = 6;
 
 const warned = new Set<string>();
 function warnEmptyFiles(sources: string[]) {
@@ -141,7 +140,10 @@ export default function FilesToCopy({ sources, path }: { sources: string[]; path
                     Registry {items.length === 1 ? "item" : "items"}: {items.join(", ")}.
                     {many ? " The command installs the first; swap the name in the URL for any other." : ""} The styles
                     need the{" "}
-                    <a href={href("/docs/tailwind-v4")} className="underline underline-offset-2 hover:text-sheen-fg">
+                    <a
+                      href={href("/docs/tailwind-v4")}
+                      className="sheen-hit underline underline-offset-2 hover:text-sheen-fg"
+                    >
                       Tailwind v4 glass UI setup
                     </a>
                     .
@@ -156,9 +158,12 @@ export default function FilesToCopy({ sources, path }: { sources: string[]; path
               <dd className="min-w-0">
                 <UnitList groups={groupUnits(also.units)} />
                 {also.items.length > 0 && (
-                  <code className="mt-1.5 block rounded-sheen-sm bg-sheen-hover px-2 py-0.5 font-sheen-mono text-xs [overflow-wrap:anywhere] text-sheen-fg">
-                    {`npx shadcn@latest add ${also.items.map((n) => `${SITE_URL}/r/${n}.json`).join(" ")}`}
-                  </code>
+                  <div className="mt-1.5">
+                    <CommandField
+                      command={`npx shadcn@latest add ${also.items.map((n) => `${SITE_URL}/r/${n}.json`).join(" ")}`}
+                      label="Install command: components the examples use"
+                    />
+                  </div>
                 )}
               </dd>
             </>

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Faq, type FaqItem } from "../layout/LazyAbout";
 import { Page } from "../layout/Page";
+import { useScrollFade } from "../layout/use-scroll-fade";
 import { href } from "../router";
 import {
   BUDGET_CLASSES,
@@ -37,25 +38,38 @@ function Section({ id, title, children }: { id: string; title: string; children:
   );
 }
 
-const th = "pb-2 pe-4 text-start font-medium align-bottom";
+const th = "pb-2 pe-4 text-start font-medium align-bottom whitespace-pre";
 const rowTh = "py-2 pe-4 text-start font-medium align-top";
 const td = "py-2 pe-4 align-top";
 
 /** A small accessible data table: a hidden caption, column headers and a row header per line. */
 function DataGrid({
+  name,
   caption,
   head,
   rows,
   lastUnit,
 }: {
+  /** Short accessible name of the scroll region around the table (the caption is too long to be a region name). */
+  name: string;
   caption: string;
+  /** Column labels; a "\n" starts a second line (the unit, or what the figure is). Headers never wrap on their own: the table scrolls instead. */
   head: string[];
   rows: string[][];
   /** Unit written after every value of the last column, so a row ends on "345 KB", not on a bare number that the next row's name would follow in the page text. */
   lastUnit?: string;
 }) {
+  const scroller = useScrollFade<HTMLDivElement>();
   return (
-    <div className="overflow-x-auto">
+    // Focusable so keyboard users can scroll a wide table sideways on a phone or at high zoom.
+    <div
+      ref={scroller}
+      role="region"
+      aria-label={name}
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard-focusable so it can be scrolled without a mouse
+      tabIndex={0}
+      className="scroll-fade overflow-x-auto rounded-sheen-sm [scrollbar-width:thin] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-sheen-focus"
+    >
       <table data-llms="include" className="w-full min-w-[34rem] text-start text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead>
@@ -157,14 +171,15 @@ export function PerformanceDocsPage() {
           </li>
         </ul>
         <DataGrid
+          name="JavaScript budgets per page class"
           caption="JavaScript budgets per page class, in KB gzip, with the last pnpm budget run (measured on the 25 Nov 2026 build) as minimum, median and maximum"
           head={[
             "Page class",
             "Routes",
-            "Initial JS budget",
-            "Initial JS measured (min / median / max)",
-            "Fetched by load + idle budget",
-            "Fetched measured (min / median / max)",
+            "Initial JS budget\n(KB gzip)",
+            "Initial JS measured\n(min / median / max)",
+            "Load + idle budget\n(KB gzip)",
+            "Fetched measured\n(min / median / max)",
           ]}
           rows={BUDGET_CLASSES.map((r) => [
             r.name,
@@ -194,28 +209,31 @@ export function PerformanceDocsPage() {
           the site&rsquo;s default look. This is a laboratory profile run on a desktop machine, not a phone.
         </p>
         <DataGrid
+          name="Per-route load metrics"
           caption="Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB"
           head={[
             "Route",
-            "LCP s",
+            "LCP\n(s)",
             "CLS",
-            "TBT ms",
-            "Longest task ms, median (worst run)",
-            "JS before load KB",
-            "JS by load + 5 s KB",
+            "TBT\n(ms)",
+            "Longest task, ms\nmedian (worst)",
+            "JS before load\n(KB)",
+            "JS by load + 5 s\n(KB)",
           ]}
           rows={ROUTE_ROWS.map((r) => [r.route, r.lcp, r.cls, r.tbt, r.longest, r.jsInitial, r.jsTotal])}
           lastUnit="KB"
         />
         <DataGrid
+          name="Lighthouse scores per route"
           caption="Lighthouse mobile Performance score and Total Blocking Time per route, median of 3 runs"
-          head={["Route", "Performance score", "Total Blocking Time ms"]}
+          head={["Route", "Performance score", "Total Blocking Time\n(ms)"]}
           rows={LIGHTHOUSE_ROWS.map((r) => [r.route, r.score, r.tbt])}
           lastUnit="ms"
         />
         <DataGrid
+          name="Interaction latency"
           caption="Interaction latency at 4x CPU: time from the pointer event to the first frame that shows the opened popup, median of 5"
-          head={["Interaction", "Route", "Median ms", "Range ms"]}
+          head={["Interaction", "Route", "Median\n(ms)", "Range\n(ms)"]}
           rows={INTERACTION_ROWS.map((r) => [r.interaction, r.route, r.median, r.runs])}
         />
         <p className="text-sm text-sheen-muted">
@@ -224,6 +242,7 @@ export function PerformanceDocsPage() {
           including headers, so they differ a little from the gzip figures in the budget table.
         </p>
         <DataGrid
+          name="Other lab metrics"
           caption="Other lab metrics, the target each is held to and whether it was met"
           head={["Metric", "Target", "Measured", "Met"]}
           rows={OTHER_METRICS.map((r) => [r.metric, r.target, r.result, r.met])}

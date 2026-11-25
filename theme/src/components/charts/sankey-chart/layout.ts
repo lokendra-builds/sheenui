@@ -1,4 +1,4 @@
-import { num, slotColor, type ChartColor, itemAt } from "../chart-utils";
+import { KEY_SEP, num, slotColor, type ChartColor, itemAt } from "../chart-utils";
 import { r2 } from "../flow-utils";
 
 /* ======================================================================
@@ -165,7 +165,7 @@ export function layoutSankey(
   for (const l of linksIn) {
     const value = num(l.value);
     if (!(value > 0) || l.source === l.target) continue;
-    const key = `${l.source}\u0000${l.target}`;
+    const key = `${l.source}${KEY_SEP}${l.target}`;
     const prev = pairs.get(key);
     if (prev) prev.value += value;
     else pairs.set(key, { source: l.source, target: l.target, value });
@@ -191,7 +191,7 @@ export function layoutSankey(
       }
       const next = nexts[top[1]++] ?? "";
       const s = state.get(next);
-      if (s === 1) back.add(`${top[0]}\u0000${next}`);
+      if (s === 1) back.add(`${top[0]}${KEY_SEP}${next}`);
       else if (s === undefined) {
         state.set(next, 1);
         stack.push([next, 0]);

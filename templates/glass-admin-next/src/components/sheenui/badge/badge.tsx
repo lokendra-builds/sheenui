@@ -1,6 +1,7 @@
 import type { ComponentProps } from "react";
 
 import { cn } from "../lib/cn";
+import { warnOnce } from "../lib/warn-once";
 
 /**
  * Status tones: the soft tint (--tint) is layered over a near-opaque surface, so the
@@ -15,16 +16,24 @@ const tones = {
   success: `${tinted} [--tint:var(--sheen-success-soft)] text-sheen-success-text border-sheen-success-text/25`,
   warning: `${tinted} [--tint:var(--sheen-warning-soft)] text-sheen-warning-text border-sheen-warning-text/25`,
   danger: `${tinted} [--tint:var(--sheen-danger-soft)] text-sheen-danger-text border-sheen-danger-text/25`,
-  solid: "sheen-fill border-transparent text-sheen-accent-fg [background-image:var(--sheen-accent-fill)]",
 } as const;
+
+/** The filled form: the accent gradient with its foreground. */
+const solidFill = "sheen-fill border-transparent text-sheen-accent-fg [background-image:var(--sheen-accent-fill)]";
 
 /** Props of {@link Badge}. The attributes of a `span` plus the ones below. */
 export type BadgeProps = ComponentProps<"span"> & {
   /**
-   * Colour role: "neutral" (glass), "accent", "success", "warning", "danger" or "solid" (filled accent).
+   * Colour role: "neutral" (glass), "accent", "success", "warning" or "danger". `"solid"` still works but is
+   * deprecated: it means `variant="solid"` and logs a development warning once.
    * @default "neutral"
    */
-  tone?: keyof typeof tones;
+  tone?: keyof typeof tones | "solid";
+  /**
+   * Visual form: "soft" (the tone's tint) or "solid" (the filled accent gradient; it ignores `tone`).
+   * @default "soft"
+   */
+  variant?: "soft" | "solid";
   /**
    * Small dot before the text, e.g. for statuses.
    * @default false
@@ -55,13 +64,23 @@ export type BadgeProps = ComponentProps<"span"> & {
  *
  * @see /components/badge
  */
-export function Badge({ tone = "neutral", dot = false, pulse = false, className, children, ...props }: BadgeProps) {
+export function Badge({
+  tone = "neutral",
+  variant = "soft",
+  dot = false,
+  pulse = false,
+  className,
+  children,
+  ...props
+}: BadgeProps) {
+  if (tone === "solid") warnOnce('Badge: tone="solid" is deprecated; use variant="solid".');
+  const filled = variant === "solid" || tone === "solid";
   return (
     <span
       data-slot="badge"
       className={cn(
         "inline-flex h-6 items-center gap-1.5 rounded-sheen-full border px-2.5 text-xs font-medium whitespace-nowrap",
-        tones[tone],
+        filled ? solidFill : tones[tone],
         className,
       )}
       {...props}

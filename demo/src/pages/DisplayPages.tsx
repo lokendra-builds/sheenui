@@ -160,7 +160,7 @@ export function Example() {
       <Badge tone="success" dot>Active</Badge>
       <Badge tone="warning" dot>Pending</Badge>
       <Badge tone="danger" dot>Failed</Badge>
-      <Badge tone="solid">Pro</Badge>
+      <Badge variant="solid">Pro</Badge>
       <Badge tone="success" pulse>Live</Badge>
     </>
   );
@@ -177,7 +177,7 @@ export function Example() {
         <Badge tone="danger" dot>
           Failed
         </Badge>
-        <Badge tone="solid">Pro</Badge>
+        <Badge variant="solid">Pro</Badge>
         <Badge tone="success" pulse>
           Live
         </Badge>

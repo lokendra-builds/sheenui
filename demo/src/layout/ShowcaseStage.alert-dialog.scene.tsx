@@ -13,6 +13,7 @@ import {
 
 import { useFollow } from "./ShowcaseStage.follow";
 import { usePlaceOnStage } from "./ShowcaseStage.layer";
+import { stageInitialFocus } from "./stage-focus";
 import type { StageContext } from "./ShowcaseStage";
 import type { AlertDialogScene } from "./ShowcaseStage.alert-dialog";
 
@@ -59,7 +60,7 @@ export function AlertDialogScene({ scene, ctx }: { scene: AlertDialogScene; ctx:
         <AlertDialogContent
           data-stage-dialog=""
           backdropClassName="hidden"
-          initialFocus={false}
+          initialFocus={stageInitialFocus}
           className="pointer-events-auto w-[min(23rem,calc(100vw-1.5rem))]"
         >
           <AlertDialogHeader>

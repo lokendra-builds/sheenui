@@ -12,6 +12,7 @@ import {
   SideDrawerTitle,
   SideDrawerTrigger,
 } from "@sheenui/theme";
+import { stageInitialFocus } from "./stage-focus";
 import type { CSSProperties } from "react";
 
 import { useFollow } from "./ShowcaseStage.follow";
@@ -46,7 +47,7 @@ export function SideDrawerScene({ scene, ctx }: { scene: SideDrawerScene; ctx: S
         <SideDrawerTrigger render={<Button variant="glass" />}>Edit profile</SideDrawerTrigger>
         <SideDrawerContent
           container={layer}
-          initialFocus={false}
+          initialFocus={stageInitialFocus}
           size="sm"
           style={{ "--sd-width": "min(17rem, calc(100% - 1.5rem))", pointerEvents: "auto" } as CSSProperties}
         >

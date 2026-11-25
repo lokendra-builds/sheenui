@@ -19,7 +19,7 @@ export function PageByline({ path }: { path: string }) {
         href={AUTHOR.url}
         target="_blank"
         rel="author noopener"
-        className="font-medium text-sheen-fg underline underline-offset-4 hover:text-sheen-accent"
+        className="sheen-hit font-medium text-sheen-fg underline underline-offset-4 hover:text-sheen-accent"
       >
         {AUTHOR.name}
         <span className="sr-only"> (GitHub, opens in a new tab)</span>

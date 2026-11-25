@@ -7,7 +7,7 @@
  * an extra sheet that loads after the base changes which of two competing utilities wins. A sheet that is complete keeps the
  * source order, and the client therefore never stacks two class sheets: it loads the next page's sheet switched off
  * (`media="not all"`: fetched, not applied) and, when that page commits (router.ts, notifyRouteCommitted), swaps it in
- * for the old one in the same frame as the DOM swap.
+ * for the old one in the same frame as the DOM swap, and removes every other loaded one (so the document never collects sheets).
  *
  * `#sheen-assets` (written by the prerender) names the map file: { classes: { class: [href] }, routes: { path: class } }.
  * The dev server and a build without the split have no map: nothing to load, the one stylesheet has everything.
@@ -106,11 +106,22 @@ export function activateRouteCss(path: string): void {
   const want = new Set(sheetsOf(path).map(pathOf));
   if (!want.size) return;
   const all = new Set(Object.values(map.classes).flat().map(pathOf));
-  for (const link of document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')) {
+  const links = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].filter((l) =>
+    all.has(pathOf(l.href)),
+  );
+  // Only drop sheets once every sheet the new page wants has arrived (a timed-out fetch keeps the old one parked, not
+  // removed, so a late arrival never leaves the page bare). Then every other sheet that has loaded goes, in effect or
+  // only prefetched: a navigation that was overtaken (rapid back and forward) must not leave its sheet behind. One that
+  // is still loading stays until the next activation.
+  const arrived = [...want].every((p) => links.some((l) => pathOf(l.href) === p && l.sheet));
+  for (const link of links) {
     const p = pathOf(link.href);
-    if (!all.has(p)) continue;
     if (want.has(p)) link.removeAttribute("media");
-    else link.media = OFF;
+    else if (arrived && (link.media !== OFF || link.sheet)) {
+      link.remove();
+      loading.delete(link.getAttribute("href") ?? link.href);
+      loading.delete(link.href);
+    } else link.media = OFF;
   }
   document.getElementById("sheen-critical")?.remove();
 }

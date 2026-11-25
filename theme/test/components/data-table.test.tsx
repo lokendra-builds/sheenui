@@ -124,3 +124,45 @@ describeVariants((variant) => {
     }
   });
 });
+
+/** Header texts and each body row's cell count of the desktop table. */
+function shape() {
+  const table = screen.getByRole("table", { name: "Team members" });
+  const headers = within(table)
+    .getAllByRole("columnheader")
+    .map((h) => h.textContent.trim());
+  const rows = within(table)
+    .getAllByRole("row")
+    .slice(1)
+    .map((row) => within(row).getAllByRole("cell").length);
+  return { headers, rows };
+}
+
+describeVariants((variant) => {
+  it("keeps header and body columns in step when a column is hidden or shown through columnVisibility", async () => {
+    const { rerender } = renderUi(
+      <DataTable caption="Team members" data={people} columns={columns} columnVisibility={{ role: false }} />,
+      variant,
+    );
+    await expect.poll(() => shape().headers).toEqual(["Name", "Age"]);
+    expect(shape().rows).toEqual(people.map(() => 2));
+
+    // Shown again, then a different one hidden, with the same rows still mounted.
+    rerender(<DataTable caption="Team members" data={people} columns={columns} columnVisibility={{}} />);
+    await expect.poll(() => shape().headers).toEqual(["Name", "Role", "Age"]);
+    expect(shape().rows).toEqual(people.map(() => 3));
+    rerender(<DataTable caption="Team members" data={people} columns={columns} columnVisibility={{ name: false }} />);
+    await expect.poll(() => shape().headers).toEqual(["Role", "Age"]);
+    expect(shape().rows).toEqual(people.map(() => 2));
+    expect(names()).toEqual(people.map((p) => p.role));
+  });
+
+  it("keeps header and body in step when the columns array itself changes after the first render", async () => {
+    const { rerender } = renderUi(<DataTable caption="Team members" data={people} columns={columns} />, variant);
+    await expect.poll(() => shape().headers).toEqual(["Name", "Role", "Age"]);
+    rerender(<DataTable caption="Team members" data={people} columns={columns.filter((c) => c.id !== "role")} />);
+    await expect.poll(() => shape().headers).toEqual(["Name", "Age"]);
+    expect(shape().rows).toEqual(people.map(() => 2));
+    expect(names()).toEqual(people.map((p) => p.name));
+  });
+});

@@ -65,7 +65,7 @@ export function pageSources(pageSource, exportName, importedConsts = {}) {
   if (start < 0) return [];
   const nextExport = pageSource.indexOf("\nexport function ", start + 1);
   const body = pageSource.slice(start, nextExport < 0 ? undefined : nextExport);
-  const m = body.match(/\bsource=(?:"([^"]+)"|\{?`([^`]+)`\}?|\{"([^"]+)"\}|\{\[([^\]]+)\]\})/);
+  const m = body.match(/\bsource=(?:"([^"]+)"|\{?`([^`]+)`\}?|\{"([^"]+)"\}|\{\[([^\]]+)\]\}|\{([A-Za-z_]\w*)\})/);
   if (!m) return [];
   const consts = {
     ...importedConsts,
@@ -75,6 +75,8 @@ export function pageSources(pageSource, exportName, importedConsts = {}) {
   };
   const fill = (str) => str.replace(/\$\{(\w+)\}/g, (_, name) => consts[name] ?? "");
   if (m[1] || m[2] || m[3]) return [fill(m[1] ?? m[2] ?? m[3])];
+  // `source={CHARTS}`: a module-level string constant.
+  if (m[5]) return consts[m[5]] ? [consts[m[5]]] : [];
   return [...m[4].matchAll(/"([^"]+)"|`([^`]+)`/g)].map((x) => fill(x[1] ?? x[2]));
 }
 

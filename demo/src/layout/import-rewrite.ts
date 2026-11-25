@@ -1,6 +1,11 @@
-import paths from "../generated/install-paths";
+import generated from "../generated/install-paths";
 
 type InstallPaths = { barrel: Record<string, string>; demoData: Record<string, string> };
+
+/** The generated table lists each file's export names; the rewrite looks a name up. */
+const invert = (byFile: Record<string, string[]>) =>
+  Object.fromEntries(Object.entries(byFile).flatMap(([file, names]) => names.map((name) => [name, file])));
+const paths: InstallPaths = { barrel: invert(generated.barrel), demoData: invert(generated.demoData) };
 
 const IMPORT_RE = /import\s+(type\s+)?\{([^}]*)\}\s+from\s+"@sheenui\/theme(\/demo-data)?";?/g;
 

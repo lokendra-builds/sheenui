@@ -11,6 +11,7 @@ import {
 } from "@sheenui/theme";
 
 import { useFollow } from "./ShowcaseStage.follow";
+import { stageInitialFocus } from "./stage-focus";
 import type { StageContext } from "./ShowcaseStage";
 import type { MorphingDialogScene as MorphingDialogSceneData } from "./ShowcaseStage.morphing-dialog";
 
@@ -41,7 +42,7 @@ export function MorphingDialogScene({ scene }: { scene: MorphingDialogSceneData;
         <MorphingDialogTitle className="px-1.5 pt-2">Aurora</MorphingDialogTitle>
         <MorphingDialogSubtitle className="px-1.5">Lofoten, Norway</MorphingDialogSubtitle>
       </MorphingDialogTrigger>
-      <MorphingDialogContent className="max-w-sm p-3 pb-5" initialFocus={false} finalFocus={false}>
+      <MorphingDialogContent className="max-w-sm p-3 pb-5" initialFocus={stageInitialFocus} finalFocus={false}>
         <MorphingDialogMedia className="aspect-[4/3]">
           <Art />
         </MorphingDialogMedia>

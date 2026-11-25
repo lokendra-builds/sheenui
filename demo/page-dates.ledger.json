@@ -8,7 +8,7 @@
     "modified": "2026-11-25"
   },
   "/blocks": {
-    "hash": "959e95d9444d9478",
+    "hash": "6b963800e33ce044",
     "modified": "2026-11-25"
   },
   "/blocks/ai-chat": {
@@ -92,8 +92,8 @@
     "modified": "2026-11-16"
   },
   "/charts": {
-    "hash": "24903deaa30f7af6",
-    "modified": "2026-11-17"
+    "hash": "e9113586663a111b",
+    "modified": "2026-11-25"
   },
   "/charts/area-chart": {
     "hash": "d7b092adc35fe0cf",
@@ -104,8 +104,8 @@
     "modified": "2026-11-17"
   },
   "/charts/bar-list": {
-    "hash": "d8cd952cca80b647",
-    "modified": "2026-11-17"
+    "hash": "470dddef455349d1",
+    "modified": "2026-11-25"
   },
   "/charts/beeswarm": {
     "hash": "bc14c483e44587ec",
@@ -160,8 +160,8 @@
     "modified": "2026-11-17"
   },
   "/charts/edge-cases": {
-    "hash": "02d3c939d4669381",
-    "modified": "2026-11-17"
+    "hash": "84e2533a131ed10e",
+    "modified": "2026-11-25"
   },
   "/charts/error-bar-chart": {
     "hash": "278a413cbc495020",
@@ -304,7 +304,7 @@
     "modified": "2026-11-17"
   },
   "/components": {
-    "hash": "959e95d9444d9478",
+    "hash": "6b963800e33ce044",
     "modified": "2026-11-25"
   },
   "/components/alert": {
@@ -312,12 +312,12 @@
     "modified": "2026-11-25"
   },
   "/components/avatar": {
-    "hash": "969ebe79f4b06825",
-    "modified": "2026-11-17"
+    "hash": "6b96cadd70d45599",
+    "modified": "2026-11-25"
   },
   "/components/badge": {
-    "hash": "1499b763e20b604d",
-    "modified": "2026-11-17"
+    "hash": "b8770d9ea9acfc26",
+    "modified": "2026-11-25"
   },
   "/components/button": {
     "hash": "eddc2fd2fcf8b76e",
@@ -344,12 +344,12 @@
     "modified": "2026-11-17"
   },
   "/components/data-table": {
-    "hash": "e2e8f42017efba59",
+    "hash": "43b838db18bb33c2",
     "modified": "2026-11-25"
   },
   "/components/dialog": {
-    "hash": "be31e86ddb32bcdb",
-    "modified": "2026-11-17"
+    "hash": "0031f78aa10047b9",
+    "modified": "2026-11-25"
   },
   "/components/empty-state": {
     "hash": "300c793b451895e7",
@@ -376,8 +376,8 @@
     "modified": "2026-11-17"
   },
   "/components/progress": {
-    "hash": "8de619fda7d6c151",
-    "modified": "2026-11-17"
+    "hash": "a4537cf593e31aeb",
+    "modified": "2026-11-25"
   },
   "/components/select": {
     "hash": "4a617d40e38246db",
@@ -400,8 +400,8 @@
     "modified": "2026-11-17"
   },
   "/components/table": {
-    "hash": "d9f57eef23b7dddc",
-    "modified": "2026-11-17"
+    "hash": "2804dcfa97ab0f22",
+    "modified": "2026-11-25"
   },
   "/components/tabs": {
     "hash": "688901aa80bc11b1",
@@ -416,7 +416,7 @@
     "modified": "2026-11-17"
   },
   "/dashboards": {
-    "hash": "959e95d9444d9478",
+    "hash": "6b963800e33ce044",
     "modified": "2026-11-25"
   },
   "/dashboards/crypto-dashboard": {
@@ -448,15 +448,15 @@
     "modified": "2026-11-17"
   },
   "/docs/forms": {
-    "hash": "3f5679bfc4505c7f",
-    "modified": "2026-11-16"
+    "hash": "0d4303eec92e2b85",
+    "modified": "2026-11-25"
   },
   "/docs/installation": {
-    "hash": "959e95d9444d9478",
+    "hash": "6b963800e33ce044",
     "modified": "2026-11-25"
   },
   "/docs/performance": {
-    "hash": "6f8eec6588b25b4e",
+    "hash": "bc10de15a4d6302a",
     "modified": "2026-11-25"
   },
   "/docs/rtl": {
@@ -468,7 +468,7 @@
     "modified": "2026-11-17"
   },
   "/effects": {
-    "hash": "959e95d9444d9478",
+    "hash": "6b963800e33ce044",
     "modified": "2026-11-25"
   },
   "/effects/3d-tilt-card": {
@@ -568,8 +568,8 @@
     "modified": "2026-11-17"
   },
   "/forms/input-group": {
-    "hash": "66b2e173eccafe98",
-    "modified": "2026-11-17"
+    "hash": "25f2b8b6be0f9da9",
+    "modified": "2026-11-25"
   },
   "/forms/number-field": {
     "hash": "60f82ef151bfefaa",
@@ -600,8 +600,8 @@
     "modified": "2026-11-17"
   },
   "/foundations": {
-    "hash": "b066273fd791e1de",
-    "modified": "2026-11-17"
+    "hash": "513c3b69b6022e13",
+    "modified": "2026-11-25"
   },
   "/guides": {
     "hash": "9639aa84f5d5da06",
@@ -612,8 +612,8 @@
     "modified": "2026-11-17"
   },
   "/layout/aspect-ratio": {
-    "hash": "80a7038af561ebc8",
-    "modified": "2026-11-17"
+    "hash": "9cb83890308cfabd",
+    "modified": "2026-11-25"
   },
   "/layout/breadcrumb": {
     "hash": "c4f1523655f6b8fa",
@@ -628,8 +628,8 @@
     "modified": "2026-11-17"
   },
   "/layout/resizable": {
-    "hash": "306f60fbf049848a",
-    "modified": "2026-11-17"
+    "hash": "d68d6d8306896e74",
+    "modified": "2026-11-25"
   },
   "/layout/scroll-area": {
     "hash": "cbeeb7fde6250e99",
@@ -660,8 +660,8 @@
     "modified": "2026-11-25"
   },
   "/navigation/sidebar": {
-    "hash": "64323ef7010dd377",
-    "modified": "2026-11-17"
+    "hash": "67e1754bb52c1afa",
+    "modified": "2026-11-25"
   },
   "/navigation/vertical-nav": {
     "hash": "d60c3df2dfd7b0af",

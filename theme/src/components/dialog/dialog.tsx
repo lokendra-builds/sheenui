@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, type ComponentProps, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 
 import { cn, classNameWith } from "../../lib/cn";
 import { useMergedRef } from "../../lib/form";
 import { modalSurfaceRef } from "../../lib/modal-flag";
+import { modalTabTrap } from "../../lib/modal-tab-trap";
 import { StateLightLayer } from "../../lib/state-light";
 import { dialogMotion } from "../../lib/popup-motion";
 import {
@@ -199,7 +200,10 @@ export function DialogContent({
   const sheet = useIsSheet();
   const ownRef = useRef<HTMLDivElement>(null);
   // While the popup is in the DOM, <html> carries data-modal-open: styles/glass.css stops the page's own blur behind it.
-  const popupRef = useMergedRef(ref, modalSurfaceRef, ownRef);
+  const [popupNode, setPopupNode] = useState<HTMLElement | null>(null);
+  const popupRef = useMergedRef(ref, modalSurfaceRef, ownRef, setPopupNode);
+  // A scrim means a modal dialog; a non-modal one (`backdrop={false}`) lets Tab leave.
+  useEffect(() => modalTabTrap(popupNode, backdrop), [popupNode, backdrop]);
   return (
     <BaseDialog.Portal container={container}>
       {backdrop && (

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router";
+import { RouteAnnouncer } from "@/lib/route-announcer";
 import { AppShell } from "@/shell/app-shell";
 
 // One chunk per page, so the charts and the data table load only where they are used.
@@ -22,6 +23,7 @@ function ShellLayout() {
 export function App() {
   return (
     <Suspense fallback={null}>
+      <RouteAnnouncer />
       <Routes>
         <Route index element={<Navigate to="/overview" replace />} />
         <Route path="sign-in" element={<SignInView />} />

@@ -29,8 +29,6 @@ pnpm build      # type-check, then a production build in dist/
 pnpm preview    # serve the build
 ```
 
-[Open in StackBlitz](https://stackblitz.com/github/lokendra-builds/sheenui/tree/main/templates/glass-admin-vite)
-
 
 ## Liquid Glass or Aurora Neon, light or dark
 

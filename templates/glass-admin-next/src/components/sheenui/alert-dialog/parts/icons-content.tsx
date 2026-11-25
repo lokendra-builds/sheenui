@@ -1,10 +1,20 @@
 "use client";
 
-import { createContext, useContext, useMemo, useRef, type ComponentProps, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog";
 import { motion } from "motion/react";
 
 import { cn, classNameWith } from "../../lib/cn";
+import { modalTabTrap } from "../../lib/modal-tab-trap";
 import { dialogMotion } from "../../lib/popup-motion";
 import { useSheenReducedMotion } from "../../hooks/use-preferences";
 import { duration, ease, spring } from "../../motion/tokens";
@@ -335,7 +345,9 @@ export function AlertDialogContent({
   ...props
 }: AlertDialogContentProps) {
   const popupRef = useRef<HTMLDivElement | null>(null);
-  const mergedPopupRef = useMergedRef(popupRef, ref);
+  const [popupNode, setPopupNode] = useState<HTMLDivElement | null>(null);
+  const mergedPopupRef = useMergedRef(popupRef, ref, setPopupNode);
+  useEffect(() => modalTabTrap(popupNode), [popupNode]);
   const reduced = useSheenReducedMotion();
   const context = useMemo(() => ({ tone, icon }), [tone, icon]);
 

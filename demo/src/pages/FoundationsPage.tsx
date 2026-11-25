@@ -1,6 +1,8 @@
 import { GlassCard, SheenLogo, SheenMark } from "@sheenui/theme";
 
+import { CommandField } from "../layout/CommandField";
 import { Faq } from "../layout/LazyAbout";
+import { SITE_URL } from "../seo/site";
 import { Page, PropsTable } from "../layout/Page";
 import * as PROPS from "../generated/component-props";
 import { Example, Stage } from "../layout/Example";
@@ -97,6 +99,14 @@ export function FoundationsPage() {
           (default 0.5) mixes the page background over it to keep text readable. Serve the files from your own public
           folder; this page adds the site base path to the same URLs.
         </p>
+        <p className="text-sm text-sheen-fg-muted">
+          The scene example below uses three components. Add them with the shadcn CLI, or copy the files the Files to
+          copy lists on each component page:
+        </p>
+        <CommandField
+          command={`npx shadcn@latest add ${SITE_URL}/r/backdrop.json ${SITE_URL}/r/glass-card.json ${SITE_URL}/r/segmented.json`}
+          label="Install command: the components the scene example uses"
+        />
         <Example
           title="Scene switcher"
           stageClassName="items-stretch"

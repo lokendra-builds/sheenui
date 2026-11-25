@@ -1,4 +1,6 @@
+import { CommandField } from "../layout/CommandField";
 import { Faq, type FaqItem } from "../layout/LazyAbout";
+import { SITE_URL } from "../seo/site";
 import { Page } from "../layout/Page";
 import { lazyBlock } from "../layout/lazy-block";
 import { whenNear } from "./when-near";
@@ -43,6 +45,27 @@ const faq: FaqItem[] = [
 ];
 
 /** The "Forms" recipe page (/docs/forms): react-hook-form + zod with Field, validation and an async submit, then every control. */
+/** Every registry item the two form examples import. */
+const ITEMS = [
+  "alert",
+  "button",
+  "checkbox",
+  "color-picker",
+  "combobox",
+  "date-picker",
+  "field",
+  "input",
+  "number-field",
+  "otp-input",
+  "radio-group",
+  "rating",
+  "segmented",
+  "select",
+  "slider",
+  "switch",
+  "tags-input",
+];
+
 export function FormsRecipePage() {
   return (
     <Page
@@ -113,6 +136,13 @@ export function FormsRecipePage() {
           </a>{" "}
           shows it with every control.
         </p>
+        <p className="text-sm text-pretty text-sheen-fg-muted">
+          The second example (every control) also uses these. One command adds everything both examples import:
+        </p>
+        <CommandField
+          command={`npx shadcn@latest add ${ITEMS.map((n) => `${SITE_URL}/r/${n}.json`).join(" ")}`}
+          label="Install command: every control the form examples use"
+        />
       </section>
       <SignUpExample />
       <div id={EVERY_ID}>

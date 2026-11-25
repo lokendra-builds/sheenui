@@ -12,6 +12,7 @@ import {
 
 import { useFollow } from "./ShowcaseStage.follow";
 import { useStageLayer } from "./ShowcaseStage.layer";
+import { stageInitialFocus } from "./stage-focus";
 import type { StageContext } from "./ShowcaseStage";
 import type { DialogScene } from "./ShowcaseStage.dialog";
 
@@ -43,7 +44,7 @@ export function DialogScene({ scene, ctx }: { scene: DialogScene; ctx: StageCont
         <DialogTrigger render={<Button />}>Invite teammates</DialogTrigger>
         <DialogContent
           container={layer}
-          initialFocus={false}
+          initialFocus={stageInitialFocus}
           backdrop={false}
           className="sheen-stage-dialog pointer-events-auto"
         >

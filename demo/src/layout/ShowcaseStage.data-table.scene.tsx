@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { DataTableColumn } from "@sheenui/theme";
+import { useMediaQuery, type DataTableColumn } from "@sheenui/theme";
 
 import { DataTable } from "./lazy-data-table";
 import type { DataTableScene } from "./ShowcaseStage.data-table";
@@ -20,8 +20,14 @@ const COLUMNS: DataTableColumn<Deal>[] = [
   { id: "amount", header: "Amount", accessorKey: "amount", numeric: true },
 ];
 
-/** The live DataTable on its stage: a real, sortable table whose rows slide to their new place when the story sorts it. */
+/**
+ * The live DataTable on its stage: a real, sortable table whose rows slide to their new place when the story sorts it.
+ * On a phone the stage is too narrow for three columns (the last one was cut at the edge with no cue), so the Stage
+ * column, the least important, is left out there and the other two fit.
+ */
 export function DataTableScene({ scene }: { scene: DataTableScene }) {
+  const phone = useMediaQuery("(max-width: 27rem)");
+  const columns = useMemo(() => (phone ? COLUMNS.filter((c) => c.id !== "stage") : COLUMNS), [phone]);
   const sorting = useMemo(
     () =>
       scene.sort === "amount"
@@ -36,7 +42,7 @@ export function DataTableScene({ scene }: { scene: DataTableScene }) {
       <DataTable<Deal>
         caption="Open deals"
         data={DEALS}
-        columns={COLUMNS}
+        columns={columns}
         sorting={sorting}
         onSortingChange={() => undefined}
         enableSearch={false}

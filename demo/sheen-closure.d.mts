@@ -7,6 +7,7 @@ export type SheenGraph = {
   in: string[];
   rd: Record<string, string[]>;
 };
+export const MANY_ITEMS: number;
 export function resolveCopyList(
   graph: SheenGraph,
   sources: string[],

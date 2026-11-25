@@ -63,6 +63,9 @@ function fold(graph, covered) {
   return units;
 }
 
+/** More registry items than this and the panel's command installs only the first (the list says to swap the name for another). */
+export const MANY_ITEMS = 6;
+
 /**
  * @param {{ f: string[]; e: number[][]; p: number[][]; pn: string[]; i: number[]; in: string[]; rd: Record<string, string[]> }} graph
  * @param {string[]} sources repo-relative paths from the page's `source` prop
@@ -77,9 +80,11 @@ export function resolveCopyList(graph, sources, samples = []) {
   const all = resolveOwn(graph, [...sources, ...samples]);
   const have = new Set(own.files);
   const extraFiles = new Set(all.files.filter((f) => !have.has(f)));
-  // Items the page's own item already installs (its registry dependencies, transitively) are not extras.
-  const covered = new Set(own.items);
-  const stack = [...own.items];
+  // What the shown install command installs: every own item, or only the first when the list is long (the panel's command
+  // installs the first and says to swap the name). The items the page's own item depends on, transitively, are covered too.
+  const commanded = own.items.length > MANY_ITEMS ? own.items.slice(0, 1) : own.items;
+  const covered = new Set(commanded);
+  const stack = [...commanded];
   while (stack.length) {
     for (const dep of graph.rd[stack.pop()] ?? []) {
       if (covered.has(dep)) continue;
@@ -87,7 +92,8 @@ export function resolveCopyList(graph, sources, samples = []) {
       stack.push(dep);
     }
   }
-  const extraItems = all.items.filter((n) => !covered.has(n));
+  // Every item the samples import, not pruned by what another item implies: the Markdown twin and seo:check read this same list.
+  const extraItems = resolveOwn(graph, samples, false).items.filter((n) => !covered.has(n));
   const units = extraFiles.size ? fold(graph, extraFiles).sort(byRank) : [];
   return {
     ...own,
@@ -99,7 +105,7 @@ function byRank(a, b) {
   return unitRank(a) - unitRank(b) || a.localeCompare(b);
 }
 
-function resolveOwn(graph, sources) {
+function resolveOwn(graph, sources, prune = true) {
   const start = matchSources(graph, sources);
   const seen = new Set();
   const stack = [...start];
@@ -124,6 +130,6 @@ function resolveOwn(graph, sources) {
   let items = [...new Set([...start].map((i) => graph.in[graph.i[i]]).filter((n) => n && n !== "sheenui-theme"))];
   const implied = new Set(items.flatMap((n) => graph.rd[n] ?? []));
   const pruned = items.filter((n) => !implied.has(n));
-  if (pruned.length > 0) items = pruned;
+  if (prune && pruned.length > 0) items = pruned;
   return { units, files, packages: [...packages].sort(), items: items.sort() };
 }

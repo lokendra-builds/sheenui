@@ -10,7 +10,7 @@ import { duration } from "../motion/tokens";
 import { useSheenReducedMotion } from "../hooks/use-preferences";
 import { Button } from "../button/button";
 import { ChartEmpty } from "./chart-parts";
-import { changeEase, enterEase, exitTransition, num, slotColor, type ChartColor } from "./chart-utils";
+import { KEY_SEP, changeEase, enterEase, exitTransition, num, slotColor, type ChartColor } from "./chart-utils";
 import { ChartValueTable, defaultCompact, defaultPercent, useEntrance } from "./heatmap";
 
 /** One row of a BarList: a name and a value, and optionally a link, an icon and a stable key. */
@@ -189,7 +189,7 @@ export function BarList({
     const k = rowKey(r.item);
     const n = seen.get(k) ?? 0;
     seen.set(k, n + 1);
-    return `${k}\u0000${n}`;
+    return `${k}${KEY_SEP}${n}`;
   });
 
   // Where each bar ends against its name, from the rendered sizes (fonts, icons, truncation).

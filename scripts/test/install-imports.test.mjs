@@ -3,6 +3,7 @@ import { test } from "node:test";
 
 import {
   extraItems,
+  alsoLine,
   extrasLine,
   itemClosure,
   loadInstallMap,
@@ -45,8 +46,9 @@ test("the docs site's Copied files tab (import-rewrite.ts) rewrites to the same 
     ["barrel", map.barrel],
     ["demoData", map.demoData],
   ])
-    for (const [name, file] of Object.entries(table[entry]))
-      assert.equal(`@/components/sheenui/${file.replace(/^components\//, "")}`, names[name], name);
+    for (const [file, exported] of Object.entries(table[entry]))
+      for (const name of exported)
+        assert.equal(`@/components/sheenui/${file.replace(/^components\//, "")}`, names[name], name);
 });
 
 test("a sample's imports that the install item does not bring in are listed as extra items", () => {
@@ -76,4 +78,18 @@ test("the note goes under the last import (and its package-form comment), also f
   assert.match(lines[at - 1], /from "react";$/);
   assert.equal(lines[at + 1], "");
   assert.equal(withNoteUnderImports("const x = 1;", "note"), "const x = 1;");
+});
+
+test("alsoLine: items give the shadcn command, files only list the files, nothing gives no line", () => {
+  assert.match(
+    alsoLine({ units: ["components/button/"], items: ["button"] }, "https://x.test"),
+    /^These examples also use button: `npx shadcn@latest add https:\/\/x\.test\/r\/button\.json`$/,
+  );
+  const filesOnly = alsoLine({ units: ["components/carousel/carousel-caption.tsx"], items: [] }, "https://x.test");
+  assert.match(
+    filesOnly,
+    /^These examples also use files from `theme\/src\/`.*`components\/carousel\/carousel-caption\.tsx`$/,
+  );
+  assert.equal(alsoLine({ units: [], items: [] }, "https://x.test"), "");
+  assert.equal(alsoLine(undefined, "https://x.test"), "");
 });

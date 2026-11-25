@@ -9,7 +9,7 @@ import { writeLlmsFiles } from "../../demo/scripts/lib/llms.mjs";
 const SITE = "https://example.com/sheenui";
 
 /** Writes `files` ({ name: html }) into a temp dist, runs the generator and returns a reader for the dist. */
-function build(files, group, paths) {
+function build(files, group, paths, alsoUses = {}) {
   const dist = mkdtempSync(join(tmpdir(), "llms-twin-"));
   for (const [name, html] of Object.entries(files)) writeFileSync(join(dist, name), html);
   writeLlmsFiles({
@@ -23,6 +23,7 @@ function build(files, group, paths) {
     })),
     counts: {},
     author: "A. Author",
+    alsoUses,
   });
   return (twin) => readFileSync(join(dist, twin), "utf8");
 }
@@ -89,4 +90,18 @@ test("component page twin: in-body links, Related pages, files and install as co
   assert.equal(twin.split("npx shadcn@latest add").length - 1, 1, "the shadcn command is emitted once per twin");
   assert.match(twin, /\[Tailwind v4 setup\]\(https:\/\/example\.com\/sheenui\/docs\/tailwind-v4\)/);
   assert.equal(/opens in a new tab/.test(twin), false, "the hidden external-link hint leaked");
+});
+
+test('a page with an "also use" entry gets the "These examples also use" line, files-only entries included', () => {
+  const html = `<html><body><article><header><h1>Carousel</h1><p>A carousel.</p></header>
+  <pre><code>import { Carousel } from "@sheenui/theme";\nexport const X = () => null;</code></pre></article></body></html>`;
+  const read = build({ "carousel.html": html }, "Components", [["/components/carousel", "carousel.html"]], {
+    "/components/carousel": { units: ["components/carousel/carousel-caption.tsx"], items: [], packages: [] },
+  });
+  assert.match(
+    read("components/carousel.md"),
+    /^These examples also use files from `theme\/src\/`.*carousel-caption\.tsx`$/m,
+  );
+  const none = build({ "carousel.html": html }, "Components", [["/components/carousel", "carousel.html"]]);
+  assert.doesNotMatch(none("components/carousel.md"), /These examples also use/);
 });

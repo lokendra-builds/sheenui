@@ -6,6 +6,7 @@ import { slugify } from "../layout/heading-ids";
 import { HubCards } from "../layout/HubCards";
 import { AllDashboardsStage } from "./DashboardStages";
 import { InstallAliasSection } from "./InstallAliasSection";
+import { InstallBundlesSection, StarterTemplateSection } from "./StarterTemplateSection";
 import { Page } from "../layout/Page";
 import { ScrollPre } from "../layout/ScrollPre";
 import { href } from "../router";
@@ -561,6 +562,11 @@ export function DashboardsHubPage() {
           Every label is in a <code>labels</code> object and every number goes through Intl, so a dashboard in another
           language or currency needs props, not edits.
         </p>
+        <p>
+          Want a whole admin app around a dashboard? The{" "}
+          <A to="/docs/installation#starter-template">Glass Admin starter template</A> (Vite or Next.js) wires the SaaS
+          revenue dashboard into an app shell with a customers table, settings and sign-in.
+        </p>
       </AboutHub>
     </Page>
   );
@@ -638,40 +644,19 @@ export function InstallationPage() {
             <code className={inlineCode}>analytics-saas</code> for the dashboard alone.
           </p>
         </Prose>
-      </section>
-      <section aria-labelledby="install-everything" className="install-step flex max-w-3xl flex-col gap-3">
-        <h2 id="install-everything" className="text-2xl font-semibold tracking-tight">
-          Install everything, or a whole family
-        </h2>
         <Prose>
           <p>
-            Five bundle items install a family in one command. A bundle has no files of its own: it lists the real items
-            it needs, so nothing is copied twice and the shared theme comes along once.
-          </p>
-        </Prose>
-        <CommandField command={`npx shadcn@latest add ${SITE_URL}/r/all.json`} label="Install command: everything" />
-        <Prose>
-          <p>
-            <code className={inlineCode}>all</code> is the whole library. The smaller ones are{" "}
-            <code className={inlineCode}>components</code>, <code className={inlineCode}>charts</code>,{" "}
-            <code className={inlineCode}>blocks</code> and <code className={inlineCode}>dashboards</code> (the five
-            dashboards with the components, charts and demo data they need). Expect a lot of files:{" "}
-            <code className={inlineCode}>all</code> copies several hundred, so prefer a family or single items when you
-            only need part of the library. To use short names, add the registry to your{" "}
-            <code className={inlineCode}>components.json</code> once:
-          </p>
-        </Prose>
-        <ScrollPre className="glass-1 overflow-x-auto rounded-sheen-lg p-4 font-sheen-mono text-sm">
-          <code>{`"registries": {\n  "@sheenui": "${SITE_URL}/r/{name}.json"\n}`}</code>
-        </ScrollPre>
-        <CommandField command="npx shadcn@latest add @sheenui/all" label="Install command: everything, short name" />
-        <Prose>
-          <p>
-            The namespace form was tested with shadcn CLI 4.23; the URL form above is the one that needs no setup. The
-            same short form works for single items, for example <code className={inlineCode}>@sheenui/button</code>.
+            The command only adds files. To see a styled page you still need the alias, the two CSS imports below, the{" "}
+            <code className={inlineCode}>SheenMotionProvider</code> and the backdrop, and the preference script. In Vite
+            that script goes into <code className={inlineCode}>index.html</code> as an inline{" "}
+            <code className={inlineCode}>&lt;script&gt;</code> in the head (its text is{" "}
+            <code className={inlineCode}>sheenPreferenceScript</code>), because a component cannot be imported there. If
+            the CLI fails with a 503 from github.io, run the command again.
           </p>
         </Prose>
       </section>
+      <InstallBundlesSection />
+      <StarterTemplateSection />
       <section aria-labelledby="install-css" className="install-step flex max-w-3xl flex-col gap-3">
         <h2 id="install-css" className="text-2xl font-semibold tracking-tight">
           Add the two CSS imports

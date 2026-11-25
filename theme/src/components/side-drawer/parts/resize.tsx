@@ -288,7 +288,11 @@ export function ResizeHandle({
       <div
         data-base-ui-swipe-ignore=""
         className={cn(
-          "peer-focus-visible/resize:flex absolute top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-1 has-[:focus-visible]:flex any-pointer-coarse:sm:flex",
+          // Never display:none: a focus target that only appears once the handle is focused is not there yet when Tab
+          // leaves the handle, so focus would drop to <body>. Transparent and inert until shown, always in the tab order.
+          "absolute top-1/2 z-30 flex -translate-y-1/2 flex-col gap-1 max-sm:hidden",
+          "pointer-events-none opacity-0 transition-opacity duration-(--sheen-duration-fast) ease-sheen-out",
+          "peer-focus-visible/resize:pointer-events-auto peer-focus-visible/resize:opacity-100 has-[:focus-visible]:pointer-events-auto has-[:focus-visible]:opacity-100 any-pointer-coarse:pointer-events-auto any-pointer-coarse:opacity-100",
           side === "right" ? "left-0 -translate-x-1/2" : "right-0 translate-x-1/2",
         )}
       >

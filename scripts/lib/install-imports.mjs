@@ -57,12 +57,12 @@ export function loadInstallMap(root = ROOT) {
         owner.set(target, item.name);
       }
   }
-  /** @param {Record<string, string>} names */
-  const resolveAll = (names) => {
+  /** @param {Record<string, string[]>} byFile the generated table: theme/src file -> the export names it declares */
+  const resolveAll = (byFile) => {
     const out = {};
-    for (const [name, file] of Object.entries(names)) {
+    for (const [file, names] of Object.entries(byFile)) {
       const target = installed.get(`theme/src/${file}`);
-      if (target) out[name] = target;
+      if (target) for (const name of names) out[name] = target;
     }
     return out;
   };
@@ -128,6 +128,33 @@ export function extrasLine(items, siteUrl, subject = "examples") {
   const names = items.join(", ");
   const lead = subject === "example" ? "This example also uses" : "These examples also use";
   return `${lead} ${names}: \`npx shadcn@latest add ${urls}\``;
+}
+
+/**
+ * What each docs page's examples use besides the page's own files: the generated demo/src/generated/also-uses.ts, the data the
+ * HTML "The examples also use" group renders. The Markdown twin reads the same data, so the group and the twin line cannot disagree.
+ * @param {string} [root]
+ * @returns {Record<string, { units: string[]; items: string[]; packages: string[] }>} route path -> its entry
+ */
+export function loadAlsoUses(root = ROOT) {
+  const text = readFileSync(join(root, "demo/src/generated/also-uses.ts"), "utf8");
+  const json = /= (\{.*\});/s.exec(text)?.[1];
+  return json ? JSON.parse(json) : {};
+}
+
+/**
+ * The twin's "also use" line for one route's entry in the generated also-uses data, or "" when the page has none. Registry items
+ * give the shadcn command (the same one the HTML group shows); a page whose examples use only files from the item's own folder lists them.
+ * @param {{ units: string[]; items: string[] } | undefined} entry
+ * @param {string} siteUrl
+ * @param {string[]} [moreItems] items the examples import that the install item's own closure lacks (listed with the group's)
+ */
+export function alsoLine(entry, siteUrl, moreItems = []) {
+  if (!entry) return "";
+  const items = [...new Set([...entry.items, ...moreItems])].sort();
+  if (items.length) return extrasLine(items, siteUrl);
+  if (!entry.units.length) return "";
+  return `These examples also use files from \`theme/src/\` that the page's own list does not name: ${entry.units.map((u) => `\`${u}\``).join(", ")}`;
 }
 
 /**

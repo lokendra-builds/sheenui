@@ -242,9 +242,22 @@ function InstallLine({ command }: { command: string }) {
     <div className="glass-1 flex max-w-2xl min-w-0 items-center gap-2 rounded-sheen-lg ps-3 pe-1 font-sheen-mono text-xs">
       {/* A dashboard's install item brings its sample data; the "component only" command is under Files to copy. */}
       {/\/r\/analytics-demo[\w-]*\.json$/.test(command) && (
-        <span className="shrink-0 font-sans text-sheen-fg-muted select-none">With demo data:</span>
+        <span className="shrink-0 font-sans whitespace-nowrap text-sheen-fg-muted select-none">With demo data:</span>
       )}
-      <code className="min-w-0 flex-1 py-2.5 [overflow-wrap:anywhere]">{command}</code>
+      {/* The command never wraps mid-word: it scrolls sideways inside its box, and the box is keyboard-reachable. */}
+      <code
+        className="min-w-0 flex-1 overflow-x-auto py-2.5 whitespace-nowrap [scrollbar-width:thin]"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard-reachable
+        tabIndex={0}
+        role="region"
+        aria-label={command.includes("/r/analytics-demo") ? "Install command with demo data" : "Install command"}
+      >
+        {/* Focusable but not tabbable: while a popup holds the page's tab stops (tabindex -1, see popup-a11y), a scrollable
+            region still needs focusable content to be reachable (axe: scrollable-region-focusable). */}
+        <span tabIndex={-1} className="outline-none">
+          {command}
+        </span>
+      </code>
       <button
         type="button"
         onClick={() => {
@@ -564,7 +577,7 @@ export function PropsTable({
             defaults ({labelKeys.keys.length})
           </summary>
           <div className="overflow-x-auto px-4 pb-3 [scrollbar-width:thin]">
-            <table className="w-full min-w-[20rem] text-start text-xs [:where(&)_th]:text-start">
+            <table className="w-full text-start text-xs [:where(&)_th]:text-start">
               <caption className="pb-2 text-start text-sheen-fg-muted">
                 {labelKeys.full ? (
                   <>
@@ -593,7 +606,7 @@ export function PropsTable({
                   <tr key={key} className="border-b border-sheen-border align-top last:border-0">
                     <th
                       scope="row"
-                      className="py-2 pe-4 font-sheen-mono font-semibold text-[color-mix(in_oklab,var(--sheen-accent)_68%,var(--sheen-fg))]"
+                      className="py-2 pe-4 font-sheen-mono font-semibold [overflow-wrap:anywhere] text-[color-mix(in_oklab,var(--sheen-accent)_68%,var(--sheen-fg))]"
                     >
                       {key}
                     </th>

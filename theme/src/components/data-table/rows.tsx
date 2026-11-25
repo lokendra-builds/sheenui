@@ -85,7 +85,7 @@ type RowEnv<TData extends RowData> = Pick<
   | "lastPinned"
   | "pinCap"
   | "pinnedBg"
-  | "colById"
+  | "visibleColumns"
   | "rowMenu"
 > & { renderCell: RowsProps<TData>["renderCell"]; actionsFor: RowsProps<TData>["actionsFor"] };
 
@@ -133,7 +133,7 @@ const RowCells = memo(function RowCells<TData extends RowData>({
     lastPinned,
     pinCap,
     pinnedBg,
-    colById,
+    visibleColumns,
     rowMenu,
     renderCell,
     actionsFor,
@@ -192,15 +192,15 @@ const RowCells = memo(function RowCells<TData extends RowData>({
           </button>
         </td>
       )}
-      {row.getVisibleCells().map((cell, i) => {
-        const col = colById.get(cell.column.id);
-        if (!col) return null;
+      {/* From the grid's visible columns, the same list the header maps: they are part of the memoised environment, so a
+          column shown or hidden re-renders the row (a cell list read from the row object stayed as it was first computed). */}
+      {visibleColumns.map((col, i) => {
         const pinned = pinFirst && i === 0;
         const capped = pinned && pinCap !== undefined;
         const content = renderCell(col, original, rowId);
         return (
           <td
-            key={cell.id}
+            key={col.id}
             style={{
               ...(pinned ? pinStyle(`${firstLeft}rem`) : {}),
               maxWidth: col.wrap ? cssLength(col.width) : undefined,
@@ -289,7 +289,7 @@ export function BodyRows<TData extends RowData>({
     pinCap,
     pinnedBg,
     colCount,
-    colById,
+    visibleColumns,
     rowMenu,
   } = env;
   const edges = { width: edgesWidth };
@@ -324,7 +324,7 @@ export function BodyRows<TData extends RowData>({
       lastPinned,
       pinCap,
       pinnedBg,
-      colById,
+      visibleColumns,
       rowMenu,
       renderCell,
       actionsFor,
@@ -342,7 +342,7 @@ export function BodyRows<TData extends RowData>({
       lastPinned,
       pinCap,
       pinnedBg,
-      colById,
+      visibleColumns,
       rowMenu,
       renderCell,
       actionsFor,

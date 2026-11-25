@@ -25,7 +25,10 @@ export function CommandField({ command, label = "Install command" }: { command: 
       </span>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard-reachable */}
       <code ref={field} className="home-cta__cmd" tabIndex={0} role="region" aria-label={label}>
-        {command}
+        {/* Focusable but not tabbable, so the region keeps focusable content while a popup holds the page's tab stops. */}
+        <span tabIndex={-1} className="outline-none">
+          {command}
+        </span>
       </code>
       <button type="button" className="home-cta__copy-btn" onClick={copy} aria-live="polite">
         {copied ? "Copied" : "Copy"}

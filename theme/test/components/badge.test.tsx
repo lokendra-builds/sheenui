@@ -1,7 +1,8 @@
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 
 import { Badge } from "../../src/components/badge/badge";
+import { resetWarnOnce } from "../../src/lib/warn-once";
 import { reduceMotion } from "../helpers";
 import { describeVariants, renderUi, runAxe } from "../render";
 
@@ -66,7 +67,7 @@ describeVariants((variant) => {
         <Badge tone="danger" pulse>
           Danger
         </Badge>
-        <Badge tone="solid">Solid</Badge>
+        <Badge variant="solid">Solid</Badge>
       </div>,
       variant,
     );
@@ -83,4 +84,42 @@ it("with reduced motion the badge still renders its dot (no animation needed)", 
   );
   expect(screen.getByTestId("b")).toHaveTextContent("Live");
   expect(screen.getByTestId("b").querySelector("[aria-hidden]")).toBeInTheDocument();
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  resetWarnOnce();
+});
+
+it('`variant="solid"` draws the filled accent form and does not warn', () => {
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  renderUi(
+    <>
+      <Badge data-testid="soft">Soft</Badge>
+      <Badge data-testid="solid" variant="solid">
+        Solid
+      </Badge>
+    </>,
+  );
+  expect(screen.getByTestId("solid").className).toContain("sheen-fill");
+  expect(screen.getByTestId("soft").className).not.toContain("sheen-fill");
+  expect(warn).not.toHaveBeenCalled();
+});
+
+it('the deprecated `tone="solid"` still renders the filled form and warns once', () => {
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  renderUi(
+    <>
+      <Badge data-testid="a" tone="solid">
+        A
+      </Badge>
+      <Badge data-testid="b" tone="solid">
+        B
+      </Badge>
+    </>,
+  );
+  expect(screen.getByTestId("a").className).toContain("sheen-fill");
+  expect(screen.getByTestId("b").className).toContain("sheen-fill");
+  expect(warn).toHaveBeenCalledTimes(1);
+  expect(String(warn.mock.calls[0]?.[0])).toContain('variant="solid"');
 });

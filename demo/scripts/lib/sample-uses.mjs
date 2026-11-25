@@ -107,7 +107,8 @@ export function sampleNames(file, exportName) {
           .trim()
           .replace(/^type\s+/, "")
           .split(/\s+as\s+/)[0];
-        if (n && !raw.trim().startsWith("type ")) names.add(n);
+        // A type-only name counts too: the copied sample still imports its file, so the file must come with it.
+        if (n) names.add(n);
       }
     // A lazy island: `import("./X").then((m) => m.Foo)` inside the declaration.
     for (const m of body.matchAll(/import\((["'])(\.[^"']+)\1\)(?:\s*\.then\(\s*\(?\w+\)?\s*=>\s*\w+\.(\w+))?/g)) {

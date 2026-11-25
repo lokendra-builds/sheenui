@@ -5,6 +5,7 @@ import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 
 import { cn, classNameWith } from "../../../lib/cn";
 import { useMergedRef } from "../../../lib/form";
+import { modalTabTrap } from "../../../lib/modal-tab-trap";
 import { PEEK_ROW_MAX, useDrawerContext } from "./model";
 import { DrawerHandle } from "./parts";
 
@@ -203,6 +204,7 @@ export function DrawerContent({
   const snaps = orderedSnapPoints.length > 0;
   const [popup, setPopup] = useState<HTMLDivElement | null>(null);
   const popupRef = useMergedRef(setPopup, ref);
+  useEffect(() => modalTabTrap(popup, modal !== false), [popup, modal]);
   /** The last input was a pointer press (until a key is pressed). */
   const pointerInput = useRef(false);
 

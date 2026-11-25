@@ -414,7 +414,7 @@ export const KpiStrip = memo(function KpiStrip({
             <span className="mt-1.5 flex min-w-0 flex-wrap items-center gap-x-2.5 gap-y-1">
               <span
                 className={cn(
-                  "text-2xl leading-tight font-semibold tracking-tight transition-opacity duration-(--sheen-duration-base) [[data-busy]_&]:opacity-60 @2xl:text-[1.75rem]",
+                  "text-lg leading-tight font-semibold tracking-tight transition-opacity duration-(--sheen-duration-base) [[data-busy]_&]:opacity-60 @sm:text-2xl @2xl:text-[1.75rem]",
                 )}
               >
                 <RollingNumber value={item.value} format={format} />
@@ -447,7 +447,7 @@ export const KpiStrip = memo(function KpiStrip({
           </>
         );
         const cellClass = cn(
-          "relative flex min-w-0 flex-col p-4 text-start @2xl:p-5",
+          "relative flex min-w-0 flex-col p-3 text-start @sm:p-4 @2xl:p-5",
           border,
           "border-sheen-border",
           cellClassName,
@@ -484,7 +484,7 @@ export const KpiStrip = memo(function KpiStrip({
 function KpiSkeleton({ pulse, className }: { pulse: boolean; className?: string }) {
   const play = { animationPlayState: pulse ? undefined : "paused" } as const;
   return (
-    <div aria-hidden className={cn("flex flex-col gap-2.5 border-sheen-border p-4 @2xl:p-5", className)}>
+    <div aria-hidden className={cn("flex flex-col gap-2.5 border-sheen-border p-3 @sm:p-4 @2xl:p-5", className)}>
       <span className="h-3.5 w-24 rounded-full bg-sheen-hover motion-ok:animate-pulse" style={play} />
       <span className="h-7 w-32 rounded-sheen-sm bg-sheen-hover motion-ok:animate-pulse" style={play} />
       <span className="mt-3 h-8 w-full rounded-sheen-sm bg-sheen-hover motion-ok:animate-pulse" style={play} />

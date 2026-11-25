@@ -45,7 +45,7 @@ const tableCode = `
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@sheenui/theme";
 export function Example() {
   return (
-    <Table regionLabel="Plan limits table" tableClassName="min-w-96">
+    <Table regionLabel="Plan limits table" tableClassName="min-w-64">
       <TableCaption>Plan limits</TableCaption>
       <TableHeader>
         <TableRow>
@@ -95,7 +95,7 @@ export function TablePage() {
         description="Compose Table, TableCaption, TableHeader, TableBody, TableFooter, TableRow, TableHead and TableCell like HTML."
         code={tableCode}
       >
-        <Table regionLabel="Plan limits table" tableClassName="min-w-96">
+        <Table regionLabel="Plan limits table" tableClassName="min-w-64">
           <TableCaption>Plan limits</TableCaption>
           <TableHeader>
             <TableRow>

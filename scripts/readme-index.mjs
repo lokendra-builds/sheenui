@@ -14,6 +14,7 @@ import ts from "typescript";
 
 import { readSplitSource } from "../demo/scripts/lib/split-source.mjs";
 import { withoutAppleDouble } from "./lib/fs-filter.mjs";
+import { stubHubLinks } from "./lib/hub-links.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = "https://lokendra-builds.github.io/sheenui";
@@ -35,7 +36,7 @@ const visible = routes.filter((r) => !r.hidden);
 const byGroup = new Map();
 for (const r of visible) byGroup.set(r.group, [...(byGroup.get(r.group) ?? []), r]);
 
-const link = (r) => `[${r.title}](${SITE}${r.path})`;
+const link = (r) => `[${r.title}](${SITE}${r.path}${HUB_PATHS.has(r.path) ? "/" : ""})`;
 const byTitle = (a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase());
 /** Hub routes list a group's pages; they document no component, so no page count includes them. */
 const HUB_PATHS = new Set(["/components", "/charts", "/blocks", "/effects", "/dashboards", "/guides"]);
@@ -248,6 +249,26 @@ for (const name of existsSync(guidesDir)
   }
 }
 
+/* ---------- public Markdown links the hub pages in their final form (`/charts/`), never the redirect stub (`/charts`) ---------- */
+
+const hubLinkProblems = [];
+const publicMarkdown = ["README.md", "CONTRIBUTING.md", "CHANGELOG.md"];
+for (const dir of ["docs/guides", "templates"]) {
+  const abs = join(ROOT, dir);
+  if (!existsSync(abs)) continue;
+  for (const name of withoutAppleDouble(readdirSync(abs))) {
+    if (dir === "docs/guides" && name.endsWith(".md")) publicMarkdown.push(`${dir}/${name}`);
+    if (dir === "templates" && existsSync(join(abs, name, "README.md")))
+      publicMarkdown.push(`${dir}/${name}/README.md`);
+  }
+}
+for (const file of publicMarkdown) {
+  const path = join(ROOT, file);
+  if (!existsSync(path)) continue;
+  for (const url of new Set(stubHubLinks(readFileSync(path, "utf8"), SITE)))
+    hubLinkProblems.push(`${file}: links ${url} (a redirect stub); use ${url}/`);
+}
+
 /* ---------- optional local contributor notes: the verify gates, generated from package.json; CI must run every one ---------- */
 
 /** One sentence per gate. A verify step without a sentence here fails the check, so the contributor list cannot go stale. */
@@ -397,6 +418,10 @@ console.log(
     `${byGroup.get("Blocks")?.length ?? 0} blocks, ${byGroup.get("Dashboards")?.length ?? 0} dashboards, ${guidePages} guides`,
 );
 
+if (hubLinkProblems.length) {
+  console.error(`readme-index: hub links must end in a slash:\n- ${hubLinkProblems.join("\n- ")}`);
+  process.exit(1);
+}
 if (guideProblems.length) {
   console.error(`readme-index: guide numbers out of date:\n- ${guideProblems.join("\n- ")}`);
   process.exit(1);

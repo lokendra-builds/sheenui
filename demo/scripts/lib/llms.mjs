@@ -8,8 +8,9 @@ import { fileURLToPath } from "node:url";
 import { parse } from "node-html-parser";
 
 import {
+  alsoLine,
   extraItems,
-  extrasLine,
+  loadAlsoUses,
   loadInstallMap,
   PACKAGE_NOTE,
   withCopiedImports,
@@ -34,6 +35,8 @@ const citation = (siteUrl) => [
 ];
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
+/** The Glass Admin starter apps in the public repository. */
+const TEMPLATES_URL = "https://github.com/lokendra-builds/sheenui/tree/main/templates";
 /** Each section file stays well under 150 KB (what one fetch or one context window handles comfortably). */
 const MAX_BYTES = 140_000;
 
@@ -617,7 +620,7 @@ const slug = (text) =>
 /**
  * @param {{ dist: string; siteUrl: string; author: string; counts?: Record<string, number>; pages: { route: any; seo: any; files: string[]; example: string | null; dates?: { published: string; modified: string } }[] }} args
  */
-export function writeLlmsFiles({ dist, siteUrl, pages, counts, author }) {
+export function writeLlmsFiles({ dist, siteUrl, pages, counts, author, alsoUses = loadAlsoUses() }) {
   siteOrigin = new URL(siteUrl).origin;
   const groups = new Map();
   for (const page of pages) {
@@ -641,6 +644,9 @@ export function writeLlmsFiles({ dist, siteUrl, pages, counts, author }) {
     `- Size: ${c.components} components (${c.ui} UI components and ${c.effects} effects), ${c.charts} charts, ${c.blocks} blocks, ${c.dashboards} dashboards and ${c.guides} guides; ${registryItems} shadcn registry items.`,
     `- Requires: React ${peer("react")}+, Tailwind CSS v${peer("tailwindcss").split(".")[0]}, Motion ${peer("motion")}+, @base-ui/react ${peer("@base-ui/react")}+.`,
     `- Install: \`npx shadcn@latest add ${siteUrl}/r/<name>.json\`, or copy the files a page lists. The \`@sheenui/theme\` package is not on npm yet.`,
+    `- Install bundles: five registry items install a family in one command: \`all\`, \`components\`, \`charts\`, \`blocks\` and \`dashboards\` (\`npx shadcn@latest add ${siteUrl}/r/all.json\`, or \`npx shadcn@latest add @sheenui/all\` once the \`@sheenui\` registry is in components.json; see ${siteUrl}/docs/installation).`,
+    `- Starter template: Glass Admin, a free admin dashboard app for Vite or Next.js (\`npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app\`, or \`templates/glass-admin-next\`; ${TEMPLATES_URL}).`,
+    `- Performance: measured load, Lighthouse and interaction numbers, the budgets and their limits are on ${siteUrl}/docs/performance.`,
     `- Browsers: Liquid Glass refraction runs in Chromium; Safari and Firefox get frosted glass. Reduced motion and reduced transparency are honoured.`,
   ];
 
@@ -706,10 +712,14 @@ export function writeLlmsFiles({ dist, siteUrl, pages, counts, author }) {
     const imp = importLine(examples);
     for (const m of imp?.matchAll(/(?:type )?(\w+)(?:,| \})/g) ?? [])
       if (!apiIndex.has(m[1])) apiIndex.set(m[1], seo.canonical);
+    const also = alsoUses[route.path];
+    // A page with an "also use" group lists, besides its items, the ones the examples import that the install item does not bring.
+    const extras = alsoLine(also, siteUrl, also && imp && installItem ? extraItems(imp, installMap, installItem) : []);
+    // The "also use" line is the HTML group "The examples also use", whether or not the page's samples import from the barrel.
+    if (!imp && extras) full.push(extras, ``);
     if (imp) {
       // Both forms: what a shadcn / copied install has today, and the package barrel (not on npm yet).
       const copied = withCopiedImports(imp, installMap).code;
-      const extras = installItem ? extrasLine(extraItems(imp, installMap, installItem), siteUrl) : "";
       full.push(
         `Import (after \`shadcn add\` or copying the files, use this today):`,
         ``,
@@ -922,6 +932,9 @@ export function writeLlmsFiles({ dist, siteUrl, pages, counts, author }) {
     ``,
     `- Install with the shadcn CLI: \`npx shadcn@latest add ${siteUrl}/r/<name>.json\` (one registry item per component, chart and block). The registry index is [r/registry.json](${siteUrl}/r/registry.json); a copy-paste install needs no package.`,
     `- [Installation](${siteUrl}/docs/installation): copy-paste and shadcn steps; every code sample shows the import a copied or shadcn install has (\`@/components/sheenui/<folder>/<file>\`), with the \`@sheenui/theme\` package form beside it as a comment: use that one after the first npm release, or from a packed tarball (${siteUrl}/docs/installation#import-paths).`,
+    `- Bundles: \`all\`, \`components\`, \`charts\`, \`blocks\` and \`dashboards\` install a whole family: \`npx shadcn@latest add ${siteUrl}/r/all.json\` (or \`@sheenui/all\` with the registry namespace set in components.json). A bundle has no files of its own; it lists the real items.`,
+    `- [Starter template](${siteUrl}/docs/installation#starter-template): Glass Admin, an admin dashboard app for Vite or Next.js. \`npx degit lokendra-builds/sheenui/templates/glass-admin-vite my-app\`. Source: ${TEMPLATES_URL}.`,
+    `- [Performance](${siteUrl}/docs/performance): measured LCP, long tasks, Total Blocking Time, Lighthouse and interaction timings on the deployed site, the JavaScript budgets and the known limits.`,
     `- [Framework guide](${siteUrl}/guides/install-frameworks): tested steps for Next.js and Vite.`,
     ``,
     `## Quick start`,

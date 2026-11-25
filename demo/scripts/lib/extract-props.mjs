@@ -419,7 +419,7 @@ export function extractInstallPaths(themeRoot = join(REPO_ROOT, "theme")) {
  * `import { Input } from "@sheenui/theme"` needs, so "Files to copy" also lists what the examples use.
  * @returns {Record<string, string[]>}
  */
-export function extractExportFiles(themeRoot = join(REPO_ROOT, "theme")) {
+export function extractExportFiles(themeRoot = join(REPO_ROOT, "theme"), { types = false } = {}) {
   const srcDir = join(themeRoot, "src") + "/";
   const entry = join(srcDir, "index.ts");
   const program = ts.createProgram([entry], compilerOptions(themeRoot));
@@ -428,7 +428,7 @@ export function extractExportFiles(themeRoot = join(REPO_ROOT, "theme")) {
   for (const exported of checker.getExportsOfModule(checker.getSymbolAtLocation(program.getSourceFile(entry)))) {
     let symbol = exported;
     if (symbol.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
-    if (!(symbol.flags & ts.SymbolFlags.Value)) continue;
+    if (!(symbol.flags & (types ? ts.SymbolFlags.Value | ts.SymbolFlags.Type : ts.SymbolFlags.Value))) continue;
     const file = symbol.declarations?.[0]?.getSourceFile().fileName;
     if (!file || !file.startsWith(srcDir)) continue;
     (byFile[file.slice(srcDir.length).replace(/\.tsx?$/, "")] ??= []).push(exported.getName());

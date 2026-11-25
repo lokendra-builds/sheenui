@@ -2,6 +2,7 @@ import { Button, CommandPalette, KbdShortcut, type CommandItem } from "@sheenui/
 
 import { useFollow } from "./ShowcaseStage.follow";
 import { useStageLayer } from "./ShowcaseStage.layer";
+import { stageInitialFocus } from "./stage-focus";
 import type { StageContext } from "./ShowcaseStage";
 import type { CommandPaletteScene } from "./ShowcaseStage.command-palette";
 
@@ -49,7 +50,7 @@ export function CommandPaletteScene({ scene, ctx }: { scene: CommandPaletteScene
         onQueryChange={setQuery}
         shortcut={false}
         modal={false}
-        initialFocus={false}
+        initialFocus={stageInitialFocus}
         container={layer}
         // A fixed height (not content-sized): the list narrows as "set" is typed, and a popup that follows its rows would resize and shift the footer.
         className="pointer-events-auto top-6 h-[min(21rem,calc(100%-3rem))] w-[min(40rem,calc(100%-1.5rem))] max-h-[calc(100%-3rem)]"

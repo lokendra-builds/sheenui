@@ -5,7 +5,7 @@ export function PageHeader({ title, description, action }: { title: string; desc
   return (
     <div className="flex flex-wrap items-end justify-between gap-3 px-1">
       <div className="min-w-0">
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight outline-none">{title}</h1>
         <p className="text-sm text-sheen-fg-muted">{description}</p>
       </div>
       {action}

@@ -7,7 +7,7 @@ Sidebar name: Tailwind CSS v4 setup
 
 Tailwind v4 glass UI in two CSS imports: no config file, the @source rule, layer order, @theme tokens, glass utilities and v3 changes. Vite and Next.js.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Tailwind CSS v4 setup
 

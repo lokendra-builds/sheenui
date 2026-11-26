@@ -184,6 +184,7 @@ The danger fill is a gradient background-image over a solid color of the same re
 - [Glassmorphism vs Liquid Glass vs Neumorphism](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-vs-liquid-glass)
 - [Framer Motion Examples: 12 Animated React Patterns](https://lokendra-builds.github.io/sheenui/guides/framer-motion-examples)
 - [Base UI vs Radix UI for React in 2026](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix)
+- [shadcn Glassmorphism: Three Ways to Get a Glass UI](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism)
 - [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt)
 
 67 components pages in all: browse them on [All components](https://lokendra-builds.github.io/sheenui/components/).

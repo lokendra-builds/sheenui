@@ -7,7 +7,7 @@ Sidebar name: Introduction
 
 Free glassmorphism and Liquid Glass React components with Motion: 86 components (67 UI, 19 effects), 48 charts and 20 blocks for Tailwind v4 and shadcn.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 26, 2026.
 
 v0.1 · MIT
 
@@ -140,7 +140,7 @@ Copy the folders listed in each page’s “Files to copy” box into a React 19
 
 ### Can I use SheenUI with Next.js or shadcn/ui?
 
-Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare the options in [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives).
+Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare the options in [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives), or see [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) for glass on stock shadcn/ui components.
 
 ### Who makes SheenUI, and is it ready for production?
 

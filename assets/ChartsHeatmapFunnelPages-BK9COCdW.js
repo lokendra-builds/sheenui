@@ -1,0 +1,55 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{t}from"./demo-utils-DKtmFFFD.js";import{i as n,t as r}from"./vendor-react-D30i__oY.js";import{C as i}from"./chart-utils-DvmgVWft.js";import{r as a}from"./toast-PePh6sao.js";import{n as o,t as s}from"./funnel-chart-zT-JSARP.js";import{t as c}from"./ExampleChartCard-DOQs1ydL.js";import{t as l}from"./ShowcaseStage.chart.scene-CXVExGyR.js";import{i as u,n as d,o as f,r as p}from"./Page-ClekXXh-.js";import{t as m}from"./Example-jva669kg.js";import{t as h}from"./lazy-block-BfzH_8EP.js";import{t as g}from"./Segmented-kx7yHseo.js";import{n as _,t as v}from"./shared-DWDy5hdV.js";import{t as y}from"./preload-helper-BrmCrVM7.js";var b=[[`data`,`readonly FunnelStage[]`,``,`The stages in order, e.g. [{ label: "Visited", value: 48200 }, ...]. Negative values count as 0.`,!0],[`align`,`"center" | "start"`,`"center"`,`"center": a classic funnel, bars centred; "start": bars from a shared left edge (easier to compare).`,!1],[`color`,`ChartColor`,`1`,`Hue: stages step from the full slot colour (first) to lighter (last), an ordinal ramp.`,!1],[`format`,`((n: number) => string)`,`formatCompact in locale`,`Formats a stage count for the labels, tooltips and data table: takes the number, returns the text shown.`,!1],[`formatPercent`,`((ratio: number) => string)`,`percentages in locale`,`Formats a ratio (0.412 → "41.2%").`,!1],[`locale`,`string`,`"en"`,`Locale of the default number formats.`,!1],[`patterns`,`boolean`,`true when data.length > 3`,`Tell stages apart without colour (hatch fills).`,!1],[`showDropOff`,`boolean`,`true`,`Show the "continued / dropped off" line between stages.`,!1],[`onStageClick`,`((stage: FunnelStage, index: number) => void)`,``,`Called with the stage and its index when it is clicked, tapped, or activated with Enter or Space. Makes stages interactive.`,!1],[`emptyState`,`ReactNode`,``,`Shown when there are no stages.`,!1],[`labels`,`Partial<FunnelChartLabels>`,`defaultFunnelChartLabels`,'Every other string, for translation: `labels={{ continued: "…" }}`; omitted keys keep the English of `defaultFunnelChartLabels`. All 7 keys of `FunnelChartLabels` are listed in the key table under the props table.',!1,{type:`FunnelChartLabels`,const:`defaultFunnelChartLabels`,keys:[[`continued`,`continued`],[`droppedOff`,`dropped off`],[`ofFirst`,`of first stage`],[`ofPrevious`,`of previous stage`],[`instructions`,`Use the up and down arrow keys to read each stage.`],[`roleDescription`,`funnel chart`],[`hint`,`Tap or hover a stage for its conversion`]]}],[`aria-label`,`string`,``,`Names the chart for assistive tech (required).`,!0],[`className`,`string`,``,`Adds extra classes to the outer element.`,!1]],x=[[`data`,`readonly FunnelStage[]`,``,`The stages in order, e.g. [{ label: "Visited", value: 48200 }, ...]. Negative values count as 0.`,!0],[`format`,`((n: number) => string)`,`formatCompact in locale`,`Formats a stage count for the labels, tooltips and data table: takes the number, returns the text shown.`,!1],[`locale`,`string`,`"en"`,`Locale of the default number formats.`,!1],[`formatPercent`,`((ratio: number) => string)`,`percentages in locale`,`Formats a ratio (0.412 → "41.2%").`,!1],[`caption`,`string`,``,`Hidden caption that names the table for screen readers.`,!1],[`headers`,`Partial<{ stage: string; count: string; ofFirst: string; ofPrevious: string; dropped: string; }>`,``,`Text of the table's column headers (stage, count, share of first, share of previous, dropped); pass only the ones you translate.`,!1],[`labels`,`Partial<FunnelTableLabels>`,`defaultFunnelTableLabels`,'Strings for the cells that have no value. Merged over `defaultFunnelTableLabels`. Every other string, for translation: `labels={{ notApplicable: "…" }}`; omitted keys keep the English of `defaultFunnelTableLabels`. All 2 keys of `FunnelTableLabels` are listed in the key table under the props table.',!1,{type:`FunnelTableLabels`,const:`defaultFunnelTableLabels`,keys:[[`notApplicable`,`Not applicable`],[`noData`,`No data`]]}],[`emptyState`,`ReactNode`,``,`Shown when there are no stages.`,!1]],S=e(n()),C=r();Array.from({length:24},(e,t)=>({key:`h${t}`,label:String(t).padStart(2,`0`)})),Array.from({length:6},(e,t)=>({key:`m${t}`,label:`Month ${t}`})),[`Jan`,`Feb`,`Mar`,`Apr`,`May`,`Jun`].map((e,n)=>{let r=t(40+n),i={cohort:`${e} 2026`},a=100;for(let e=0;e<6-n;e++)i[`m${e}`]=Math.round(a),a*=e===0?.52+r()*.1:.78+r()*.1;return i}),(()=>{let e=t(99),n=[],r=Date.UTC(2026,9,28);for(let t=0;t<365;t++){let i=new Date(r-t*864e5),a=i.getUTCDay();e()<(a===0?.85:a===3||a===5?.6:.2)&&n.push({date:i.toISOString().slice(0,10),value:Math.round((a===0?9:3)+e()*6)})}return n})();var w={oct:[{label:`Visited site`,value:48210},{label:`Viewed pricing`,value:21904},{label:`Started trial`,value:8412},{label:`Activated`,value:5108},{label:`Subscribed`,value:1964}],sep:[{label:`Visited site`,value:41380},{label:`Viewed pricing`,value:16021},{label:`Started trial`,value:6930},{label:`Activated`,value:3517},{label:`Subscribed`,value:1402}]},T=[{label:`Cart`,value:9240},{label:`Shipping details`,value:6875},{label:`Payment`,value:5012},{label:`Order placed`,value:4386}],E=h(()=>y(()=>import(`./ChartPatternsDemos-DzGpzzsz.js`).then(e=>e.FunnelPatternsDemo),[]),{minHeight:`14rem`});function D(){let e=a(),[t,n]=(0,S.useState)(`oct`),[r,h]=(0,S.useState)(`center`),y=w[t],D=(y[y.length-1]?.value??0)/((y[0]?.value??0)||1);return(0,C.jsxs)(d,{eyebrow:`Chart`,title:`Funnel chart`,description:`Stages of a process as bars that narrow with each step. Between every pair of stages it says how many continued and how many dropped off, so the reading never depends on bar width or color alone. Stages step through one hue, an ordinal ramp, because their order is the point.`,source:`theme/src/components/charts/funnel-chart.tsx`,children:[(0,C.jsx)(l,{label:`Funnel chart demo`,title:`Signup funnel`,hue:1,height:`20.5rem`,narrowHeight:`25.625rem`,children:(0,C.jsx)(s,{data:w.oct,"aria-label":`Signup funnel, October`})}),(0,C.jsx)(m,{title:`Conversion, stage by stage`,description:`Centered bars read as a funnel; start-aligned bars are easier to compare by length. Switch the month to see the bars resize with a transform-only layout animation while the steps morph with them. Focus the chart and use the up and down arrow keys; on a phone the reading docks above the stages.`,variant:`bare`,controls:(0,C.jsxs)(_,{children:[(0,C.jsx)(v,{children:`Month`}),(0,C.jsx)(g,{label:`Month shown in the funnel`,size:`sm`,options:[{value:`oct`,label:`October`},{value:`sep`,label:`September`}],value:t,onValueChange:n}),(0,C.jsx)(v,{children:`Align`}),(0,C.jsx)(g,{label:`Bar alignment`,size:`sm`,options:[{value:`center`,label:`Center`},{value:`start`,label:`Start`}],value:r,onValueChange:h})]}),code:`
+import { ChartCard, formatPercent, FunnelTable, FunnelChart, type FunnelStage } from "@sheenui/theme";
+
+const stages: FunnelStage[] = [
+  { label: "Visited site", value: 48210 },
+  { label: "Viewed pricing", value: 21904 },
+  { label: "Started trial", value: 8412 },
+  { label: "Activated", value: 5108 },
+  { label: "Subscribed", value: 1964 },
+];
+const rate = (stages[stages.length - 1]?.value ?? 0) / (stages[0]?.value || 1);
+
+export function Example() {
+  return (
+    <ChartCard
+      title="Signup funnel"
+      aside={<span className="text-2xl font-semibold">{formatPercent(rate)}</span>}
+      table={<FunnelTable data={stages} />}
+    >
+      <FunnelChart data={stages} align="center" aria-label="Signup funnel, October" />
+    </ChartCard>
+  );
+}`,children:(0,C.jsx)(c,{className:`w-full`,title:`Signup funnel`,description:t===`oct`?`October 2026, all channels`:`September 2026, all channels`,aside:(0,C.jsxs)(`span`,{className:`flex flex-col items-end leading-tight`,children:[(0,C.jsxs)(`span`,{className:`text-2xl font-semibold tracking-tight tabular-nums`,children:[(D*100).toFixed(1),`%`]}),(0,C.jsx)(`span`,{className:`text-xs text-sheen-fg-muted`,children:`visit to paid`})]}),table:(0,C.jsx)(o,{data:y,caption:`Signup funnel table`}),children:(0,C.jsx)(s,{data:y,align:r,"aria-label":`Signup funnel, ${t===`oct`?`October`:`September`}`})})}),(0,C.jsx)(m,{title:`Checkout, clickable stages`,description:`Start-aligned, in another hue, with stage clicks (pointer, Enter or Space) wired to a handler. Without the drop-off lines it becomes a compact ranked view.`,variant:`bare`,code:`
+import { FunnelChart, useToast, type FunnelStage } from "@sheenui/theme";
+
+const checkout: FunnelStage[] = [
+  { label: "Cart", value: 9240 },
+  { label: "Shipping details", value: 6875 },
+  { label: "Payment", value: 5012 },
+  { label: "Order placed", value: 4386 },
+];
+
+export function Example() {
+  const toast = useToast();
+  return (
+    <FunnelChart
+      data={checkout}
+      align="start"
+      color={7}
+      onStageClick={(stage) => toast.info(stage.label)}
+      aria-label="Checkout funnel"
+    />
+  );
+}`,children:(0,C.jsx)(c,{className:`w-full`,title:`Checkout`,description:`Last 30 days`,table:(0,C.jsx)(o,{data:T,caption:`Checkout funnel`}),children:(0,C.jsx)(s,{data:T,align:`start`,color:7,onStageClick:t=>e.info(t.label,`${i(t.value)} sessions reached this step.`),"aria-label":`Checkout funnel, last 30 days`})})}),(0,C.jsx)(m,{title:`Patterns`,description:`Hatch fills tell the stages apart without colour (the counts are text already). They switch on by themselves above three stages; pass patterns to force them.`,variant:`bare`,code:`
+import { FunnelChart } from "@sheenui/theme";
+
+const stages = [
+  { label: "Visited", value: 12000 },
+  { label: "Signed up", value: 3400 },
+  { label: "Subscribed", value: 820 },
+];
+
+export function Example() {
+  return <FunnelChart patterns data={stages} aria-label="Conversion from visit to subscription, hatched" />;
+}`,children:(0,C.jsx)(E,{})}),(0,C.jsx)(p,{title:`FunnelChart`,of:b}),(0,C.jsx)(p,{as:`h3`,title:`FunnelTable`,of:x}),(0,C.jsx)(f,{rows:[[`Tab`,`Focus the chart. It is one tab stop; the arrow keys then read it.`],[`↓ / →`,`Next stage.`],[`↑ / ←`,`Previous stage.`],[`Home / End`,`Jump to the first / last stage.`],[`Enter / Space`,`Activate the stage being read, when onStageClick is set.`],[`Escape`,`Clear the reading.`]]}),(0,C.jsx)(u,{notes:[`The chart is one focusable figure: its aria-label is the chart title, a one-line hint describes how to read it, and in a ChartCard with a table view aria-details points at that table. Each move is announced politely, once. Counts and conversion are text, so color never carries the reading; each move announces the stage.`,`FunnelTable is the same data as a real table. Pass it to ChartCard's table prop and the Chart / Table tabs let anyone read every value without color or sight.`,`Under reduced motion nothing morphs: the stages render at their final widths and new data replaces the old at once.`]})]})}export{D as default};

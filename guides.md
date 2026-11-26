@@ -7,7 +7,7 @@ Sidebar name: Guides
 
 Guides for accessible glass UI in React: glassmorphism, Liquid Glass with a Safari fallback, backdrop-filter speed, Motion, Base UI and installing SheenUI.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Guides
 
@@ -15,10 +15,11 @@ Step-by-step guides for building accessible glass UI in React: tutorials, Safari
 
 ## Getting started
 
-Read these to get glass UI running: install SheenUI in Next.js or Vite, build a glass card from scratch in React, or give an AI coding agent rules that produce readable glass.
+Read these to get glass UI running: install SheenUI in Next.js or Vite, build a glass card from scratch in React, add glass to a shadcn/ui project, or give an AI coding agent rules that produce readable glass.
 
 - [Install SheenUI Glass Components in Next.js and Vite](https://lokendra-builds.github.io/sheenui/guides/install-frameworks): Tested install steps for SheenUI in Next.js App Router and Vite (React Router or TanStack Router): the shadcn CLI, the packed package, or copying files.
 - [Glassmorphism in React: A Step-by-Step Tutorial](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial): Glassmorphism in React is a frosted-glass UI style: a tint, backdrop-filter blur and light border. Build it in CSS, Tailwind v4 and React, with contrast.
+- [shadcn Glassmorphism: Three Ways to Get a Glass UI](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism): shadcn glassmorphism in three ways: restyle the stock Card, Dialog and Button, retheme the CSS variables, or install glass components with the shadcn CLI.
 - [Glassmorphism UI Prompts for AI Coding Agents](https://lokendra-builds.github.io/sheenui/guides/glassmorphism-ui-prompt): A glassmorphism UI prompt for Claude, Cursor and v0: copy-paste prompts, a rules file and a review checklist for accessible glass and Liquid Glass UI.
 
 

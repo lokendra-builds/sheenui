@@ -7,7 +7,7 @@ Sidebar name: Glassmorphism React tutorial
 
 Glassmorphism in React is a frosted-glass UI style: a tint, backdrop-filter blur and light border. Build it in CSS, Tailwind v4 and React, with contrast.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 14, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Guides](https://lokendra-builds.github.io/sheenui/guides/) > Glassmorphism in React: A Step-by-Step Tutorial
 
@@ -26,7 +26,7 @@ Quick answer, the smallest glassmorphism in React or any page (a colorful backgr
 }
 ```
 
-Basis: written for React 19.2+ and Tailwind CSS v4; the Tailwind statement about variants refers to Tailwind CSS 4.3.5, and browser support is quoted from MDN browser-compat-data. First published 8 Nov 2026, last revised 14 Nov 2026.
+Basis: written for React 19.2+ and Tailwind CSS v4; the Tailwind statement about variants refers to Tailwind CSS 4.3.5, and browser support is quoted from MDN browser-compat-data. First published 8 Nov 2026, last revised 26 Nov 2026.
 
 ## What glassmorphism is
 
@@ -238,7 +238,7 @@ export function SheenCard({ children }: { children: ReactNode }) {
 
 ## Copy-paste glass components: card, navbar, login, dashboard
 
-Writing every piece yourself gets long. SheenUI is a copy-the-source library (the `@sheenui/theme` package is not on npm yet, so you add components with `npx shadcn@latest add` or copy the folders you need; the README, the [install guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) and the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) list the steps). It adds the lit rim, three glass levels, the fallbacks above and the preference hooks. A card and a floating [navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar) with a [button](https://lokendra-builds.github.io/sheenui/components/button):
+Writing every piece yourself gets long. If your project is already on shadcn/ui, [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) applies these layers to its Card, Dialog and Button. SheenUI is a copy-the-source library (the `@sheenui/theme` package is not on npm yet, so you add components with `npx shadcn@latest add` or copy the folders you need; the README, the [install guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) and the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) list the steps). It adds the lit rim, three glass levels, the fallbacks above and the preference hooks. A card and a floating [navbar](https://lokendra-builds.github.io/sheenui/navigation/navbar) with a [button](https://lokendra-builds.github.io/sheenui/components/button):
 
 ```tsx
 import { useState } from "react";

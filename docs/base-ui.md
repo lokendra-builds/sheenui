@@ -7,7 +7,7 @@ Sidebar name: Built on Base UI
 
 SheenUI styles Base UI's accessible headless components with glass and Motion: Tailwind CSS v4 styling, keyboard and ARIA from Base UI. MIT.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Built on Base UI
 
@@ -46,7 +46,7 @@ SheenUI components, the Base UI primitive each wraps, and what stays Base UI’s
 
 ## The render prop instead of asChild
 
-Where Radix uses asChild, Base UI uses a render prop that takes an element or a function. It is how a button becomes a router link without losing its styles. Read [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix) for a checked comparison of coverage and migration, and [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives) for how this fits the copy-paste approach.
+Where Radix uses asChild, Base UI uses a render prop that takes an element or a function. It is how a button becomes a router link without losing its styles. Read [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix) for a checked comparison of coverage and migration, and [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives) for how this fits the copy-paste approach, or [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) to add glass to a shadcn/ui project.
 
 
 ## What a wrapper looks like

@@ -7,7 +7,7 @@ Sidebar name: shadcn alternatives
 
 shadcn alternatives with animation, glass and charts, checked on 8 Nov 2026: license, install method, primitives and paid tiers for nine libraries.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 15, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Guides](https://lokendra-builds.github.io/sheenui/guides/) > shadcn Alternatives with Animation: Nine Libraries Compared (2026)
 
@@ -20,14 +20,14 @@ Quick answer by need:
 - Motion-based primitives: Motion Primitives (in beta).
 - Animation plus glass, charts and Base UI primitives: SheenUI (ours).
 
-Basis: each library's own docs, npm and the GitHub API, gathered on 8 Nov 2026 as the text says; SheenUI is the author's own library and is marked as such. First published 8 Nov 2026, last revised 15 Nov 2026; each figure keeps the date given in the text, and licences, tiers, stars and push dates can have changed since.
+Basis: each library's own docs, npm and the GitHub API, gathered on 8 Nov 2026 as the text says; SheenUI is the author's own library and is marked as such. First published 8 Nov 2026, last revised 26 Nov 2026; each figure keeps the date given in the text, and licences, tiers, stars and push dates can have changed since.
 
 ## What people want beyond shadcn/ui
 
 shadcn/ui is the baseline: 127,576 stars and a push on 7 Nov 2026 ([shadcn-ui/ui](https://github.com/shadcn-ui/ui)), MIT, CLI package `shadcn` 4.23.0 on npm (27 Oct 2026). Four things send people looking elsewhere:
 
 1. Animation. shadcn/ui components transition, but they do not ship marquees, number tickers, text effects or spotlight cards.
-2. Glass. The default styles are flat. A "shadcn glass theme" means either restyling the stock components or replacing them.
+2. Glass. The default styles are flat. A "shadcn glass theme" means either restyling the stock components or replacing them; [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) is the how-to for both.
 3. Charts. shadcn/ui's chart components are a thin layer; dashboard-heavy apps want more chart types.
 4. Primitives. Some teams want Base UI rather than Radix.
 
@@ -136,7 +136,7 @@ Yes, that is the design. Magic UI, React Bits, Aceternity and liqui.design insta
 
 ### Is there a free shadcn glass theme?
 
-liqui.design and SheenUI are MIT and free. For Radix-based shadcn projects, Glassy UI and crenspire Glass UI are covered in the comparison linked above.
+liqui.design and SheenUI are MIT and free. For Radix-based shadcn projects, Glassy UI and crenspire Glass UI are covered in the comparison linked above. To glass-style the stock components yourself, see [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism).
 
 ### Do I still need a Base UI port of shadcn/ui?
 

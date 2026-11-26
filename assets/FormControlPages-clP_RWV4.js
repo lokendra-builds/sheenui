@@ -1,1 +1,0 @@
-import"./rolldown-runtime-WkwZ5CU-.js";import{i as e,t}from"./vendor-react-D30i__oY.js";import{t as n}from"./lazy-block-BfzH_8EP.js";import{t as r}from"./preload-helper-BrmCrVM7.js";e(),t();var i=n(()=>r(()=>import(`./SelectPageBody-bmA4N3Ft.js`).then(e=>e.SelectPage),[]),{eager:!0,minHeight:`80vh`});export{i as default};

@@ -11,7 +11,7 @@ Sidebar name: Introduction
 
 Free glassmorphism and Liquid Glass React components with Motion: 86 components (67 UI, 19 effects), 48 charts and 20 blocks for Tailwind v4 and shadcn.
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 26, 2026.
 
 v0.1 · MIT
 
@@ -144,7 +144,7 @@ Copy the folders listed in each page’s “Files to copy” box into a React 19
 
 #### Can I use SheenUI with Next.js or shadcn/ui?
 
-Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare the options in [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives).
+Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare the options in [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives), or see [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) for glass on stock shadcn/ui components.
 
 #### Who makes SheenUI, and is it ready for production?
 
@@ -847,6 +847,10 @@ Yes. Every docs page has a Files to copy box with the exact folders and npm pack
 - [Forms recipe](https://lokendra-builds.github.io/sheenui/docs/forms)
 - [Dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)
 
+#### Guides that cover it
+
+- [shadcn Glassmorphism: Three Ways to Get a Glass UI](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism)
+
 
 ## React Hook Form + Zod with Glass Inputs
 
@@ -1198,7 +1202,7 @@ Sidebar name: Tailwind CSS v4 setup
 
 Tailwind v4 glass UI in two CSS imports: no config file, the @source rule, layer order, @theme tokens, glass utilities and v3 changes. Vite and Next.js.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Tailwind CSS v4 setup
 
@@ -1347,7 +1351,7 @@ Sidebar name: Dark mode
 
 Add dark mode to a React and Tailwind CSS v4 app with SheenUI: a data-theme switch, the system fallback, no flash on load and glass tuned for dark.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Dark mode
 
@@ -1498,7 +1502,7 @@ Sidebar name: Built on Base UI
 
 SheenUI styles Base UI's accessible headless components with glass and Motion: Tailwind CSS v4 styling, keyboard and ARIA from Base UI. MIT.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Built on Base UI
 
@@ -1537,7 +1541,7 @@ SheenUI components, the Base UI primitive each wraps, and what stays Base UI’s
 
 ### The render prop instead of asChild
 
-Where Radix uses asChild, Base UI uses a render prop that takes an element or a function. It is how a button becomes a router link without losing its styles. Read [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix) for a checked comparison of coverage and migration, and [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives) for how this fits the copy-paste approach.
+Where Radix uses asChild, Base UI uses a render prop that takes an element or a function. It is how a button becomes a router link without losing its styles. Read [Base UI vs Radix](https://lokendra-builds.github.io/sheenui/guides/base-ui-vs-radix) for a checked comparison of coverage and migration, and [shadcn alternatives](https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives) for how this fits the copy-paste approach, or [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism) to add glass to a shadcn/ui project.
 
 
 ### What a wrapper looks like

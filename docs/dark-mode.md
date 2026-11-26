@@ -7,7 +7,7 @@ Sidebar name: Dark mode
 
 Add dark mode to a React and Tailwind CSS v4 app with SheenUI: a data-theme switch, the system fallback, no flash on load and glass tuned for dark.
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > Dark mode
 

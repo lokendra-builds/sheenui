@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/home.jpg</image:loc>
     </image:image>
@@ -37,21 +37,21 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/docs/tailwind-v4</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/docs-tailwind-v4.webp</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/docs/dark-mode</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/docs-dark-mode.webp</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/docs/base-ui</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/docs-base-ui.webp</image:loc>
     </image:image>
@@ -527,7 +527,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/layout/pagination</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/layout-pagination.webp</image:loc>
     </image:image>
@@ -1227,7 +1227,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/guides/</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/guides.jpg</image:loc>
     </image:image>
@@ -1241,7 +1241,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/guides/glassmorphism-react-tutorial</loc>
-    <lastmod>2026-11-14</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/guides-glassmorphism-react-tutorial.jpg</image:loc>
     </image:image>
@@ -1304,16 +1304,23 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/guides/best-glassmorphism-react-libraries</loc>
-    <lastmod>2026-11-14</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/guides-best-glassmorphism-react-libraries.jpg</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/guides/shadcn-alternatives</loc>
-    <lastmod>2026-11-15</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/guides-shadcn-alternatives.jpg</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism</loc>
+    <lastmod>2026-11-26</lastmod>
+    <image:image>
+      <image:loc>https://lokendra-builds.github.io/sheenui/og/guides-shadcn-glassmorphism.jpg</image:loc>
     </image:image>
   </url>
   <url>

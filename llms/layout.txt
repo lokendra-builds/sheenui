@@ -853,7 +853,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/pagination.json
 ```
 
-By Lokendra Singh Rathore. Published November 11, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 11, 2026, updated November 26, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Components](https://lokendra-builds.github.io/sheenui/components/) > Pagination
 

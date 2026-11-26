@@ -175,6 +175,10 @@ Yes. Every docs page has a Files to copy box with the exact folders and npm pack
 - [Forms recipe](https://lokendra-builds.github.io/sheenui/docs/forms)
 - [Dark mode](https://lokendra-builds.github.io/sheenui/docs/dark-mode)
 
+### Guides that cover it
+
+- [shadcn Glassmorphism: Three Ways to Get a Glass UI](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism)
+
 
 ---
 

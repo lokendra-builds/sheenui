@@ -129,6 +129,7 @@ if (process.argv.includes("--check")) {
           testFiles: countFiles(join(REPO, "theme/test"), /\.test\.tsx?$/),
           e2eSpecs: countFiles(join(DEMO, "e2e"), /\.spec\.ts$/),
           registryItems: registry.items.filter((i) => i.meta?.kind !== "bundle").length,
+          registryBundles: registry.items.filter((i) => i.meta?.kind === "bundle").length,
         },
         null,
         1,

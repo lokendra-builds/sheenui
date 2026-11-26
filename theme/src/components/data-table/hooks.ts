@@ -80,7 +80,9 @@ export function useScrollEdges(
       };
       setEdges((prev) => ((Object.keys(next) as (keyof Edges)[]).every((k) => prev[k] === next[k]) ? prev : next));
     };
-    update();
+    // No measure here: observe() delivers a first notification after the frame's own layout, so the table's first
+    // measure shares one layout with every other table mounting in the same commit. A synchronous read here forced a
+    // layout per table (about 40 ms of the data-table page's hydration task on a phone).
     let frame = 0;
     const onScroll = () => {
       if (!frame)

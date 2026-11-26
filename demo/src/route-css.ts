@@ -18,6 +18,8 @@ type CssMap = { classes: Record<string, string[]>; routes: Record<string, string
 let mapPromise: Promise<CssMap | null> | undefined;
 let map: CssMap | null = null;
 const loading = new Map<string, Promise<void>>();
+/** The page whose sheet was last asked for: a late-arriving sheet finishes the swap only if it is still this one. */
+let current: string | undefined;
 
 const OFF = "not all";
 const pathOf = (href: string) => new URL(href, location.href).pathname;
@@ -57,6 +59,26 @@ const linksFor = (href: string) =>
     (l) => pathOf(l.href) === pathOf(href),
   );
 
+/**
+ * Keeps at most one parked sheet (fetched, switched off): the newest, which is the page a hover or a pending navigation
+ * asked for last. Sheets prefetched for links the pointer only passed over would otherwise collect until the next navigation.
+ * A page whose parked sheet was dropped here gets it back when it commits (activateRouteCss).
+ */
+function prune(): void {
+  if (!map) return;
+  const all = new Set(Object.values(map.classes).flat().map(pathOf));
+  const want = new Set(current === undefined ? [] : sheetsOf(current).map(pathOf));
+  const parked = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].filter((l) => {
+    const p = pathOf(l.href);
+    return all.has(p) && !want.has(p) && l.media === OFF && !!l.sheet;
+  });
+  for (const link of parked.slice(0, -1)) {
+    link.remove();
+    loading.delete(link.getAttribute("href") ?? link.href);
+    loading.delete(link.href);
+  }
+}
+
 /** Resolves once `href` is in the document and fetched (or failed: a missing sheet must not block navigation for ever). */
 function fetchSheet(href: string): Promise<void> {
   const known = loading.get(href);
@@ -71,7 +93,9 @@ function fetchSheet(href: string): Promise<void> {
     const timer = window.setTimeout(resolve, 4000);
     const settle = (failed: boolean) => {
       window.clearTimeout(timer);
-      if (failed) loading.delete(href); // retry on the next navigation
+      if (failed)
+        loading.delete(href); // retry on the next navigation
+      else prune();
       resolve();
     };
     link.addEventListener("load", () => settle(false), { once: true });
@@ -103,27 +127,49 @@ export function ensureRouteCss(path: string): Promise<void> | undefined {
  */
 export function activateRouteCss(path: string): void {
   if (typeof document === "undefined" || !map) return;
-  const want = new Set(sheetsOf(path).map(pathOf));
+  const wanted = sheetsOf(path);
+  const want = new Set(wanted.map(pathOf));
   if (!want.size) return;
+  current = path;
   const all = new Set(Object.values(map.classes).flat().map(pathOf));
-  const links = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].filter((l) =>
-    all.has(pathOf(l.href)),
-  );
-  // Only drop sheets once every sheet the new page wants has arrived (a timed-out fetch keeps the old one parked, not
-  // removed, so a late arrival never leaves the page bare). Then every other sheet that has loaded goes, in effect or
-  // only prefetched: a navigation that was overtaken (rapid back and forward) must not leave its sheet behind. One that
-  // is still loading stays until the next activation.
+  const routeLinks = () =>
+    [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].filter((l) => all.has(pathOf(l.href)));
+  // A wanted sheet can be missing from the document: a navigation that overtook this one (rapid back and forward) removed
+  // it after it was fetched and before this page committed. Put it back, or the page would be left with no sheet at all.
+  for (const href of wanted) {
+    if (routeLinks().some((l) => pathOf(l.href) === pathOf(href))) continue;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.crossOrigin = "";
+    link.href = href;
+    document.head.appendChild(link);
+  }
+  const links = routeLinks();
+  // Only drop sheets once every sheet the new page wants has arrived. Then every other sheet that has loaded goes, in
+  // effect or only prefetched: a navigation that was overtaken must not leave its sheet behind. One that is still loading
+  // stays until the next activation.
   const arrived = [...want].every((p) => links.some((l) => pathOf(l.href) === p && l.sheet));
   for (const link of links) {
     const p = pathOf(link.href);
-    if (want.has(p)) link.removeAttribute("media");
-    else if (arrived && (link.media !== OFF || link.sheet)) {
-      link.remove();
-      loading.delete(link.getAttribute("href") ?? link.href);
-      loading.delete(link.href);
-    } else link.media = OFF;
+    if (want.has(p)) {
+      link.removeAttribute("media");
+      // Not here yet (put back above, or a fetch that timed out): finish the swap when it lands, if this is still the page.
+      if (!link.sheet) {
+        const again = () => {
+          if (current === path) activateRouteCss(path);
+        };
+        link.addEventListener("load", again, { once: true });
+      }
+    } else if (arrived) {
+      if (link.media !== OFF || link.sheet) {
+        link.remove();
+        loading.delete(link.getAttribute("href") ?? link.href);
+        loading.delete(link.href);
+      } else link.media = OFF;
+    }
+    // Not arrived: the sheets in effect stay in effect, so the page is never bare while its own sheet is on the way.
   }
-  document.getElementById("sheen-critical")?.remove();
+  if (arrived) document.getElementById("sheen-critical")?.remove();
 }
 
 /**

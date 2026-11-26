@@ -6,13 +6,19 @@
  *     when every route is inside its class). The measured columns are the per-class min / median / max of a `pnpm budget`
  *     run on the 25 Nov 2026 build with 190 routes (gzip KB; the initial column from the module graph, the fetched column
  *     measured in Chromium 5 s after load). They were not re-run on the deployed build.
- *   - ROUTE_ROWS, LIGHTHOUSE_ROWS, INTERACTION_ROWS, OTHER_METRICS: measured on 25 Nov 2026 against the deployed site,
+ *   - The "Data table (local build)" row of ROUTE_ROWS: re-measured on 26 Nov 2026 on a local production build of the
+ *     current source, served from localhost on the same machine with the same throttling, median of 5 cold loads, run
+ *     alone (the other rows are from the deployed site). Raw results: load.json of that run, kept outside the repo.
+ *   - ROUTE_ROWS (the other rows), LIGHTHOUSE_ROWS, INTERACTION_ROWS, OTHER_METRICS: measured on 25 Nov 2026 against the deployed site,
  *     median of 5 cold loads per route (Lighthouse: median of 3). Raw results are kept outside the repo as
  *     load.json (page loads), inter.json (interactions) and lighthouse-summary.json plus the 27 per-run reports.
  */
 
 /** When the lab numbers below were recorded. */
 export const MEASURED_ON = "25 Nov 2026";
+
+/** When the one route row measured on a local build (not the deployed site) was recorded. */
+export const MEASURED_LOCAL_ON = "26 Nov 2026";
 
 /** The kind of machine, the build and the throttling the numbers came from. */
 export const MEASURED_ON_MACHINE =
@@ -82,7 +88,15 @@ export const ROUTE_ROWS: RouteRow[] = [
     jsInitial: "200",
     jsTotal: "307",
   },
-  { route: "Data table", lcp: "1.34", cls: "0", tbt: "33", longest: "83 (145)", jsInitial: "210", jsTotal: "443" },
+  {
+    route: "Data table (local build)",
+    lcp: "1.08",
+    cls: "0",
+    tbt: "113",
+    longest: "163 (187)",
+    jsInitial: "212",
+    jsTotal: "451",
+  },
   { route: "Line chart", lcp: "0.96", cls: "0", tbt: "0", longest: "61 (89)", jsInitial: "238", jsTotal: "345" },
   { route: "Chart gallery", lcp: "1.10", cls: "0", tbt: "67", longest: "74 (87)", jsInitial: "228", jsTotal: "441" },
   { route: "Chat thread", lcp: "1.22", cls: "0", tbt: "63", longest: "116 (146)", jsInitial: "213", jsTotal: "461" },
@@ -164,7 +178,7 @@ export const OTHER_METRICS: MetricRow[] = [
     metric: "Longest task while loading (4x CPU, 390 px)",
     target: "50 ms or less where achievable",
     result:
-      "All 9 routes still show a task over 50 ms. The median longest task ranges from 59 to 132 ms; 3 routes (chat thread, SaaS dashboard, web analytics dashboard) are over 100 ms; the worst single load was 180 ms",
+      "All 9 routes still show a task over 50 ms. The median longest task ranges from 59 to 163 ms; 4 routes (data table, chat thread, SaaS dashboard, web analytics dashboard) are over 100 ms; the worst single load was 187 ms (data table, local build; 180 ms on the deployed site, web analytics dashboard)",
     met: "No",
   },
 ];

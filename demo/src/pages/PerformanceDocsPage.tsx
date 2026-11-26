@@ -8,6 +8,7 @@ import {
   BUDGET_CLASSES,
   INTERACTION_ROWS,
   LIGHTHOUSE_ROWS,
+  MEASURED_LOCAL_ON,
   MEASURED_ON,
   MEASURED_ON_MACHINE,
   OTHER_METRICS,
@@ -200,17 +201,18 @@ export function PerformanceDocsPage() {
       <Section id="perf-lab" title="Lab measurements">
         <p>
           <strong>Method.</strong> Measured {MEASURED_ON} on the deployed site, the production build users get, not a
-          local build. Machine: {MEASURED_ON_MACHINE}. Page loads: {THROTTLING}. Each figure is the median of 5 cold
-          loads. LCP is the last largest-contentful-paint entry. CLS counts layout shifts without recent input up to 5
-          seconds after the load event. Total Blocking Time is the time over 50 ms of each long task that ends after
-          First Contentful Paint, up to 5 seconds after load. JavaScript bytes are the encoded response sizes of every
-          script, before the load event and by 5 seconds after it. The Lighthouse table is a separate run of Lighthouse
-          13.6.0, mobile preset with simulated throttling (4x CPU, 150 ms round trip, 1638.4 kbit/s), median of 3, on
-          the site&rsquo;s default look. This is a laboratory profile run on a desktop machine, not a phone.
+          local build (the Data table row is the one exception, described under the table). Machine:{" "}
+          {MEASURED_ON_MACHINE}. Page loads: {THROTTLING}. Each figure is the median of 5 cold loads. LCP is the last
+          largest-contentful-paint entry. CLS counts layout shifts without recent input up to 5 seconds after the load
+          event. Total Blocking Time is the time over 50 ms of each long task that ends after First Contentful Paint, up
+          to 5 seconds after load. JavaScript bytes are the encoded response sizes of every script, before the load
+          event and by 5 seconds after it. The Lighthouse table is a separate run of Lighthouse 13.6.0, mobile preset
+          with simulated throttling (4x CPU, 150 ms round trip, 1638.4 kbit/s), median of 3, on the site&rsquo;s default
+          look. This is a laboratory profile run on a desktop machine, not a phone.
         </p>
         <DataGrid
           name="Per-route load metrics"
-          caption="Per-route load metrics on the deployed site: LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB"
+          caption="Per-route load metrics on the deployed site (the Data table row: a local build): LCP in seconds, CLS, Total Blocking Time and longest task in milliseconds, and JavaScript transferred in KB"
           head={[
             "Route",
             "LCP\n(s)",
@@ -223,6 +225,14 @@ export function PerformanceDocsPage() {
           rows={ROUTE_ROWS.map((r) => [r.route, r.lcp, r.cls, r.tbt, r.longest, r.jsInitial, r.jsTotal])}
           lastUnit="KB"
         />
+        <p>
+          <strong>The Data table row is the exception.</strong> It was re-measured on {MEASURED_LOCAL_ON} on a local
+          production build of the current source, served from localhost on the same machine with the same throttling and
+          the same method (median of 5 cold loads, run alone), not on the deployed site. A local build of the source
+          before that fix, measured the same way, gave a median longest task of 194 ms and 144 ms of Total Blocking
+          Time. The row first published for the deployed site (25 Nov 2026) said 83 ms and 33 ms; why a local load shows
+          a longer task than the deployed one is not explained, so do not compare that row with the others.
+        </p>
         <DataGrid
           name="Lighthouse scores per route"
           caption="Lighthouse mobile Performance score and Total Blocking Time per route, median of 3 runs"
@@ -253,8 +263,9 @@ export function PerformanceDocsPage() {
         <ul className="flex list-disc flex-col gap-2 ps-6">
           <li>
             Long tasks over 50 ms remain on the throttled phone profile: all 9 measured routes still show one, with the
-            median longest task between 59 and 132 ms and the worst single load at 180 ms. The chat thread and the two
-            dashboards are over 100 ms. They were reduced, not removed.
+            median longest task between 59 and 163 ms and the worst single load at 187 ms (the data table, on a local
+            build). The data table, the chat thread and the two dashboards are over 100 ms. They were reduced, not
+            removed.
           </li>
           <li>
             Real refraction runs in Chromium only. Safari and Firefox accept the filter but draw nothing, so they get

@@ -137,17 +137,13 @@ HANDOFF.md
 !docs/guides/*.md
 # The negation above re-includes macOS AppleDouble copies (._name.md): exclude them again.
 docs/guides/._*
-# GitHub folder (owner, 25 Nov 2026): CI and Pages workflows, issue/PR templates, Dependabot, CODEOWNERS are public.
-# The PR template is Markdown, so it is re-included here; the rest of .github/ is yml and is not matched by `*.md`.
-!.github/pull_request_template.md
-.github/**/._*
-# Public project docs (owner, 16 and 25 Nov 2026): GitHub community standards, license notices, contributing guide, changelog.
-# Planning, scoring, motion, SEO and hand-off notes (PLAN, TASKS, QUALITY, MOTION, SEO, HANDOFF, CLAUDE) stay local.
+# GitHub folder (owner, 26 Nov 2026): CI and Pages workflows, issue/PR templates, Dependabot and CODEOWNERS stay local.
+.github/
+# Public project docs (owner, 16 Nov 2026): GitHub community standards and license notices.
+# The contributing guide and the changelog stay local (owner, 26 Nov 2026), like every other note matched by `*.md` above.
 !SECURITY.md
 !CODE_OF_CONDUCT.md
 !THIRD_PARTY_NOTICES.md
-!CONTRIBUTING.md
-!CHANGELOG.md
 # Test fixtures of the guide code check: `pnpm scripts:test` needs them in a fresh clone.
 !scripts/test/fixtures/**/*.md
 scripts/test/fixtures/**/._*

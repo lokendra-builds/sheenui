@@ -4,7 +4,7 @@
     "modified": "2026-11-25"
   },
   "/about": {
-    "hash": "fbb7147a49db4dd2",
+    "hash": "60c0bcb76a35452d",
     "modified": "2026-11-25"
   },
   "/blocks": {
@@ -136,8 +136,8 @@
     "modified": "2026-11-16"
   },
   "/charts/chord-diagram": {
-    "hash": "78f2f6700bccc0ea",
-    "modified": "2026-11-16"
+    "hash": "41bc663839bb828e",
+    "modified": "2026-11-25"
   },
   "/charts/cohort-retention": {
     "hash": "aebd502267ad546e",
@@ -196,12 +196,12 @@
     "modified": "2026-11-17"
   },
   "/charts/marimekko": {
-    "hash": "521bed202ff19288",
-    "modified": "2026-11-17"
+    "hash": "7e6c1f710a0c109c",
+    "modified": "2026-11-25"
   },
   "/charts/network-graph": {
-    "hash": "89e3c4ae9882e788",
-    "modified": "2026-11-17"
+    "hash": "6d40ef24f509cdd3",
+    "modified": "2026-11-25"
   },
   "/charts/percent-stacked-bar-chart": {
     "hash": "7ff254d74aacca40",
@@ -240,8 +240,8 @@
     "modified": "2026-11-17"
   },
   "/charts/sankey-diagram": {
-    "hash": "201cb479c1a92fb0",
-    "modified": "2026-11-17"
+    "hash": "12472c4c7340bfc1",
+    "modified": "2026-11-25"
   },
   "/charts/scatter-plot": {
     "hash": "7dfeff7b7c9747fe",
@@ -268,8 +268,8 @@
     "modified": "2026-11-17"
   },
   "/charts/sunburst": {
-    "hash": "efeb60ebcb84158a",
-    "modified": "2026-11-17"
+    "hash": "1e4710f9f7ae417c",
+    "modified": "2026-11-25"
   },
   "/charts/treemap": {
     "hash": "ab654cc0e083e5d5",
@@ -344,7 +344,7 @@
     "modified": "2026-11-17"
   },
   "/components/data-table": {
-    "hash": "43b838db18bb33c2",
+    "hash": "444104f0fcf6f988",
     "modified": "2026-11-25"
   },
   "/components/dialog": {
@@ -456,7 +456,7 @@
     "modified": "2026-11-25"
   },
   "/docs/performance": {
-    "hash": "bc10de15a4d6302a",
+    "hash": "9139e4b9a40deff3",
     "modified": "2026-11-25"
   },
   "/docs/rtl": {

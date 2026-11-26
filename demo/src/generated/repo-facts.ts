@@ -3,5 +3,6 @@
 export const REPO_FACTS = {
  "testFiles": 143,
  "e2eSpecs": 15,
- "registryItems": 183
+ "registryItems": 183,
+ "registryBundles": 5
 } as const;

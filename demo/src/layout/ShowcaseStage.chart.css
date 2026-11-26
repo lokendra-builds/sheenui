@@ -37,6 +37,24 @@ html:root .sheen-showcase.sheen-stage-chart.sheen-stage-chart.sheen-stage-chart 
     min-height: calc(var(--chart-h-narrow) + 0.75rem);
   }
 }
+/* A chart that docks its readout above the plot (touch screen, chart narrower than 480px) is that much taller there:
+   the page names the band as --chart-dock, so the idle frame already holds it and the chart's mount moves nothing. */
+@media (pointer: coarse) {
+  @container (width < 30rem) {
+    .sheen-stage-chart-area {
+      min-height: calc(var(--chart-h-narrow) + var(--chart-dock, 0px));
+    }
+    .sheen-stage-chart-legend + .sheen-stage-chart-area {
+      min-height: calc(var(--chart-h-narrow) + 0.75rem + var(--chart-dock, 0px));
+    }
+    /* The chart's own docked band (an inline padding it sets once it has measured itself) is already there in the
+       prerendered frame, so hydrating does not push the drawn chart down by it. !important because the prerendered
+       chart carries an inline `padding-top: 0`, which the chart replaces with the same band after it has measured. */
+    .sheen-stage-chart-area[data-dock] > div > div:first-child {
+      padding-block-start: var(--chart-dock) !important;
+    }
+  }
+}
 .sheen-stage-chart-body > .sheen-stage-title {
   text-align: start;
 }

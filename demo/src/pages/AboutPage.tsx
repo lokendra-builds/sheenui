@@ -103,7 +103,8 @@ export function AboutPage() {
           The current version is 0.1.0. Until 1.0, a prop or a file can move between versions. No GitHub release has
           been published yet, so 0.1.0 is simply the version in the source. The package is <C>private</C>, so there is
           nothing to <C>npm install</C>; the <A to="/docs/installation">installation page</A> shows the shadcn CLI route
-          ({REPO_FACTS.registryItems} registry items) and the manual one.
+          ({REPO_FACTS.registryItems} registry items plus {REPO_FACTS.registryBundles} install bundles) and the manual
+          one.
         </p>
         <p>
           Known limits, stated plainly: Liquid Glass refraction is Chromium-only (other browsers show frosted glass),

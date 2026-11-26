@@ -71,9 +71,12 @@ test("client navigation keeps only the current route's stylesheet and never show
     await page.locator("main h1").first().waitFor();
     // Settled: the old sheet is gone, exactly one route sheet is in effect, and a token-styled element is styled by it.
     await expect.poll(async () => (await sheetState(page)).active, { message: route }).toBe(1);
-    const s = await sheetState(page);
-    max = Math.max(max, s.total);
-    expect(s.total, `route sheets in the document after ${route}`).toBeLessThanOrEqual(2);
+    // At most the page's sheet and one parked sheet (a prefetch for a link the pointer is over); one still on its way in
+    // is pruned when it lands, hence the poll.
+    await expect
+      .poll(async () => (await sheetState(page)).total, { message: `route sheets in the document after ${route}` })
+      .toBeLessThanOrEqual(2);
+    max = Math.max(max, (await sheetState(page)).total);
     const style = await page
       .locator("main h1")
       .first()
@@ -90,13 +93,37 @@ test("client navigation keeps only the current route's stylesheet and never show
   for (let i = 0; i < 3; i++) await page.goForward();
   await page.locator("main h1").first().waitFor();
   await expect.poll(async () => (await sheetState(page)).active).toBe(1);
-  expect((await sheetState(page)).total).toBeLessThanOrEqual(2);
+  await expect.poll(async () => (await sheetState(page)).total).toBeLessThanOrEqual(2);
 
-  const bare = await page.evaluate(() => {
+  const bareBefore = await page.evaluate(() => {
     const w = window as unknown as { __bare: string[]; __stop?: boolean };
     w.__stop = true;
     return w.__bare;
   });
-  expect(bare, "frames without the page's stylesheet").toEqual([]);
+  expect(bareBefore, "frames without the page's stylesheet").toEqual([]);
+
+  // An overtaken navigation can remove a sheet that a later commit still wants (it was fetched, then dropped). Force that
+  // state: drop every route sheet, then go to another page. The swap must put the sheet back, not leave the page bare.
+  await page.evaluate(async () => {
+    const raw = document.getElementById("sheen-assets")?.textContent;
+    const { classes } = (await (await fetch((JSON.parse(raw ?? "{}") as { cssMap: string }).cssMap)).json()) as {
+      classes: Record<string, string[]>;
+    };
+    const all = new Set(Object.values(classes).flat());
+    for (const l of document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+      if (all.has(new URL(l.href).pathname)) l.remove();
+  });
+  const rescue = page.locator("aside[aria-label='Site'] a[href$='/components/badge']").first();
+  await rescue.scrollIntoViewIfNeeded();
+  await rescue.click();
+  await expect(page).toHaveURL(/\/components\/badge\/?$/);
+  await expect
+    .poll(async () => (await sheetState(page)).active, { message: "sheet restored after it was dropped" })
+    .toBe(1);
+  expect(
+    await page.evaluate(() => getComputedStyle(document.body).getPropertyValue("--sheen-fg").trim()),
+    "--sheen-fg after the sheet was restored",
+  ).not.toBe("");
+
   expect(max).toBeGreaterThan(0);
 });

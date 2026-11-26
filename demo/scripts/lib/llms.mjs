@@ -641,7 +641,7 @@ export function writeLlmsFiles({ dist, siteUrl, pages, counts, author, alsoUses 
   const facts = [
     `- Name and licence: SheenUI (also written Sheen UI), version ${theme.version} (pre-1.0), MIT, by Lokendra Singh Rathore.`,
     `- What it is: a copy-the-source React library of glassmorphism and Liquid Glass components, animated with Motion, on Base UI primitives and Tailwind CSS v4. Two style presets (Liquid Glass, Aurora Neon), light and dark.`,
-    `- Size: ${c.components} components (${c.ui} UI components and ${c.effects} effects), ${c.charts} charts, ${c.blocks} blocks, ${c.dashboards} dashboards and ${c.guides} guides; ${registryItems} shadcn registry items.`,
+    `- Size: ${c.components} components (${c.ui} UI components and ${c.effects} effects), ${c.charts} charts, ${c.blocks} blocks, ${c.dashboards} dashboards and ${c.guides} guides; ${registryItems} shadcn registry items plus 5 install bundles.`,
     `- Requires: React ${peer("react")}+, Tailwind CSS v${peer("tailwindcss").split(".")[0]}, Motion ${peer("motion")}+, @base-ui/react ${peer("@base-ui/react")}+.`,
     `- Install: \`npx shadcn@latest add ${siteUrl}/r/<name>.json\`, or copy the files a page lists. The \`@sheenui/theme\` package is not on npm yet.`,
     `- Install bundles: five registry items install a family in one command: \`all\`, \`components\`, \`charts\`, \`blocks\` and \`dashboards\` (\`npx shadcn@latest add ${siteUrl}/r/all.json\`, or \`npx shadcn@latest add @sheenui/all\` once the \`@sheenui\` registry is in components.json; see ${siteUrl}/docs/installation).`,

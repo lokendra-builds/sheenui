@@ -55,6 +55,7 @@ export function SankeyChartPage() {
         title="Where visitors came from, and where they went"
         hue={1}
         height="22.5rem"
+        dock="3.5rem"
       >
         <SankeyChart
           nodes={journeyNodes}

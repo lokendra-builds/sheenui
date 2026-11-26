@@ -15,6 +15,8 @@ type ChartStageProps = {
   height?: string;
   /** The height reserved at 36rem of chart width and below (a CSS length), when the chart is taller or shorter there; default `height`. */
   narrowHeight?: string;
+  /** Extra height (a CSS length) a chart adds above its plot for the readout it docks there on a touch screen narrower than 30rem; the idle frame holds it too. Default none. */
+  dock?: string;
   /** A compact key for a multi-series chart, on its own line under the title. The stage reserves the line, so the stage never changes height. */
   legend?: ChartLegendProps["items"];
   /** The chart itself, with the page's own data. It mounts when the story starts, so its enter animation plays on the stage. */
@@ -51,7 +53,16 @@ const smaller = (a: string, b?: string) => {
   return x?.[1] && y?.[1] && Number(y[1]) < Number(x[1]) ? (b ?? a) : a;
 };
 
-export function ChartStage({ label, title, hue, height = "15rem", narrowHeight, legend, children }: ChartStageProps) {
+export function ChartStage({
+  label,
+  title,
+  hue,
+  height = "15rem",
+  narrowHeight,
+  dock,
+  legend,
+  children,
+}: ChartStageProps) {
   return (
     <ShowcaseStage<ChartStageScene>
       label={label}
@@ -67,7 +78,10 @@ export function ChartStage({ label, title, hue, height = "15rem", narrowHeight, 
           {legend?.length ? <ChartLegend items={legend} className="sheen-stage-chart-legend" /> : null}
           <div
             className="sheen-stage-chart-area"
-            style={{ "--chart-h": height, "--chart-h-narrow": narrowHeight ?? height } as CSSProperties}
+            data-dock={dock ? "" : undefined}
+            style={
+              { "--chart-h": height, "--chart-h-narrow": narrowHeight ?? height, "--chart-dock": dock } as CSSProperties
+            }
           >
             {scene.shown ? <ChartWidthHint value={PLATE_INNER_PX}>{children}</ChartWidthHint> : null}
           </div>

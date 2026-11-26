@@ -1,1 +1,0 @@
-export{t as FullExample}from"./data-table-CBHbJ79B.js";

@@ -1,0 +1,29 @@
+import{n as e}from"./rolldown-runtime-WkwZ5CU-.js";import{i as t,t as n}from"./vendor-react-D30i__oY.js";import{t as r}from"./badge-AQ2Afjwl.js";import{t as i}from"./glass-card-OGQy5mxG.js";import{t as a}from"./meteors-BhIfxCMy.js";import{t as o}from"./switch-BETATXZg.js";import{i as s,n as c,o as l,r as u}from"./Page-BAL5Idhy.js";import{t as d}from"./Example-BPfHvEYD.js";import{t as f}from"./ShowcaseStage-qzIATPiV.js";import{t as p}from"./lazy-block-BfzH_8EP.js";import{t as m}from"./preload-helper-BrmCrVM7.js";var h=[[`count`,`number`,`12`,`How many meteors share the field. Each one flies, then rests for a few seconds, so only a couple are ever in view at once. Capped at 24.`,!1],[`angle`,`number`,`125`,`Direction of travel in degrees, clockwise from pointing right: 90 flies straight down, 125 down and to the left, 45 down and to the right.`,!1],[`length`,`number`,`140`,`Length of a streak in px; each one varies a little around it.`,!1],[`duration`,`number`,`1.6`,`Seconds one flight takes, on average.`,!1],[`interval`,`number`,`3.2`,`Seconds a meteor rests between flights, on average; this is what keeps them occasional.`,!1],[`color`,`string`,`"var(--sheen-accent-2)"`,`Colour of the bright head, any CSS colour.`,!1],[`paused`,`boolean`,`false`,`Hold every streak where it is (they carry on from there when unpaused).`,!1],[`seed`,`number`,`3`,`Seed for the layout and timing, so the same card looks the same on the server and in the browser.`,!1],[`className`,`string`,``,"Adds extra classes to the overlay. It fills its `relative` parent and takes the parent's corner radius.",!1],[`style`,`CSSProperties`,``,`Applies an inline style to the overlay.`,!1]],g=e(t()),_=n(),v=p(()=>m(()=>import(`./ShowcaseStage.meteors.scene-C1ttFGqu.js`).then(e=>e.MeteorsScene),[]),{minHeight:`17rem`,eager:!0});p(()=>m(()=>import(`./ShowcaseStage.orbiting-circles.scene-X4wwSnvX.js`).then(e=>e.OrbitingCirclesScene),[]),{minHeight:`23rem`,eager:!0});function y(){let[e,t]=(0,g.useState)(!1);return(0,_.jsxs)(c,{eyebrow:`Effect`,title:`Meteors`,description:`Occasional streaks of light crossing a card or section background. Each meteor flies, then rests for a few seconds, so the card is mostly still. Streaks move by transform and opacity only, pause off-screen and in hidden tabs, and hold a few faint still lines when reduced motion is on.`,source:[`theme/src/components/meteors/meteors.tsx`,`theme/src/lib/canvas-effects.ts`],children:[(0,_.jsx)(f,{label:`Meteors demo`,story:()=>m(()=>import(`./ShowcaseStage.meteors-BSvuON62.js`),[]),initial:{run:`idle`},minHeight:`17rem`,children:(e,t)=>(0,_.jsx)(v,{scene:e,ctx:t})}),(0,_.jsx)(d,{title:`On a glass card`,description:`Meteors fills its relative parent, takes the parent's corner radius and clips to it. Put it before the content so the text sits above the streaks, and keep count low: a long interval is what keeps it occasional.`,controls:(0,_.jsx)(o,{label:`Pause`,checked:e,onCheckedChange:t}),stageClassName:`min-h-72`,code:`
+import { useState } from "react";
+import { Badge, GlassCard, Meteors, Switch } from "@sheenui/theme";
+
+export function Example() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <Switch label="Pause" checked={paused} onCheckedChange={setPaused} />
+      <GlassCard className="relative w-full max-w-sm overflow-hidden p-8">
+        <Meteors count={8} paused={paused} />
+        <Badge className="relative">Launch week</Badge>
+        <h2 className="relative mt-3 text-xl font-semibold">Ship the quiet details</h2>
+        <p className="relative mt-1 text-sm text-sheen-fg-muted">A streak crosses now and then, never twice at once.</p>
+      </GlassCard>
+    </>
+  );
+}`,children:(0,_.jsxs)(i,{className:`relative w-full max-w-sm overflow-hidden p-8`,children:[(0,_.jsx)(a,{count:8,paused:e}),(0,_.jsx)(r,{className:`relative`,children:`Launch week`}),(0,_.jsx)(`h2`,{className:`relative mt-3 text-xl font-semibold`,children:`Ship the quiet details`}),(0,_.jsx)(`p`,{className:`relative mt-1 text-sm text-sheen-fg-muted`,children:`A streak crosses now and then, never twice at once.`})]})}),(0,_.jsx)(d,{title:`Angle, length and rhythm`,description:`angle is the direction of travel in degrees clockwise from pointing right (90 is straight down). A shorter interval and more meteors make a shower; keep that for a one-off hero.`,stageClassName:`min-h-56`,code:`
+import { GlassCard, Meteors } from "@sheenui/theme";
+
+export function Example() {
+  return (
+    <GlassCard className="relative w-full max-w-sm overflow-hidden p-8">
+      <Meteors count={14} angle={70} length={150} duration={1.2} interval={2.5} />
+      <p className="relative text-sm">A faster shower at 70 degrees.</p>
+    </GlassCard>
+  );
+}`,children:(0,_.jsxs)(i,{className:`relative w-full max-w-sm overflow-hidden p-8`,children:[(0,_.jsx)(a,{count:14,angle:70,length:150,duration:1.2,interval:2.5}),(0,_.jsx)(`p`,{className:`relative text-sm`,children:`A faster shower at 70 degrees.`})]})}),(0,_.jsx)(u,{of:h}),(0,_.jsx)(l,{rows:[[`Tab`,`Not focusable: the layer is click-through and never takes focus.`]]}),(0,_.jsx)(s,{items:[`Decorative: the layer is aria-hidden. Streaks are thin and fade quickly; use paused where a card sits next to long text (WCAG 2.2.2).`,`Reduced motion: nothing flies. Up to four faint still streaks stay as texture.`,`Each streak is one element moved by transform and faded by opacity on the compositor, with no blur, mask or filter. They pause off-screen and in hidden tabs.`,`The layout is seeded (seed), so the server and the browser render the same streaks and there is no hydration mismatch or layout shift.`]})]})}export{y as default};

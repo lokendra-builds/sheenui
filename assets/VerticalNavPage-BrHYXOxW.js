@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n=e(()=>t(()=>import(`./VerticalNavPageBody-qz0_FooB.js`).then(e=>e.VerticalNavPage),[]),{eager:!0,minHeight:`80vh`});export{n as default};

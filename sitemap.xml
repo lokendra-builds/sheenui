@@ -695,7 +695,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/chord-diagram</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-chord-diagram.webp</image:loc>
     </image:image>
@@ -793,14 +793,14 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/marimekko</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-marimekko.webp</image:loc>
     </image:image>
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/network-graph</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-network-graph.webp</image:loc>
     </image:image>
@@ -849,7 +849,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/sankey-diagram</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-sankey-diagram.webp</image:loc>
     </image:image>
@@ -898,7 +898,7 @@
   </url>
   <url>
     <loc>https://lokendra-builds.github.io/sheenui/charts/sunburst</loc>
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <image:image>
       <image:loc>https://lokendra-builds.github.io/sheenui/og/charts-sunburst.webp</image:loc>
     </image:image>

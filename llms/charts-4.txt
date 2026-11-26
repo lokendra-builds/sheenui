@@ -252,7 +252,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/marimekko-chart.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Marimekko chart
 
@@ -488,7 +488,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/network-graph.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Network graph
 
@@ -2100,7 +2100,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/sankey-chart.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 17, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Sankey diagram
 

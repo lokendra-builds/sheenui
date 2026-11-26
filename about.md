@@ -32,7 +32,7 @@ SheenUI is released under the [MIT license](https://opensource.org/licenses/MIT)
 
 ## Status: version 0.1, pre-1.0, not on npm
 
-The current version is 0.1.0. Until 1.0, a prop or a file can move between versions. No GitHub release has been published yet, so 0.1.0 is simply the version in the source. The package is private, so there is nothing to npm install; the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) shows the shadcn CLI route (183 registry items) and the manual one.
+The current version is 0.1.0. Until 1.0, a prop or a file can move between versions. No GitHub release has been published yet, so 0.1.0 is simply the version in the source. The package is private, so there is nothing to npm install; the [installation page](https://lokendra-builds.github.io/sheenui/docs/installation) shows the shadcn CLI route (183 registry items plus 5 install bundles) and the manual one.
 
 Known limits, stated plainly: Liquid Glass refraction is Chromium-only (other browsers show frosted glass), and no real iPhone or Android phone has been used, so iOS Safari blur is unverified. It needs React 19.2 or newer and Tailwind CSS 4.1 or newer.
 

@@ -1,0 +1,1 @@
+import{t as e}from"./lazy-block-BfzH_8EP.js";import{t}from"./preload-helper-BrmCrVM7.js";var n={eager:!0,minHeight:`80vh`},r=e(()=>t(()=>import(`./OverlayPagesBody-DWLBkm5q.js`).then(e=>e.TooltipPage),[]),n);e(()=>t(()=>import(`./OverlayPagesBody-DWLBkm5q.js`).then(e=>e.PopoverPage),[]),n);export{r as default};

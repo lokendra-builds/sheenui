@@ -1659,7 +1659,7 @@ Install:
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/chord-diagram.json
 ```
 
-By Lokendra Singh Rathore. Published November 8, 2026, updated November 16, 2026.
+By Lokendra Singh Rathore. Published November 8, 2026, updated November 25, 2026.
 
 Breadcrumb: [Home](https://lokendra-builds.github.io/sheenui/) > [Charts](https://lokendra-builds.github.io/sheenui/charts/) > Chord diagram
 

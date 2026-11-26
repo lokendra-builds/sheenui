@@ -6,7 +6,7 @@
 
 - Name and licence: SheenUI (also written Sheen UI), version 0.1.0 (pre-1.0), MIT, by Lokendra Singh Rathore.
 - What it is: a copy-the-source React library of glassmorphism and Liquid Glass components, animated with Motion, on Base UI primitives and Tailwind CSS v4. Two style presets (Liquid Glass, Aurora Neon), light and dark.
-- Size: 86 components (67 UI components and 19 effects), 48 charts, 20 blocks, 5 dashboards and 13 guides; 183 shadcn registry items.
+- Size: 86 components (67 UI components and 19 effects), 48 charts, 20 blocks, 5 dashboards and 13 guides; 183 shadcn registry items plus 5 install bundles.
 - Requires: React 19.2+, Tailwind CSS v4, Motion 14.10.1+, @base-ui/react 1.9+.
 - Install: `npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/<name>.json`, or copy the files a page lists. The `@sheenui/theme` package is not on npm yet.
 - Install bundles: five registry items install a family in one command: `all`, `components`, `charts`, `blocks` and `dashboards` (`npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/all.json`, or `npx shadcn@latest add @sheenui/all` once the `@sheenui` registry is in components.json; see https://lokendra-builds.github.io/sheenui/docs/installation).
@@ -28,7 +28,7 @@
 
 This file is the complete index: every page with its URL, grouped by the section file that holds its full text. The text is split into one file per section, each under 150 KB: fetch only the section you need. The Start and Guides sections hold the setup steps and the long-form articles. Every page has its intro, the files to copy, props tables, examples, keyboard and accessibility notes.
 
-- [Start](https://lokendra-builds.github.io/sheenui/llms/start.txt) (132 KB)
+- [Start](https://lokendra-builds.github.io/sheenui/llms/start.txt) (133 KB)
   - [Glassmorphism & Liquid Glass React Components](https://lokendra-builds.github.io/sheenui/)
   - [Glass Design Tokens: Blur, Tint, Rim & Motion](https://lokendra-builds.github.io/sheenui/foundations)
   - [React Component Showcase with Live Glass Demos](https://lokendra-builds.github.io/sheenui/showcase)

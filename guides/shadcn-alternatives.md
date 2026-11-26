@@ -93,7 +93,7 @@ npx shadcn@latest add https://liqui.design/r/button.json
 npx shadcn@latest add https://lokendra-builds.github.io/sheenui/r/button.json
 ```
 
-SheenUI's registry has 183 items: a shared `sheenui-theme` item (tokens, glass, motion, hooks), 149 UI items for the components, charts and effects, and 33 block items. `pnpm registry:build` writes them to `r/` in the docs build. We ran `shadcn add` against a local copy with shadcn 4.23.0 in a Next.js 16 app and a Vite app on 8 Nov 2026. The URL above works once the site is on GitHub Pages; Next.js needs one CSS import changed to a relative path, which the [install guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) shows.
+SheenUI's registry has 183 items (plus 5 install bundles that only list them): a shared `sheenui-theme` item (tokens, glass, motion, hooks), 149 UI items for the components, charts and effects, and 33 block items. `pnpm registry:build` writes them to `r/` in the docs build. We ran `shadcn add` against a local copy with shadcn 4.23.0 in a Next.js 16 app and a Vite app on 8 Nov 2026. The URL above works once the site is on GitHub Pages; Next.js needs one CSS import changed to a relative path, which the [install guide](https://lokendra-builds.github.io/sheenui/guides/install-frameworks) shows.
 
 ## Comparison table
 

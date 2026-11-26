@@ -1,5 +1,5 @@
 // node:test: no file git would push may name or point at the owner's local-only notes. Comments and messages must stand alone.
-// CONTRIBUTING.md and CHANGELOG.md are public (owner, 25 Nov 2026), so naming them is fine; every other upper-case note is private.
+// The contributing guide and the changelog are local-only too (owner, 26 Nov 2026), like every other upper-case note.
 // Two checks. (1) Structural, needs no names: a pushed file may only mention an upper-case `NAME.md` that is itself pushed.
 // (2) Name-based: the owner's private note names live in the git-ignored `.handoff/readme-index.json` (key `privateDocs`,
 // plus the notes readme-index already lists, minus the public ones); a public clone has no such file, so that check skips.
@@ -17,7 +17,7 @@ const TEXT = /\.(mjs|js|ts|tsx|json|css|html|yml|yaml|md|py|sh)$/;
 const GENERATED = /^(docs\/guides\/|demo\/public\/r\/|pnpm-lock)/;
 const CONFIG = join(ROOT, ".handoff", "readme-index.json");
 /** Notes that are pushed on purpose: the name-based check must not treat them as private even if the local config lists them. */
-const PUBLIC_NOTES = new Set(["CONTRIBUTING.md", "CHANGELOG.md"]);
+const PUBLIC_NOTES = new Set();
 
 /** Upper-case `NAME.md` mentions in one line that are not in the `pushed` set of file names. */
 export function unpushedMentions(text, pushed) {
@@ -97,15 +97,12 @@ test("public files never name the private notes listed in the local config", (t)
   assert.deepEqual(offenders, []);
 });
 
-test("CONTRIBUTING.md and CHANGELOG.md are public files; a link to a note that is not pushed still fails", (t) => {
+test("a link to a note that is not pushed fails; a pushed note may be named", (t) => {
   const files = pushable();
   if (!files) return t.skip("not a git checkout");
   const pushed = new Set(files.map((f) => basename(f)));
-  assert.ok(
-    pushed.has("CONTRIBUTING.md") && pushed.has("CHANGELOG.md"),
-    "CONTRIBUTING.md and CHANGELOG.md must be pushed",
-  );
-  assert.deepEqual(unpushedMentions("see [CONTRIBUTING.md](CONTRIBUTING.md) and CHANGELOG.md", pushed), []);
+  assert.ok(pushed.has("README.md") && pushed.has("SECURITY.md"), "README.md and SECURITY.md must be pushed");
+  assert.deepEqual(unpushedMentions("see [SECURITY.md](SECURITY.md) and README.md", pushed), []);
   assert.deepEqual(unpushedMentions("see [NOTES_PRIVATE.md](NOTES_PRIVATE.md)", pushed), [
     "NOTES_PRIVATE.md",
     "NOTES_PRIVATE.md",

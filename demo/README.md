@@ -52,8 +52,4 @@ How it is put together:
 
 ## Updating visual baselines
 
-Baselines are not committed to `main`; they live on the `visual-baselines` branch (see `.github/workflows/ci.yml`), so there is nothing to edit in the repo. After a change that alters how pages look:
-
-1. On GitHub, run the CI workflow by hand on `main` with `update_snapshots` ticked. The `visual-update` job regenerates the Linux baselines for the three engines and pushes them to `visual-baselines`.
-2. Re-run the normal pipeline; the `visual` jobs fetch that branch and run with `--update-snapshots=none`.
-3. Locally, refresh your own (git-ignored, darwin) baselines with `pnpm --filter demo exec playwright test e2e/visual.spec.ts --project chromium --update-snapshots`.
+Baselines are not committed: they are per machine and git-ignored. After a change that alters how pages look, refresh your own baselines with `pnpm --filter demo exec playwright test e2e/visual.spec.ts --project chromium --update-snapshots`.

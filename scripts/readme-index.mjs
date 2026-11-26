@@ -252,7 +252,7 @@ for (const name of existsSync(guidesDir)
 /* ---------- public Markdown links the hub pages in their final form (`/charts/`), never the redirect stub (`/charts`) ---------- */
 
 const hubLinkProblems = [];
-const publicMarkdown = ["README.md", "CONTRIBUTING.md", "CHANGELOG.md"];
+const publicMarkdown = ["README.md"];
 for (const dir of ["docs/guides", "templates"]) {
   const abs = join(ROOT, dir);
   if (!existsSync(abs)) continue;

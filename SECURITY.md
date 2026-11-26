@@ -32,11 +32,11 @@ This is a one-person open-source project, so these are goals, not guarantees. Pl
 ## What is in scope
 
 - The code in `theme/src` that you copy into your app, for example script injection through a component prop, unsafe HTML rendering, or an unsafe URL handler.
-- The demo site's build scripts and the GitHub Actions workflows in this repository (for example a workflow that could leak a secret).
+- The demo site's build scripts (for example a script that could leak a secret).
 - A secret or personal data committed to the repository by mistake.
 
 Out of scope: vulnerabilities in third-party packages (report them upstream; we update dependencies regularly and run `pnpm audit`), issues that need a compromised browser or device, and missing security headers on the GitHub Pages demo, which GitHub controls.
 
 ## Secrets in this repository
 
-No key, token or password belongs in the repository. A pre-commit hook (`scripts/pre-commit-secret-scan`, installed with `bash scripts/install-git-hooks.sh`) and gitleaks in CI check for them. If you find a secret in the history, report it privately as above so it can be rotated; deleting it from the latest commit is not enough.
+No key, token or password belongs in the repository. A pre-commit hook (`scripts/pre-commit-secret-scan`, installed with `bash scripts/install-git-hooks.sh`) checks for them. If you find a secret in the history, report it privately as above so it can be rotated; deleting it from the latest commit is not enough.

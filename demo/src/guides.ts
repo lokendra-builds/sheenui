@@ -156,6 +156,14 @@ const guideList: Omit<GuideInfo, "published" | "updated">[] = [
     related: ["/components/glass-card", "/effects/liquid-glass", "/charts", "/components/dialog"],
   },
   {
+    slug: "shadcn-glassmorphism",
+    name: "shadcn glassmorphism",
+    title: "shadcn Glassmorphism: Three Ways to Get a Glass UI",
+    description:
+      "shadcn glassmorphism in three ways: restyle the stock Card, Dialog and Button, retheme the CSS variables, or install glass components with the shadcn CLI.",
+    related: ["/components/glass-card", "/components/dialog", "/components/button", "/docs/installation"],
+  },
+  {
     slug: "glassmorphism-ui-prompt",
     name: "Glassmorphism UI prompts",
     title: "Glassmorphism UI Prompts for AI Coding Agents",

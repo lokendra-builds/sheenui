@@ -117,7 +117,8 @@ export const HOME_FAQ: FaqItem[] = [
       <>
         Yes. The components are React 19.2+ client components styled with Tailwind CSS v4. They work in Next.js, Vite
         and React Router apps, next to shadcn/ui components, and they are built on Base UI rather than Radix. Compare
-        the options in <A to="/guides/shadcn-alternatives">shadcn alternatives</A>.
+        the options in <A to="/guides/shadcn-alternatives">shadcn alternatives</A>, or see{" "}
+        <A to="/guides/shadcn-glassmorphism">shadcn glassmorphism</A> for glass on stock shadcn/ui components.
       </>
     ),
   },

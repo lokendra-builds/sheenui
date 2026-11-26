@@ -19,6 +19,7 @@ import framerMotionToMotionMarkdown from "../../../docs/guides/framer-motion-to-
 import baseUiVsRadixMarkdown from "../../../docs/guides/base-ui-vs-radix.md?raw";
 import bestGlassmorphismReactLibrariesMarkdown from "../../../docs/guides/best-glassmorphism-react-libraries.md?raw";
 import shadcnAlternativesMarkdown from "../../../docs/guides/shadcn-alternatives.md?raw";
+import shadcnGlassmorphismMarkdown from "../../../docs/guides/shadcn-glassmorphism.md?raw";
 import glassmorphismUiPromptMarkdown from "../../../docs/guides/glassmorphism-ui-prompt.md?raw";
 
 // The guides are Markdown files in docs/guides (readable on GitHub as they are). Each page below imports
@@ -31,8 +32,8 @@ const GUIDE_GROUPS: { id: string; title: string; intro: string; slugs: string[] 
     id: "getting-started",
     title: "Getting started",
     intro:
-      "Read these to get glass UI running: install SheenUI in Next.js or Vite, build a glass card from scratch in React, or give an AI coding agent rules that produce readable glass.",
-    slugs: ["install-frameworks", "glassmorphism-react-tutorial", "glassmorphism-ui-prompt"],
+      "Read these to get glass UI running: install SheenUI in Next.js or Vite, build a glass card from scratch in React, add glass to a shadcn/ui project, or give an AI coding agent rules that produce readable glass.",
+    slugs: ["install-frameworks", "glassmorphism-react-tutorial", "shadcn-glassmorphism", "glassmorphism-ui-prompt"],
   },
   {
     id: "concepts",
@@ -276,6 +277,10 @@ export function BestGlassmorphismReactLibrariesGuidePage() {
 
 export function ShadcnAlternativesGuidePage() {
   return <GuideArticle slug="shadcn-alternatives" markdown={shadcnAlternativesMarkdown} />;
+}
+
+export function ShadcnGlassmorphismGuidePage() {
+  return <GuideArticle slug="shadcn-glassmorphism" markdown={shadcnGlassmorphismMarkdown} />;
 }
 
 export function GlassmorphismUiPromptGuidePage() {

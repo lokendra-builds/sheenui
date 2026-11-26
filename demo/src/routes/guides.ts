@@ -121,6 +121,15 @@ export const guidesRoutes: Route[] = [
     ),
   },
   {
+    path: "/guides/shadcn-glassmorphism",
+    title: "shadcn glassmorphism",
+    group: "Guides",
+    ...lazyPage(
+      () => import("../pages/GuidePages"),
+      (m) => m.ShadcnGlassmorphismGuidePage,
+    ),
+  },
+  {
     path: "/guides/glassmorphism-ui-prompt",
     title: "Glassmorphism UI prompts",
     group: "Guides",

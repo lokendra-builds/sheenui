@@ -349,6 +349,10 @@ export const SEARCH_SYNONYMS: Readonly<Record<string, Synonyms>> = {
     aliases: ["shadcn", "shadcn ui alternative"],
     keywords: ["compare", "comparison", "alternatives"],
   },
+  "/guides/shadcn-glassmorphism": {
+    aliases: ["shadcn glass", "shadcn glassmorphism", "shadcn glass card", "shadcn glass theme"],
+    keywords: ["glass card", "glass dialog", "theme", "css variables"],
+  },
   "/guides/framer-motion-to-motion": {
     aliases: ["framer motion", "migrate framer motion"],
     keywords: ["migration", "motion/react"],

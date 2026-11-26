@@ -1,7 +1,7 @@
 {
   "/": {
-    "hash": "467c610db1399956",
-    "modified": "2026-11-25"
+    "hash": "4c78a9613dd326e9",
+    "modified": "2026-11-26"
   },
   "/about": {
     "hash": "60c0bcb76a35452d",
@@ -440,12 +440,12 @@
     "modified": "2026-11-17"
   },
   "/docs/base-ui": {
-    "hash": "3967a15bde88af35",
-    "modified": "2026-11-17"
+    "hash": "c3920ecd8df68078",
+    "modified": "2026-11-26"
   },
   "/docs/dark-mode": {
-    "hash": "3967a15bde88af35",
-    "modified": "2026-11-17"
+    "hash": "c3920ecd8df68078",
+    "modified": "2026-11-26"
   },
   "/docs/forms": {
     "hash": "0d4303eec92e2b85",
@@ -464,8 +464,8 @@
     "modified": "2026-11-16"
   },
   "/docs/tailwind-v4": {
-    "hash": "3967a15bde88af35",
-    "modified": "2026-11-17"
+    "hash": "c3920ecd8df68078",
+    "modified": "2026-11-26"
   },
   "/effects": {
     "hash": "6b963800e33ce044",
@@ -604,8 +604,8 @@
     "modified": "2026-11-25"
   },
   "/guides": {
-    "hash": "9639aa84f5d5da06",
-    "modified": "2026-11-17"
+    "hash": "d50e61cdbd313c62",
+    "modified": "2026-11-26"
   },
   "/layout/accordion": {
     "hash": "c51790ce014de806",
@@ -624,8 +624,8 @@
     "modified": "2026-11-25"
   },
   "/layout/pagination": {
-    "hash": "9a75237863888810",
-    "modified": "2026-11-17"
+    "hash": "80d3775ecd26d42d",
+    "modified": "2026-11-26"
   },
   "/layout/resizable": {
     "hash": "d68d6d8306896e74",

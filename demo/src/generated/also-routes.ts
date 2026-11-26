@@ -3,6 +3,6 @@
  * Which routes have an entry in also-uses.ts, as a hex bit mask over the route paths sorted as strings (the first path is the
  * top bit of the first digit). Kept apart and tiny so a page without an entry never loads that module.
  */
-const mask = "000a010090300003088779c42500836bfdcf880006bfffc8";
+const mask = "000a010090300003088779c42500836bfdcf8800035fffe4";
 
 export default mask;

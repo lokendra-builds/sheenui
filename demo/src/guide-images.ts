@@ -133,6 +133,10 @@ export const guideImages: Record<string, (GuideImage & { styled?: StyledShots })
     "shadcn-alternatives",
     "shadcn alternatives: a collage of glass button, dialog, data table and tabs components",
   ),
+  "shadcn-glassmorphism": cover(
+    "shadcn-glassmorphism",
+    "shadcn glassmorphism: a glass card, a glass dialog and a glass button",
+  ),
   "glassmorphism-ui-prompt": cover(
     "glassmorphism-ui-prompt",
     "Glassmorphism UI prompts for AI coding agents: a glass sign-in form and the design token board",

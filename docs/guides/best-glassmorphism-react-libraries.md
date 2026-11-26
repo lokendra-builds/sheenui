@@ -6,7 +6,7 @@ route: "/guides/best-glassmorphism-react-libraries"
 targetKeyword: "best glassmorphism react libraries"
 secondaryKeywords: ["best liquid glass react library", "glassmorphism library comparison", "react ui library 2026"]
 published: "2026-11-08"
-updated: "2026-11-14"
+updated: "2026-11-26"
 relatedRoutes: ["/effects/liquid-glass", "/components/glass-card", "/components/dialog", "/foundations"]
 ---
 
@@ -131,5 +131,7 @@ SheenUI and liqui.design. Glassy UI, shadcn-glass-ui, glasscn-ui, crenspire Glas
 ### Are these libraries free?
 
 Every verified license is MIT (shadcn-glass-ui shows MIT on npm and Apache-2.0 on GitHub). Glassy UI sells templates separately; 21st.dev limits free copies to two per day.
+
+If you already use shadcn/ui and want glass without a new library, read [shadcn glassmorphism](https://lokendra-builds.github.io/sheenui/guides/shadcn-glassmorphism).
 
 Updated 8 Nov 2026; we re-check this quarterly.

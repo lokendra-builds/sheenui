@@ -117,6 +117,14 @@ export const seoGuides: Record<string, SeoMeta> = {
     h1: "shadcn Alternatives with Animation: Nine Libraries Compared (2026)",
     secondary: ["shadcn ui alternatives 2026", "shadcn glass theme", "copy paste component libraries"],
   },
+  "/guides/shadcn-glassmorphism": {
+    title: "shadcn Glassmorphism: Glass Card, Dialog, Theme",
+    description:
+      "shadcn glassmorphism in three ways: restyle the stock Card, Dialog and Button, retheme the CSS variables, or install glass components with the shadcn CLI.",
+    keyword: "shadcn glassmorphism",
+    h1: "shadcn Glassmorphism: Three Ways to Get a Glass UI",
+    secondary: ["shadcn glass theme", "glassmorphism shadcn ui", "shadcn glass card", "shadcn liquid glass"],
+  },
   "/guides/glassmorphism-ui-prompt": {
     title: "Glassmorphism UI Prompt for Claude, Cursor & v0",
     description:

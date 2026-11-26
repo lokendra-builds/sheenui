@@ -453,7 +453,7 @@
   }
 
   .home-h1 {
-    /* The H1 carries the keyword ("Glassmorphism React components that catch light."): smaller than the old
+    /* The H1 carries the keyword ("Glassmorphism React components, built to glow."): smaller than the old
      three-word line, and the lines may wrap inside the column. */
     font-size: clamp(2.25rem, 1.5rem + 2.9vw, 3.75rem);
     line-height: 1.04;

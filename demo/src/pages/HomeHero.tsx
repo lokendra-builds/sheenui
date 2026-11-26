@@ -62,8 +62,8 @@ import { COUNTS } from "../seo/counts";
 const COPY: Record<SheenStyle, { eyebrow: string; lines: [string, string]; accent: string; lede: string }> = {
   liquid: {
     eyebrow: "Glassy, classy React components. In motion.",
-    lines: ["Glassmorphism React", "components that catch"],
-    accent: "light.",
+    lines: ["Glassmorphism React", "components, built to"],
+    accent: "glow.",
     lede: "SheenUI is a free library of glassmorphism and Liquid Glass React components, animated with Motion and built on Base UI and Tailwind CSS v4. Accessible by default. Copy the source and make it yours.",
   },
   aurora: {

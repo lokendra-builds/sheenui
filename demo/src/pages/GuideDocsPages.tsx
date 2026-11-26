@@ -199,7 +199,8 @@ export function BaseUiDocsPage() {
           Where Radix uses <C>asChild</C>, Base UI uses a <C>render</C> prop that takes an element or a function. It is
           how a button becomes a router link without losing its styles. Read{" "}
           <A to="/guides/base-ui-vs-radix">Base UI vs Radix</A> for a checked comparison of coverage and migration, and{" "}
-          <A to="/guides/shadcn-alternatives">shadcn alternatives</A> for how this fits the copy-paste approach.
+          <A to="/guides/shadcn-alternatives">shadcn alternatives</A> for how this fits the copy-paste approach, or{" "}
+          <A to="/guides/shadcn-glassmorphism">shadcn glassmorphism</A> to add glass to a shadcn/ui project.
         </p>
       </Section>
       <Section id="base-ui-wrap" title="What a wrapper looks like">

@@ -224,6 +224,7 @@ const QUERIES = {
   "/effects/text-reveal": ["text reveal", "scroll reveal"],
   "/guides/install-frameworks": ["next.js", "nextjs", "vite", "install nextjs"],
   "/guides/shadcn-alternatives": ["shadcn", "shadcn alternative"],
+  "/guides/shadcn-glassmorphism": ["shadcn glass", "shadcn glassmorphism"],
   "/guides/base-ui-vs-radix": ["base ui vs radix", "radix"],
   "/guides/framer-motion-to-motion": ["framer motion", "migrate framer motion"],
   "/guides/backdrop-filter-performance": ["backdrop filter", "performance"],

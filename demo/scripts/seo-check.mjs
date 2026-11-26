@@ -969,6 +969,7 @@ if (!hubCardsByPage.size) fail("/", "no hub card was found: the card check reads
 // The queries the site is built to rank for. Each has ONE target page: its title, H1 and first 100 words carry every word of
 // the query, at least `anchors` other pages link to it with matching link text, and no other indexable page carries the
 // whole query in both its title and its H1 (two pages competing for one query split the ranking).
+// `allow` lists a page that carries the words for a different search intent.
 const TARGET_QUERIES = [
   {
     query: "glassmorphism react components",
@@ -978,6 +979,14 @@ const TARGET_QUERIES = [
   },
   { query: "liquid glass ui react", path: "/effects/liquid-glass", anchor: /liquid glass/i, anchors: 4 },
   { query: "shadcn alternatives", path: "/guides/shadcn-alternatives", anchor: /shadcn alternatives/i, anchors: 3 },
+  // The installation page names both words for a different search (how to install with the shadcn CLI), so it may keep them.
+  {
+    query: "shadcn glassmorphism",
+    path: "/guides/shadcn-glassmorphism",
+    anchor: /shadcn glass/i,
+    anchors: 3,
+    allow: ["/docs/installation"],
+  },
   { query: "tailwind v4 glass ui", path: "/docs/tailwind-v4", anchor: /tailwind.*v4|v4.*tailwind/i, anchors: 5 },
   { query: "react glass dashboard template", path: "/dashboards", anchor: /dashboard template/i, anchors: 3 },
   { query: "animated react components", path: "/effects", anchor: /animated|effects/i, anchors: 3 },
@@ -989,7 +998,7 @@ const TARGET_QUERIES = [
   },
   { query: "react glass login page", path: "/blocks/glass-login", anchor: /login/i, anchors: 3 },
 ];
-for (const { query, path, anchor, anchors } of TARGET_QUERIES) {
+for (const { query, path, anchor, anchors, allow = [] } of TARGET_QUERIES) {
   const facts = pageFacts.get(path);
   if (!facts) {
     fail(path, `target page of "${query}" was not checked`);
@@ -1007,7 +1016,7 @@ for (const { query, path, anchor, anchors } of TARGET_QUERIES) {
       `target of "${query}": ${from.size} other pages link to it with text matching ${anchor} (need ${anchors})`,
     );
   for (const [other, f] of pageFacts)
-    if (other !== path && !f.noindex && hasKeyword(f.title, query) && hasKeyword(f.h1, query))
+    if (other !== path && !allow.includes(other) && !f.noindex && hasKeyword(f.title, query) && hasKeyword(f.h1, query))
       fail(other, `competes with ${path} for "${query}": its title and H1 both carry the whole query`);
 }
 

@@ -1,7 +1,7 @@
-// Renders the 13 guide covers (4 looks each: Liquid / Aurora x light / dark, 1200x630 WebP + 480 / 768 px srcset files)
+// Renders the 14 guide covers (4 looks each: Liquid / Aurora x light / dark, 1200x630 WebP + 480 / 768 px srcset files)
 // into demo/public/img as guide-<slug>-<style>-<theme>.webp. Each cover is a composition on the site's own look (glass chips,
 // blobs, display type) around live captures of the docs site, so it needs the dev server: `pnpm dev`, then
-//   node demo/scripts/make-guide-covers.mjs
+//   node demo/scripts/make-guide-covers.mjs        (ONLY=<slug> renders one guide)
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -90,6 +90,7 @@ const G = {
     ["components", "glasscard", "dash"],
   ],
   "shadcn-alternatives": ["shadcn alternatives", "Roundup", ["button", "dialog", "datatable", "tabs"]],
+  "shadcn-glassmorphism": ["shadcn glassmorphism", "How-to", ["glasscard", "dialog", "button"]],
   "glassmorphism-ui-prompt": ["Glassmorphism UI prompts", "AI prompts", ["login", "foundations"]],
 };
 const looks = [
@@ -123,7 +124,9 @@ for (const [st, th] of looks) {
   const p = await ctx.newPage();
   await p.goto("http://127.0.0.1:5173/sheenui/foundations", { waitUntil: "load" });
   await p.waitForTimeout(1500);
-  for (const [slug, [title, kick, shots]] of Object.entries(G)) {
+  for (const [slug, [title, kick, shots]] of Object.entries(G).filter(
+    ([s]) => !process.env.ONLY || s === process.env.ONLY,
+  )) {
     const imgs = shots.map((s) => b64(`${CAPS}/${s}_${st}_${th}.png`));
     await p.evaluate(
       ({ title, kick, imgs, logo }) => {
